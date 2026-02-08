@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Primary */
+  --color-primary-1: #342C22;
+  --color-primary-2: #729430;
+
+  /* Accent */
+  --color-accent-1: #448AC9;
+  --color-accent-2: #F59C0E;
+
+  /* Neutrals */
+  --color-white: #FFFFFF;
+  --color-text-dark: #4F4F4F;
+  --color-text-muted: #333333;
+
+  /* Brand partners (secondary logos) */
+  --color-undp: #009CE3;
+  --color-cofsa-orange: #F09322;
+
+  /* Typography */
+  --font-body: 'EB Garamond', Garamond, Georgia, serif;
+  --font-title: 'DM Sans', Klein, Arial, Calibri, sans-serif;
+  --font-fallback: Arial, Calibri, sans-serif;
+}

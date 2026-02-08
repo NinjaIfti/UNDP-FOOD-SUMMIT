@@ -1,18 +1,22 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/newsletter', [ContactController::class, 'newsletter'])->name('newsletter.store');
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Home/Index');
 });
+
+Route::get('/submissions', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Call for Submissions']));
+Route::get('/media-kit', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Media Kit']));
+Route::get('/support', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Support the Event']));
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
