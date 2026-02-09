@@ -14,7 +14,10 @@ import SectionReveal from './SectionReveal.vue';
                         Conscious Food Systems: Not just what we eat, but how we grow, share and value food.
                     </h2>
                     <p class="mt-6 font-body text-lg leading-relaxed text-white/90">
-                        The Summit serves as a global platform to advance Bhutan's leadership in national food systems transformation, grounded in Gross National Happiness, sustainability, and harmony with nature.
+                        Food systems are at the heart of pressing global challenges: climate change, environmental pollution, biodiversity decline, and land degradation. The need for a bold and innovative path, harnessing the transformative power of consciousness to unlock food system transformation, has never been more urgent and critical. By deepening the connection to self, others, and Nature, and promoting human values, consciousness is a powerful lever to support the transformation of food systems with value-driven decision making for healthy diets, climate resilience, agro-ecology, policy and value chains through meaningful multi-stakeholder collaboration.
+                    </p>
+                    <p class="mt-4 font-body text-base leading-relaxed text-white/80">
+                        The <a href="https://consciousfoodsystems.org/" target="_blank" rel="noopener noreferrer" class="font-semibold text-accent-2 underline decoration-accent-2/40 underline-offset-2 transition hover:decoration-accent-2">Conscious Food Systems Alliance (CoFSA)</a>, convened by UNDP, is a movement of food, agriculture, and consciousness practitioners united around a common goal: to support people from across food and agriculture systems to cultivate the inner capacities that activate systemic change and regeneration.
                     </p>
                 </div>
             </SectionReveal>

@@ -15,7 +15,11 @@ const outcomes = [
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Outcomes</h2>
-                <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <h3 class="mx-auto mt-6 max-w-3xl text-center font-title text-lg font-semibold text-accent-2 sm:text-xl">Activating the Heart of Food Systems Transformation</h3>
+                <p class="mx-auto mt-4 max-w-3xl text-center font-body text-base leading-relaxed text-ink sm:text-lg">
+                    This landmark gathering will advance a new paradigm for food systems transformation—one that recognizes the vital role of culture, values, spirituality, happiness and inner development in catalyzing systemic change and regeneration. The Summit seeks to catalyze movement-building, collective action, and investment to integrate the inner dimension of food systems transformation across international, national, and local agendas, accelerating progress toward sustainability, justice, and wellbeing.
+                </p>
+                <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <li v-for="(outcome, i) in outcomes" :key="i" class="group flex items-start gap-3 rounded-xl border border-primary-2/20 bg-primary-2/5 p-6 transition hover:border-accent-2/30 hover:shadow-lg">
                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-title text-sm font-bold text-primary-1">{{ i + 1 }}</span>
                         <span class="font-body text-base leading-relaxed text-ink sm:text-lg">{{ outcome }}</span>

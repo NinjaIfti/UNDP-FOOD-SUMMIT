@@ -14,10 +14,10 @@ import SectionReveal from './SectionReveal.vue';
                 <SectionReveal :delay="150">
                     <h2 class="font-title text-2xl font-bold text-primary-1 sm:text-3xl">Bhutan: An Inspiration and Innovator in Sustainable Transformation</h2>
                     <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
-                        Bhutan brings unique pathways grounded in Gross National Happiness, sustainability, and harmony with nature. The Summit showcases the country's leadership in national food systems transformation, offering a model for conscious, regenerative approaches to how we grow, share, and value food.
+                        Bhutan offers a uniquely inspiring setting for this summit. Guided by the holistic philosophy of Gross National Happiness, and through forward-looking initiatives, such as the Gelephu Mindfulness City, the G-ZERO Forum, and the Bhutan Innovation Lab (BIL), Bhutan has demonstrated global leadership in climate action and sustainable development, and offers an example of mainly organic and Nature-friendly food systems, highlighting the role of culture and spirituality for food systems sustainability.
                     </p>
                     <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
-                        The sacred landscapes of the Himalayas, deep-rooted cultural traditions, and a constitutional commitment to environmental preservation make Bhutan the ideal host for this global conversation.
+                        The Summit will advance Bhutan’s National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while also highlighting Bhutan’s leadership in driving conscious food systems transformation.
                     </p>
                 </SectionReveal>
             </div>
