@@ -1,8 +1,7 @@
 <script setup>
-import { ref, provide, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import EventFooter from '@/Components/EventFooter.vue';
-import RegisterModal from '@/Components/RegisterModal.vue';
 
 defineProps({
     title: { type: String, default: 'Global Conscious Food Systems Summit' },
@@ -10,11 +9,6 @@ defineProps({
 
 const mobileMenuOpen = ref(false);
 const isAtTop = ref(true);
-const showRegisterModal = ref(false);
-function openRegister() { showRegisterModal.value = true; }
-function closeRegister() { showRegisterModal.value = false; }
-
-provide('openRegister', openRegister);
 
 function onScroll() {
     isAtTop.value = window.scrollY < 20;
@@ -47,7 +41,7 @@ onUnmounted(() => {
                     <Link href="/#agenda" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Agenda</Link>
                     <Link href="/#speakers" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Speakers</Link>
                     <Link href="/#outcomes" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Outcomes</Link>
-                    <button @click="openRegister" class="rounded-md bg-accent-2 px-4 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">Register</button>
+                    <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">Register</Link>
                 </nav>
                 <button
                     type="button"
@@ -74,7 +68,7 @@ onUnmounted(() => {
                     <Link href="/#agenda" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Agenda</Link>
                     <Link href="/#speakers" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Speakers</Link>
                     <Link href="/#outcomes" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Outcomes</Link>
-                    <button class="rounded-md bg-accent-2 px-4 py-3 text-center text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false; openRegister()">Register</button>
+                    <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-3 text-center text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">Register</Link>
                 </nav>
             </div>
         </header>
@@ -82,6 +76,5 @@ onUnmounted(() => {
             <slot />
         </main>
         <EventFooter />
-        <RegisterModal :show="showRegisterModal" @close="closeRegister" />
     </div>
 </template>

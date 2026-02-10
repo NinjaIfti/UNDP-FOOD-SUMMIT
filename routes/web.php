@@ -13,6 +13,9 @@ Route::get('/', function () {
     return Inertia::render('Home/Index');
 });
 
+Route::get('/register-summit', fn () => Inertia::render('Register/Index'));
+Route::post('/register-summit', [ContactController::class, 'registration'])->name('registration.store');
+
 Route::get('/submissions', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Call for Submissions']));
 Route::get('/media-kit', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Media Kit']));
 Route::get('/support', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Support the Event']));

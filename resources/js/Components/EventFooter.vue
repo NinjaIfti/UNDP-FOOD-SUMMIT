@@ -1,8 +1,6 @@
 <script setup>
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import { computed, inject } from 'vue';
-
-const openRegister = inject('openRegister');
+import { computed } from 'vue';
 
 const page = usePage();
 const successMessage = computed(() => page.props.flash?.success);
@@ -192,7 +190,7 @@ const socialLinks = [
                 <Link href="/" class="text-sm text-white/80 transition hover:text-white">Home</Link>
                 <Link href="/#agenda" class="text-sm text-white/80 transition hover:text-white">Agenda</Link>
                 <Link href="/#speakers" class="text-sm text-white/80 transition hover:text-white">Speakers</Link>
-                <button @click="openRegister" class="text-sm text-white/80 transition hover:text-white">Register</button>
+                <Link href="/register-summit" class="text-sm text-white/80 transition hover:text-white">Register</Link>
             </div>
             <p class="mt-6 text-center text-sm text-white/60">© UNDP Bhutan · 31 Aug – 4 Sep 2026</p>
         </div>

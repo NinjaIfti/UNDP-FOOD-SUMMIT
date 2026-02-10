@@ -1,7 +1,6 @@
 <script setup>
-import { ref, computed, inject, onMounted, onUnmounted } from 'vue';
-
-const openRegister = inject('openRegister');
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 const eventDate = new Date('2026-08-31T09:00:00');
 const now = ref(new Date());
@@ -115,15 +114,15 @@ onUnmounted(() => {
             <p class="mt-6 max-w-2xl font-body text-base leading-relaxed text-white/90 sm:text-lg">
                 Let's co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.
             </p>
-            <button
-                @click="openRegister"
+            <Link
+                href="/register-summit"
                 class="mt-10 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-title text-base font-semibold text-primary-1 shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
             >
                 Register Now
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-            </button>
+            </Link>
         </div>
     </section>
 </template>
