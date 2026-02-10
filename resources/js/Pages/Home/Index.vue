@@ -20,11 +20,11 @@ import CallToActionsSection from '@/Components/Home/CallToActionsSection.vue';
         <SummitIntroSection />
         <CoOrganizersSection />
         <VideosSection />
+        <CallToActionsSection />
+        <FeaturedSpeakersSection />
         <ConsciousFoodSection />
         <OutcomesSection />
-        <FeaturedSpeakersSection />
         <WhyBhutanSection />
         <EventsPlanSection />
-        <CallToActionsSection />
     </EventLayout>
 </template>
