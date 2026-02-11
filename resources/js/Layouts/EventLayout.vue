@@ -28,17 +28,17 @@ onUnmounted(() => {
             class="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300"
             :class="isAtTop ? 'border-white/10 bg-black/95' : 'border-black/10 bg-white/95'"
         >
-            <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
-                <Link href="/" class="flex items-center py-2">
+            <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
+                <Link href="/" class="flex flex-shrink-0 items-center py-2">
                     <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[400px] object-contain sm:h-32 sm:max-w-[600px] md:h-36 lg:h-40" />
                 </Link>
-                <nav class="hidden items-center gap-1 sm:flex sm:gap-2 lg:gap-4">
-                    <Link href="/" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
-                    <Link href="/programme" class="rounded-md px-3 py-2 text-base font-medium uppercase transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
-                    <Link href="/#bhutan-stay" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                    <Link href="/register-summit" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Register</Link>
-                    <Link href="/get-involved" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
-                    <Link href="/#faq" class="rounded-md bg-accent-2 px-4 py-2 text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">FAQs</Link>
+                <nav class="hidden flex-shrink-0 items-center gap-1 sm:flex sm:gap-2 lg:gap-4">
+                    <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
+                    <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium uppercase transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
+                    <Link href="/#bhutan-stay" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
+                    <Link href="/register-summit" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Register</Link>
+                    <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                    <Link href="/#faq" class="flex-shrink-0 whitespace-nowrap rounded-md bg-accent-2 px-4 py-2 text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">FAQs</Link>
                 </nav>
                 <button
                     type="button"
