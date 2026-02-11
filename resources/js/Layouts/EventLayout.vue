@@ -28,20 +28,17 @@ onUnmounted(() => {
             class="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300"
             :class="isAtTop ? 'border-white/10 bg-black/95' : 'border-black/10 bg-white/95'"
         >
-            <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
-                <Link href="/" class="flex items-center gap-3 bg-transparent">
-                    <img src="/brand/logo1.png" alt="Global Conscious Food Systems Summit" class="h-12 w-12 shrink-0 object-contain mix-blend-multiply sm:h-14 sm:w-14" :class="isAtTop ? 'mix-blend-screen' : 'mix-blend-multiply'" />
-                    <span class="font-title text-lg font-bold leading-tight sm:text-xl" :class="isAtTop ? 'text-white' : 'text-black'">
-                        <span class="block">GCF</span>
-                        <span class="block">SS</span>
-                    </span>
+            <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
+                <Link href="/" class="flex items-center py-2">
+                    <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[400px] object-contain sm:h-32 sm:max-w-[600px] md:h-36 lg:h-40" />
                 </Link>
                 <nav class="hidden items-center gap-1 sm:flex sm:gap-2 lg:gap-4">
-                    <Link href="/" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
-                    <Link href="/#agenda" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Agenda</Link>
-                    <Link href="/#speakers" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Speakers</Link>
-                    <Link href="/#outcomes" class="rounded-md px-3 py-2 text-sm font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Outcomes</Link>
-                    <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">Register</Link>
+                    <Link href="/" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
+                    <Link href="/programme" class="rounded-md px-3 py-2 text-base font-medium uppercase transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
+                    <Link href="/#bhutan-stay" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
+                    <Link href="/register-summit" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Register</Link>
+                    <Link href="/get-involved" class="rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                    <Link href="/#faq" class="rounded-md bg-accent-2 px-4 py-2 text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">FAQs</Link>
                 </nav>
                 <button
                     type="button"
@@ -64,11 +61,12 @@ onUnmounted(() => {
                 :class="isAtTop ? 'border-white/10 bg-black' : 'border-black/10 bg-white'"
             >
                 <nav class="flex flex-col gap-1">
-                    <Link href="/" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
-                    <Link href="/#agenda" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Agenda</Link>
-                    <Link href="/#speakers" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Speakers</Link>
-                    <Link href="/#outcomes" class="rounded-md px-4 py-3 text-sm font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Outcomes</Link>
-                    <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-3 text-center text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">Register</Link>
+                    <Link href="/" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
+                    <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium uppercase transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Programme/Experience</Link>
+                    <Link href="/#bhutan-stay" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
+                    <Link href="/register-summit" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Register</Link>
+                    <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
+                    <Link href="/#faq" class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">FAQs</Link>
                 </nav>
             </div>
         </header>

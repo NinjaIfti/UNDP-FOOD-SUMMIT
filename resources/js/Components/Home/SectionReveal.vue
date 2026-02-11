@@ -9,11 +9,15 @@ const el = ref(null);
 const visible = ref(false);
 
 onMounted(() => {
+    const isMobile = window.innerWidth < 768;
     const observer = new IntersectionObserver(
         ([entry]) => {
             if (entry.isIntersecting) visible.value = true;
         },
-        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        { 
+            threshold: isMobile ? 0.05 : 0.1, 
+            rootMargin: isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px' 
+        }
     );
     if (el.value) observer.observe(el.value);
 });

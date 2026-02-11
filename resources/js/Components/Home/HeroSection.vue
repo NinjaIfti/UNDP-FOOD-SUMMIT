@@ -93,22 +93,22 @@ onUnmounted(() => {
                 {{ displayedTitle }}<span class="inline-block w-[3px] animate-pulse bg-accent-2 ml-1" style="height: 1em;">&nbsp;</span>
             </h1>
             <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">31 August – 4 September 2026 · Bhutan</p>
-            <div class="mt-8 flex flex-wrap justify-center gap-4 sm:gap-6">
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-6 py-4 backdrop-blur-sm min-w-[70px]">
-                    <span class="font-title text-3xl font-bold text-white sm:text-4xl">{{ countdown.days }}</span>
-                    <span class="text-sm text-white/80">Days</span>
+            <div class="mt-8 flex justify-center gap-2 sm:gap-6">
+                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.days }}</span>
+                    <span class="text-xs text-white/80 sm:text-sm">Days</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-6 py-4 backdrop-blur-sm min-w-[70px]">
-                    <span class="font-title text-3xl font-bold text-white sm:text-4xl">{{ countdown.hours }}</span>
-                    <span class="text-sm text-white/80">Hours</span>
+                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.hours }}</span>
+                    <span class="text-xs text-white/80 sm:text-sm">Hours</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-6 py-4 backdrop-blur-sm min-w-[70px]">
-                    <span class="font-title text-3xl font-bold text-white sm:text-4xl">{{ countdown.minutes }}</span>
-                    <span class="text-sm text-white/80">Min</span>
+                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.minutes }}</span>
+                    <span class="text-xs text-white/80 sm:text-sm">Min</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-6 py-4 backdrop-blur-sm min-w-[70px]">
-                    <span class="font-title text-3xl font-bold text-white sm:text-4xl">{{ countdown.seconds }}</span>
-                    <span class="text-sm text-white/80">Sec</span>
+                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.seconds }}</span>
+                    <span class="text-xs text-white/80 sm:text-sm">Sec</span>
                 </div>
             </div>
             <p class="mt-6 max-w-2xl font-body text-base leading-relaxed text-white/90 sm:text-lg">

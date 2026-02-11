@@ -13,6 +13,9 @@ Route::get('/', function () {
     return Inertia::render('Home/Index');
 });
 
+Route::get('/programme', fn () => Inertia::render('Programme/Index'));
+Route::get('/get-involved', fn () => Inertia::render('GetInvolved/Index'));
+
 Route::get('/register-summit', fn () => Inertia::render('Register/Index'));
 Route::post('/register-summit', [ContactController::class, 'registration'])->name('registration.store');
 

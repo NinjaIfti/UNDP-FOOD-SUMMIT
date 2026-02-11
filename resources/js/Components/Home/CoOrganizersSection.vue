@@ -2,36 +2,51 @@
 import SectionReveal from './SectionReveal.vue';
 
 const organizers = [
-    { name: 'Royal Government of Bhutan', url: 'https://www.gov.bt', desc: 'Host' },
-    { name: 'Conscious Food Systems Alliance (CoFSA)', url: 'https://consciousfoodsystems.org', desc: 'Co-organizer' },
-    { name: 'UNDP Bhutan', url: 'https://www.undp.org/bhutan', desc: 'Partner' },
-    { name: 'Bhutan Global Mindfulness & MICE (BGMM)', url: '#', desc: 'Event management partner' },
+    { 
+        name: 'Royal Government of Bhutan', 
+        logo: '/brand/govt.png', 
+        url: 'https://www.gov.bt' 
+    },
+    { 
+        name: 'United Nations Development Programme', 
+        logo: '/brand/undp.png', 
+        url: 'https://www.undp.org/bhutan' 
+    },
+    { 
+        name: 'Conscious Food Systems Alliance', 
+        logo: '/brand/cofsa.png', 
+        url: 'https://consciousfoodsystems.org' 
+    }
 ];
 </script>
 
 <template>
-    <section class="relative overflow-hidden border-y border-primary-2/20 bg-white py-8 sm:py-10">
-        <div class="absolute inset-0 opacity-40">
-            <img src="/brand/img34.jpg" alt="" class="h-full w-full object-cover" aria-hidden="true" />
-        </div>
+    <section class="relative overflow-hidden border-y border-primary-2/20 bg-white py-16 sm:py-20 lg:py-24">
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <h2 class="font-title text-center text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
+                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
                     Co-organizers
                 </h2>
-                <div class="mt-6 flex flex-wrap justify-center gap-4 sm:gap-6">
+                
+                <div class="mt-12 grid grid-cols-3 gap-6 sm:mt-16 sm:gap-8 lg:gap-16">
                     <a
                         v-for="org in organizers"
                         :key="org.name"
                         :href="org.url"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group rounded-lg bg-white/80 px-4 py-3 text-center backdrop-blur-sm transition hover:bg-white"
+                        class="group flex flex-col items-center text-center"
                     >
-                        <span class="font-title text-lg font-bold text-primary-1 transition group-hover:text-accent-1 sm:text-xl">
+                        <div class="flex h-32 items-center justify-center sm:h-36 lg:h-40">
+                            <img 
+                                :src="org.logo" 
+                                :alt="org.name" 
+                                class="max-h-full w-auto object-contain transition duration-300 group-hover:scale-105"
+                            />
+                        </div>
+                        <h3 class="mt-6 font-title text-lg font-semibold text-primary-1 transition group-hover:text-accent-1 sm:text-xl">
                             {{ org.name }}
-                        </span>
-                        <span class="mt-0.5 block text-base font-bold text-copy">{{ org.desc }}</span>
+                        </h3>
                     </a>
                 </div>
             </SectionReveal>
