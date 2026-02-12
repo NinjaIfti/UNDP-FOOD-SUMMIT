@@ -2,8 +2,7 @@
 import SectionReveal from './SectionReveal.vue';
 
 defineProps({
-    summitVideoUrl: { type: String, default: '' },
-    hpmVideoUrl: { type: String, default: '' },
+    settings: Object,
 });
 </script>
 
@@ -16,30 +15,30 @@ defineProps({
                     <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
-                                v-if="summitVideoUrl"
-                                :src="`${summitVideoUrl}?rel=0`"
-                                title="Summit Video"
+                                v-if="settings.video1_url"
+                                :src="`${settings.video1_url}?rel=0`"
+                                :title="settings.video1_title"
                                 class="h-full w-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                             />
-                            <div v-else class="flex h-full items-center justify-center text-copy">Summit video coming soon</div>
+                            <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">Summit Video</p>
+                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
                     </div>
                     <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
-                                v-if="hpmVideoUrl"
-                                :src="`${hpmVideoUrl}?rel=0`"
-                                title="HPM Video"
+                                v-if="settings.video2_url"
+                                :src="`${settings.video2_url}?rel=0`"
+                                :title="settings.video2_title"
                                 class="h-full w-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                             />
-                            <div v-else class="flex h-full items-center justify-center text-copy">HPM video coming soon</div>
+                            <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">HPM Video</p>
+                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
                     </div>
                 </div>
             </SectionReveal>

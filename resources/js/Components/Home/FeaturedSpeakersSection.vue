@@ -1,19 +1,19 @@
 <script setup>
+import { computed } from 'vue';
 import SectionReveal from './SectionReveal.vue';
 
-defineProps({
-    speakers: {
-        type: Array,
-        default: () => [
-            { name: 'Speaker One', role: 'Policy & Governance', bio: 'Leading expert in food policy and governance with over 20 years of experience.', image: '/brand/img22.jpg' },
-            { name: 'Speaker Two', role: 'Agroecology', bio: 'Pioneer in agroecological practices and sustainable farming systems.', image: '/brand/img29.jpg' },
-            { name: 'Speaker Three', role: 'Indigenous Knowledge', bio: 'Advocate for indigenous food systems and traditional agricultural wisdom.', image: '/brand/img30.jpg' },
-            { name: 'Speaker Four', role: 'Youth & Movement Building', bio: 'Youth leader driving food systems transformation across communities.', image: '/brand/img31.jpg' },
-            { name: 'Speaker Five', role: 'Food Systems', bio: 'Researcher focused on conscious and regenerative food systems.', image: '/brand/img32.jpg' },
-            { name: 'Speaker Six', role: 'Sustainability', bio: 'Environmental strategist working on sustainable food supply chains.', image: '/brand/img33.jpg' },
-        ],
-    },
+const props = defineProps({
+    settings: Object,
 });
+
+const speakers = computed(() => props.settings?.speakers || [
+    { name: 'Speaker One', role: 'Policy & Governance', bio: 'Leading expert in food policy and governance with over 20 years of experience.', image: '/brand/img22.jpg' },
+    { name: 'Speaker Two', role: 'Agroecology', bio: 'Pioneer in agroecological practices and sustainable farming systems.', image: '/brand/img29.jpg' },
+    { name: 'Speaker Three', role: 'Indigenous Knowledge', bio: 'Advocate for indigenous food systems and traditional agricultural wisdom.', image: '/brand/img30.jpg' },
+    { name: 'Speaker Four', role: 'Youth & Movement Building', bio: 'Youth leader driving food systems transformation across communities.', image: '/brand/img31.jpg' },
+    { name: 'Speaker Five', role: 'Food Systems', bio: 'Researcher focused on conscious and regenerative food systems.', image: '/brand/img32.jpg' },
+    { name: 'Speaker Six', role: 'Sustainability', bio: 'Environmental strategist working on sustainable food supply chains.', image: '/brand/img33.jpg' },
+]);
 </script>
 
 <template>
@@ -21,10 +21,10 @@ defineProps({
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-                    Featured Speakers
+                    {{ settings?.speakers_section_title || 'Featured Speakers' }}
                 </h2>
                 <p class="mt-4 text-center font-body text-base text-copy sm:text-lg">
-                    Leading voices in conscious food systems transformation
+                    {{ settings?.speakers_section_subtitle || 'Leading voices in conscious food systems transformation' }}
                 </p>
                 <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     <div

@@ -11,20 +11,24 @@ import FeaturedSpeakersSection from '@/Components/Home/FeaturedSpeakersSection.v
 import WhyBhutanSection from '@/Components/Home/WhyBhutanSection.vue';
 import EventsPlanSection from '@/Components/Home/EventsPlanSection.vue';
 import CallToActionsSection from '@/Components/Home/CallToActionsSection.vue';
+
+defineProps({
+    settings: Object,
+});
 </script>
 
 <template>
     <Head title="Global Conscious Food Systems Summit" />
     <EventLayout>
-        <HeroSection />
-        <SummitIntroSection />
-        <CoOrganizersSection />
-        <VideosSection />
-        <CallToActionsSection />
-        <FeaturedSpeakersSection />
-        <ConsciousFoodSection />
-        <OutcomesSection />
-        <WhyBhutanSection />
-        <EventsPlanSection />
+            <HeroSection :settings="settings" />
+            <SummitIntroSection :settings="settings" />
+            <CoOrganizersSection :settings="settings" />
+            <VideosSection :settings="settings" />
+            <CallToActionsSection :settings="settings" />
+            <FeaturedSpeakersSection :settings="settings" />
+            <ConsciousFoodSection :settings="settings" />
+            <OutcomesSection :settings="settings" />
+            <WhyBhutanSection :settings="settings" />
+            <EventsPlanSection :settings="settings" />
     </EventLayout>
 </template>

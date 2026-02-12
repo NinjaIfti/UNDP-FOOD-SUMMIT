@@ -1,5 +1,9 @@
 <script setup>
 import SectionReveal from './SectionReveal.vue';
+
+defineProps({
+    settings: Object,
+});
 </script>
 
 <template>
@@ -11,13 +15,13 @@ import SectionReveal from './SectionReveal.vue';
             <SectionReveal :delay="100">
                 <div class="mx-auto max-w-4xl text-center">
                     <h2 class="font-title text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
-                        Conscious Food Systems: Not just what we eat, but how we grow, share and value food.
+                        {{ settings.conscious_food_title }}
                     </h2>
                     <p class="mt-6 font-body text-lg leading-relaxed text-white/90">
-                        Food systems are at the heart of pressing global challenges: climate change, environmental pollution, biodiversity decline, and land degradation. The need for a bold and innovative path, harnessing the transformative power of consciousness to unlock food system transformation, has never been more urgent and critical. By deepening the connection to self, others, and Nature, and promoting human values, consciousness is a powerful lever to support the transformation of food systems with value-driven decision making for healthy diets, climate resilience, agro-ecology, policy and value chains through meaningful multi-stakeholder collaboration.
+                        {{ settings.conscious_food_description }}
                     </p>
                     <p class="mt-4 font-body text-base leading-relaxed text-white/80">
-                        The <a href="https://consciousfoodsystems.org/" target="_blank" rel="noopener noreferrer" class="font-semibold text-accent-2 underline decoration-accent-2/40 underline-offset-2 transition hover:decoration-accent-2">Conscious Food Systems Alliance (CoFSA)</a>, convened by UNDP, is a movement of food, agriculture, and consciousness practitioners united around a common goal: to support people from across food and agriculture systems to cultivate the inner capacities that activate systemic change and regeneration.
+                        {{ settings.conscious_food_cofsa_text }}
                     </p>
                 </div>
             </SectionReveal>

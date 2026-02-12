@@ -2,7 +2,20 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-const eventDate = new Date('2026-08-31T09:00:00');
+const props = defineProps({
+    settings: {
+        type: Object,
+        default: () => ({
+            hero_title: 'Global Conscious Food Systems Summit',
+            hero_date: '31 August – 4 September 2026',
+            hero_location: 'Bhutan',
+            hero_description: 'Let\'s co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.',
+            countdown_date: '2026-08-31T09:00:00',
+        }),
+    },
+});
+
+const eventDate = new Date(props.settings.countdown_date);
 const now = ref(new Date());
 let timer;
 let slideInterval;
@@ -25,7 +38,7 @@ function nextSlide() {
     currentIndex.value = (currentIndex.value + 1) % slides.length;
 }
 
-const titleText = 'Global Conscious Food Systems Summit';
+const titleText = props.settings.hero_title;
 const displayedTitle = ref('');
 let charIndex = 0;
 let typingInterval;
@@ -41,7 +54,6 @@ function startTyping() {
             charIndex++;
         } else {
             clearInterval(typingInterval);
-            // Pause for 3 seconds before erasing
             pauseTimeout = setTimeout(startErasing, 3000);
         }
     }, 60);
@@ -55,7 +67,6 @@ function startErasing() {
             displayedTitle.value = titleText.slice(0, charIndex);
         } else {
             clearInterval(eraseInterval);
-            // Pause briefly before re-typing
             pauseTimeout = setTimeout(startTyping, 500);
         }
     }, 30);
@@ -92,7 +103,7 @@ onUnmounted(() => {
             <h1 class="font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {{ displayedTitle }}<span class="inline-block w-[3px] animate-pulse bg-accent-2 ml-1" style="height: 1em;">&nbsp;</span>
             </h1>
-            <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">31 August – 4 September 2026 · Bhutan</p>
+            <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">{{ settings.hero_date }} · {{ settings.hero_location }}</p>
             <div class="mt-8 flex justify-center gap-2 sm:gap-6">
                 <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
                     <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.days }}</span>
@@ -112,7 +123,7 @@ onUnmounted(() => {
                 </div>
             </div>
             <p class="mt-6 max-w-2xl font-body text-base leading-relaxed text-white/90 sm:text-lg">
-                Let's co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.
+                {{ settings.hero_description }}
             </p>
             <Link
                 href="/register-summit"

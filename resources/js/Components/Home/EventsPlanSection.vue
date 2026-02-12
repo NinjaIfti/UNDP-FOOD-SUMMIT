@@ -1,10 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import SectionReveal from './SectionReveal.vue';
+
+const props = defineProps({
+    settings: Object,
+});
 
 const activeDay = ref(0);
 
-const days = [
+const defaultDays = [
     {
         date: '31 Aug',
         label: 'Day 1',
@@ -80,14 +84,16 @@ const days = [
         ],
     },
 ];
+
+const days = computed(() => props.settings?.events_days || defaultDays);
 </script>
 
 <template>
     <section id="agenda" class="scroll-mt-24 bg-white py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Events Plan</h2>
-                <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">31 August – 4 September 2026 · Thimphu, Bhutan</p>
+                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">{{ settings.events_title }}</h2>
+                <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">{{ settings.events_subtitle }}</p>
 
                 <!-- Day Tabs -->
                 <div class="mt-10 flex flex-wrap justify-center gap-2">

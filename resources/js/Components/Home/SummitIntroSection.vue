@@ -1,5 +1,9 @@
 <script setup>
 import SectionReveal from './SectionReveal.vue';
+
+defineProps({
+    settings: Object,
+});
 </script>
 
 <template>
@@ -12,13 +16,13 @@ import SectionReveal from './SectionReveal.vue';
                     </div>
                     <div class="order-1 mx-auto max-w-3xl text-center lg:order-2 lg:text-left">
                     <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
-                        A New Kind of Food Systems Summit
+                        {{ settings.summit_intro_title }}
                     </h2>
                     <p class="mt-6 font-body text-lg leading-relaxed text-ink sm:text-xl">
-                        This landmark global gathering aims to facilitate high-level dialogue, knowledge exchange, and partnership-building around advancing conscious, inclusive, and sustainable food systems. Key themes include food consciousness, agroecology, and the role of spirituality and culture in supporting nature-friendly agriculture.
+                        {{ settings.summit_intro_text1 }}
                     </p>
                     <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
-                        The Summit will convene 350–500 national and global changemakers—governments, indigenous communities, farmers, youth leaders, civil society, the private sector, and academia—prioritizing gender balance, inclusion, and meaningful participation of underrepresented voices.
+                        {{ settings.summit_intro_text2 }}
                     </p>
                     </div>
                 </div>

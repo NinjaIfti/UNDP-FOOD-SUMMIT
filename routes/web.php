@@ -1,16 +1,50 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::post('/newsletter', [ContactController::class, 'newsletter'])->name('newsletter.store');
 
 Route::get('/', function () {
-    return Inertia::render('Home/Index');
+    $defaults = [
+        'hero_title' => 'Global Conscious Food Systems Summit',
+        'hero_date' => '31 August – 4 September 2026',
+        'hero_location' => 'Bhutan',
+        'hero_description' => 'Let\'s co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.',
+        'countdown_date' => '2026-08-31T09:00:00',
+        'summit_intro_title' => 'A New Kind of Food Systems Summit',
+        'summit_intro_text1' => 'This landmark global gathering aims to facilitate high-level dialogue, knowledge exchange, and partnership-building around advancing conscious, inclusive, and sustainable food systems. Key themes include food consciousness, agroecology, and the role of spirituality and culture in supporting nature-friendly agriculture.',
+        'summit_intro_text2' => 'The Summit will convene 350–500 national and global changemakers—governments, indigenous communities, farmers, youth leaders, civil society, the private sector, and academia—prioritizing gender balance, inclusion, and meaningful participation of underrepresented voices.',
+        'coorganizers_title' => 'Co-organizers',
+        'video1_title' => 'Summit Video',
+        'video1_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        'video2_title' => 'HPM Video',
+        'video2_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        'conscious_food_title' => 'Conscious Food Systems: Not just what we eat, but how we grow, share and value food.',
+        'conscious_food_description' => 'Food systems are at the heart of pressing global challenges: climate change, environmental pollution, biodiversity decline, and land degradation. The need for a bold and innovative path, harnessing the power of consciousness, mindfulness, and ethical decision-making, has never been more urgent.',
+        'conscious_food_cofsa_text' => 'The Conscious Food Systems Alliance (CoFSA), convened by UNDP, is a movement of food, agriculture, and consciousness practitioners united around a common goal: to support people from across food and agriculture systems in integrating inner development, mindfulness and ethical practices into their work—fostering transformation from the inside out.',
+        'outcomes_title' => 'Activating the Heart of Food Systems Transformation',
+        'outcomes_description' => 'This landmark gathering will advance a new paradigm for food systems transformation—one that recognizes the vital role of culture, values, spirituality, happiness and inner development in catalyzing systemic change.',
+        'bhutan_title' => 'Bhutan: An Inspiration and Innovator in Sustainable Transformation',
+        'bhutan_text1' => 'Bhutan offers a uniquely inspiring setting for this summit. Guided by the holistic philosophy of Gross National Happiness, and through forward-looking initiatives, such as the Gelephu Mindfulness City and its 100% organic agriculture goal, Bhutan exemplifies how consciousness and sustainability can shape national development.',
+        'bhutan_text2' => 'The Summit will advance Bhutan\'s National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while also highlighting Bhutan\'s leadership in driving conscious food systems transformation globally.',
+        'events_title' => 'Events Plan',
+        'events_subtitle' => '31 August – 4 September 2026 · Thimphu, Bhutan',
+    ];
+    
+    if (Storage::exists('admin/homepage-settings.json')) {
+        $settings = json_decode(Storage::get('admin/homepage-settings.json'), true);
+    } else {
+        $settings = $defaults;
+    }
+    
+    return Inertia::render('Home/Index', ['settings' => $settings]);
 });
 
 Route::get('/programme', fn () => Inertia::render('Programme/Index'));
@@ -23,6 +57,16 @@ Route::get('/submissions', fn () => Inertia::render('Placeholders/ComingSoon', [
 Route::get('/media-kit', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Media Kit']));
 Route::get('/support', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Support the Event']));
 
+// Admin routes
+Route::get('/admin-portal-access', [AdminController::class, 'login'])->name('admin.login');
+Route::post('/admin-portal-access', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+
+Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');
+    Route::post('/homepage', [AdminController::class, 'updateHomepage'])->name('homepage.update');
+    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -1,8 +1,13 @@
 <script setup>
+import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import SectionReveal from './SectionReveal.vue';
 
-const actions = [
+const props = defineProps({
+    settings: Object,
+});
+
+const actions = computed(() => props.settings?.cta_actions || [
     {
         title: 'Register Here!',
         desc: 'Secure your spot at the first-ever Global Conscious Food Systems Summit in Bhutan.',
@@ -11,6 +16,7 @@ const actions = [
         icon: 'ticket',
         color: 'bg-accent-2',
         textColor: 'text-primary-1',
+        external: false,
     },
     {
         title: 'Call for Submissions',
@@ -30,6 +36,7 @@ const actions = [
         icon: 'megaphone',
         color: 'bg-accent-1',
         textColor: 'text-white',
+        external: false,
     },
     {
         title: 'Have Any Questions?',
@@ -39,8 +46,9 @@ const actions = [
         icon: 'question',
         color: 'bg-primary-1',
         textColor: 'text-white',
+        external: false,
     },
-];
+]);
 </script>
 
 <template>
@@ -48,10 +56,10 @@ const actions = [
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-                    Call to Actions
+                    {{ settings?.cta_section_title || 'Call to Actions' }}
                 </h2>
                 <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">
-                    There are many ways to get involved with the Summit. Choose how you'd like to participate.
+                    {{ settings?.cta_section_subtitle || 'There are many ways to get involved with the Summit. Choose how you\'d like to participate.' }}
                 </p>
 
                 <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
