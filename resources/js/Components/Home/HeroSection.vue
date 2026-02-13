@@ -100,7 +100,7 @@ onUnmounted(() => {
         <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/80 via-primary-1/60 to-primary-1" />
         <div class="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[90vh] sm:px-6 lg:px-8">
             <img src="/brand/logo2.png" alt="" class="mb-6 h-28 w-28 object-contain sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-52 lg:w-52" aria-hidden="true" />
-            <h1 class="font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+            <h1 class="w-full text-center font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {{ displayedTitle }}<span class="inline-block w-[3px] animate-pulse bg-accent-2 ml-1" style="height: 1em;">&nbsp;</span>
             </h1>
             <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">{{ settings.hero_date }} · {{ settings.hero_location }}</p>

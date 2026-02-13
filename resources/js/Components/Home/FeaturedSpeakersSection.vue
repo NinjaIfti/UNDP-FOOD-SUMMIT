@@ -46,12 +46,8 @@ const goPrev = () => {
             <SectionReveal>
                 <!-- Title -->
                 <div class="mb-12 text-center">
-                    <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-gray-900 sm:text-4xl">
+                    <h2 class="mx-auto font-title text-3xl font-bold uppercase tracking-wide text-gray-900 sm:text-4xl">
                         {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
-                        <span class="text-gray-400"> / </span>
-                        <span class="font-body text-2xl lowercase tracking-normal text-gray-600 sm:text-3xl">
-                            {{ settings?.speakers_section_subtitle || 'meet with greaters' }}
-                        </span>
                     </h2>
                 </div>
 
@@ -96,7 +92,7 @@ const goPrev = () => {
                                 <p class="mt-1 font-body text-sm font-semibold uppercase tracking-wide text-red-600">
                                     {{ speaker.role }}
                                 </p>
-                                <p class="mt-3 font-body text-sm leading-relaxed text-gray-600">
+                                <p class="mt-3 font-body text-base leading-relaxed text-gray-600 sm:text-lg">
                                     {{ speaker.bio }}
                                 </p>
                             </div>

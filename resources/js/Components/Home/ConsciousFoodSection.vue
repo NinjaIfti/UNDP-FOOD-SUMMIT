@@ -14,7 +14,7 @@ defineProps({
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal :delay="100">
                 <div class="mx-auto max-w-4xl text-center">
-                    <h2 class="font-title text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl">
+                    <h2 class="mx-auto font-title text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl" style="text-wrap: balance; max-width: 100%;">
                         {{ settings.conscious_food_title }}
                     </h2>
                     <p class="mt-6 font-body text-lg leading-relaxed text-white/90">

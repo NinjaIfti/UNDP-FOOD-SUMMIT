@@ -515,10 +515,6 @@ const submit = () => {
                             <label class="block font-body text-sm font-medium text-ink">Section Title</label>
                             <input v-model="form.speakers_section_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Subtitle</label>
-                            <input v-model="form.speakers_section_subtitle" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                        </div>
 
                         <div v-for="(speaker, index) in form.speakers" :key="index" class="rounded-lg border border-gray-200 p-4">
                             <div class="mb-3 flex items-center justify-between">
