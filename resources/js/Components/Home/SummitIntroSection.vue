@@ -14,7 +14,7 @@ defineProps({
                     <div class="order-2 lg:order-1">
                         <img src="/brand/img55.jpg" alt="Community in agriculture" class="w-full rounded-2xl object-cover shadow-xl" loading="lazy" />
                     </div>
-                    <div class="order-1 mx-auto max-w-3xl text-center lg:order-2 lg:text-left">
+                    <div class="order-1 mx-auto max-w-3xl text-center lg:order-2">
                     <h2 class="mx-auto font-title text-2xl font-bold uppercase leading-tight tracking-wide text-primary-1 sm:text-3xl lg:text-4xl" style="text-wrap: balance;">
                         {{ settings.summit_intro_title }}
                     </h2>
