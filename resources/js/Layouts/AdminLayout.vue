@@ -2,27 +2,49 @@
 import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 
-const sidebarOpen = ref(true);
+const sidebarOpen = ref(false); // Start closed on mobile
 
 const logout = () => {
     router.post(route('admin.logout'));
+};
+
+const closeSidebarOnMobile = () => {
+    if (window.innerWidth < 1024) {
+        sidebarOpen.value = false;
+    }
 };
 </script>
 
 <template>
     <div class="flex h-screen bg-gray-100">
+        <!-- Mobile Overlay -->
+        <div
+            v-show="sidebarOpen"
+            @click="sidebarOpen = false"
+            class="fixed inset-0 z-20 bg-black/50 lg:hidden"
+        ></div>
+
         <!-- Sidebar -->
         <aside
-            class="flex w-64 flex-col bg-primary-1 text-white transition-all duration-300"
+            class="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-primary-1 text-white transition-transform duration-300 lg:relative lg:translate-x-0"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
         >
-            <div class="flex h-16 items-center justify-between px-6">
-                <img src="/brand/logo2.png" alt="Logo" class="h-10 w-auto" />
+            <div class="flex h-16 items-center justify-between px-4 sm:px-6">
+                <img src="/brand/logo2.png" alt="Logo" class="h-8 w-auto sm:h-10" />
+                <button
+                    @click="sidebarOpen = false"
+                    class="rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
+                >
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
             <nav class="flex-1 space-y-1 px-4 py-6">
                 <Link
                     :href="route('admin.dashboard')"
+                    @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10"
                     :class="route().current('admin.dashboard') ? 'bg-white/10' : ''"
                 >
@@ -34,6 +56,7 @@ const logout = () => {
 
                 <Link
                     :href="route('admin.homepage')"
+                    @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10"
                     :class="route().current('admin.homepage') ? 'bg-white/10' : ''"
                 >
@@ -60,7 +83,7 @@ const logout = () => {
         <!-- Main Content -->
         <div class="flex flex-1 flex-col overflow-hidden">
             <!-- Top bar -->
-            <header class="flex h-16 items-center justify-between border-b bg-white px-6">
+            <header class="flex h-16 items-center justify-between border-b bg-white px-4 sm:px-6">
                 <button
                     @click="sidebarOpen = !sidebarOpen"
                     class="rounded-lg p-2 text-gray-600 hover:bg-gray-100"
@@ -70,11 +93,11 @@ const logout = () => {
                     </svg>
                 </button>
 
-                <h1 class="font-title text-xl font-bold text-primary-1">Admin Panel</h1>
+                <h1 class="font-title text-lg font-bold text-primary-1 sm:text-xl">Admin Panel</h1>
             </header>
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <main class="flex-1 overflow-y-auto bg-gray-50 p-4 sm:p-6">
                 <slot />
             </main>
         </div>

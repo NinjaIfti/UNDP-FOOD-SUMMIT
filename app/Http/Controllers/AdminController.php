@@ -50,7 +50,11 @@ class AdminController extends Controller
 
     public function updateHomepage(Request $request)
     {
-        $validated = $request->validate([
+        // Get all request data including dynamic speaker image fields
+        $allData = $request->all();
+        
+        // Build dynamic validation rules for speaker images
+        $validationRules = [
             'hero_title' => 'nullable|string',
             'hero_date' => 'nullable|string',
             'hero_location' => 'nullable|string',
@@ -88,7 +92,19 @@ class AdminController extends Controller
             'events_title' => 'nullable|string',
             'events_subtitle' => 'nullable|string',
             'events_days' => 'nullable|array',
-        ]);
+        ];
+        
+        // Add validation for dynamic speaker image fields
+        foreach ($allData as $key => $value) {
+            if (preg_match('/^speaker_\d+_image$/', $key)) {
+                $validationRules[$key] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+            }
+            if (preg_match('/^speaker_\d+_delete_image$/', $key)) {
+                $validationRules[$key] = 'nullable|boolean';
+            }
+        }
+        
+        $validated = $request->validate($validationRules);
 
         $currentSettings = $this->getHomepageSettings();
 
@@ -147,6 +163,56 @@ class AdminController extends Controller
 
         // Remove delete flags from validated data
         unset($validated['delete_govt_logo'], $validated['delete_undp_logo'], $validated['delete_cofsa_logo']);
+
+        // Handle speaker image uploads
+        if (isset($validated['speakers']) && is_array($validated['speakers'])) {
+            foreach ($validated['speakers'] as $index => &$speaker) {
+                $fileKey = 'speaker_' . $index . '_image';
+                $deleteKey = 'speaker_' . $index . '_delete_image';
+                
+                // Get current speaker image from settings if exists
+                if (!isset($speaker['image']) && isset($currentSettings['speakers'][$index]['image'])) {
+                    $speaker['image'] = $currentSettings['speakers'][$index]['image'];
+                }
+                
+                // Handle image upload
+                if ($request->hasFile($fileKey)) {
+                    // Delete old image if exists
+                    if (isset($speaker['image']) && $speaker['image'] && file_exists(public_path($speaker['image']))) {
+                        @unlink(public_path($speaker['image']));
+                    }
+                    
+                    $file = $request->file($fileKey);
+                    $filename = 'speaker_' . $index . '_' . time() . '.' . $file->getClientOriginalExtension();
+                    
+                    // Ensure brand directory exists
+                    if (!file_exists(public_path('brand'))) {
+                        mkdir(public_path('brand'), 0755, true);
+                    }
+                    
+                    $file->move(public_path('brand'), $filename);
+                    $speaker['image'] = '/brand/' . $filename;
+                }
+                
+                // Handle image deletion
+                if ($request->input($deleteKey)) {
+                    if (isset($speaker['image']) && $speaker['image'] && file_exists(public_path($speaker['image']))) {
+                        @unlink(public_path($speaker['image']));
+                    }
+                    $speaker['image'] = '';
+                }
+                
+                // Remove temporary fields
+                unset($speaker['imageFile'], $speaker['deleteImage']);
+            }
+        }
+        
+        // Remove all speaker image upload fields from validated data (they're already processed)
+        foreach ($validated as $key => $value) {
+            if (preg_match('/^speaker_\d+_(image|delete_image)$/', $key)) {
+                unset($validated[$key]);
+            }
+        }
 
         $merged = array_merge($currentSettings, $validated);
 

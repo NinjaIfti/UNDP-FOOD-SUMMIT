@@ -28,21 +28,22 @@ onUnmounted(() => {
             class="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300"
             :class="isAtTop ? 'border-white/10 bg-black/95' : 'border-black/10 bg-white/95'"
         >
-            <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
-                <Link href="/" class="flex flex-shrink-0 items-center py-2">
-                    <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[400px] object-contain sm:h-32 sm:max-w-[600px] md:h-36 lg:h-40" />
+            <div class="flex h-16 w-full items-center gap-4 px-4 sm:h-18 sm:px-6 lg:h-20 lg:px-8">
+                <Link href="/" class="ml-4 flex flex-shrink-0 items-center gap-2 sm:ml-8 sm:gap-3 lg:ml-12">
+                    <img src="/brand/govt.png" alt="Government of Bhutan" class="h-12 w-auto object-contain sm:h-14 md:h-16 lg:h-18" />
+                    <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-20 w-auto max-w-[300px] object-contain sm:h-24 sm:max-w-[450px] md:h-28 md:max-w-[550px] lg:h-32 lg:max-w-[650px]" />
                 </Link>
-                <nav class="hidden flex-shrink-0 items-center gap-1 sm:flex sm:gap-2 lg:gap-4">
-                    <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
-                    <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium uppercase transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
-                    <Link href="/#bhutan-stay" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                    <Link href="/register-summit" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Register</Link>
-                    <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-base font-medium transition sm:px-4" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
-                    <Link href="/#faq" class="flex-shrink-0 whitespace-nowrap rounded-md bg-accent-2 px-4 py-2 text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 sm:px-6">FAQs</Link>
+                <nav class="ml-auto hidden flex-shrink-0 items-center gap-1 pr-0 sm:flex lg:gap-2">
+                    <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
+                    <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium uppercase transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
+                    <Link href="/#bhutan-stay" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
+                    <Link href="/#faq" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">FAQs</Link>
+                    <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                    <Link href="/register-summit" class="flex-shrink-0 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base">Register</Link>
                 </nav>
                 <button
                     type="button"
-                    class="flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
+                    class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
                     :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
                     aria-label="Toggle menu"
                     @click="mobileMenuOpen = !mobileMenuOpen"
@@ -64,13 +65,13 @@ onUnmounted(() => {
                     <Link href="/" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
                     <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium uppercase transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Programme/Experience</Link>
                     <Link href="/#bhutan-stay" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
-                    <Link href="/register-summit" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Register</Link>
+                    <Link href="/#faq" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
                     <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
-                    <Link href="/#faq" class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">FAQs</Link>
+                    <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">Register</Link>
                 </nav>
             </div>
         </header>
-        <main class="flex-1 pt-16 sm:pt-20">
+        <main class="flex-1 pt-16 sm:pt-18 lg:pt-20">
             <slot />
         </main>
         <EventFooter />

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
@@ -7,7 +7,13 @@ const props = defineProps({
     settings: Object,
 });
 
-const activeTab = ref('hero');
+// Load saved tab from localStorage or default to 'hero'
+const activeTab = ref(localStorage.getItem('adminActiveTab') || 'hero');
+
+// Save active tab to localStorage whenever it changes
+watch(activeTab, (newTab) => {
+    localStorage.setItem('adminActiveTab', newTab);
+});
 
 const form = useForm({
     hero_title: props.settings.hero_title,
@@ -75,14 +81,18 @@ const form = useForm({
     ],
     speakers_section_title: props.settings.speakers_section_title,
     speakers_section_subtitle: props.settings.speakers_section_subtitle,
-    speakers: props.settings.speakers || [
+    speakers: (props.settings.speakers || [
         { name: 'Speaker One', role: 'Policy & Governance', bio: 'Leading expert in food policy and governance with over 20 years of experience.', image: '/brand/img22.jpg' },
         { name: 'Speaker Two', role: 'Agroecology', bio: 'Pioneer in agroecological practices and sustainable farming systems.', image: '/brand/img29.jpg' },
         { name: 'Speaker Three', role: 'Indigenous Knowledge', bio: 'Advocate for indigenous food systems and traditional agricultural wisdom.', image: '/brand/img30.jpg' },
         { name: 'Speaker Four', role: 'Youth & Movement Building', bio: 'Youth leader driving food systems transformation across communities.', image: '/brand/img31.jpg' },
         { name: 'Speaker Five', role: 'Food Systems', bio: 'Researcher focused on conscious and regenerative food systems.', image: '/brand/img32.jpg' },
         { name: 'Speaker Six', role: 'Sustainability', bio: 'Environmental strategist working on sustainable food supply chains.', image: '/brand/img33.jpg' },
-    ],
+    ]).map(speaker => ({
+        ...speaker,
+        imageFile: null,
+        deleteImage: false
+    })),
     conscious_food_title: props.settings.conscious_food_title,
     conscious_food_description: props.settings.conscious_food_description,
     conscious_food_cofsa_text: props.settings.conscious_food_cofsa_text,
@@ -127,7 +137,24 @@ const tabs = [
 ];
 
 const submit = () => {
-    form.post(route('admin.homepage.update'));
+    // Create a clean copy of the form data
+    const formData = { ...form.data() };
+    
+    // Prepare speaker image files for upload
+    form.speakers.forEach((speaker, index) => {
+        if (speaker.imageFile) {
+            formData[`speaker_${index}_image`] = speaker.imageFile;
+        }
+        if (speaker.deleteImage) {
+            formData[`speaker_${index}_delete_image`] = true;
+        }
+    });
+    
+    // Submit with all the data including files
+    form.transform(() => formData).post(route('admin.homepage.update'), {
+        forceFormData: true,
+        preserveScroll: true,
+    });
 };
 </script>
 
@@ -135,12 +162,12 @@ const submit = () => {
     <Head title="Edit Homepage" />
     <AdminLayout>
         <div class="mx-auto max-w-4xl">
-            <div class="mb-6 flex items-center justify-between">
-                <h2 class="font-title text-2xl font-bold text-primary-1">Edit Homepage</h2>
+            <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
+                <h2 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">Edit Homepage</h2>
                 <a
                     href="/"
                     target="_blank"
-                    class="inline-flex items-center gap-2 rounded-lg border border-primary-1 px-4 py-2 font-body text-sm font-medium text-primary-1 transition hover:bg-primary-1/5"
+                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-primary-1 px-4 py-2 font-body text-sm font-medium text-primary-1 transition hover:bg-primary-1/5 sm:w-auto"
                 >
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -149,32 +176,34 @@ const submit = () => {
                 </a>
             </div>
 
-            <div v-if="$page.props.flash.success" class="mb-6 rounded-lg bg-green-50 p-4">
+            <div v-if="$page.props.flash.success" class="mb-4 rounded-lg bg-green-50 p-3 sm:mb-6 sm:p-4">
                 <p class="font-body text-sm text-green-800">{{ $page.props.flash.success }}</p>
             </div>
 
             <!-- Tabs -->
-            <div class="mb-6 rounded-xl bg-white p-2 shadow-sm">
-                <div class="flex flex-wrap gap-2">
-                    <button
-                        v-for="tab in tabs"
-                        :key="tab.id"
-                        type="button"
+            <div class="mb-4 rounded-xl bg-white p-2 shadow-sm sm:mb-6">
+                <div class="flex overflow-x-auto">
+                    <div class="flex gap-1 sm:gap-2">
+                        <button
+                            v-for="tab in tabs"
+                            :key="tab.id"
+                            type="button"
                         @click="activeTab = tab.id"
-                        class="flex items-center gap-2 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
+                        class="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 font-body text-xs font-medium transition sm:px-4 sm:py-3 sm:text-sm"
                         :class="activeTab === tab.id ? 'bg-accent-1 text-white' : 'text-gray-600 hover:bg-gray-100'"
                     >
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="tab.icon" />
                         </svg>
-                        {{ tab.name }}
+                        <span class="hidden sm:inline">{{ tab.name }}</span>
                     </button>
+                    </div>
                 </div>
             </div>
 
-            <form @submit.prevent="submit" class="space-y-6">
+            <form @submit.prevent="submit" class="space-y-4 sm:space-y-6">
                 <!-- Hero Section -->
-                <div v-show="activeTab === 'hero'" class="rounded-xl bg-white p-6 shadow-sm">
+                <div v-show="activeTab === 'hero'" class="rounded-xl bg-white p-4 shadow-sm sm:p-6">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Hero Section</h3>
                     
                     <div class="space-y-4">
@@ -518,15 +547,56 @@ const submit = () => {
                                     <textarea v-model="speaker.bio" rows="2" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                                 </div>
                                 <div>
-                                    <label class="block font-body text-xs font-medium text-ink">Image URL</label>
-                                    <input v-model="speaker.image" type="text" placeholder="/brand/speaker.jpg" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                    <label class="block font-body text-xs font-medium text-ink">Speaker Image</label>
+                                    <div class="mt-1 space-y-2">
+                                        <div v-if="speaker.image && !speaker.deleteImage" class="flex items-center gap-3">
+                                            <img :src="speaker.image" alt="Current image" class="h-16 w-16 rounded-full border-2 border-gray-200 object-cover" />
+                                            <div class="flex-1">
+                                                <p class="text-xs text-gray-600">Current image</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                @click="speaker.deleteImage = true; speaker.imageFile = null;"
+                                                class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                        <div v-if="speaker.deleteImage" class="rounded-lg bg-red-50 p-3">
+                                            <p class="text-xs text-red-700">Image will be removed on save</p>
+                                            <button
+                                                type="button"
+                                                @click="speaker.deleteImage = false"
+                                                class="mt-2 text-xs font-medium text-red-600 underline hover:no-underline"
+                                            >
+                                                Undo
+                                            </button>
+                                        </div>
+                                        <div v-if="speaker.imageFile" class="rounded-lg bg-green-50 p-3">
+                                            <p class="text-xs text-green-700">New image selected: {{ speaker.imageFile.name }}</p>
+                                            <button
+                                                type="button"
+                                                @click="speaker.imageFile = null; $event.target.closest('div').parentElement.querySelector('input[type=file]').value = ''"
+                                                class="mt-2 text-xs font-medium text-green-600 underline hover:no-underline"
+                                            >
+                                                Clear
+                                            </button>
+                                        </div>
+                                        <input 
+                                            type="file" 
+                                            accept="image/*"
+                                            @change="(e) => { speaker.imageFile = e.target.files[0]; speaker.deleteImage = false; }"
+                                            class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body file:mr-4 file:rounded-md file:border-0 file:bg-accent-1 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-1/90 focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        />
+                                        <p class="text-xs text-gray-500">Upload a new image or keep the current one</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <button
                             type="button"
-                            @click="form.speakers.push({ name: '', role: '', bio: '', image: '/brand/speaker.jpg' })"
+                            @click="form.speakers.push({ name: '', role: '', bio: '', image: '', imageFile: null, deleteImage: false })"
                             class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-title text-sm font-semibold text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
                         >
                             + Add New Speaker
@@ -643,17 +713,17 @@ const submit = () => {
                 </div>
 
                 <!-- Save Button -->
-                <div class="flex justify-end gap-4">
+                <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end sm:gap-4">
                     <a
                         :href="route('admin.dashboard')"
-                        class="rounded-lg border border-gray-300 px-6 py-3 font-title font-semibold text-gray-700 transition hover:bg-gray-50"
+                        class="w-full rounded-lg border border-gray-300 px-6 py-3 text-center font-title font-semibold text-gray-700 transition hover:bg-gray-50 sm:w-auto"
                     >
                         Cancel
                     </a>
                     <button
                         type="submit"
                         :disabled="form.processing"
-                        class="rounded-lg bg-accent-1 px-6 py-3 font-title font-semibold text-white transition hover:bg-accent-1/90 disabled:opacity-50"
+                        class="w-full rounded-lg bg-accent-1 px-6 py-3 font-title font-semibold text-white transition hover:bg-accent-1/90 disabled:opacity-50 sm:w-auto"
                     >
                         {{ form.processing ? 'Saving...' : 'Save Changes' }}
                     </button>
