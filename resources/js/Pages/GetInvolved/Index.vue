@@ -20,19 +20,19 @@ const submissionCategories = [
 <template>
     <Head title="Get Involved" />
     <EventLayout>
-        <section class="bg-gradient-to-b from-accent-1/10 to-white py-16 sm:py-24 lg:py-32">
+        <section class="bg-gradient-to-b from-accent-1/10 to-white py-10 sm:py-16 lg:py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
                             Call for Submissions
                         </h1>
-                        <p class="mt-6 font-body text-lg leading-relaxed text-ink sm:text-xl">
+                        <p class="mt-4 font-body text-lg leading-relaxed text-ink sm:text-xl">
                             We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from <span class="font-semibold">31 August – 4 September 2026</span>.
                         </p>
                     </div>
 
-                    <div class="mx-auto mt-12 max-w-4xl rounded-2xl bg-white p-8 shadow-sm sm:mt-16 sm:p-12">
+                    <div class="mx-auto mt-8 max-w-4xl rounded-2xl bg-white p-6 shadow-sm sm:mt-10 sm:p-8">
                         <p class="font-body text-base leading-relaxed text-copy sm:text-lg">
                             CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.
                         </p>
@@ -41,23 +41,23 @@ const submissionCategories = [
             </div>
         </section>
 
-        <section class="bg-white py-16 sm:py-24">
+        <section class="bg-white pt-6 pb-10 sm:pt-8 sm:pb-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
                             Submission Categories
                         </h2>
-                        <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
                             Applicants may submit one or more proposals under the following categories:
                         </p>
                     </div>
 
-                    <div class="mx-auto mt-12 grid max-w-5xl gap-8 sm:mt-16 lg:grid-cols-2">
+                    <div class="mx-auto mt-8 grid max-w-5xl gap-6 sm:mt-10 lg:grid-cols-2">
                         <div
                             v-for="(category, index) in submissionCategories"
                             :key="index"
-                            class="flex flex-col rounded-2xl border border-primary-2/20 bg-white p-8 shadow-sm transition hover:shadow-md"
+                            class="flex flex-col rounded-2xl border border-primary-2/20 bg-white p-6 shadow-sm transition hover:shadow-md"
                         >
                             <div class="flex items-start gap-4">
                                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-2">
@@ -70,7 +70,7 @@ const submissionCategories = [
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="font-title text-xl font-bold text-primary-1">{{ category.title }}</h3>
-                                    <p class="mt-3 font-body text-base leading-relaxed text-copy">{{ category.description }}</p>
+                                    <p class="mt-2 font-body text-base leading-relaxed text-copy">{{ category.description }}</p>
                                 </div>
                             </div>
                         </div>
@@ -79,27 +79,27 @@ const submissionCategories = [
             </div>
         </section>
 
-        <section class="bg-primary-2/5 py-16 sm:py-24">
+        <section class="bg-primary-2/5 py-10 sm:py-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <p class="font-body text-lg leading-relaxed text-ink sm:text-xl">
                             If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.
                         </p>
-                        <p class="mt-6 font-body text-base leading-relaxed text-copy sm:text-lg">
+                        <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
                             All submissions should be <span class="font-semibold">experiential and participatory</span>, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.
                         </p>
-                        <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg font-semibold">
+                        <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg font-semibold">
                             Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.
                         </p>
                     </div>
 
-                    <div class="mx-auto mt-12 flex max-w-3xl flex-col gap-6 sm:mt-16">
+                    <div class="mx-auto mt-8 flex max-w-3xl flex-col gap-4 sm:mt-10">
                         <a 
                             href="https://airtable.com/appRiKywRTWHpim3e/pagi2lYYhFAAhlqhE/form" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="group flex items-center justify-between rounded-2xl bg-accent-1 p-6 shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:p-8"
+                            class="group flex items-center justify-between rounded-2xl bg-accent-1 p-5 shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:p-6"
                         >
                             <div class="flex items-center gap-4">
                                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20">
@@ -121,7 +121,7 @@ const submissionCategories = [
                             href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            class="group flex items-center justify-between rounded-2xl border-2 border-primary-1 bg-white p-6 shadow-sm transition hover:bg-primary-1/5 hover:shadow-md sm:p-8"
+                            class="group flex items-center justify-between rounded-2xl border-2 border-primary-1 bg-white p-5 shadow-sm transition hover:bg-primary-1/5 hover:shadow-md sm:p-6"
                         >
                             <div class="flex items-center gap-4">
                                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-1">

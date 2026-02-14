@@ -49,6 +49,9 @@ const goPrev = () => {
                     <h2 class="mx-auto font-title text-3xl font-bold uppercase tracking-wide text-gray-900 sm:text-4xl">
                         {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
                     </h2>
+                    <p v-if="settings?.speakers_section_subtitle" class="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-gray-600 sm:text-lg">
+                        {{ settings.speakers_section_subtitle }}
+                    </p>
                 </div>
 
                 <!-- Speakers Carousel -->

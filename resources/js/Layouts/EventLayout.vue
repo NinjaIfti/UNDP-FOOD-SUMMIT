@@ -28,12 +28,12 @@ onUnmounted(() => {
             class="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300"
             :class="isAtTop ? 'border-white/10 bg-black/95' : 'border-black/10 bg-white/95'"
         >
-            <div class="flex h-16 w-full items-center px-4 sm:h-18 sm:px-6 lg:h-20 lg:px-8">
-                <Link href="/" class="ml-16 flex flex-shrink-0 items-center gap-2 sm:ml-24 sm:gap-3 lg:ml-32">
-                    <img src="/brand/govt.png" alt="Government of Bhutan" class="h-12 w-auto object-contain sm:h-14 md:h-16 lg:h-18" />
-                    <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-20 w-auto max-w-[300px] object-contain sm:h-24 sm:max-w-[450px] md:h-28 md:max-w-[550px] lg:h-32 lg:max-w-[650px]" />
+            <div class="mx-auto flex h-20 w-full max-w-5xl items-center gap-4 px-4 sm:h-24 sm:px-4 lg:h-28 lg:px-6">
+                <Link href="/" class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
+                    <img src="/brand/govt.png" alt="Government of Bhutan" class="h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20" />
+                    <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]" />
                 </Link>
-                <nav class="ml-auto mr-8 hidden flex-shrink-0 items-center gap-1 sm:mr-12 sm:flex lg:mr-16 lg:gap-2">
+                <nav class="ml-auto hidden flex-shrink-0 items-center gap-1 sm:flex lg:gap-2">
                     <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
                     <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium uppercase transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
                     <Link href="/#bhutan-stay" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
@@ -71,7 +71,7 @@ onUnmounted(() => {
                 </nav>
             </div>
         </header>
-        <main class="flex-1 pt-16 sm:pt-18 lg:pt-20">
+        <main class="flex-1 pt-20 sm:pt-24 lg:pt-28">
             <slot />
         </main>
         <EventFooter />

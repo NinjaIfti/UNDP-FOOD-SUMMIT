@@ -122,7 +122,7 @@ onUnmounted(() => {
                     <span class="text-xs text-white/80 sm:text-sm">Sec</span>
                 </div>
             </div>
-            <p class="mt-6 max-w-3xl font-bold text-2xl leading-relaxed text-white/90 sm:text-2xl">
+            <p class="mt-6 max-w-3xl text-lg font-bold leading-relaxed text-white/90 sm:text-2xl">
                 {{ settings.hero_description }}
             </p>
             <Link

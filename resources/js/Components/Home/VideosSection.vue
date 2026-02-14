@@ -1,9 +1,26 @@
 <script setup>
+import { computed } from 'vue';
 import SectionReveal from './SectionReveal.vue';
 
-defineProps({
+const props = defineProps({
     settings: Object,
 });
+
+// Convert YouTube watch URL to embed URL so both formats work
+function toEmbedUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    const trimmed = url.trim();
+    if (!trimmed) return '';
+    // Already embed format
+    if (trimmed.includes('/embed/')) return trimmed;
+    // Watch format: youtube.com/watch?v=VIDEO_ID
+    const watchMatch = trimmed.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`;
+    return trimmed;
+}
+
+const video1Embed = computed(() => toEmbedUrl(props.settings?.video1_url));
+const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
 </script>
 
 <template>
@@ -15,8 +32,8 @@ defineProps({
                     <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
-                                v-if="settings.video1_url"
-                                :src="`${settings.video1_url}?rel=0`"
+                                v-if="video1Embed"
+                                :src="`${video1Embed}?rel=0`"
                                 :title="settings.video1_title"
                                 class="h-full w-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -29,8 +46,8 @@ defineProps({
                     <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
-                                v-if="settings.video2_url"
-                                :src="`${settings.video2_url}?rel=0`"
+                                v-if="video2Embed"
+                                :src="`${video2Embed}?rel=0`"
                                 :title="settings.video2_title"
                                 class="h-full w-full"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

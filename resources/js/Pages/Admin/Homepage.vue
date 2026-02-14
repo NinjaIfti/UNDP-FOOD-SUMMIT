@@ -409,8 +409,8 @@ const submit = () => {
                                     <input v-model="form.video1_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                 </div>
                                 <div>
-                                    <label class="block font-body text-sm font-medium text-ink">YouTube Embed URL</label>
-                                    <input v-model="form.video1_url" type="url" placeholder="https://www.youtube.com/embed/..." class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                    <label class="block font-body text-sm font-medium text-ink">YouTube URL</label>
+                                    <input v-model="form.video1_url" type="url" placeholder="https://www.youtube.com/watch?v=... or /embed/..." class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                 </div>
                             </div>
                         </div>
@@ -423,8 +423,8 @@ const submit = () => {
                                     <input v-model="form.video2_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                 </div>
                                 <div>
-                                    <label class="block font-body text-sm font-medium text-ink">YouTube Embed URL</label>
-                                    <input v-model="form.video2_url" type="url" placeholder="https://www.youtube.com/embed/..." class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                    <label class="block font-body text-sm font-medium text-ink">YouTube URL</label>
+                                    <input v-model="form.video2_url" type="url" placeholder="https://www.youtube.com/watch?v=... or /embed/..." class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                 </div>
                             </div>
                         </div>
@@ -514,6 +514,10 @@ const submit = () => {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Section Title</label>
                             <input v-model="form.speakers_section_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Section Description</label>
+                            <textarea v-model="form.speakers_section_subtitle" rows="3" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Short description below the title on the speakers section"></textarea>
                         </div>
 
                         <div v-for="(speaker, index) in form.speakers" :key="index" class="rounded-lg border border-gray-200 p-4">

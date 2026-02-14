@@ -1,7 +1,33 @@
 <script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
+
+const themeIndex = ref(0);
+const themesPerView = 3;
+const visibleThemes = computed(() => {
+    const start = themeIndex.value * themesPerView;
+    return themes.slice(start, start + themesPerView);
+});
+const totalPages = computed(() => Math.ceil(themes.length / themesPerView));
+const canPrevTheme = computed(() => themeIndex.value > 0);
+const canNextTheme = computed(() => themeIndex.value < totalPages.value - 1);
+function prevThemes() { if (canPrevTheme.value) themeIndex.value--; }
+function nextThemes() {
+    if (canNextTheme.value) themeIndex.value++;
+    else themeIndex.value = 0;
+}
+const autoSlidePaused = ref(false);
+let autoSlideInterval;
+onMounted(() => {
+    autoSlideInterval = setInterval(() => {
+        if (!autoSlidePaused.value) nextThemes();
+    }, 5000);
+});
+onUnmounted(() => {
+    clearInterval(autoSlideInterval);
+});
 
 const expectations = [
     'High-level dialogues, including the participation of the Prime Minister of Bhutan, heads of state and ministers from other countries',
@@ -195,7 +221,7 @@ const themes = [
             </div>
         </section>
 
-        <section id="core-themes" class="bg-white py-16 sm:py-24 lg:py-32">
+        <section id="core-themes" class="bg-white pt-0 pb-16 sm:pt-2 sm:pb-24 lg:pt-4 lg:pb-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -207,35 +233,79 @@ const themes = [
                         </p>
                     </div>
 
-                    <div class="mt-12 grid grid-cols-1 gap-8 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
-                        <div
-                            v-for="theme in themes"
-                            :key="theme.number"
-                            class="group flex flex-col overflow-hidden rounded-2xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-xl"
+                    <div
+                        class="relative mt-12 sm:mt-16"
+                        @mouseenter="autoSlidePaused = true"
+                        @mouseleave="autoSlidePaused = false"
+                    >
+                        <button
+                            type="button"
+                            :disabled="!canPrevTheme"
+                            :class="{ 'opacity-30 cursor-not-allowed': !canPrevTheme }"
+                            class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                            @click="prevThemes"
                         >
-                            <div class="relative aspect-[4/3] overflow-hidden">
-                                <img 
-                                    :src="theme.image" 
-                                    :alt="theme.title" 
-                                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                    loading="lazy"
-                                />
-                                <div class="absolute top-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent-2">
-                                    <span class="font-title text-lg font-bold text-primary-1">{{ theme.number }}</span>
+                            <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <div class="overflow-hidden lg:mx-12">
+                            <div
+                                class="flex transition-transform duration-500 ease-in-out"
+                                :style="{ width: `${totalPages * 100}%`, transform: `translateX(-${themeIndex * (100 / totalPages)}%)` }"
+                            >
+                                <div
+                                    v-for="theme in themes"
+                                    :key="theme.number"
+                                    class="flex shrink-0 px-2"
+                                    :style="{ width: `${100 / totalPages / 3}%` }"
+                                >
+                                    <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-xl">
+                                        <div class="relative aspect-[4/3] overflow-hidden">
+                                            <img 
+                                                :src="theme.image" 
+                                                :alt="theme.title" 
+                                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div class="absolute top-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent-2">
+                                                <span class="font-title text-lg font-bold text-primary-1">{{ theme.number }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-1 flex-col p-6">
+                                            <h3 class="font-title text-lg font-bold text-primary-1">{{ theme.title }}</h3>
+                                            <p class="mt-3 flex-1 font-body text-base leading-relaxed text-copy line-clamp-4 sm:text-lg">{{ theme.description }}</p>
+                                            <div class="mt-4 border-t border-primary-2/10 pt-4">
+                                                <p class="font-body text-sm text-copy">
+                                                    <span class="font-semibold">Team Lead:</span> {{ theme.lead }}
+                                                </p>
+                                                <a :href="`mailto:${theme.contact}`" class="mt-1 inline-block font-body text-sm text-accent-1 hover:underline">
+                                                    {{ theme.contact }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex flex-1 flex-col p-6">
-                                <h3 class="font-title text-lg font-bold text-primary-1">{{ theme.title }}</h3>
-                                <p class="mt-3 flex-1 font-body text-sm leading-relaxed text-copy">{{ theme.description }}</p>
-                                <div class="mt-4 border-t border-primary-2/10 pt-4">
-                                    <p class="font-body text-xs text-copy">
-                                        <span class="font-semibold">Team Lead:</span> {{ theme.lead }}
-                                    </p>
-                                    <a :href="`mailto:${theme.contact}`" class="mt-1 inline-block font-body text-xs text-accent-1 hover:underline">
-                                        {{ theme.contact }}
-                                    </a>
-                                </div>
-                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            :disabled="!canNextTheme"
+                            :class="{ 'opacity-30 cursor-not-allowed': !canNextTheme }"
+                            class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                            @click="nextThemes"
+                        >
+                            <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        <div class="mt-6 flex justify-center gap-2">
+                            <span class="font-body text-sm text-copy">
+                                {{ themeIndex + 1 }} / {{ totalPages }}
+                            </span>
                         </div>
                     </div>
                 </SectionReveal>
