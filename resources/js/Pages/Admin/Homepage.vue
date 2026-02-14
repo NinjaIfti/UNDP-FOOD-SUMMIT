@@ -123,6 +123,54 @@ const form = useForm({
     ],
 });
 
+function parseTimeRange(timeStr) {
+    const match = (timeStr || '').match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+    if (!match) return { startHour: 9, startMin: '00', startAmPm: 'AM', endHour: 10, endMin: '00', endAmPm: 'AM' };
+    const to12 = (h) => {
+        const n = parseInt(h, 10);
+        if (n === 0) return { hour: 12, amPm: 'AM' };
+        if (n === 12) return { hour: 12, amPm: 'PM' };
+        return n < 12 ? { hour: n, amPm: 'AM' } : { hour: n - 12, amPm: 'PM' };
+    };
+    const pad = (m) => String(m).padStart(2, '0');
+    const s = to12(match[1]);
+    const e = to12(match[3]);
+    return {
+        startHour: s.hour,
+        startMin: pad(match[2]),
+        startAmPm: s.amPm,
+        endHour: e.hour,
+        endMin: pad(match[4]),
+        endAmPm: e.amPm,
+    };
+}
+
+function buildTimeRange({ startHour, startMin, startAmPm, endHour, endMin, endAmPm }) {
+    const to24 = (h, amPm) => {
+        const n = parseInt(h, 10);
+        if (amPm === 'AM') return n === 12 ? 0 : n;
+        return n === 12 ? 12 : n + 12;
+    };
+    const pad = (x) => String(x).padStart(2, '0');
+    const s24 = to24(startHour, startAmPm);
+    const e24 = to24(endHour, endAmPm);
+    return `${pad(s24)}:${startMin} – ${pad(e24)}:${endMin}`;
+}
+
+function setTimePart(item, part, value) {
+    const p = parseTimeRange(item.time);
+    if (part === 'startHour') p.startHour = parseInt(value, 10);
+    if (part === 'startMin') p.startMin = value;
+    if (part === 'startAmPm') p.startAmPm = value;
+    if (part === 'endHour') p.endHour = parseInt(value, 10);
+    if (part === 'endMin') p.endMin = value;
+    if (part === 'endAmPm') p.endAmPm = value;
+    item.time = buildTimeRange(p);
+}
+
+const hourOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const minuteOptions = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
+
 const tabs = [
     { id: 'hero', name: 'Hero', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
     { id: 'summit', name: 'Summit', icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -673,15 +721,46 @@ const submit = () => {
                                     <div class="space-y-2">
                                         <label class="block font-body text-xs font-medium text-ink">Schedule</label>
                                         <div v-for="(item, itemIndex) in day.schedule" :key="itemIndex" class="flex gap-2 rounded border border-gray-200 bg-gray-50 p-3">
-                                            <div class="flex-1 grid grid-cols-2 gap-2">
-                                                <input v-model="item.time" type="text" placeholder="09:00 – 10:00" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
-                                                <input v-model="item.title" type="text" placeholder="Event title" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
-                                                <select v-model="item.type" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                    <option value="speaker">Speaker</option>
-                                                    <option value="event">Event</option>
-                                                    <option value="break">Break</option>
-                                                </select>
-                                                <input v-model="item.speaker" type="text" placeholder="Speaker name (optional)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
+                                            <div class="flex-1 space-y-2">
+                                                <div class="grid grid-cols-2 gap-2 sm:grid-cols-6">
+                                                    <div class="col-span-2 flex flex-wrap items-center gap-1 sm:col-span-3">
+                                                        <span class="w-full text-xs font-medium text-ink">Start</span>
+                                                        <select :value="parseTimeRange(item.time).startHour" @change="setTimePart(item, 'startHour', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option v-for="h in hourOptions" :key="h" :value="h">{{ h }}</option>
+                                                        </select>
+                                                        <span class="text-xs text-ink">:</span>
+                                                        <select :value="parseTimeRange(item.time).startMin" @change="setTimePart(item, 'startMin', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option v-for="m in minuteOptions" :key="m" :value="m">{{ m }}</option>
+                                                        </select>
+                                                        <select :value="parseTimeRange(item.time).startAmPm" @change="setTimePart(item, 'startAmPm', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-span-2 flex flex-wrap items-center gap-1 sm:col-span-3">
+                                                        <span class="w-full text-xs font-medium text-ink">End</span>
+                                                        <select :value="parseTimeRange(item.time).endHour" @change="setTimePart(item, 'endHour', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option v-for="h in hourOptions" :key="'e'+h" :value="h">{{ h }}</option>
+                                                        </select>
+                                                        <span class="text-xs text-ink">:</span>
+                                                        <select :value="parseTimeRange(item.time).endMin" @change="setTimePart(item, 'endMin', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option v-for="m in minuteOptions" :key="'e'+m" :value="m">{{ m }}</option>
+                                                        </select>
+                                                        <select :value="parseTimeRange(item.time).endAmPm" @change="setTimePart(item, 'endAmPm', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-2">
+                                                    <input v-model="item.title" type="text" placeholder="Event title" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
+                                                    <select v-model="item.type" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
+                                                        <option value="speaker">Speaker</option>
+                                                        <option value="event">Event</option>
+                                                        <option value="break">Break</option>
+                                                    </select>
+                                                    <input v-model="item.speaker" type="text" placeholder="Speaker name (optional)" class="col-span-2 rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
+                                                </div>
                                             </div>
                                             <button
                                                 type="button"
@@ -693,7 +772,7 @@ const submit = () => {
                                         </div>
                                         <button
                                             type="button"
-                                            @click="day.schedule.push({ time: '', title: '', type: 'event', speaker: '' })"
+                                            @click="day.schedule.push({ time: '09:00 – 10:00', title: '', type: 'event', speaker: '' })"
                                             class="w-full rounded border-2 border-dashed border-gray-300 bg-gray-50 py-2 text-xs font-semibold text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
                                         >
                                             + Add Schedule Item

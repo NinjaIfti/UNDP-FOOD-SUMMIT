@@ -5,12 +5,15 @@ import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
 
 const themeIndex = ref(0);
-const themesPerView = 3;
-const visibleThemes = computed(() => {
-    const start = themeIndex.value * themesPerView;
-    return themes.slice(start, start + themesPerView);
+const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+const themesPerView = computed(() => {
+    if (windowWidth.value < 640) return 1;
+    if (windowWidth.value < 1024) return 2;
+    return 3;
 });
-const totalPages = computed(() => Math.ceil(themes.length / themesPerView));
+
+const totalPages = computed(() => Math.ceil(themes.length / themesPerView.value));
 const canPrevTheme = computed(() => themeIndex.value > 0);
 const canNextTheme = computed(() => themeIndex.value < totalPages.value - 1);
 function prevThemes() { if (canPrevTheme.value) themeIndex.value--; }
@@ -20,12 +23,21 @@ function nextThemes() {
 }
 const autoSlidePaused = ref(false);
 let autoSlideInterval;
+
+function onResize() {
+    windowWidth.value = window.innerWidth;
+    const maxIndex = Math.max(0, totalPages.value - 1);
+    if (themeIndex.value > maxIndex) themeIndex.value = maxIndex;
+}
+
 onMounted(() => {
+    window.addEventListener('resize', onResize);
     autoSlideInterval = setInterval(() => {
         if (!autoSlidePaused.value) nextThemes();
     }, 5000);
 });
 onUnmounted(() => {
+    window.removeEventListener('resize', onResize);
     clearInterval(autoSlideInterval);
 });
 
@@ -259,7 +271,7 @@ const themes = [
                                     v-for="theme in themes"
                                     :key="theme.number"
                                     class="flex shrink-0 px-2"
-                                    :style="{ width: `${100 / totalPages / 3}%` }"
+                                    :style="{ width: `${100 / totalPages / themesPerView}%` }"
                                 >
                                     <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-xl">
                                         <div class="relative aspect-[4/3] overflow-hidden">

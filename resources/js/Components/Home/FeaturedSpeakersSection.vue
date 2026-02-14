@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import SectionReveal from './SectionReveal.vue';
 
 const props = defineProps({
@@ -16,16 +16,35 @@ const speakers = computed(() => props.settings?.speakers || [
 ]);
 
 const currentIndex = ref(0);
-const speakersPerView = 4;
+const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+const speakersPerView = computed(() => {
+    if (windowWidth.value < 640) return 1;
+    if (windowWidth.value < 1024) return 2;
+    return 4;
+});
 
 const visibleSpeakers = computed(() => {
     const start = currentIndex.value;
-    const end = start + speakersPerView;
+    const end = start + speakersPerView.value;
     return speakers.value.slice(start, end);
 });
 
 const canGoPrev = computed(() => currentIndex.value > 0);
-const canGoNext = computed(() => currentIndex.value + speakersPerView < speakers.value.length);
+const canGoNext = computed(() => currentIndex.value + speakersPerView.value < speakers.value.length);
+
+function onResize() {
+    windowWidth.value = window.innerWidth;
+    const maxStart = Math.max(0, speakers.value.length - speakersPerView.value);
+    if (currentIndex.value > maxStart) currentIndex.value = maxStart;
+}
+
+onMounted(() => {
+    window.addEventListener('resize', onResize);
+});
+onUnmounted(() => {
+    window.removeEventListener('resize', onResize);
+});
 
 const goNext = () => {
     if (canGoNext.value) {

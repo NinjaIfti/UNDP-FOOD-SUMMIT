@@ -86,6 +86,20 @@ const defaultDays = [
 ];
 
 const days = computed(() => props.settings?.events_days || defaultDays);
+
+function formatTimeWithAMPM(timeStr) {
+    const match = timeStr.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+    if (!match) return timeStr;
+    const toAMPM = (h, m) => {
+        const hour = parseInt(h, 10);
+        const minute = m || '00';
+        if (hour === 0) return `12:${minute} AM`;
+        if (hour === 12) return `12:${minute} PM`;
+        if (hour < 12) return `${hour}:${minute} AM`;
+        return `${hour - 12}:${minute} PM`;
+    };
+    return `${toAMPM(match[1], match[2])} – ${toAMPM(match[3], match[4])}`;
+}
 </script>
 
 <template>
@@ -125,15 +139,15 @@ const days = computed(() => props.settings?.events_days || defaultDays);
                         <div
                             v-for="(item, i) in days[activeDay].schedule"
                             :key="i"
-                            class="relative flex gap-4 py-3 sm:gap-6"
+                            class="relative flex items-center gap-4 py-3 sm:gap-6"
                         >
                             <!-- Time -->
-                            <div class="hidden w-20 shrink-0 pt-0.5 text-right sm:block">
-                                <span class="font-title text-sm font-medium text-copy">{{ item.time }}</span>
+                            <div class="hidden w-28 shrink-0 text-right sm:block">
+                                <span class="whitespace-nowrap font-title text-sm font-medium text-copy">{{ formatTimeWithAMPM(item.time) }}</span>
                             </div>
 
                             <!-- Dot -->
-                            <div class="relative z-10 mt-1.5 flex shrink-0">
+                            <div class="relative z-10 flex shrink-0">
                                 <span
                                     class="h-4 w-4 rounded-full border-2"
                                     :class="item.type === 'break'
@@ -151,7 +165,7 @@ const days = computed(() => props.settings?.events_days || defaultDays);
                                     ? 'border-gray-200 bg-gray-50'
                                     : 'border-primary-2/20 bg-primary-2/5 hover:shadow-md'"
                             >
-                                <p class="font-title text-xs font-medium text-accent-2 sm:hidden">{{ item.time }}</p>
+                                <p class="whitespace-nowrap font-title text-xs font-medium text-accent-2 sm:hidden">{{ formatTimeWithAMPM(item.time) }}</p>
                                 <h4
                                     class="font-title font-semibold"
                                     :class="item.type === 'break' ? 'text-sm text-copy' : 'text-base text-primary-1'"
