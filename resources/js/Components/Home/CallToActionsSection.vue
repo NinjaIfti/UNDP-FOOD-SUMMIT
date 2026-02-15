@@ -41,7 +41,7 @@ const actions = computed(() => props.settings?.cta_actions || [
     {
         title: 'Have Any Questions?',
         desc: 'Check out the FAQs for answers to common questions about the Summit, travel, and registration.',
-        href: '/#faq',
+        href: '/faq',
         cta: 'View FAQs',
         icon: 'question',
         color: 'bg-primary-1',

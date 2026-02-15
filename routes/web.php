@@ -43,12 +43,14 @@ Route::get('/', function () {
     } else {
         $settings = $defaults;
     }
-    
+
     return Inertia::render('Home/Index', ['settings' => $settings]);
 });
 
-Route::get('/programme', fn () => Inertia::render('Programme/Index'));
-Route::get('/get-involved', fn () => Inertia::render('GetInvolved/Index'));
+Route::get('/faq', [AdminController::class, 'faqPublic']);
+
+Route::get('/programme', [AdminController::class, 'programmePublic']);
+Route::get('/get-involved', [AdminController::class, 'getInvolvedPublic']);
 
 Route::get('/register-summit', fn () => Inertia::render('Register/Index'));
 Route::post('/register-summit', [ContactController::class, 'registration'])->name('registration.store');
@@ -65,6 +67,12 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');
     Route::post('/homepage', [AdminController::class, 'updateHomepage'])->name('homepage.update');
+    Route::get('/programme', [AdminController::class, 'programme'])->name('programme');
+    Route::post('/programme', [AdminController::class, 'updateProgramme'])->name('programme.update');
+    Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
+    Route::post('/faq', [AdminController::class, 'updateFaq'])->name('faq.update');
+    Route::get('/get-involved', [AdminController::class, 'getInvolved'])->name('get-involved');
+    Route::post('/get-involved', [AdminController::class, 'updateGetInvolved'])->name('get-involved.update');
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 });
 

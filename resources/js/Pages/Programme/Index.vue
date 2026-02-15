@@ -4,8 +4,30 @@ import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
 
+const props = defineProps({
+    settings: {
+        type: Object,
+        default: () => ({}),
+    },
+});
+
 const themeIndex = ref(0);
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+const sectionTitle = computed(() => props.settings?.expect_section_title || 'What to Expect');
+const subtitle = computed(() => props.settings?.expect_subtitle || 'A Transformative Experience');
+const expectations = computed(() => {
+    const list = props.settings?.expectations;
+    if (Array.isArray(list) && list.length) return list.filter(Boolean);
+    return [
+        'High-level dialogues, including the participation of the Prime Minister of Bhutan, heads of state and ministers from other countries',
+        'Participatory and transformative knowledge exchanges, including through dialogue, storytelling and creative or embodied methods.',
+        'Strategic and interactive discussions and space for personal connections to foster collaboration',
+        'Experiential practices such as meditation, nature connection and mindful food rituals, engaging hearts, minds, and multiple senses',
+        'Immersive site visits to local initiatives and conscious food projects',
+        'A journey of personal and collective transformation and inspiration',
+    ];
+});
 
 const themesPerView = computed(() => {
     if (windowWidth.value < 640) return 1;
@@ -13,7 +35,13 @@ const themesPerView = computed(() => {
     return 3;
 });
 
-const totalPages = computed(() => Math.ceil(themes.length / themesPerView.value));
+const themes = computed(() => {
+    const list = props.settings?.themes;
+    if (Array.isArray(list) && list.length) return list.filter(t => t && (t.title || t.description));
+    return defaultThemes;
+});
+
+const totalPages = computed(() => Math.ceil(themes.value.length / themesPerView.value));
 const canPrevTheme = computed(() => themeIndex.value > 0);
 const canNextTheme = computed(() => themeIndex.value < totalPages.value - 1);
 function prevThemes() { if (canPrevTheme.value) themeIndex.value--; }
@@ -41,16 +69,7 @@ onUnmounted(() => {
     clearInterval(autoSlideInterval);
 });
 
-const expectations = [
-    'High-level dialogues, including the participation of the Prime Minister of Bhutan, heads of state and ministers from other countries',
-    'Participatory and transformative knowledge exchanges, including through dialogue, storytelling and creative or embodied methods.',
-    'Strategic and interactive discussions and space for personal connections to foster collaboration',
-    'Experiential practices such as meditation, nature connection and mindful food rituals, engaging hearts, minds, and multiple senses',
-    'Immersive site visits to local initiatives and conscious food projects',
-    'A journey of personal and collective transformation and inspiration',
-];
-
-const themes = [
+const defaultThemes = [
     {
         number: 1,
         title: "Farmers' wellbeing and the inner dimension of agroecology",
@@ -182,10 +201,10 @@ const themes = [
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
-                            What to Expect
+                            {{ sectionTitle }}
                         </h1>
                         <p class="mt-6 font-body text-xl leading-relaxed text-primary-1 sm:text-2xl lg:text-3xl font-semibold">
-                            A Transformative Experience
+                            {{ subtitle }}
                         </p>
                     </div>
 
@@ -268,16 +287,16 @@ const themes = [
                                 :style="{ width: `${totalPages * 100}%`, transform: `translateX(-${themeIndex * (100 / totalPages)}%)` }"
                             >
                                 <div
-                                    v-for="theme in themes"
-                                    :key="theme.number"
+                                    v-for="(theme, index) in themes"
+                                    :key="index"
                                     class="flex shrink-0 px-2"
                                     :style="{ width: `${100 / totalPages / themesPerView}%` }"
                                 >
                                     <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-xl">
                                         <div class="relative aspect-[4/3] overflow-hidden">
                                             <img 
-                                                :src="theme.image" 
-                                                :alt="theme.title" 
+                                                :src="theme.image || '/brand/themes/1.jpg'" 
+                                                :alt="theme.title || 'Theme'" 
                                                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                                 loading="lazy"
                                             />

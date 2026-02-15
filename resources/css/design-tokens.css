@@ -18,6 +18,10 @@
   --color-undp: #009CE3;
   --color-cofsa-orange: #F09322;
 
+  /* Admin sidebar */
+  --color-sidebar-bg: #1B4332;
+  --color-sidebar-active: #2D6A4F;
+
   /* Typography */
   --font-body: 'EB Garamond', Garamond, Georgia, serif;
   --font-title: 'DM Sans', Klein, Arial, Calibri, sans-serif;
