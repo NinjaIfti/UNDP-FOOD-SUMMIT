@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SummitRegistration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ContactController extends Controller
@@ -27,7 +29,7 @@ class ContactController extends Controller
 
     public function registration(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -47,8 +49,12 @@ class ContactController extends Controller
             'dietary' => 'required|string',
             'dietary_other' => 'nullable|string|max:255',
             'heard_from' => 'nullable|array',
+            'heard_from.*' => 'nullable|string',
             'heard_from_other' => 'nullable|string|max:255',
             'additional_members' => 'nullable|array',
+            'additional_members.*.first_name' => 'nullable|string|max:255',
+            'additional_members.*.last_name' => 'nullable|string|max:255',
+            'additional_members.*.passport_number' => 'nullable|string|max:50',
             'cofsa_member' => 'required|string|in:yes,no',
             'cofsa_newsletter' => 'required|string|in:yes,no',
             'emergency_name' => 'required|string|max:255',
@@ -57,6 +63,16 @@ class ContactController extends Controller
             'emergency_relation' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
         ]);
+
+        $data = collect($validated)->except(['photo'])->toArray();
+        $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('registrations', 'public');
+            $data['photo'] = '/storage/' . $path;
+        }
+
+        SummitRegistration::create($data);
 
         return back()->with('success', 'Your registration application has been submitted successfully. Our team will review it and get back to you shortly.');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -29,6 +30,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $blogSettings = Storage::exists('admin/blog-settings.json')
+            ? json_decode(Storage::get('admin/blog-settings.json'), true)
+            : ['blog_enabled' => false];
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -36,8 +41,10 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
                 'newsletter' => fn () => $request->session()->get('newsletter'),
             ],
+            'blog_enabled' => $blogSettings['blog_enabled'] ?? false,
         ];
     }
 }

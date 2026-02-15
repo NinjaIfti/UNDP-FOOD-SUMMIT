@@ -34,6 +34,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function summitRegistration(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SummitRegistration::class, 'user_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

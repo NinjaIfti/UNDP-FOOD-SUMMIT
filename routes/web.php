@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ApplicationsController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -51,6 +54,8 @@ Route::get('/faq', [AdminController::class, 'faqPublic']);
 
 Route::get('/programme', [AdminController::class, 'programmePublic']);
 Route::get('/get-involved', [AdminController::class, 'getInvolvedPublic']);
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/register-summit', fn () => Inertia::render('Register/Index'));
 Route::post('/register-summit', [ContactController::class, 'registration'])->name('registration.store');
@@ -62,6 +67,10 @@ Route::get('/support', fn () => Inertia::render('Placeholders/ComingSoon', ['tit
 // Admin routes
 Route::get('/admin-portal-access', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin-portal-access', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+Route::get('/admin-portal-access/forgot-password', [AdminController::class, 'showForgotPasswordForm'])->name('admin.password.request');
+Route::post('/admin-portal-access/forgot-password', [AdminController::class, 'sendResetLink'])->name('admin.password.email');
+Route::get('/admin-portal-access/reset-password/{token}', [AdminController::class, 'showResetPasswordForm'])->name('admin.password.reset');
+Route::post('/admin-portal-access/reset-password', [AdminController::class, 'resetPassword'])->name('admin.password.store');
 
 Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -73,6 +82,15 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::post('/faq', [AdminController::class, 'updateFaq'])->name('faq.update');
     Route::get('/get-involved', [AdminController::class, 'getInvolved'])->name('get-involved');
     Route::post('/get-involved', [AdminController::class, 'updateGetInvolved'])->name('get-involved.update');
+    Route::resource('blog', AdminBlogController::class)->except(['show']);
+    Route::post('/blog-settings', [AdminBlogController::class, 'updateSettings'])->name('blog.settings');
+    Route::get('/applications', [ApplicationsController::class, 'index'])->name('applications.index');
+    Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
+    Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
+    Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');
+    Route::post('/applications/{summit_registration}/waitlist', [ApplicationsController::class, 'waitlist'])->name('applications.waitlist');
+    Route::post('/applications/{summit_registration}/revert', [ApplicationsController::class, 'revert'])->name('applications.revert');
+    Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('users.index');
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 });
 

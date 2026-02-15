@@ -2,39 +2,125 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Notifications\AdminResetPasswordNotification;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class AdminController extends Controller
 {
     public function login()
     {
-        if (session('admin_authenticated')) {
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
-        
-        return Inertia::render('Admin/Login');
+
+        return Inertia::render('Admin/Login', [
+            'status' => session('status'),
+        ]);
     }
 
     public function authenticate(Request $request)
     {
         $request->validate([
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if ($request->password === 'undpwebsite123') {
-            session(['admin_authenticated' => true]);
-            return redirect()->route('admin.dashboard');
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            Auth::logout();
         }
 
-        return back()->withErrors(['password' => 'Invalid password']);
+        return back()->withErrors(['email' => 'Invalid email or password.']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('admin_authenticated');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
+    }
+
+    public function showForgotPasswordForm()
+    {
+        return Inertia::render('Admin/ForgotPassword', [
+            'status' => session('status'),
+        ]);
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !$user->hasRole('admin')) {
+            return back()->withErrors(['email' => 'We can\'t find an admin account with that email address.']);
+        }
+
+        $token = Password::broker()->getRepository()->create($user);
+        $user->notify(new AdminResetPasswordNotification($token));
+
+        return back()->with('status', 'Password reset link sent! Check your email.');
+    }
+
+    public function showResetPasswordForm(Request $request)
+    {
+        return Inertia::render('Admin/ResetPassword', [
+            'email' => $request->email,
+            'token' => $request->route('token'),
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !$user->hasRole('admin')) {
+            throw ValidationException::withMessages([
+                'email' => ['We can\'t find an admin account with that email address.'],
+            ]);
+        }
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status == Password::PASSWORD_RESET) {
+            return redirect()->route('admin.login')->with('status', 'Password reset successfully. You can now log in.');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [trans($status)],
+        ]);
     }
 
     public function dashboard()

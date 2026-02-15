@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import EventFooter from '@/Components/EventFooter.vue';
 
 defineProps({
     title: { type: String, default: 'Global Conscious Food Systems Summit' },
 });
 
+const page = usePage();
+const blogEnabled = page.props.blog_enabled ?? false;
 const mobileMenuOpen = ref(false);
 const isAtTop = ref(true);
 
@@ -41,6 +43,7 @@ onUnmounted(() => {
                         <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium uppercase transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Programme/Experience</Link>
                         <Link href="/#bhutan-stay" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
                         <Link href="/faq" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">FAQs</Link>
+                        <Link v-if="blogEnabled" href="/blog" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Blog</Link>
                         <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
                         <Link href="/register-summit" class="flex-shrink-0 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base">Register</Link>
                     </nav>
@@ -70,6 +73,7 @@ onUnmounted(() => {
                     <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium uppercase transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Programme/Experience</Link>
                     <Link href="/#bhutan-stay" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
                     <Link href="/faq" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
+                    <Link v-if="blogEnabled" href="/blog" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
                     <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
                     <Link href="/register-summit" class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90" @click="mobileMenuOpen = false">Register</Link>
                 </nav>
