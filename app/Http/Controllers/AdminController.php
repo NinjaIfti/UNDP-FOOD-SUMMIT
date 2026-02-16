@@ -583,6 +583,12 @@ class AdminController extends Controller
         return Inertia::render('Programme/Index', ['settings' => $settings]);
     }
 
+    public function yourStayPublic()
+    {
+        $settings = $this->getYourStaySettings();
+        return Inertia::render('YourStay/Index', ['settings' => $settings]);
+    }
+
     public function updateProgramme(Request $request)
     {
         $validationRules = [
@@ -680,6 +686,267 @@ class AdminController extends Controller
                 ['number' => 14, 'title' => "Planetary health / One health", 'description' => "This workstream focuses on the interconnected health of humans, animals, and the planet, exploring how regenerative, equitable and sustainable food systems can support ecological balance, biodiversity, and livelihoods.", 'image' => '/brand/themes/14.jpg', 'contact' => 'charlotte.dufour@undp.org', 'lead' => 'Charlotte Dufour'],
                 ['number' => 15, 'title' => "Consciousness practices for food systems transformation", 'description' => "This workstream focuses on inner and collective practices that deepen awareness, connection, and transformation in relation to food systems and the living planet. Examples of practices include: rituals and ceremonies, art (music, theater, painting…), contemplative and embodied practices, non violent communication, conscious facilitation and space holding, community healing, and approaches that foster meaningful relationships between humans and nature.", 'image' => '/brand/themes/15.jpg', 'contact' => 'noemi.altobelli@undp.org', 'lead' => 'Noemi Altobelli'],
             ],
+        ];
+    }
+
+    public function yourStay()
+    {
+        $settings = $this->getYourStaySettings();
+        return Inertia::render('Admin/YourStay', ['settings' => $settings]);
+    }
+
+    public function updateYourStay(Request $request)
+    {
+        $allData = $request->all();
+        
+        $validationRules = [
+            'participation_costs_title' => 'nullable|string',
+            'participation_costs_description' => 'nullable|string',
+            'participation_costs_announcement' => 'nullable|string',
+            'field_visits_title' => 'nullable|string',
+            'field_visits_info' => 'nullable|string',
+            'field_visits_pending' => 'nullable|string',
+            'field_visits_expectations' => 'nullable|array',
+            'air_travel_title' => 'nullable|string',
+            'air_travel_guidance_title' => 'nullable|string',
+            'air_travel_guidance_points' => 'nullable|array',
+            'airlines_title' => 'nullable|string',
+            'flight_table_note' => 'nullable|string',
+            'flight_table_saarc_note' => 'nullable|string',
+            'transit_visa_title' => 'nullable|string',
+            'transit_visa_description' => 'nullable|string',
+            'visa_title' => 'nullable|string',
+            'visa_support_title' => 'nullable|string',
+            'visa_support_points' => 'nullable|array',
+            'visa_important_title' => 'nullable|string',
+            'visa_important_points' => 'nullable|array',
+            'visa_independent_title' => 'nullable|string',
+            'visa_independent_description' => 'nullable|string',
+            'visa_independent_points' => 'nullable|array',
+            'arrival_title' => 'nullable|string',
+            'mobile_title' => 'nullable|string',
+            'mobile_description' => 'nullable|string',
+            'mobile_providers' => 'nullable|array',
+            'mobile_cost' => 'nullable|string',
+            'mobile_cost_note' => 'nullable|string',
+            'mobile_tip' => 'nullable|string',
+            'currency_title' => 'nullable|string',
+            'currency_local' => 'nullable|string',
+            'currency_note' => 'nullable|string',
+            'currency_accepted' => 'nullable|array',
+            'currency_tip' => 'nullable|string',
+            'arrival_tips_title' => 'nullable|string',
+            'arrival_tips_points' => 'nullable|array',
+            'accommodation_title' => 'nullable|string',
+            'accommodation_important' => 'nullable|string',
+            'accommodation_booking_tips_title' => 'nullable|string',
+            'accommodation_booking_tips' => 'nullable|array',
+            'hotels' => 'nullable|array',
+            'extend_title' => 'nullable|string',
+            'extend_intro' => 'nullable|string',
+            'extend_process_title' => 'nullable|string',
+            'extend_process_description' => 'nullable|string',
+            'extend_process_steps' => 'nullable|array',
+            'extend_costs_title' => 'nullable|string',
+            'extend_sdf_amount' => 'nullable|string',
+            'extend_sdf_note' => 'nullable|string',
+            'extend_additional_costs' => 'nullable|array',
+            'extend_requirement_title' => 'nullable|string',
+            'extend_requirement_description' => 'nullable|string',
+            'extend_requirement_note' => 'nullable|string',
+            'extend_portal_title' => 'nullable|string',
+            'extend_portal_description' => 'nullable|string',
+            'extend_portal_url' => 'nullable|string',
+            'extend_activities_title' => 'nullable|string',
+            'extend_activities' => 'nullable|array',
+            'companions_title' => 'nullable|string',
+            'companions_intro' => 'nullable|string',
+            'companions_requirements_title' => 'nullable|string',
+            'companions_requirements' => 'nullable|array',
+            'companions_costs_title' => 'nullable|string',
+            'companions_costs' => 'nullable|array',
+            'companions_costs_note' => 'nullable|string',
+            'companions_considerations_title' => 'nullable|string',
+            'companions_considerations' => 'nullable|array',
+            'companions_tips_title' => 'nullable|string',
+            'companions_tips' => 'nullable|array',
+            'companions_resources_title' => 'nullable|string',
+            'companions_resources' => 'nullable|array',
+        ];
+
+        $validated = $request->validate($validationRules);
+        $currentSettings = $this->getYourStaySettings();
+        $merged = array_merge($currentSettings, $validated);
+
+        Storage::put('admin/yourstay-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
+
+        return back()->with('success', 'Your Stay in Bhutan page updated successfully!');
+    }
+
+    private function getYourStaySettings()
+    {
+        if (Storage::exists('admin/yourstay-settings.json')) {
+            return json_decode(Storage::get('admin/yourstay-settings.json'), true);
+        }
+
+        return $this->getDefaultYourStaySettings();
+    }
+
+    private function getDefaultYourStaySettings()
+    {
+        return [
+            'participation_costs_title' => 'WHAT ARE THE PARTICIPATION COSTS?',
+            'participation_costs_description' => 'Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.',
+            'participation_costs_announcement' => 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.',
+            'field_visits_title' => 'Will There Be Field Visits?',
+            'field_visits_info' => 'Optional add-on: Field visits on 31 August are available at an additional cost and can be selected during registration.',
+            'field_visits_pending' => '(Pending confirmation)',
+            'field_visits_expectations' => [
+                'Experience Bhutan\'s unique development approach firsthand',
+                'Visit local communities and sustainable development projects',
+                'Engage with stakeholders on the ground'
+            ],
+            'air_travel_title' => 'Air Travel to Paro',
+            'air_travel_guidance_title' => 'Important Booking Guidance',
+            'air_travel_guidance_points' => [
+                'Do not book flights before visa approval',
+                'August is high travel season — book early once approved',
+                'Limited daily flights operate to Paro'
+            ],
+            'airlines_title' => 'Airlines Operating to Paro',
+            'flight_table_note' => 'Note: Flight schedules are subject to change. Always verify with the airline before booking.',
+            'flight_table_saarc_note' => '³ SAARC Regional Fare applies to citizens of: Afghanistan, Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, and Sri Lanka.',
+            'transit_visa_title' => 'Check Transit Visa Requirements',
+            'transit_visa_description' => 'If you\'re transiting through India or Nepal, you may need a transit visa. Check requirements based on your nationality.',
+            'visa_title' => 'Visa & Entry Process',
+            'visa_support_title' => 'Summit Visa Support',
+            'visa_support_points' => [
+                'Visa fee included: BTN 5,000 (covered in Summit registration)',
+                'Validity: 10 days to cover the Summit period',
+                'Organized by: Summit organizing team',
+                'SDF waived: Sustainable Development Fee waived during Summit dates'
+            ],
+            'visa_important_title' => 'Important Notes',
+            'visa_important_points' => [
+                'You cannot enter Bhutan before your visa start date',
+                'Route permits may be required for travel outside Paro/Thimphu',
+                'Passport must be valid for at least 6 months from entry date',
+                'Keep a digital and physical copy of your visa approval letter'
+            ],
+            'visa_independent_title' => 'Applying Independently',
+            'visa_independent_description' => 'If you\'re traveling outside the Summit dates or arranging your own visa:',
+            'visa_independent_points' => [
+                'Standard visa fee: USD 65',
+                'Sustainable Development Fee (SDF): USD 100 per night',
+                'Must be arranged through a licensed Bhutanese tour operator'
+            ],
+            'arrival_title' => 'Upon Arrival in Bhutan',
+            'mobile_title' => 'Mobile & Internet',
+            'mobile_description' => 'SIM cards available at Paro International Airport upon arrival',
+            'mobile_providers' => ['Bhutan Telecom', 'TashiCell'],
+            'mobile_cost' => 'Cost: BTN 100–500',
+            'mobile_cost_note' => 'Includes data package options',
+            'mobile_tip' => 'Bring your passport and an unlocked phone',
+            'currency_title' => 'Currency Exchange',
+            'currency_local' => 'Bhutanese Ngultrum (BTN)',
+            'currency_note' => 'Pegged 1:1 with Indian Rupee (INR)',
+            'currency_accepted' => [
+                'Indian Rupees (INR) widely accepted',
+                'ATMs available in Paro and Thimphu',
+                'Credit cards accepted at major hotels'
+            ],
+            'currency_tip' => 'Tip: Exchange money at the airport or banks for better rates',
+            'arrival_tips_title' => 'Other Arrival Tips',
+            'arrival_tips_points' => [
+                'Immigration process may take 30-60 minutes during peak times',
+                'Keep your visa approval letter and hotel booking details handy',
+                'Summit organizers will provide transfer details closer to the event',
+                'Taxis and hotel shuttles available at the airport'
+            ],
+            'accommodation_title' => 'Accommodation in Paro',
+            'accommodation_important' => 'Important: All Summit participants must stay in Paro near the venue (Dungkar Dzong). Book early as August is peak season.',
+            'accommodation_booking_tips_title' => 'Booking Tips',
+            'accommodation_booking_tips' => [
+                'Contact hotels directly for Summit group rates',
+                'Book immediately after receiving visa approval',
+                'Mention you\'re attending the Summit for potential discounts',
+                'Confirm cancellation policies before booking'
+            ],
+            'hotels' => [
+                ['name' => 'Hotel Olathang', 'email' => 'olathang@druknet.bt', 'priceRange' => '$80-120', 'distance' => '2.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range'],
+                ['name' => 'Tashi Namgay Resort', 'email' => 'reservation@tashihotels.bt', 'priceRange' => '$120-180', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'premium'],
+                ['name' => 'Mandala Resort & Spa', 'email' => 'info@mandalaresorts.com', 'priceRange' => '$150-250', 'distance' => '4 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'premium'],
+                ['name' => 'Khangkhu Resort', 'email' => 'khangkhu@druknet.bt', 'priceRange' => '$60-90', 'distance' => '3.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'budget'],
+                ['name' => 'Rema Resort', 'email' => 'remaresort@druknet.bt', 'priceRange' => '$100-140', 'distance' => '2 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range'],
+                ['name' => 'Hotel Jomolhari', 'email' => 'jomolhari@druknet.bt', 'priceRange' => '$50-80', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'budget'],
+                ['name' => 'Le Méridien Paro', 'email' => 'reservations.paro@lemeridien.com', 'priceRange' => '$200-350', 'distance' => '5 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'premium'],
+                ['name' => 'Tenzinling Resort', 'email' => 'info@tenzinling.com', 'priceRange' => '$90-130', 'distance' => '2.8 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range']
+            ],
+            'extend_title' => 'Extend Your Stay in Bhutan',
+            'extend_intro' => 'Want to explore more of Bhutan? Extend your visa to experience the Land of the Thunder Dragon beyond the Summit.',
+            'extend_process_title' => 'Extension Process',
+            'extend_process_description' => 'You can modify your visa dates online through the official portal.',
+            'extend_process_steps' => [
+                ['title' => 'Maximum stay: Up to 90 days total', 'note' => 'Subject to approval'],
+                ['title' => 'Apply for extension before your current visa expires', 'note' => 'Processing takes 2-3 business days'],
+                ['title' => 'Must be arranged through a licensed tour operator', 'note' => 'Cannot extend independently']
+            ],
+            'extend_costs_title' => 'Extension Costs',
+            'extend_sdf_amount' => 'USD 100',
+            'extend_sdf_note' => 'Sustainable Development Fee (SDF)',
+            'extend_additional_costs' => [
+                'Accommodation (varies by hotel)',
+                'Licensed tour guide (mandatory)',
+                'Transportation for sightseeing',
+                'Meals outside hotel'
+            ],
+            'extend_requirement_title' => 'Important Requirement',
+            'extend_requirement_description' => 'Licensed tourist guide required for all travel outside Paro/Thimphu during your extended stay.',
+            'extend_requirement_note' => 'This is a Bhutan tourism regulation to ensure visitor safety and cultural preservation.',
+            'extend_portal_title' => 'Ready to Extend?',
+            'extend_portal_description' => 'Visit the official visa portal or contact your tour operator to arrange your extension.',
+            'extend_portal_url' => 'https://www.tourism.gov.bt',
+            'extend_activities_title' => 'Popular Extension Activities',
+            'extend_activities' => [
+                ['title' => 'Tiger\'s Nest Monastery', 'description' => 'Iconic clifftop monastery hike (4-5 hours)'],
+                ['title' => 'Thimphu Exploration', 'description' => 'Capital city with dzongs and museums'],
+                ['title' => 'Punakha Valley', 'description' => 'Ancient capital with stunning fortress'],
+                ['title' => 'Cultural Festivals', 'description' => 'Traditional Tshechu celebrations']
+            ],
+            'companions_title' => 'Travel With Companions',
+            'companions_intro' => 'Planning to bring family or friends? Here\'s what you need to know about traveling to Bhutan with companions.',
+            'companions_requirements_title' => 'Key Requirements for Companions',
+            'companions_requirements' => [
+                ['title' => 'Separate Visa Application', 'description' => 'Companions must apply for their visa independently through the standard tourist visa process. They cannot be included in the Summit visa arrangement.'],
+                ['title' => 'Tourism Regulations Apply', 'description' => 'Companions traveling as tourists must follow Bhutan\'s standard tourism regulations, including the Sustainable Development Fee (SDF).'],
+                ['title' => 'Licensed Guide Required', 'description' => 'Companions must be accompanied by a licensed Bhutanese tour guide and travel through a registered tour operator.']
+            ],
+            'companions_costs_title' => 'Expected Costs for Companions',
+            'companions_costs' => [
+                ['item' => 'Visa Fee', 'amount' => 'USD 65'],
+                ['item' => 'Sustainable Development Fee (SDF)', 'amount' => 'USD 100 / night'],
+                ['item' => 'Tour Package (approx.)', 'amount' => 'USD 250-400 / day']
+            ],
+            'companions_costs_note' => 'Note: Tour packages typically include accommodation, meals, guide, and transportation. Prices vary by season and hotel category.',
+            'companions_considerations_title' => 'Special Considerations',
+            'companions_considerations' => [
+                'Children under 12: May be exempt from or receive reduced SDF rates',
+                'Travel timing: Companions can arrive with you or independently',
+                'Accommodation: Can stay at same hotel, subject to availability',
+                'Summit access: Companions may not be able to attend Summit sessions unless registered'
+            ],
+            'companions_tips_title' => 'Planning Tips',
+            'companions_tips' => [
+                'Contact a licensed Bhutanese tour operator at least 6-8 weeks before travel',
+                'Coordinate visa timings so companion visas align with Summit dates',
+                'Book the same hotel for convenience, mentioning you\'re with the Summit',
+                'Consider arranging activities for companions during Summit sessions'
+            ],
+            'companions_resources_title' => 'Helpful Resources',
+            'companions_resources' => [
+                ['title' => 'Bhutan Tourism Council', 'description' => 'Official tourism information', 'url' => 'https://www.tourism.gov.bt'],
+                ['title' => 'Immigration Portal', 'description' => 'Visa application and guidelines', 'url' => 'https://www.immigration.gov.bt']
+            ]
         ];
     }
 }

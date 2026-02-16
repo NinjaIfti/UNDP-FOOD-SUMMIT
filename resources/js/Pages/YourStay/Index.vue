@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
-defineProps({
+const props = defineProps({
     settings: { type: Object, default: () => ({}) },
 });
 
@@ -20,86 +20,13 @@ const tabs = [
     { id: 'companions', label: 'Travel With Companions', icon: 'users' },
 ];
 
-const hotels = [
-    {
-        name: 'Hotel Olathang',
-        email: 'olathang@druknet.bt',
-        priceRange: '$80-120',
-        distance: '2.5 km to Dungkar Dzong',
-        nearAirport: true,
-        category: 'mid-range',
-        image: 'https://images.unsplash.com/photo-1663583942499-f8cff8e49e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBCaHV0YW4lMjBob3RlbCUyMHJlc29ydHxlbnwxfHx8fDE3NzEyMjIyNjF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Tashi Namgay Resort',
-        email: 'reservation@tashihotels.bt',
-        priceRange: '$120-180',
-        distance: '3 km to Dungkar Dzong',
-        nearAirport: true,
-        category: 'premium',
-        image: 'https://images.unsplash.com/photo-1761048802383-ecade27b00fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwcmVzb3J0JTIwQmh1dGFuJTIwbW91bnRhaW5zfGVufDF8fHx8MTc3MTIyMjI2MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Mandala Resort & Spa',
-        email: 'info@mandalaresorts.com',
-        priceRange: '$150-250',
-        distance: '4 km to Dungkar Dzong',
-        nearAirport: false,
-        category: 'premium',
-        image: 'https://images.unsplash.com/photo-1578658503040-8d375c771a37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCaHV0YW4lMjByZXNvcnQlMjBzcGElMjBsdXh1cnl8ZW58MXx8fHwxNzcxMjIyMjYxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Khangkhu Resort',
-        email: 'khangkhu@druknet.bt',
-        priceRange: '$60-90',
-        distance: '3.5 km to Dungkar Dzong',
-        nearAirport: true,
-        category: 'budget',
-        image: 'https://images.unsplash.com/photo-1590761044169-b9ad903fca4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidWRnZXQlMjBob3RlbCUyMGNsZWFuJTIwbW9kZXJufGVufDF8fHx8MTc3MTIyMjI2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Rema Resort',
-        email: 'remaresort@druknet.bt',
-        priceRange: '$100-140',
-        distance: '2 km to Dungkar Dzong',
-        nearAirport: true,
-        category: 'mid-range',
-        image: 'https://images.unsplash.com/photo-1733111248500-fe2ff4d3ccff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMEJodXRhbiUyMGhvdGVsfGVufDF8fHx8MTc3MTIyMjI2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Hotel Jomolhari',
-        email: 'jomolhari@druknet.bt',
-        priceRange: '$50-80',
-        distance: '3 km to Dungkar Dzong',
-        nearAirport: false,
-        category: 'budget',
-        image: 'https://images.unsplash.com/photo-1766852287368-01975b8ad3d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMHJlc29ydCUyMGhvdGVsJTIwYnVpbGRpbmd8ZW58MXx8fHwxNzcxMjIyMjYzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Le Méridien Paro',
-        email: 'reservations.paro@lemeridien.com',
-        priceRange: '$200-350',
-        distance: '5 km to Dungkar Dzong',
-        nearAirport: false,
-        category: 'premium',
-        image: 'https://images.unsplash.com/photo-1663583942499-f8cff8e49e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxib3V0aXF1ZSUyMGhvdGVsJTIwQmh1dGFufGVufDF8fHx8MTc3MTIyMjI2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    },
-    {
-        name: 'Tenzinling Resort',
-        email: 'info@tenzinling.com',
-        priceRange: '$90-130',
-        distance: '2.8 km to Dungkar Dzong',
-        nearAirport: true,
-        category: 'mid-range',
-        image: 'https://images.unsplash.com/photo-1761048802383-ecade27b00fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwcmVzb3J0JTIwQmh1dGFuJTIwbW91bnRhaW5zfGVufDF8fHx8MTc3MTIyMjI2MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
-    }
-];
+const hotels = computed(() => props.settings?.hotels || []);
 
 const filteredHotels = computed(() => {
     if (accommodationFilter.value === 'all') {
-        return hotels;
+        return hotels.value;
     }
-    return hotels.filter(hotel => hotel.category === accommodationFilter.value);
+    return hotels.value.filter(hotel => hotel.category === accommodationFilter.value);
 });
 </script>
 
@@ -117,7 +44,7 @@ const filteredHotels = computed(() => {
                         <p class="text-lg text-gray-700 leading-relaxed">
                             Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.
                         </p>
-                        <div class="bg-amber-100 border-l-4 border-[#B91C1C] p-4 rounded-r-lg">
+                        <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-r-lg">
                             <p class="text-gray-800">
                                 <strong>Announcement:</strong> The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.
                             </p>
@@ -128,7 +55,7 @@ const filteredHotels = computed(() => {
                 <div class="grid md:grid-cols-2 gap-8 mb-8">
                     <!-- What's Included Card -->
                     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-[#B91C1C] to-red-700 p-4">
+                        <div class="bg-gradient-to-r from-primary-1 to-primary-1/90 p-4">
                             <div class="flex items-center gap-2">
                                 <div class="bg-white/20 p-2 rounded-lg">
                                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,29 +71,29 @@ const filteredHotels = computed(() => {
                         <div class="p-6 space-y-5">
                             <div class="flex gap-4">
                                 <div class="flex-shrink-0 mt-1">
-                                    <div class="bg-green-100 p-2 rounded-lg">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="bg-primary-2/20 p-2 rounded-lg">
+                                        <svg class="w-5 h-5 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Event Access</h4>
-                                    <p class="text-sm text-gray-600">Entrance and participation from 01–04 September</p>
+                                    <h4 class="font-semibold text-ink mb-1">Event Access</h4>
+                                    <p class="text-sm text-copy">Entrance and participation from 01–04 September</p>
                                 </div>
                             </div>
 
                             <div class="flex gap-4">
                                 <div class="flex-shrink-0 mt-1">
-                                    <div class="bg-orange-100 p-2 rounded-lg">
-                                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="bg-accent-2/20 p-2 rounded-lg">
+                                        <svg class="w-5 h-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                                         </svg>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Daily Meals</h4>
-                                    <ul class="text-sm text-gray-600 space-y-1">
+                                    <h4 class="font-semibold text-ink mb-1">Daily Meals</h4>
+                                    <ul class="text-sm text-copy space-y-1">
                                         <li>• Daily lunch for summit participants</li>
                                         <li>• Two tea/coffee breaks per day</li>
                                         <li>• Between two to three group dinners</li>
@@ -183,24 +110,24 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Visa Application</h4>
-                                    <p class="text-sm text-gray-600">
+                                    <h4 class="font-semibold text-ink mb-1">Visa Application</h4>
+                                    <p class="text-sm text-copy">
                                         Visa application fee of BTN 5,000, plus full coordination of the visa entry permission process. Participants arranging their visa independently will pay USD 65 per person. Indian nationals are exempt from visa fees.
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="flex gap-4 bg-amber-50 p-4 rounded-lg border border-amber-200">
+                            <div class="flex gap-4 bg-accent-2/10 p-4 rounded-lg border border-accent-2/30">
                                 <div class="flex-shrink-0 mt-1">
-                                    <div class="bg-amber-200 p-2 rounded-lg">
-                                        <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="bg-accent-2/30 p-2 rounded-lg">
+                                        <svg class="w-5 h-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">SDF Waiver (Special)</h4>
-                                    <p class="text-sm text-gray-600">
+                                    <h4 class="font-semibold text-ink mb-1">SDF Waiver (Special)</h4>
+                                    <p class="text-sm text-copy">
                                         The Royal Government of Bhutan is granting all Summit participants a waiver of the Sustainable Development Fee (SDF), normally USD 100 per adult per night, for the official event period from Friday 28 August to Sunday 06 September, 2026.
                                     </p>
                                 </div>
@@ -215,8 +142,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Local Transportation</h4>
-                                    <p class="text-sm text-gray-600">
+                                    <h4 class="font-semibold text-ink mb-1">Local Transportation</h4>
+                                    <p class="text-sm text-copy">
                                         Transportation between the hotel in Paro and the event venue from 01-04 September
                                     </p>
                                 </div>
@@ -249,8 +176,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">International Travel</h4>
-                                    <p class="text-sm text-gray-600">International travel to and from Bhutan (Paro airport)</p>
+                                    <h4 class="font-semibold text-ink mb-1">International Travel</h4>
+                                    <p class="text-sm text-copy">International travel to and from Bhutan (Paro airport)</p>
                                 </div>
                             </div>
 
@@ -263,8 +190,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Accommodation</h4>
-                                    <p class="text-sm text-gray-600">Hotel accommodation costs in Paro</p>
+                                    <h4 class="font-semibold text-ink mb-1">Accommodation</h4>
+                                    <p class="text-sm text-copy">Hotel accommodation costs in Paro</p>
                                 </div>
                             </div>
 
@@ -277,8 +204,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Airport Transfers</h4>
-                                    <p class="text-sm text-gray-600">Transportation between Paro airport and your hotel</p>
+                                    <h4 class="font-semibold text-ink mb-1">Airport Transfers</h4>
+                                    <p class="text-sm text-copy">Transportation between Paro airport and your hotel</p>
                                 </div>
                             </div>
 
@@ -291,8 +218,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Additional Dinners</h4>
-                                    <p class="text-sm text-gray-600">One to two dinners outside the official program</p>
+                                    <h4 class="font-semibold text-ink mb-1">Additional Dinners</h4>
+                                    <p class="text-sm text-copy">One to two dinners outside the official program</p>
                                 </div>
                             </div>
 
@@ -305,8 +232,8 @@ const filteredHotels = computed(() => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Personal Expenses</h4>
-                                    <p class="text-sm text-gray-600">
+                                    <h4 class="font-semibold text-ink mb-1">Personal Expenses</h4>
+                                    <p class="text-sm text-copy">
                                         Any personal expenses or additional costs incurred during your stay in Bhutan
                                     </p>
                                 </div>
@@ -326,7 +253,7 @@ const filteredHotels = computed(() => {
                         type="button"
                         class="inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 font-title text-sm font-semibold transition sm:px-5 sm:text-base"
                         :class="activeTab === tab.id
-                            ? 'bg-red-600 text-white'
+                            ? 'bg-primary-1 text-white'
                             : 'bg-gray-100 text-ink hover:bg-gray-200'"
                         @click="activeTab = tab.id"
                     >
@@ -404,52 +331,44 @@ const filteredHotels = computed(() => {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div v-show="activeTab === 'field-visits'" class="mx-auto max-w-3xl text-center">
                     <h2 class="font-title text-4xl font-bold text-gray-900 sm:text-5xl">
-                        Will There Be Field Visits?
+                        {{ settings.field_visits_title || 'Will There Be Field Visits?' }}
                     </h2>
 
-                    <div class="mx-auto mt-6 max-w-2xl rounded-lg border border-yellow-400 bg-yellow-50 p-4 sm:p-5">
+                    <div class="mx-auto mt-6 max-w-2xl rounded-lg border border-accent-2 bg-accent-2/10 p-4 sm:p-5">
                         <div class="flex items-start gap-3">
-                            <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-600 font-title text-xs font-bold text-white">
+                            <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-2 font-title text-xs font-bold text-primary-1">
                                 i
                             </div>
                             <div>
                                 <p class="font-title text-base text-gray-800">
-                                    <span class="font-bold">Optional add-on:</span> Field visits on 31 August are available at an additional cost and can be selected during registration.
+                                    {{ settings.field_visits_info || 'Optional add-on: Field visits on 31 August are available at an additional cost and can be selected during registration.' }}
                                 </p>
-                                <p class="mt-2 font-title text-sm italic text-gray-500">
-                                    (Pending confirmation)
+                                <p v-if="settings.field_visits_pending" class="mt-2 font-title text-sm italic text-gray-500">
+                                    {{ settings.field_visits_pending }}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mx-auto mt-8 max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
+                    <div v-if="settings.field_visits_expectations && settings.field_visits_expectations.length > 0" class="mx-auto mt-8 max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
                         <h3 class="font-title text-lg font-bold text-gray-900 sm:text-xl">
                             What to Expect
                         </h3>
                         <ul class="mt-4 list-none space-y-3 font-title text-gray-800">
-                            <li class="flex items-center justify-center gap-3">
-                                <span class="h-2 w-2 shrink-0 rounded-full bg-red-600" />
-                                <span>Experience Bhutan's unique development approach firsthand</span>
-                            </li>
-                            <li class="flex items-center justify-center gap-3">
-                                <span class="h-2 w-2 shrink-0 rounded-full bg-red-600" />
-                                <span>Visit local communities and sustainable development projects</span>
-                            </li>
-                            <li class="flex items-center justify-center gap-3">
-                                <span class="h-2 w-2 shrink-0 rounded-full bg-red-600" />
-                                <span>Engage with stakeholders on the ground</span>
+                            <li v-for="(expectation, index) in settings.field_visits_expectations" :key="index" class="flex items-center justify-center gap-3">
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-primary-1" />
+                                <span>{{ expectation }}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div v-show="activeTab === 'air-travel'" class="mx-auto max-w-4xl space-y-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Air Travel to Paro</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ settings.air_travel_title || 'Air Travel to Paro' }}</h2>
 
-                    <div class="bg-red-50 border-2 border-red-300 rounded-xl p-6">
+                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-xl p-6">
                         <div class="flex gap-4">
-                            <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-accent-1 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
                             <div class="space-y-3">
@@ -458,15 +377,15 @@ const filteredHotels = computed(() => {
                                 </h3>
                                 <ul class="space-y-2 text-gray-700">
                                     <li class="flex items-start gap-2">
-                                        <span class="text-red-600 mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span><strong>Do not book flights before visa approval</strong></span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <span class="text-red-600 mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>August is high travel season — book early once approved</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <span class="text-red-600 mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>Limited daily flights operate to Paro</span>
                                     </li>
                                 </ul>
@@ -495,7 +414,7 @@ const filteredHotels = computed(() => {
                                         href="https://www.drukair.com.bt/"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-[#B91C1C] text-white rounded-lg hover:bg-[#991B1B] transition-colors"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-primary-1 text-white rounded-lg hover:bg-primary-1/90 transition-colors"
                                     >
                                         Visit Website
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -520,7 +439,7 @@ const filteredHotels = computed(() => {
                                         href="https://www.bhutanairlines.bt/"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-[#B91C1C] text-white rounded-lg hover:bg-[#991B1B] transition-colors"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-primary-1 text-white rounded-lg hover:bg-primary-1/90 transition-colors"
                                     >
                                         Visit Website
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -550,7 +469,7 @@ const filteredHotels = computed(() => {
                                     <tbody>
                                         <tr class="border-b border-gray-200 bg-blue-50">
                                             <td colspan="4" class="px-4 py-3 text-center">
-                                                <a href="https://www.drukair.com.bt/" target="_blank" rel="noopener noreferrer" class="text-[#B91C1C] font-semibold hover:underline">Drukair</a>
+                                                <a href="https://www.drukair.com.bt/" target="_blank" rel="noopener noreferrer" class="text-primary-1 font-semibold hover:underline">Drukair</a>
                                             </td>
                                         </tr>
                                         <tr class="border-b border-gray-200 hover:bg-gray-50">
@@ -631,7 +550,7 @@ const filteredHotels = computed(() => {
                                         </tr>
                                         <tr class="border-b border-gray-200 bg-blue-50">
                                             <td colspan="4" class="px-4 py-3 text-center">
-                                                <a href="https://www.bhutanairlines.bt/" target="_blank" rel="noopener noreferrer" class="text-[#B91C1C] font-semibold hover:underline">Bhutan Airlines</a>
+                                                <a href="https://www.bhutanairlines.bt/" target="_blank" rel="noopener noreferrer" class="text-primary-1 font-semibold hover:underline">Bhutan Airlines</a>
                                             </td>
                                         </tr>
                                         <tr class="border-b border-gray-200 hover:bg-gray-50">
@@ -642,32 +561,32 @@ const filteredHotels = computed(() => {
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="flex items-start gap-3 bg-blue-50 p-4 border-t border-gray-200">
+                            <div v-if="settings.flight_table_note || settings.flight_table_saarc_note" class="flex items-start gap-3 bg-blue-50 p-4 border-t border-gray-200">
                                 <span class="text-blue-600 mt-1">ℹ️</span>
                                 <div class="text-sm text-gray-700">
-                                    <p class="mb-2">
-                                        <strong>Note:</strong> Flight schedules are subject to change. Always verify with the airline before booking.
+                                    <p v-if="settings.flight_table_note" class="mb-2">
+                                        <strong>Note:</strong> {{ settings.flight_table_note }}
                                     </p>
-                                    <p>
-                                        <strong>³ SAARC Regional Fare</strong> applies to citizens of: Afghanistan, Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, and Sri Lanka.
+                                    <p v-if="settings.flight_table_saarc_note">
+                                        <strong>{{ settings.flight_table_saarc_note }}</strong>
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-orange-50 border-2 border-orange-300 rounded-xl p-6">
+                    <div v-if="settings.transit_visa_title || settings.transit_visa_description" class="bg-accent-2/10 border-2 border-accent-2/30 rounded-xl p-6">
                         <div class="flex gap-4">
-                            <svg class="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
                             <div class="space-y-4">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                                        Check Transit Visa Requirements
+                                        {{ settings.transit_visa_title || 'Check Transit Visa Requirements' }}
                                     </h3>
                                     <p class="text-gray-700">
-                                        If you're transiting through India or Nepal, you may need a transit visa. Check requirements based on your nationality.
+                                        {{ settings.transit_visa_description || 'If you\'re transiting through India or Nepal, you may need a transit visa. Check requirements based on your nationality.' }}
                                     </p>
                                 </div>
                                 <div class="flex flex-wrap gap-3">
@@ -675,7 +594,7 @@ const filteredHotels = computed(() => {
                                         href="https://indianvisaonline.gov.in/evisa/tvoa.html"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-orange-400 text-gray-900 rounded-lg hover:bg-orange-50 transition-colors"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-accent-2 text-gray-900 rounded-lg hover:bg-accent-2/10 transition-colors"
                                     >
                                         India Transit Visa
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -686,7 +605,7 @@ const filteredHotels = computed(() => {
                                         href="https://www.immigration.gov.np/page/transit-visa"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-orange-400 text-gray-900 rounded-lg hover:bg-orange-50 transition-colors"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-accent-2 text-gray-900 rounded-lg hover:bg-accent-2/10 transition-colors"
                                     >
                                         Nepal Transit Visa
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -705,7 +624,7 @@ const filteredHotels = computed(() => {
 
                     <div class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-xl p-6 shadow-md">
                         <div class="flex items-start gap-4">
-                            <svg class="w-8 h-8 text-amber-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <div class="space-y-4">
@@ -714,19 +633,19 @@ const filteredHotels = computed(() => {
                                 </h3>
                                 <div class="space-y-3 text-gray-800">
                                     <div class="flex items-start gap-3">
-                                        <span class="text-amber-600 font-bold">✓</span>
+                                        <span class="text-accent-2 font-bold">✓</span>
                                         <p><strong>Visa fee included:</strong> BTN 5,000 (covered in Summit registration)</p>
                                     </div>
                                     <div class="flex items-start gap-3">
-                                        <span class="text-amber-600 font-bold">✓</span>
+                                        <span class="text-accent-2 font-bold">✓</span>
                                         <p><strong>Validity:</strong> 10 days to cover the Summit period</p>
                                     </div>
                                     <div class="flex items-start gap-3">
-                                        <span class="text-amber-600 font-bold">✓</span>
+                                        <span class="text-accent-2 font-bold">✓</span>
                                         <p><strong>Organized by:</strong> Summit organizing team</p>
                                     </div>
                                     <div class="flex items-start gap-3">
-                                        <span class="text-amber-600 font-bold">✓</span>
+                                        <span class="text-accent-2 font-bold">✓</span>
                                         <p><strong>SDF waived:</strong> Sustainable Development Fee waived during Summit dates</p>
                                     </div>
                                 </div>
@@ -745,19 +664,19 @@ const filteredHotels = computed(() => {
                                 </h3>
                                 <ul class="space-y-3 text-gray-700">
                                     <li class="flex items-start gap-3">
-                                        <span class="text-[#B91C1C] mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>You <strong>cannot enter Bhutan before</strong> your visa start date</span>
                                     </li>
                                     <li class="flex items-start gap-3">
-                                        <span class="text-[#B91C1C] mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>Route permits may be required for travel outside Paro/Thimphu</span>
                                     </li>
                                     <li class="flex items-start gap-3">
-                                        <span class="text-[#B91C1C] mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>Passport must be valid for at least 6 months from entry date</span>
                                     </li>
                                     <li class="flex items-start gap-3">
-                                        <span class="text-[#B91C1C] mt-1">•</span>
+                                        <span class="text-primary-1 mt-1">•</span>
                                         <span>Keep a digital and physical copy of your visa approval letter</span>
                                     </li>
                                 </ul>
@@ -774,15 +693,15 @@ const filteredHotels = computed(() => {
                         </p>
                         <div class="space-y-3 mb-6">
                             <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Standard visa fee: <strong>USD 65</strong></span>
                             </div>
                             <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Sustainable Development Fee (SDF): <strong>USD 100 per night</strong></span>
                             </div>
                             <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Must be arranged through a licensed Bhutanese tour operator</span>
                             </div>
                         </div>
@@ -790,7 +709,7 @@ const filteredHotels = computed(() => {
                             href="https://www.immigration.gov.bt"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-6 py-3 bg-[#B91C1C] text-white rounded-lg hover:bg-[#991B1B] transition-colors"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-primary-1 text-white rounded-lg hover:bg-primary-1/90 transition-colors"
                         >
                             Official Immigration Website
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -802,90 +721,78 @@ const filteredHotels = computed(() => {
 
                 <!-- Arrival Tab -->
                 <div v-show="activeTab === 'arrival'" class="mx-auto max-w-4xl space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Upon Arrival in Bhutan</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ settings.arrival_title || 'Upon Arrival in Bhutan' }}</h2>
 
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-3 bg-amber-100 rounded-lg">
-                                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="p-3 bg-accent-2/20 rounded-lg">
+                                    <svg class="w-6 h-6 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <h3 class="text-xl font-semibold text-gray-900">
-                                    Mobile & Internet
+                                    {{ settings.mobile_title || 'Mobile & Internet' }}
                                 </h3>
                             </div>
                             <div class="space-y-3 text-gray-700">
-                                <p>
-                                    <strong>SIM cards available</strong> at Paro International Airport upon arrival
+                                <p v-if="settings.mobile_description">
+                                    {{ settings.mobile_description }}
                                 </p>
-                                <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                                <div v-if="settings.mobile_providers && settings.mobile_providers.length > 0" class="bg-gray-50 rounded-lg p-4 space-y-2">
                                     <p class="font-medium text-gray-900">Providers:</p>
                                     <ul class="space-y-1">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-[#B91C1C]">•</span>
-                                            <span>Bhutan Telecom</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-[#B91C1C]">•</span>
-                                            <span>TashiCell</span>
+                                        <li v-for="(provider, index) in settings.mobile_providers" :key="index" class="flex items-start gap-2">
+                                            <span class="text-primary-1">•</span>
+                                            <span>{{ provider }}</span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                    <p class="font-medium text-gray-900">Cost: BTN 100–500</p>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Includes data package options
+                                <div v-if="settings.mobile_cost" class="bg-accent-2/10 border border-accent-2/30 rounded-lg p-4">
+                                    <p class="font-medium text-gray-900">{{ settings.mobile_cost }}</p>
+                                    <p v-if="settings.mobile_cost_note" class="text-sm text-gray-600 mt-1">
+                                        {{ settings.mobile_cost_note }}
                                     </p>
                                 </div>
-                                <p class="text-sm text-gray-600">
-                                    Bring your passport and an unlocked phone
+                                <p v-if="settings.mobile_tip" class="text-sm text-gray-600">
+                                    {{ settings.mobile_tip }}
                                 </p>
                             </div>
                         </div>
 
                         <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-3 bg-green-100 rounded-lg">
-                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="p-3 bg-primary-2/20 rounded-lg">
+                                    <svg class="w-6 h-6 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
                                     </svg>
                                 </div>
                                 <h3 class="text-xl font-semibold text-gray-900">
-                                    Currency Exchange
+                                    {{ settings.currency_title || 'Currency Exchange' }}
                                 </h3>
                             </div>
                             <div class="space-y-3 text-gray-700">
-                                <div class="bg-gray-50 rounded-lg p-4">
+                                <div v-if="settings.currency_local" class="bg-gray-50 rounded-lg p-4">
                                     <p class="font-medium text-gray-900 mb-2">Local Currency:</p>
-                                    <p class="text-lg font-bold text-[#B91C1C]">
-                                        Bhutanese Ngultrum (BTN)
+                                    <p class="text-lg font-bold text-primary-1">
+                                        {{ settings.currency_local }}
                                     </p>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Pegged 1:1 with Indian Rupee (INR)
+                                    <p v-if="settings.currency_note" class="text-sm text-gray-600 mt-1">
+                                        {{ settings.currency_note }}
                                     </p>
                                 </div>
-                                <div class="space-y-2">
+                                <div v-if="settings.currency_accepted && settings.currency_accepted.length > 0" class="space-y-2">
                                     <p class="font-medium text-gray-900">What's accepted:</p>
                                     <ul class="space-y-1">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-600">✓</span>
-                                            <span>Indian Rupees (INR) widely accepted</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-600">✓</span>
-                                            <span>ATMs available in Paro and Thimphu</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-600">✓</span>
-                                            <span>Credit cards accepted at major hotels</span>
+                                        <li v-for="(method, index) in settings.currency_accepted" :key="index" class="flex items-start gap-2">
+                                            <span class="text-primary-2">✓</span>
+                                            <span>{{ method }}</span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                <div v-if="settings.currency_tip" class="bg-blue-50 border border-blue-200 rounded-lg p-3">
                                     <p class="text-sm text-gray-700">
-                                        💡 <strong>Tip:</strong> Exchange money at the airport or banks for better rates
+                                        💡 <strong>Tip:</strong> {{ settings.currency_tip }}
                                     </p>
                                 </div>
                             </div>
@@ -898,19 +805,19 @@ const filteredHotels = computed(() => {
                         </h3>
                         <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Immigration process may take 30-60 minutes during peak times</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Keep your visa approval letter and hotel booking details handy</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Summit organizers will provide transfer details closer to the event</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] mt-1">•</span>
+                                <span class="text-primary-1 mt-1">•</span>
                                 <span>Taxis and hotel shuttles available at the airport</span>
                             </li>
                         </ul>
@@ -919,11 +826,11 @@ const filteredHotels = computed(() => {
 
                 <!-- Accommodation Tab -->
                 <div v-show="activeTab === 'accommodation'" class="mx-auto max-w-6xl space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Accommodation in Paro</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ settings.accommodation_title || 'Accommodation in Paro' }}</h2>
 
-                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div v-if="settings.accommodation_important" class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                         <p class="text-gray-800">
-                            <strong>Important:</strong> All Summit participants must stay in Paro near the venue (Dungkar Dzong). Book early as August is peak season.
+                            <strong>{{ settings.accommodation_important }}</strong>
                         </p>
                     </div>
 
@@ -931,7 +838,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'all'"
                             :class="accommodationFilter === 'all'
-                                ? 'bg-[#B91C1C] text-white'
+                                ? 'bg-primary-1 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -940,7 +847,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'budget'"
                             :class="accommodationFilter === 'budget'
-                                ? 'bg-[#B91C1C] text-white'
+                                ? 'bg-primary-1 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -949,7 +856,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'mid-range'"
                             :class="accommodationFilter === 'mid-range'
-                                ? 'bg-[#B91C1C] text-white'
+                                ? 'bg-primary-1 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -958,7 +865,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'premium'"
                             :class="accommodationFilter === 'premium'
-                                ? 'bg-[#B91C1C] text-white'
+                                ? 'bg-primary-1 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -983,8 +890,8 @@ const filteredHotels = computed(() => {
                             <div class="p-6">
                                 <div class="flex items-start justify-between mb-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2 bg-amber-100 rounded-lg">
-                                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="p-2 bg-accent-2/20 rounded-lg">
+                                            <svg class="w-5 h-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
                                         </div>
@@ -1008,7 +915,7 @@ const filteredHotels = computed(() => {
                                         </svg>
                                         <a
                                             :href="`mailto:${hotel.email}`"
-                                            class="hover:text-[#B91C1C] break-all"
+                                            class="hover:text-primary-1 break-all"
                                         >
                                             {{ hotel.email }}
                                         </a>
@@ -1032,9 +939,9 @@ const filteredHotels = computed(() => {
 
                                 <div class="mt-4 pt-4 border-t border-gray-100">
                                     <span :class="{
-                                        'bg-green-100 text-green-700': hotel.category === 'budget',
-                                        'bg-blue-100 text-blue-700': hotel.category === 'mid-range',
-                                        'bg-purple-100 text-purple-700': hotel.category === 'premium'
+                                        'bg-primary-2/20 text-primary-2': hotel.category === 'budget',
+                                        'bg-accent-1/20 text-accent-1': hotel.category === 'mid-range',
+                                        'bg-primary-1/20 text-primary-1': hotel.category === 'premium'
                                     }" class="inline-block px-3 py-1 rounded-full text-xs font-medium">
                                         {{ hotel.category.charAt(0).toUpperCase() + hotel.category.slice(1).replace('-', ' ') }}
                                     </span>
@@ -1043,26 +950,14 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                    <div v-if="settings.accommodation_booking_tips && settings.accommodation_booking_tips.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-xl p-6">
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">
-                            Booking Tips
+                            {{ settings.accommodation_booking_tips_title || 'Booking Tips' }}
                         </h3>
                         <ul class="space-y-2 text-gray-700">
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>Contact hotels directly for Summit group rates</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>Book immediately after receiving visa approval</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>Mention you're attending the Summit for potential discounts</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>Confirm cancellation policies before booking</span>
+                            <li v-for="(tip, index) in settings.accommodation_booking_tips" :key="index" class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span>{{ tip }}</span>
                             </li>
                         </ul>
                     </div>
@@ -1070,11 +965,11 @@ const filteredHotels = computed(() => {
 
                 <!-- Extend Stay Tab -->
                 <div v-show="activeTab === 'extend'" class="mx-auto max-w-4xl space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Extend Your Stay in Bhutan</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ settings.extend_title || 'Extend Your Stay in Bhutan' }}</h2>
 
-                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-300 p-6">
+                    <div v-if="settings.extend_intro" class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-300 p-6">
                         <p class="text-lg text-gray-800">
-                            Want to explore more of Bhutan? Extend your visa to experience the Land of the Thunder Dragon beyond the Summit.
+                            {{ settings.extend_intro }}
                         </p>
                     </div>
 
@@ -1087,36 +982,20 @@ const filteredHotels = computed(() => {
                             </div>
                             <div>
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                                    Extension Process
+                                    {{ settings.extend_process_title || 'Extension Process' }}
                                 </h3>
-                                <p class="text-gray-700">
-                                    You can modify your visa dates online through the official portal.
+                                <p v-if="settings.extend_process_description" class="text-gray-700">
+                                    {{ settings.extend_process_description }}
                                 </p>
                             </div>
                         </div>
 
-                        <div class="space-y-4">
-                            <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] font-bold mt-1">1.</span>
+                        <div v-if="settings.extend_process_steps && settings.extend_process_steps.length > 0" class="space-y-4">
+                            <div v-for="(step, index) in settings.extend_process_steps" :key="index" class="flex items-start gap-3 text-gray-700">
+                                <span class="text-primary-1 font-bold mt-1">{{ index + 1 }}.</span>
                                 <div>
-                                    <p class="font-medium">Maximum stay: Up to 90 days total</p>
-                                    <p class="text-sm text-gray-600">Subject to approval</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] font-bold mt-1">2.</span>
-                                <div>
-                                    <p class="font-medium">Apply for extension before your current visa expires</p>
-                                    <p class="text-sm text-gray-600">Processing takes 2-3 business days</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-start gap-3 text-gray-700">
-                                <span class="text-[#B91C1C] font-bold mt-1">3.</span>
-                                <div>
-                                    <p class="font-medium">Must be arranged through a licensed tour operator</p>
-                                    <p class="text-sm text-gray-600">Cannot extend independently</p>
+                                    <p class="font-medium">{{ step.title }}</p>
+                                    <p v-if="step.note" class="text-sm text-gray-600">{{ step.note }}</p>
                                 </div>
                             </div>
                         </div>
@@ -1137,7 +1016,7 @@ const filteredHotels = computed(() => {
                         </div>
 
                         <div class="space-y-4">
-                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                            <div class="bg-accent-2/10 border border-accent-2/30 rounded-lg p-4">
                                 <p class="text-gray-900 mb-1">
                                     <strong class="text-xl">USD 100</strong> per night
                                 </p>
@@ -1150,19 +1029,19 @@ const filteredHotels = computed(() => {
                                 <p class="font-medium">Additional costs to consider:</p>
                                 <ul class="space-y-2 ml-4">
                                     <li class="flex items-start gap-2">
-                                        <span class="text-[#B91C1C]">•</span>
+                                        <span class="text-primary-1">•</span>
                                         <span>Accommodation (varies by hotel)</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <span class="text-[#B91C1C]">•</span>
+                                        <span class="text-primary-1">•</span>
                                         <span>Licensed tour guide (mandatory)</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <span class="text-[#B91C1C]">•</span>
+                                        <span class="text-primary-1">•</span>
                                         <span>Transportation for sightseeing</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <span class="text-[#B91C1C]">•</span>
+                                        <span class="text-primary-1">•</span>
                                         <span>Meals outside hotel</span>
                                     </li>
                                 </ul>
@@ -1170,9 +1049,9 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div class="bg-red-50 border-2 border-red-300 rounded-xl p-6">
+                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-xl p-6">
                         <div class="flex gap-4">
-                            <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-accent-1 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <div class="space-y-3">
@@ -1202,7 +1081,7 @@ const filteredHotels = computed(() => {
                             href="https://www.tourism.gov.bt"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-6 py-3 bg-[#B91C1C] text-white rounded-lg hover:bg-[#991B1B] transition-colors"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-primary-1 text-white rounded-lg hover:bg-primary-1/90 transition-colors"
                         >
                             Official Visa Portal
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1246,15 +1125,15 @@ const filteredHotels = computed(() => {
 
                 <!-- Companions Tab -->
                 <div v-show="activeTab === 'companions'" class="mx-auto max-w-4xl space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-900">Travel With Companions</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ settings.companions_title || 'Travel With Companions' }}</h2>
 
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border-2 border-blue-300 p-6">
+                    <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border-2 border-blue-300 p-6">
                         <div class="flex gap-4">
                             <svg class="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                             <p class="text-lg text-gray-800">
-                                Planning to bring family or friends? Here's what you need to know about traveling to Bhutan with companions.
+                                {{ settings.companions_intro }}
                             </p>
                         </div>
                     </div>
@@ -1265,8 +1144,8 @@ const filteredHotels = computed(() => {
                         </h3>
                         <div class="space-y-4">
                             <div class="flex items-start gap-4 pb-4 border-b border-gray-100">
-                                <div class="p-2 bg-red-100 rounded-lg flex-shrink-0">
-                                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="p-2 bg-accent-1/20 rounded-lg flex-shrink-0">
+                                    <svg class="w-5 h-5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
@@ -1314,123 +1193,63 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_costs && settings.companions_costs.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                            Expected Costs for Companions
+                            {{ settings.companions_costs_title || 'Expected Costs for Companions' }}
                         </h3>
                         <div class="space-y-3">
-                            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                <span class="text-gray-700">Visa Fee</span>
-                                <span class="font-semibold text-gray-900">USD 65</span>
+                            <div v-for="(cost, index) in settings.companions_costs" :key="index" class="flex justify-between items-center py-3" :class="index < settings.companions_costs.length - 1 ? 'border-b border-gray-100' : ''">
+                                <span class="text-gray-700">{{ cost.item }}</span>
+                                <span class="font-semibold text-gray-900">{{ cost.amount }}</span>
                             </div>
-                            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                <span class="text-gray-700">Sustainable Development Fee (SDF)</span>
-                                <span class="font-semibold text-gray-900">USD 100 / night</span>
-                            </div>
-                            <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                                <span class="text-gray-700">Tour Package (approx.)</span>
-                                <span class="font-semibold text-gray-900">USD 250-400 / day</span>
-                            </div>
-                            <div class="bg-blue-50 rounded-lg p-4 mt-4">
+                            <div v-if="settings.companions_costs_note" class="bg-blue-50 rounded-lg p-4 mt-4">
                                 <p class="text-sm text-gray-700">
-                                    <strong>Note:</strong> Tour packages typically include accommodation, meals, guide, and transportation. Prices vary by season and hotel category.
+                                    <strong>{{ settings.companions_costs_note }}</strong>
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                    <div v-if="settings.companions_considerations && settings.companions_considerations.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-xl p-6">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                            Special Considerations
+                            {{ settings.companions_considerations_title || 'Special Considerations' }}
                         </h3>
                         <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>
-                                    <strong>Children under 12:</strong> May be exempt from or receive reduced SDF rates
-                                </span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>
-                                    <strong>Travel timing:</strong> Companions can arrive with you or independently
-                                </span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>
-                                    <strong>Accommodation:</strong> Can stay at same hotel, subject to availability
-                                </span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="text-amber-600 mt-1">•</span>
-                                <span>
-                                    <strong>Summit access:</strong> Companions may not be able to attend Summit sessions unless registered
-                                </span>
+                            <li v-for="(consideration, index) in settings.companions_considerations" :key="index" class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span v-html="consideration"></span>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                            Planning Tips
+                            {{ settings.companions_tips_title || 'Planning Tips' }}
                         </h3>
                         <div class="space-y-3 text-gray-700">
-                            <div class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] font-bold">1</span>
-                                <p>
-                                    Contact a licensed Bhutanese tour operator at least <strong>6-8 weeks before travel</strong>
-                                </p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] font-bold">2</span>
-                                <p>
-                                    Coordinate visa timings so companion visas align with Summit dates
-                                </p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] font-bold">3</span>
-                                <p>
-                                    Book the same hotel for convenience, mentioning you're with the Summit
-                                </p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span class="text-[#B91C1C] font-bold">4</span>
-                                <p>
-                                    Consider arranging activities for companions during Summit sessions
-                                </p>
+                            <div v-for="(tip, index) in settings.companions_tips" :key="index" class="flex items-start gap-3">
+                                <span class="text-primary-1 font-bold">{{ index + 1 }}</span>
+                                <p v-html="tip"></p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_resources && settings.companions_resources.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                            Helpful Resources
+                            {{ settings.companions_resources_title || 'Helpful Resources' }}
                         </h3>
                         <div class="space-y-3">
                             <a
-                                href="https://www.tourism.gov.bt"
+                                v-for="(resource, index) in settings.companions_resources"
+                                :key="index"
+                                :href="resource.url"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                             >
                                 <div>
-                                    <p class="font-medium text-gray-900">Bhutan Tourism Council</p>
-                                    <p class="text-sm text-gray-600">Official tourism information</p>
-                                </div>
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </a>
-                            <a
-                                href="https://www.immigration.gov.bt"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                            >
-                                <div>
-                                    <p class="font-medium text-gray-900">Immigration Portal</p>
-                                    <p class="text-sm text-gray-600">Visa application and guidelines</p>
+                                    <p class="font-medium text-gray-900">{{ resource.title }}</p>
+                                    <p class="text-sm text-gray-600">{{ resource.description }}</p>
                                 </div>
                                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

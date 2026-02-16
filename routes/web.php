@@ -54,7 +54,7 @@ Route::get('/faq', [AdminController::class, 'faqPublic']);
 
 Route::get('/programme', [AdminController::class, 'programmePublic']);
 Route::get('/get-involved', [AdminController::class, 'getInvolvedPublic']);
-Route::get('/your-stay-in-bhutan', fn () => Inertia::render('YourStay/Index', ['settings' => (object) []]));
+Route::get('/your-stay-in-bhutan', [AdminController::class, 'yourStayPublic']);
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
@@ -77,6 +77,8 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');
     Route::post('/homepage', [AdminController::class, 'updateHomepage'])->name('homepage.update');
+    Route::get('/your-stay', [AdminController::class, 'yourStay'])->name('your-stay');
+    Route::post('/your-stay', [AdminController::class, 'updateYourStay'])->name('your-stay.update');
     Route::get('/programme', [AdminController::class, 'programme'])->name('programme');
     Route::post('/programme', [AdminController::class, 'updateProgramme'])->name('programme.update');
     Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
