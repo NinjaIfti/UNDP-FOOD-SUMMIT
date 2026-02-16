@@ -21,6 +21,8 @@ const form = useForm({
     hero_location: props.settings.hero_location,
     hero_description: props.settings.hero_description,
     countdown_date: props.settings.countdown_date,
+    hero_slides: props.settings.hero_slides || ['/brand/img55.jpg', '/brand/img34.jpg', '/brand/img32.jpg', '/brand/img30.jpg', '/brand/img22.jpg'],
+    hero_slide_files: {},
     summit_intro_title: props.settings.summit_intro_title,
     summit_intro_text1: props.settings.summit_intro_text1,
     summit_intro_text2: props.settings.summit_intro_text2,
@@ -184,6 +186,42 @@ const tabs = [
     { id: 'events', name: 'Events', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
 ];
 
+function addSlide() {
+    form.hero_slides.push('/brand/img55.jpg');
+    form.hero_slide_files[form.hero_slides.length - 1] = null;
+}
+
+function removeSlide(index) {
+    if (form.hero_slides.length > 1) {
+        form.hero_slides.splice(index, 1);
+        delete form.hero_slide_files[index];
+        const newFiles = {};
+        Object.keys(form.hero_slide_files).forEach(key => {
+            const keyNum = parseInt(key);
+            if (keyNum < index) {
+                newFiles[keyNum] = form.hero_slide_files[key];
+            } else if (keyNum > index) {
+                newFiles[keyNum - 1] = form.hero_slide_files[key];
+            }
+        });
+        form.hero_slide_files = newFiles;
+    } else {
+        alert('You must have at least one slide.');
+    }
+}
+
+function handleSlideUpload(index, event) {
+    const file = event.target.files[0];
+    if (file) {
+        form.hero_slide_files[index] = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            form.hero_slides[index] = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
 const submit = () => {
     // Create a clean copy of the form data
     const formData = { ...form.data() };
@@ -195,6 +233,13 @@ const submit = () => {
         }
         if (speaker.deleteImage) {
             formData[`speaker_${index}_delete_image`] = true;
+        }
+    });
+    
+    // Prepare hero slide image files for upload
+    Object.keys(form.hero_slide_files).forEach(index => {
+        if (form.hero_slide_files[index]) {
+            formData[`hero_slide_${index}`] = form.hero_slide_files[index];
         }
     });
     
@@ -275,6 +320,59 @@ const submit = () => {
                             <label class="block font-body text-sm font-medium text-ink">Countdown Date & Time</label>
                             <input v-model="form.countdown_date" type="datetime-local" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                             <p class="mt-1 font-body text-xs text-copy">Updates the countdown timer</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink mb-3">Hero Background Images</label>
+                            <p class="mb-3 text-xs text-gray-600">These images rotate as the background slideshow. Upload new images or remove existing ones.</p>
+                            <div class="space-y-3">
+                                <div
+                                    v-for="(slide, index) in form.hero_slides"
+                                    :key="index"
+                                    class="flex items-start gap-3 rounded-lg border border-gray-200 p-3"
+                                >
+                                    <div class="flex-1">
+                                        <div class="mb-2 h-24 w-full overflow-hidden rounded border border-gray-300 bg-gray-100">
+                                            <img :src="slide" :alt="`Slide ${index + 1}`" class="h-full w-full object-cover" />
+                                        </div>
+                                        <input
+                                            v-model="form.hero_slides[index]"
+                                            type="text"
+                                            :placeholder="`Image URL ${index + 1}`"
+                                            class="w-full rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20"
+                                        />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <input
+                                            :id="`hero_slide_${index}`"
+                                            type="file"
+                                            accept="image/*"
+                                            class="hidden"
+                                            @change="(e) => handleSlideUpload(index, e)"
+                                        />
+                                        <label
+                                            :for="`hero_slide_${index}`"
+                                            class="cursor-pointer rounded border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 transition hover:bg-gray-50"
+                                        >
+                                            Upload
+                                        </label>
+                                        <button
+                                            type="button"
+                                            @click="removeSlide(index)"
+                                            class="rounded border border-red-300 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-100"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    @click="addSlide"
+                                    class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-2 text-xs font-medium text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
+                                >
+                                    + Add Slide
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

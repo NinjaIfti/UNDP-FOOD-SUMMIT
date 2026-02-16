@@ -31,11 +31,19 @@ const countdown = computed(() => {
     };
 });
 
-const slides = ['/brand/img55.jpg', '/brand/img34.jpg', '/brand/img32.jpg', '/brand/img30.jpg', '/brand/img22.jpg'];
+const defaultSlides = ['/brand/img55.jpg', '/brand/img34.jpg', '/brand/img32.jpg', '/brand/img30.jpg', '/brand/img22.jpg'];
+const slides = computed(() => {
+    if (props.settings?.hero_slides && Array.isArray(props.settings.hero_slides) && props.settings.hero_slides.length > 0) {
+        return props.settings.hero_slides.filter(slide => slide && slide.trim());
+    }
+    return defaultSlides;
+});
 const currentIndex = ref(0);
 
 function nextSlide() {
-    currentIndex.value = (currentIndex.value + 1) % slides.length;
+    if (slides.value.length > 0) {
+        currentIndex.value = (currentIndex.value + 1) % slides.value.length;
+    }
 }
 
 const titleText = props.settings.hero_title;
@@ -91,7 +99,7 @@ onUnmounted(() => {
         <div class="absolute inset-0">
             <div
                 v-for="(slide, i) in slides"
-                :key="slide"
+                :key="slide + i"
                 class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
                 :class="i === currentIndex ? 'opacity-30' : 'opacity-0'"
                 :style="{ backgroundImage: `url(${slide})` }"

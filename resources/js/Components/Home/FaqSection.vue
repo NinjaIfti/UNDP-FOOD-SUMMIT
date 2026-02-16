@@ -58,7 +58,7 @@ function toggle(index) {
                             v-show="openIndex === index"
                             class="border-t border-primary-2/10 px-6 py-4"
                         >
-                            <p class="font-body text-base leading-relaxed text-ink">{{ faq.answer }}</p>
+                            <div class="faq-answer font-body text-base leading-relaxed text-ink" v-html="faq.answer"></div>
                         </div>
                     </div>
                 </div>
@@ -66,3 +66,37 @@ function toggle(index) {
         </div>
     </section>
 </template>
+
+<style scoped>
+.faq-answer :deep(p) {
+    margin-bottom: 1rem;
+}
+
+.faq-answer :deep(p:last-child) {
+    margin-bottom: 0;
+}
+
+.faq-answer :deep(strong) {
+    font-weight: 600;
+    color: inherit;
+}
+
+.faq-answer :deep(ul) {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.faq-answer :deep(ul:last-child) {
+    margin-bottom: 0;
+}
+
+.faq-answer :deep(li) {
+    margin-bottom: 0.5rem;
+}
+
+.faq-answer :deep(li:last-child) {
+    margin-bottom: 0;
+}
+</style>

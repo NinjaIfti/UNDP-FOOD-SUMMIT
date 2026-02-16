@@ -188,7 +188,13 @@ class AdminController extends Controller
             if (preg_match('/^speaker_\d+_delete_image$/', $key)) {
                 $validationRules[$key] = 'nullable|boolean';
             }
+            if (preg_match('/^hero_slide_\d+$/', $key)) {
+                $validationRules[$key] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120';
+            }
         }
+        
+        $validationRules['hero_slides'] = 'nullable|array';
+        $validationRules['hero_slides.*'] = 'nullable|string';
         
         $validated = $request->validate($validationRules);
 
@@ -293,9 +299,40 @@ class AdminController extends Controller
             }
         }
         
+        // Handle hero slide image uploads
+        if (isset($validated['hero_slides']) && is_array($validated['hero_slides'])) {
+            foreach ($validated['hero_slides'] as $index => &$slide) {
+                $fileKey = 'hero_slide_' . $index;
+                
+                if ($request->hasFile($fileKey)) {
+                    $file = $request->file($fileKey);
+                    $filename = 'hero_slide_' . $index . '_' . time() . '.' . $file->getClientOriginalExtension();
+                    
+                    // Ensure brand directory exists
+                    if (!file_exists(public_path('brand'))) {
+                        mkdir(public_path('brand'), 0755, true);
+                    }
+                    
+                    $file->move(public_path('brand'), $filename);
+                    $slide = '/brand/' . $filename;
+                } elseif (empty($slide) || !is_string($slide)) {
+                    // Keep existing slide if no new upload and slide is empty/invalid
+                    if (isset($currentSettings['hero_slides'][$index])) {
+                        $slide = $currentSettings['hero_slides'][$index];
+                    }
+                }
+            }
+        } elseif (!isset($currentSettings['hero_slides'])) {
+            // Set default slides if none exist
+            $validated['hero_slides'] = ['/brand/img55.jpg', '/brand/img34.jpg', '/brand/img32.jpg', '/brand/img30.jpg', '/brand/img22.jpg'];
+        }
+        
         // Remove all speaker image upload fields from validated data (they're already processed)
         foreach ($validated as $key => $value) {
             if (preg_match('/^speaker_\d+_(image|delete_image)$/', $key)) {
+                unset($validated[$key]);
+            }
+            if (preg_match('/^hero_slide_\d+$/', $key)) {
                 unset($validated[$key]);
             }
         }
@@ -319,6 +356,7 @@ class AdminController extends Controller
             'hero_location' => 'Bhutan',
             'hero_description' => 'Let\'s co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.',
             'countdown_date' => '2026-08-31T09:00:00',
+            'hero_slides' => ['/brand/img55.jpg', '/brand/img34.jpg', '/brand/img32.jpg', '/brand/img30.jpg', '/brand/img22.jpg'],
             'summit_intro_title' => 'A New Kind of Food Systems Summit',
             'summit_intro_text1' => 'This landmark global gathering aims to facilitate high-level dialogue, knowledge exchange, and partnership-building around advancing conscious, inclusive, and sustainable food systems. Key themes include food consciousness, agroecology, and the role of spirituality and culture in supporting nature-friendly agriculture.',
             'summit_intro_text2' => 'The Summit will convene 350–500 national and global changemakers—governments, indigenous communities, farmers, youth leaders, civil society, the private sector, and academia—prioritizing gender balance, inclusion, and meaningful participation of underrepresented voices.',

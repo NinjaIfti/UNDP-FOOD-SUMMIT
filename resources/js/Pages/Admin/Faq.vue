@@ -26,6 +26,51 @@ function removeFaq(index) {
     form.faqs.splice(index, 1);
 }
 
+function insertFormatting(faqIndex, tag) {
+    const textarea = document.getElementById(`answer-${faqIndex}`);
+    if (!textarea) return;
+    
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = form.faqs[faqIndex].answer.substring(start, end);
+    const before = form.faqs[faqIndex].answer.substring(0, start);
+    const after = form.faqs[faqIndex].answer.substring(end);
+    
+    let replacement = '';
+    if (tag === 'bold') {
+        replacement = selectedText ? `<strong>${selectedText}</strong>` : '<strong></strong>';
+    } else if (tag === 'bullet') {
+        replacement = selectedText ? `<ul><li>${selectedText}</li></ul>` : '<ul><li></li></ul>';
+    } else if (tag === 'paragraph') {
+        replacement = selectedText ? `<p>${selectedText}</p>` : '<p></p>';
+    }
+    
+    form.faqs[faqIndex].answer = before + replacement + after;
+    
+    setTimeout(() => {
+        textarea.focus();
+        const newPos = tag === 'bold' ? start + (selectedText ? 8 : 8) : start + replacement.length;
+        textarea.setSelectionRange(newPos, newPos);
+    }, 10);
+}
+
+function addBulletPoint(faqIndex) {
+    const textarea = document.getElementById(`answer-${faqIndex}`);
+    if (!textarea) return;
+    
+    const start = textarea.selectionStart;
+    const before = form.faqs[faqIndex].answer.substring(0, start);
+    const after = form.faqs[faqIndex].answer.substring(start);
+    
+    form.faqs[faqIndex].answer = before + '<ul><li></li></ul>' + after;
+    
+    setTimeout(() => {
+        textarea.focus();
+        const newPos = start + 8;
+        textarea.setSelectionRange(newPos, newPos);
+    }, 10);
+}
+
 function submit() {
     form.post(route('admin.faq.update'), { preserveScroll: true });
 }
@@ -78,8 +123,45 @@ function submit() {
                                     <input v-model="faq.question" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Enter the question" />
                                 </div>
                                 <div>
-                                    <label class="block font-body text-xs font-medium text-ink">Answer</label>
-                                    <textarea v-model="faq.answer" rows="3" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Enter the answer"></textarea>
+                                    <div class="mb-2 flex items-center justify-between">
+                                        <label class="block font-body text-xs font-medium text-ink">Answer</label>
+                                        <div class="flex gap-1">
+                                            <button
+                                                type="button"
+                                                @click="insertFormatting(index, 'bold')"
+                                                class="rounded border border-gray-300 bg-white px-2 py-1 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                                                title="Bold"
+                                            >
+                                                <strong>B</strong>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                @click="insertFormatting(index, 'bullet')"
+                                                class="rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 transition hover:bg-gray-50"
+                                                title="Bullet List"
+                                            >
+                                                •
+                                            </button>
+                                            <button
+                                                type="button"
+                                                @click="insertFormatting(index, 'paragraph')"
+                                                class="rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 transition hover:bg-gray-50"
+                                                title="Paragraph"
+                                            >
+                                                ¶
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        :id="`answer-${index}`"
+                                        v-model="faq.answer"
+                                        rows="6"
+                                        class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        placeholder="Enter the answer. Use formatting buttons or HTML tags like &lt;strong&gt;bold&lt;/strong&gt;, &lt;p&gt;paragraph&lt;/p&gt;, &lt;ul&gt;&lt;li&gt;bullet&lt;/li&gt;&lt;/ul&gt;"
+                                    ></textarea>
+                                    <p class="mt-1 text-xs text-gray-500">
+                                        Tip: You can use HTML tags for formatting. <code class="rounded bg-gray-100 px-1">&lt;strong&gt;text&lt;/strong&gt;</code> for bold, <code class="rounded bg-gray-100 px-1">&lt;p&gt;text&lt;/p&gt;</code> for paragraphs, <code class="rounded bg-gray-100 px-1">&lt;ul&gt;&lt;li&gt;item&lt;/li&gt;&lt;/ul&gt;</code> for bullet lists.
+                                    </p>
                                 </div>
                             </div>
                         </div>

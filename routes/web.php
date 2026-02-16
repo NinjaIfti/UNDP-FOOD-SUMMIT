@@ -54,6 +54,7 @@ Route::get('/faq', [AdminController::class, 'faqPublic']);
 
 Route::get('/programme', [AdminController::class, 'programmePublic']);
 Route::get('/get-involved', [AdminController::class, 'getInvolvedPublic']);
+Route::get('/your-stay-in-bhutan', fn () => Inertia::render('YourStay/Index', ['settings' => (object) []]));
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
