@@ -41,6 +41,10 @@ export default {
                 sans: ['var(--font-title)', ...defaultTheme.fontFamily.sans],
                 serif: ['var(--font-body)', ...defaultTheme.fontFamily.serif],
             },
+            fontSize: {
+                sm: ['0.95rem', '1.5'],
+                base: ['1.05rem', '1.6'],
+            },
         },
     },
 

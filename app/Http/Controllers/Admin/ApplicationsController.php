@@ -16,6 +16,27 @@ class ApplicationsController extends Controller
 {
     public function index(Request $request)
     {
+        $query = $this->buildFilteredQuery($request);
+
+        $applications = $query->paginate(15)->withQueryString();
+
+        $stats = [
+            'pending' => SummitRegistration::where('status', SummitRegistration::STATUS_PENDING)->count(),
+            'approved' => SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->count(),
+            'rejected' => SummitRegistration::where('status', SummitRegistration::STATUS_REJECTED)->count(),
+            'waitlisted' => SummitRegistration::where('status', SummitRegistration::STATUS_WAITLISTED)->count(),
+            'heard_from' => $this->buildHeardFromStats(),
+        ];
+
+        return Inertia::render('Admin/Applications/Index', [
+            'applications' => $applications,
+            'stats' => $stats,
+            'filters' => $request->only(['search', 'status']),
+        ]);
+    }
+
+    protected function buildFilteredQuery(Request $request)
+    {
         $query = SummitRegistration::query()->orderByDesc('created_at');
 
         if ($request->filled('status') && $request->status !== 'all') {
@@ -32,20 +53,90 @@ class ApplicationsController extends Controller
             });
         }
 
-        $applications = $query->paginate(15)->withQueryString();
+        return $query;
+    }
 
-        $stats = [
-            'pending' => SummitRegistration::where('status', SummitRegistration::STATUS_PENDING)->count(),
-            'approved' => SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->count(),
-            'rejected' => SummitRegistration::where('status', SummitRegistration::STATUS_REJECTED)->count(),
-            'waitlisted' => SummitRegistration::where('status', SummitRegistration::STATUS_WAITLISTED)->count(),
+    protected function buildHeardFromStats(): array
+    {
+        $all = SummitRegistration::whereNotNull('heard_from')->pluck('heard_from');
+
+        $totals = [];
+
+        foreach ($all as $sources) {
+            if (!is_array($sources)) {
+                continue;
+            }
+
+            foreach ($sources as $source) {
+                if (!isset($totals[$source])) {
+                    $totals[$source] = 0;
+                }
+
+                $totals[$source]++;
+            }
+        }
+
+        return $totals;
+    }
+
+    public function export(Request $request)
+    {
+        $query = $this->buildFilteredQuery($request);
+
+        $filename = 'applications-' . date('Y-m-d_H-i-s') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ];
 
-        return Inertia::render('Admin/Applications/Index', [
-            'applications' => $applications,
-            'stats' => $stats,
-            'filters' => $request->only(['search', 'status']),
-        ]);
+        $callback = function () use ($query) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'ID',
+                'First name',
+                'Last name',
+                'Email',
+                'Phone',
+                'Country',
+                'Organization',
+                'Job title',
+                'Price tier',
+                'Status',
+                'Arrival date',
+                'Departure date',
+                'Heard from',
+                'Heard from other',
+                'Created at',
+            ]);
+
+            $query->chunk(200, function ($rows) use ($handle) {
+                foreach ($rows as $app) {
+                    fputcsv($handle, [
+                        $app->id,
+                        $app->first_name,
+                        $app->last_name,
+                        $app->email,
+                        $app->phone,
+                        $app->country,
+                        $app->organization,
+                        $app->job_title,
+                        $app->price_tier,
+                        $app->status,
+                        optional($app->arrival_date)->format('Y-m-d'),
+                        optional($app->departure_date)->format('Y-m-d'),
+                        is_array($app->heard_from) ? implode('; ', $app->heard_from) : '',
+                        $app->heard_from_other,
+                        $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        };
+
+        return response()->streamDownload($callback, $filename, $headers);
     }
 
     public function show(SummitRegistration $summit_registration)

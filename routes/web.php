@@ -88,6 +88,7 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::resource('blog', AdminBlogController::class)->except(['show']);
     Route::post('/blog-settings', [AdminBlogController::class, 'updateSettings'])->name('blog.settings');
     Route::get('/applications', [ApplicationsController::class, 'index'])->name('applications.index');
+    Route::get('/applications/export', [ApplicationsController::class, 'export'])->name('applications.export');
     Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
     Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
     Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');

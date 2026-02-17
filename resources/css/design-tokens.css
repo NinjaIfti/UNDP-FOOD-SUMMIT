@@ -19,8 +19,8 @@
   --color-cofsa-orange: #F09322;
 
   /* Admin sidebar */
-  --color-sidebar-bg: #1B4332;
-  --color-sidebar-active: #2D6A4F;
+  --color-sidebar-bg: var(--color-primary-1);
+  --color-sidebar-active: var(--color-accent-1);
 
   /* Typography */
   --font-body: 'EB Garamond', Garamond, Georgia, serif;
