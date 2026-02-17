@@ -139,32 +139,22 @@ const filteredHotels = computed(() => {
         </section>
 
         <section class="border-b border-gray-200 bg-white">
-            <div class="mx-auto max-w-7xl px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
                 <div
-                    class="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:justify-center tab-scroll-container"
+                    class="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1 pl-2 pr-8 sm:px-0 lg:justify-center tab-scroll-container"
                 >
                     <button
                         v-for="tab in tabs"
                         :key="tab.id"
                         type="button"
-                        class="inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 font-title text-sm font-semibold transition sm:px-5 sm:text-base"
+                        class="inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 font-title text-sm font-semibold transition sm:px-5 sm:py-2.5 sm:text-base first:ml-2 last:mr-2 sm:first:ml-4 sm:last:mr-4"
                         :class="activeTab === tab.id
                             ? 'bg-primary-1 text-white'
                             : 'bg-gray-100 text-ink hover:bg-gray-200'"
                         @click="activeTab = tab.id"
                     >
                         <svg
-                            v-if="tab.icon === 'map-pin'"
-                            class="h-5 w-5 shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <svg
-                            v-else-if="tab.icon === 'plane'"
+                            v-if="tab.icon === 'plane'"
                             class="h-5 w-5 shrink-0"
                             fill="none"
                             stroke="currentColor"
@@ -236,10 +226,10 @@ const filteredHotels = computed(() => {
                                 i
                             </div>
                             <div>
-                                <p class="font-title text-base text-gray-800">
+                                <p class="font-body text-base text-gray-800">
                                     {{ settings.field_visits_info || 'Optional add-on: Field visits on 31 August are available at an additional cost and can be selected during registration.' }}
                                 </p>
-                                <p v-if="settings.field_visits_pending" class="mt-2 font-title text-sm italic text-gray-500">
+                                <p v-if="settings.field_visits_pending" class="mt-2 font-body text-sm italic text-gray-500">
                                     {{ settings.field_visits_pending }}
                                 </p>
                             </div>
@@ -250,7 +240,7 @@ const filteredHotels = computed(() => {
                         <h3 class="font-title text-lg font-bold text-gray-900 sm:text-xl">
                             What to Expect
                         </h3>
-                        <ul class="mt-4 list-none space-y-3 font-title text-gray-800">
+                        <ul class="mt-4 list-none space-y-3 font-body text-gray-800">
                             <li v-for="(expectation, index) in settings.field_visits_expectations" :key="index" class="flex items-center justify-center gap-3">
                                 <span class="h-2 w-2 shrink-0 rounded-full bg-primary-1" />
                                 <span>{{ expectation }}</span>
