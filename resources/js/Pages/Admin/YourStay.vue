@@ -36,8 +36,11 @@ const form = useForm({
     air_travel_guidance_title: props.settings.air_travel_guidance_title || '',
     air_travel_guidance_points: props.settings.air_travel_guidance_points || [],
     airlines_title: props.settings.airlines_title || '',
+    airlines: props.settings.airlines || [],
+    flight_table_title: props.settings.flight_table_title || '',
     flight_table_note: props.settings.flight_table_note || '',
     flight_table_saarc_note: props.settings.flight_table_saarc_note || '',
+    flight_routes: props.settings.flight_routes || [],
     transit_visa_title: props.settings.transit_visa_title || '',
     transit_visa_description: props.settings.transit_visa_description || '',
     visa_title: props.settings.visa_title || '',
@@ -48,6 +51,8 @@ const form = useForm({
     visa_independent_title: props.settings.visa_independent_title || '',
     visa_independent_description: props.settings.visa_independent_description || '',
     visa_independent_points: props.settings.visa_independent_points || [],
+    visa_independent_button_text: props.settings.visa_independent_button_text || '',
+    visa_independent_button_url: props.settings.visa_independent_button_url || '',
     arrival_title: props.settings.arrival_title || '',
     mobile_title: props.settings.mobile_title || '',
     mobile_description: props.settings.mobile_description || '',
@@ -97,6 +102,10 @@ const form = useForm({
     companions_tips: props.settings.companions_tips || [],
     companions_resources_title: props.settings.companions_resources_title || '',
     companions_resources: props.settings.companions_resources || [],
+    included_title: props.settings.included_title || '',
+    included_items: props.settings.included_items || [],
+    not_included_title: props.settings.not_included_title || '',
+    not_included_items: props.settings.not_included_items || [],
 });
 
 const submit = () => {
@@ -189,6 +198,83 @@ const removeObjectItem = (arrayName, index) => {
                             <label class="block font-body text-sm font-medium text-ink">Announcement Text</label>
                             <textarea v-model="form.participation_costs_announcement" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
+                        
+                        <div class="border-t pt-6 mt-6">
+                            <h4 class="mb-4 font-title text-base font-bold text-primary-1">What's Included Card</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Card Title</label>
+                                    <input v-model="form.included_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                </div>
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink mb-2">Included Items</label>
+                                    <div v-for="(item, index) in form.included_items" :key="index" class="mb-4 rounded-lg border border-gray-200 p-4">
+                                        <div class="mb-3 flex items-center justify-between">
+                                            <span class="font-body text-xs font-medium text-ink">Item {{ index + 1 }}</span>
+                                            <button type="button" @click="removeObjectItem('included_items', index)" class="rounded-lg bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200">Remove</button>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block font-body text-xs font-medium text-ink">Title</label>
+                                                <input v-model="form.included_items[index].title" type="text" placeholder="e.g., Event Access" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-body text-xs font-medium text-ink">Description</label>
+                                                <textarea v-model="form.included_items[index].description" rows="3" placeholder="Description text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                                                <p class="mt-1 font-body text-xs text-gray-500">Use newlines (Enter) to create bullet points</p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
+                                                    <input v-model="form.included_items[index].isList" type="checkbox" class="rounded border-gray-300" />
+                                                    Display as bullet list
+                                                </label>
+                                                <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
+                                                    <input v-model="form.included_items[index].highlighted" type="checkbox" class="rounded border-gray-300" />
+                                                    Highlighted (special styling)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" @click="addObjectItem('included_items', { title: '', description: '', isList: false, highlighted: false })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Included Item</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t pt-6 mt-6">
+                            <h4 class="mb-4 font-title text-base font-bold text-primary-1">What's NOT Included Card</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Card Title</label>
+                                    <input v-model="form.not_included_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                </div>
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink mb-2">Not Included Items</label>
+                                    <div v-for="(item, index) in form.not_included_items" :key="index" class="mb-4 rounded-lg border border-gray-200 p-4">
+                                        <div class="mb-3 flex items-center justify-between">
+                                            <span class="font-body text-xs font-medium text-ink">Item {{ index + 1 }}</span>
+                                            <button type="button" @click="removeObjectItem('not_included_items', index)" class="rounded-lg bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200">Remove</button>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block font-body text-xs font-medium text-ink">Title</label>
+                                                <input v-model="form.not_included_items[index].title" type="text" placeholder="e.g., International Travel" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-body text-xs font-medium text-ink">Description</label>
+                                                <textarea v-model="form.not_included_items[index].description" rows="2" placeholder="Description text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
+                                                    <input v-model="form.not_included_items[index].highlighted" type="checkbox" class="rounded border-gray-300" />
+                                                    Highlighted (special styling)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" @click="addObjectItem('not_included_items', { title: '', description: '', highlighted: false })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Not Included Item</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -245,6 +331,115 @@ const removeObjectItem = (arrayName, index) => {
                             <label class="block font-body text-sm font-medium text-ink">Airlines Section Title</label>
                             <input v-model="form.airlines_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
+                        
+                        <div class="border-t pt-6 mt-6">
+                            <h4 class="mb-4 font-title text-base font-bold text-primary-1">Airlines</h4>
+                            <div class="space-y-4">
+                                <div v-for="(airline, index) in form.airlines" :key="index" class="mb-4 rounded-lg border border-gray-200 p-4">
+                                    <div class="mb-3 flex items-center justify-between">
+                                        <span class="font-body text-xs font-medium text-ink">Airline {{ index + 1 }}</span>
+                                        <button type="button" @click="removeObjectItem('airlines', index)" class="rounded-lg bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200">Remove</button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Name</label>
+                                            <input v-model="form.airlines[index].name" type="text" placeholder="e.g., Drukair" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Description</label>
+                                            <input v-model="form.airlines[index].description" type="text" placeholder="e.g., Royal Bhutan Airlines" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Image Path</label>
+                                            <input v-model="form.airlines[index].image" type="text" placeholder="/brand/plane1.jpg" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Website URL</label>
+                                            <input v-model="form.airlines[index].website" type="url" placeholder="https://www.example.com" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" @click="addObjectItem('airlines', { name: '', description: '', image: '', website: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Airline</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t pt-6 mt-6">
+                            <h4 class="mb-4 font-title text-base font-bold text-primary-1">Flight Routes Table</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Table Title</label>
+                                    <input v-model="form.flight_table_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                </div>
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink mb-2">Flight Routes</label>
+                                    <div v-for="(route, index) in form.flight_routes" :key="index" class="mb-4 rounded-lg border border-gray-200 p-4">
+                                        <div class="mb-3 flex items-center justify-between">
+                                            <span class="font-body text-xs font-medium text-ink">Route {{ index + 1 }}</span>
+                                            <button type="button" @click="removeObjectItem('flight_routes', index)" class="rounded-lg bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200">Remove</button>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">Airline Name</label>
+                                                    <input v-model="form.flight_routes[index].airline" type="text" placeholder="e.g., Drukair" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">Airline Website URL</label>
+                                                    <input v-model="form.flight_routes[index].airline_url" type="url" placeholder="https://www.example.com" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">Sector</label>
+                                                    <input v-model="form.flight_routes[index].sector" type="text" placeholder="e.g., Bangkok-Paro-Bangkok" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">Sector Note</label>
+                                                    <input v-model="form.flight_routes[index].sector_note" type="text" placeholder="e.g., (via Guwahati)" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block font-body text-xs font-medium text-ink">Availability</label>
+                                                <textarea v-model="form.flight_routes[index].availability" rows="3" placeholder="e.g., Daily or specific days" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                                                <p class="mt-1 font-body text-xs text-gray-500">Use newlines for multiple lines</p>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">SAARC Business Class</label>
+                                                    <input v-model="form.flight_routes[index].saarc_business" type="text" placeholder="USD amount" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">SAARC Economy Class</label>
+                                                    <input v-model="form.flight_routes[index].saarc_economy" type="text" placeholder="USD amount" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">International Business Class</label>
+                                                    <input v-model="form.flight_routes[index].international_business" type="text" placeholder="USD amount" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                                <div>
+                                                    <label class="block font-body text-xs font-medium text-ink">International Economy Class</label>
+                                                    <input v-model="form.flight_routes[index].international_economy" type="text" placeholder="USD amount" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
+                                                    <input v-model="form.flight_routes[index].is_note" type="checkbox" class="rounded border-gray-300" />
+                                                    This is a note row (for airline info messages)
+                                                </label>
+                                            </div>
+                                            <div v-if="form.flight_routes[index].is_note">
+                                                <label class="block font-body text-xs font-medium text-ink">Note Text</label>
+                                                <textarea v-model="form.flight_routes[index].note" rows="2" placeholder="Note message" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" @click="addObjectItem('flight_routes', { airline: '', airline_url: '', sector: '', sector_note: '', availability: '', saarc_business: '', saarc_economy: '', international_business: '', international_economy: '', is_note: false, note: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Flight Route</button>
+                            </div>
+                        </div>
+                        
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Flight Table Note</label>
                             <textarea v-model="form.flight_table_note" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
@@ -312,6 +507,19 @@ const removeObjectItem = (arrayName, index) => {
                                 <button type="button" @click="removeArrayItem('visa_independent_points', index)" class="rounded-lg bg-red-100 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-200">Remove</button>
                             </div>
                             <button type="button" @click="addArrayItem('visa_independent_points', '')" class="mt-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Point</button>
+                        </div>
+                        <div class="border-t pt-4 mt-4">
+                            <h4 class="mb-3 font-title text-base font-bold text-primary-1">Button</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Button Text</label>
+                                    <input v-model="form.visa_independent_button_text" type="text" placeholder="e.g., Official Immigration Website" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                </div>
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Button URL</label>
+                                    <input v-model="form.visa_independent_button_url" type="url" placeholder="https://www.example.com" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -437,40 +645,47 @@ const removeObjectItem = (arrayName, index) => {
                                     <h5 class="font-title text-sm font-bold text-primary-1">Hotel {{ index + 1 }}</h5>
                                     <button type="button" @click="removeObjectItem('hotels', index)" class="rounded-lg bg-red-100 px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-200">Remove</button>
                                 </div>
-                                <div class="grid gap-3 sm:grid-cols-2">
+                                <div class="space-y-3">
                                     <div>
-                                        <label class="block font-body text-xs font-medium text-ink">Name</label>
-                                        <input v-model="form.hotels[index].name" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        <label class="block font-body text-xs font-medium text-ink">Image URL/Path</label>
+                                        <input v-model="form.hotels[index].image" type="text" placeholder="/images/hotels/hotel-name.jpg" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        <p class="mt-1 font-body text-xs text-gray-500">Enter image path (e.g., /images/hotels/hotel.jpg) or full URL</p>
                                     </div>
-                                    <div>
-                                        <label class="block font-body text-xs font-medium text-ink">Email</label>
-                                        <input v-model="form.hotels[index].email" type="email" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                    </div>
-                                    <div>
-                                        <label class="block font-body text-xs font-medium text-ink">Price Range</label>
-                                        <input v-model="form.hotels[index].priceRange" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                    </div>
-                                    <div>
-                                        <label class="block font-body text-xs font-medium text-ink">Distance</label>
-                                        <input v-model="form.hotels[index].distance" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                    </div>
-                                    <div>
-                                        <label class="block font-body text-xs font-medium text-ink">Category</label>
-                                        <select v-model="form.hotels[index].category" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20">
-                                            <option value="budget">Budget</option>
-                                            <option value="mid-range">Mid-Range</option>
-                                            <option value="premium">Premium</option>
-                                        </select>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
-                                            <input v-model="form.hotels[index].nearAirport" type="checkbox" class="rounded border-gray-300" />
-                                            Near Airport
-                                        </label>
+                                    <div class="grid gap-3 sm:grid-cols-2">
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Name</label>
+                                            <input v-model="form.hotels[index].name" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Email</label>
+                                            <input v-model="form.hotels[index].email" type="email" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Price Range</label>
+                                            <input v-model="form.hotels[index].priceRange" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Distance</label>
+                                            <input v-model="form.hotels[index].distance" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Category</label>
+                                            <select v-model="form.hotels[index].category" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20">
+                                                <option value="budget">Budget</option>
+                                                <option value="mid-range">Mid-Range</option>
+                                                <option value="premium">Premium</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <label class="flex items-center gap-2 font-body text-xs font-medium text-ink">
+                                                <input v-model="form.hotels[index].nearAirport" type="checkbox" class="rounded border-gray-300" />
+                                                Near Airport
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" @click="addObjectItem('hotels', { name: '', email: '', priceRange: '', distance: '', category: 'mid-range', nearAirport: false })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Hotel</button>
+                            <button type="button" @click="addObjectItem('hotels', { name: '', email: '', priceRange: '', distance: '', category: 'mid-range', nearAirport: false, image: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Hotel</button>
                         </div>
                     </div>
                 </div>
