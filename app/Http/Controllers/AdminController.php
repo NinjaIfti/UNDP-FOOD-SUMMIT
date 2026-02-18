@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SummitRegistration;
 use App\Models\User;
 use App\Notifications\AdminResetPasswordNotification;
 use Illuminate\Auth\Events\PasswordReset;
@@ -125,7 +126,126 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return Inertia::render('Admin/Dashboard');
+        $totalApplications = SummitRegistration::count();
+        $approved = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->count();
+        $rejected = SummitRegistration::where('status', SummitRegistration::STATUS_REJECTED)->count();
+        $paymentData = $this->getDashboardPaymentData();
+        $paidCount = 0;
+        foreach (SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->pluck('id') as $id) {
+            if (($paymentData[$id]['status'] ?? '') === 'paid') {
+                $paidCount++;
+            }
+        }
+
+        $pendingCount = SummitRegistration::where('status', SummitRegistration::STATUS_PENDING)->count();
+        $thisWeekStart = now()->startOfWeek();
+        $applicationsThisWeek = SummitRegistration::where('created_at', '>=', $thisWeekStart)->count();
+        $approvedThisWeek = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)
+            ->where('updated_at', '>=', $thisWeekStart)->count();
+        $rejectedThisWeek = SummitRegistration::where('status', SummitRegistration::STATUS_REJECTED)
+            ->where('updated_at', '>=', $thisWeekStart)->count();
+        $paidThisWeek = 0;
+        foreach ($paymentData as $regId => $data) {
+            if (($data['status'] ?? '') === 'paid' && isset($data['updated_at'])) {
+                if (strtotime($data['updated_at']) >= $thisWeekStart->timestamp) {
+                    $paidThisWeek++;
+                }
+            }
+        }
+
+        $metrics = [
+            [
+                'title' => 'Total Applications (EOIs)',
+                'value' => (string) $totalApplications,
+                'change' => '+' . $applicationsThisWeek . ' this week',
+                'icon' => 'users',
+                'color' => 'from-[#2d5f3f] to-[#4a7c59]',
+            ],
+            [
+                'title' => 'Approved Participants',
+                'value' => (string) $approved,
+                'change' => '+' . $approvedThisWeek . ' this week',
+                'icon' => 'check',
+                'color' => 'from-[#4a7c59] to-[#6b9773]',
+            ],
+            [
+                'title' => 'Rejected Participants',
+                'value' => (string) $rejected,
+                'change' => '+' . $rejectedThisWeek . ' this week',
+                'icon' => 'x',
+                'color' => 'from-[#c53030] to-[#a82828]',
+            ],
+            [
+                'title' => 'Total Tickets Sold',
+                'value' => (string) $paidCount,
+                'change' => '+' . $paidThisWeek . ' this week',
+                'icon' => 'ticket',
+                'color' => 'from-[#d4af37] to-[#b8962f]',
+            ],
+        ];
+
+        $registrationData = $this->buildRegistrationChartData();
+        $emailActivity = [
+            'approval_sent' => 0,
+            'opened' => 0,
+            'payment_clicked' => 0,
+            'reminder_sent' => 0,
+        ];
+
+        $paidParticipants = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)
+            ->get()
+            ->filter(function ($reg) use ($paymentData) {
+                return ($paymentData[$reg->id]['status'] ?? '') === 'paid';
+            })
+            ->map(function ($reg) use ($paymentData) {
+                $data = $paymentData[$reg->id] ?? [];
+                return [
+                    'id' => $reg->id,
+                    'first_name' => $reg->first_name,
+                    'last_name' => $reg->last_name,
+                    'email' => $reg->email,
+                    'organization' => $reg->organization,
+                    'country' => $reg->country,
+                    'price_tier' => $reg->price_tier,
+                    'field_visit' => (bool) $reg->field_visit,
+                    'payment_amount' => $data['amount'] ?? null,
+                    'payment_date' => isset($data['updated_at']) ? date('M j, Y', strtotime($data['updated_at'])) : null,
+                ];
+            })
+            ->values()
+            ->all();
+
+        return Inertia::render('Admin/Dashboard', [
+            'metrics' => $metrics,
+            'registrationData' => $registrationData,
+            'emailActivity' => $emailActivity,
+            'paidParticipants' => $paidParticipants,
+        ]);
+    }
+
+    protected function getDashboardPaymentData(): array
+    {
+        if (Storage::exists('admin/payments.json')) {
+            return json_decode(Storage::get('admin/payments.json'), true) ?? [];
+        }
+        return [];
+    }
+
+    protected function buildRegistrationChartData(): array
+    {
+        $weeks = 10;
+        $items = [];
+        $end = now();
+        for ($i = $weeks - 1; $i >= 0; $i--) {
+            $start = $end->copy()->subWeeks($i)->startOfWeek();
+            $weekEnd = $start->copy()->endOfWeek();
+            $count = SummitRegistration::whereBetween('created_at', [$start, $weekEnd])->count();
+            $items[] = [
+                'date' => $start->format('M j'),
+                'count' => $count,
+            ];
+        }
+        return $items;
     }
 
     public function homepage()

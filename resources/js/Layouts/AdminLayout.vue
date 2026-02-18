@@ -1,9 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 
 const sidebarOpen = ref(false);
 const pagesExpanded = ref(true);
+const sidebarNav = ref(null);
+const sidebarScrollPosition = ref(0);
 
 const logout = () => {
     router.post(route('admin.logout'));
@@ -14,6 +16,40 @@ const closeSidebarOnMobile = () => {
         sidebarOpen.value = false;
     }
 };
+
+const saveSidebarScroll = () => {
+    if (sidebarNav.value) {
+        sidebarScrollPosition.value = sidebarNav.value.scrollTop;
+        localStorage.setItem('adminSidebarScroll', sidebarScrollPosition.value.toString());
+    }
+};
+
+const restoreSidebarScroll = () => {
+    nextTick(() => {
+        const savedScroll = localStorage.getItem('adminSidebarScroll');
+        if (sidebarNav.value && savedScroll) {
+            sidebarNav.value.scrollTop = parseInt(savedScroll, 10);
+        }
+    });
+};
+
+onMounted(() => {
+    restoreSidebarScroll();
+    
+    if (sidebarNav.value) {
+        sidebarNav.value.addEventListener('scroll', saveSidebarScroll);
+    }
+    
+    router.on('start', () => {
+        saveSidebarScroll();
+    });
+    
+    router.on('finish', () => {
+        setTimeout(() => {
+            restoreSidebarScroll();
+        }, 100);
+    });
+});
 
 const isDashboardActive = computed(() => route().current('admin.dashboard'));
 const isHomepageActive = computed(() => route().current('admin.homepage'));
@@ -47,7 +83,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                 </button>
             </div>
 
-            <nav class="flex-1 space-y-1 overflow-y-auto px-4 py-6">
+            <nav ref="sidebarNav" class="sidebar-scroll flex-1 space-y-1 overflow-y-auto px-4 py-6">
                 <!-- Dashboard -->
                 <Link
                     :href="route('admin.dashboard')"
@@ -170,28 +206,43 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                 </Link>
 
                 <!-- Payments -->
-                <a href="#" @click="closeSidebarOnMobile" class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10">
+                <Link
+                    :href="route('admin.payments.index')"
+                    @click="closeSidebarOnMobile"
+                    class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
+                    :class="route().current('admin.payments.*') ? 'bg-[var(--color-sidebar-active)]' : 'hover:bg-white/10'"
+                >
                     <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Payments
-                </a>
+                </Link>
 
                 <!-- Packages -->
-                <a href="#" @click="closeSidebarOnMobile" class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10">
+                <Link
+                    :href="route('admin.packages.index')"
+                    @click="closeSidebarOnMobile"
+                    class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
+                    :class="route().current('admin.packages.*') ? 'bg-[var(--color-sidebar-active)]' : 'hover:bg-white/10'"
+                >
                     <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                     Packages
-                </a>
+                </Link>
 
                 <!-- Communications -->
-                <a href="#" @click="closeSidebarOnMobile" class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10">
+                <Link
+                    :href="route('admin.communications.index')"
+                    @click="closeSidebarOnMobile"
+                    class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
+                    :class="route().current('admin.communications.*') ? 'bg-[var(--color-sidebar-active)]' : 'hover:bg-white/10'"
+                >
                     <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     Communications
-                </a>
+                </Link>
 
                 <!-- Users -->
                 <Link
@@ -207,13 +258,18 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                 </Link>
 
                 <!-- Settings -->
-                <a href="#" @click="closeSidebarOnMobile" class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10">
+                <Link
+                    :href="route('admin.settings.index')"
+                    @click="closeSidebarOnMobile"
+                    class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
+                    :class="route().current('admin.settings.*') ? 'bg-[var(--color-sidebar-active)]' : 'hover:bg-white/10'"
+                >
                     <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     Settings
-                </a>
+                </Link>
             </nav>
 
             <div class="border-t border-white/10 p-4">
