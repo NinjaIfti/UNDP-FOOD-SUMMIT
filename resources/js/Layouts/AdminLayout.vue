@@ -53,6 +53,7 @@ onMounted(() => {
 
 const page = usePage();
 const sidebarLogo = computed(() => page.props.site_settings?.logo || '/brand/logo2.png');
+const can = computed(() => page.props.admin_permissions || {});
 
 const isDashboardActive = computed(() => route().current('admin.dashboard'));
 const isHomepageActive = computed(() => route().current('admin.homepage'));
@@ -101,7 +102,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                 </Link>
 
                 <!-- Pages (collapsible) -->
-                <div class="space-y-1">
+                <div class="space-y-1" v-if="can.homepage || can['programme-experience'] || can['your-bhutan-stay'] || can['get-involved'] || can.faqs">
                     <button
                         @click="pagesExpanded = !pagesExpanded"
                         class="flex w-full items-center justify-between gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition hover:bg-white/10"
@@ -124,6 +125,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                     </button>
                     <div v-show="pagesExpanded" class="ml-4 space-y-1 border-l border-white/20 pl-3">
                         <Link
+                            v-if="can.homepage"
                             :href="route('admin.homepage')"
                             @click="closeSidebarOnMobile"
                             class="flex items-center gap-3 rounded-lg px-3 py-2 font-body text-sm font-medium transition"
@@ -135,6 +137,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                             Homepage
                         </Link>
                         <Link
+                            v-if="can['programme-experience']"
                             :href="route('admin.programme')"
                             @click="closeSidebarOnMobile"
                             class="flex items-center gap-3 rounded-lg px-3 py-2 font-body text-sm font-medium transition"
@@ -146,6 +149,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                             Programme/Experience
                         </Link>
                         <Link
+                            v-if="can['your-bhutan-stay']"
                             :href="route('admin.your-stay')"
                             @click="closeSidebarOnMobile"
                             class="flex items-center gap-3 rounded-lg px-3 py-2 font-body text-sm font-medium transition"
@@ -158,6 +162,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                             Your Stay in Bhutan
                         </Link>
                         <Link
+                            v-if="can['get-involved']"
                             :href="route('admin.get-involved')"
                             @click="closeSidebarOnMobile"
                             class="flex items-center gap-3 rounded-lg px-3 py-2 font-body text-sm font-medium transition"
@@ -169,6 +174,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
                             Get Involved
                         </Link>
                         <Link
+                            v-if="can.faqs"
                             :href="route('admin.faq')"
                             @click="closeSidebarOnMobile"
                             class="flex items-center gap-3 rounded-lg px-3 py-2 font-body text-sm font-medium transition"
@@ -184,6 +190,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Blog -->
                 <Link
+                    v-if="can.blog"
                     :href="route('admin.blog.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -197,6 +204,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Applications -->
                 <Link
+                    v-if="can.applications"
                     :href="route('admin.applications.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -210,6 +218,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Payments -->
                 <Link
+                    v-if="can.payments"
                     :href="route('admin.payments.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -223,6 +232,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Packages -->
                 <Link
+                    v-if="can.packages"
                     :href="route('admin.packages.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -236,6 +246,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Communications -->
                 <Link
+                    v-if="can.communications"
                     :href="route('admin.communications.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -249,6 +260,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Users -->
                 <Link
+                    v-if="can.users"
                     :href="route('admin.users.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"
@@ -262,6 +274,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 
                 <!-- Settings -->
                 <Link
+                    v-if="can.settings"
                     :href="route('admin.settings.index')"
                     @click="closeSidebarOnMobile"
                     class="flex items-center gap-3 rounded-lg px-4 py-3 font-body text-sm font-medium transition"

@@ -20,7 +20,7 @@ class AdminController extends Controller
 {
     public function login()
     {
-        if (Auth::check() && Auth::user()->hasRole('admin')) {
+        if (Auth::check() && Auth::user()->hasAnyRole(['admin', 'super-admin', 'cms-admin'])) {
             return redirect()->route('admin.dashboard');
         }
 
@@ -39,7 +39,7 @@ class AdminController extends Controller
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasAnyRole(['admin', 'super-admin', 'cms-admin'])) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 

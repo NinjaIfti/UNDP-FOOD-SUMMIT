@@ -35,7 +35,37 @@ class HandleInertiaRequests extends Middleware
             ],
             'blog_enabled' => $blogSettings['blog_enabled'] ?? false,
             'site_settings' => $siteSettings,
+            'admin_permissions' => $request->user() ? $this->getAdminPermissions($request->user()) : [],
         ];
+    }
+
+    protected function getAdminPermissions($user): array
+    {
+        if (!$user || !method_exists($user, 'hasPermissionTo')) {
+            return [];
+        }
+
+        $keys = [
+            'homepage',
+            'programme-experience',
+            'your-bhutan-stay',
+            'get-involved',
+            'faqs',
+            'blog',
+            'applications',
+            'payments',
+            'packages',
+            'communications',
+            'users',
+            'settings',
+        ];
+
+        $permissions = [];
+        foreach ($keys as $key) {
+            $permissions[$key] = $user->hasPermissionTo($key);
+        }
+
+        return $permissions;
     }
 
     protected function getSiteSettings(): array

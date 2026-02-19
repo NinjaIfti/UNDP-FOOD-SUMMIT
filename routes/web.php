@@ -79,47 +79,84 @@ Route::post('/admin-portal-access/reset-password', [AdminController::class, 'res
 
 Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');
-    Route::post('/homepage', [AdminController::class, 'updateHomepage'])->name('homepage.update');
-    Route::get('/your-stay', [AdminController::class, 'yourStay'])->name('your-stay');
-    Route::post('/your-stay', [AdminController::class, 'updateYourStay'])->name('your-stay.update');
-    Route::get('/programme', [AdminController::class, 'programme'])->name('programme');
-    Route::post('/programme', [AdminController::class, 'updateProgramme'])->name('programme.update');
-    Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
-    Route::post('/faq', [AdminController::class, 'updateFaq'])->name('faq.update');
-    Route::get('/get-involved', [AdminController::class, 'getInvolved'])->name('get-involved');
-    Route::post('/get-involved', [AdminController::class, 'updateGetInvolved'])->name('get-involved.update');
-    Route::resource('blog', AdminBlogController::class)->except(['show']);
-    Route::post('/blog-settings', [AdminBlogController::class, 'updateSettings'])->name('blog.settings');
-    Route::get('/applications', [ApplicationsController::class, 'index'])->name('applications.index');
-    Route::get('/applications/export', [ApplicationsController::class, 'export'])->name('applications.export');
-    Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
-    Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
-    Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');
-    Route::post('/applications/{summit_registration}/waitlist', [ApplicationsController::class, 'waitlist'])->name('applications.waitlist');
-    Route::post('/applications/{summit_registration}/revert', [ApplicationsController::class, 'revert'])->name('applications.revert');
-    Route::get('/packages', [PackagesController::class, 'index'])->name('packages.index');
-    Route::post('/packages', [PackagesController::class, 'store'])->name('packages.store');
-    Route::put('/packages/{id}', [PackagesController::class, 'update'])->name('packages.update');
-    Route::post('/packages/{id}/toggle', [PackagesController::class, 'toggle'])->name('packages.toggle');
-    Route::delete('/packages/{id}', [PackagesController::class, 'destroy'])->name('packages.destroy');
-    Route::get('/communications', [CommunicationsController::class, 'index'])->name('communications.index');
-    Route::post('/communications', [CommunicationsController::class, 'store'])->name('communications.store');
-    Route::put('/communications/{id}', [CommunicationsController::class, 'update'])->name('communications.update');
-    Route::post('/communications/{id}/duplicate', [CommunicationsController::class, 'duplicate'])->name('communications.duplicate');
-    Route::delete('/communications/{id}', [CommunicationsController::class, 'destroy'])->name('communications.destroy');
-    Route::get('/payments', [PaymentsController::class, 'index'])->name('payments.index');
-    Route::post('/payments', [PaymentsController::class, 'store'])->name('payments.store');
-    Route::get('/payments/export', [PaymentsController::class, 'export'])->name('payments.export');
-    Route::post('/payments/{summit_registration}/resend-email', [PaymentsController::class, 'resendEmail'])->name('payments.resend-email');
-    Route::put('/payments/{summit_registration}/status', [PaymentsController::class, 'updatePaymentStatus'])->name('payments.update-status');
-    Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('users.index');
-    Route::post('/users', [\App\Http\Controllers\Admin\UsersController::class, 'store'])->name('users.store');
-    Route::put('/users/{user}', [\App\Http\Controllers\Admin\UsersController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UsersController::class, 'destroy'])->name('users.destroy');
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.update-general');
-    Route::post('/settings/footer', [SettingsController::class, 'updateFooter'])->name('settings.update-footer');
+
+    Route::middleware('permission:homepage')->group(function () {
+        Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');
+        Route::post('/homepage', [AdminController::class, 'updateHomepage'])->name('homepage.update');
+    });
+
+    Route::middleware('permission:your-bhutan-stay')->group(function () {
+        Route::get('/your-stay', [AdminController::class, 'yourStay'])->name('your-stay');
+        Route::post('/your-stay', [AdminController::class, 'updateYourStay'])->name('your-stay.update');
+    });
+
+    Route::middleware('permission:programme-experience')->group(function () {
+        Route::get('/programme', [AdminController::class, 'programme'])->name('programme');
+        Route::post('/programme', [AdminController::class, 'updateProgramme'])->name('programme.update');
+    });
+
+    Route::middleware('permission:faqs')->group(function () {
+        Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
+        Route::post('/faq', [AdminController::class, 'updateFaq'])->name('faq.update');
+    });
+
+    Route::middleware('permission:get-involved')->group(function () {
+        Route::get('/get-involved', [AdminController::class, 'getInvolved'])->name('get-involved');
+        Route::post('/get-involved', [AdminController::class, 'updateGetInvolved'])->name('get-involved.update');
+    });
+
+    Route::middleware('permission:blog')->group(function () {
+        Route::resource('blog', AdminBlogController::class)->except(['show']);
+        Route::post('/blog-settings', [AdminBlogController::class, 'updateSettings'])->name('blog.settings');
+    });
+
+    Route::middleware('permission:applications')->group(function () {
+        Route::get('/applications', [ApplicationsController::class, 'index'])->name('applications.index');
+        Route::get('/applications/export', [ApplicationsController::class, 'export'])->name('applications.export');
+        Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
+        Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
+        Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');
+        Route::post('/applications/{summit_registration}/waitlist', [ApplicationsController::class, 'waitlist'])->name('applications.waitlist');
+        Route::post('/applications/{summit_registration}/revert', [ApplicationsController::class, 'revert'])->name('applications.revert');
+    });
+
+    Route::middleware('permission:packages')->group(function () {
+        Route::get('/packages', [PackagesController::class, 'index'])->name('packages.index');
+        Route::post('/packages', [PackagesController::class, 'store'])->name('packages.store');
+        Route::put('/packages/{id}', [PackagesController::class, 'update'])->name('packages.update');
+        Route::post('/packages/{id}/toggle', [PackagesController::class, 'toggle'])->name('packages.toggle');
+        Route::delete('/packages/{id}', [PackagesController::class, 'destroy'])->name('packages.destroy');
+    });
+
+    Route::middleware('permission:communications')->group(function () {
+        Route::get('/communications', [CommunicationsController::class, 'index'])->name('communications.index');
+        Route::post('/communications', [CommunicationsController::class, 'store'])->name('communications.store');
+        Route::put('/communications/{id}', [CommunicationsController::class, 'update'])->name('communications.update');
+        Route::post('/communications/{id}/duplicate', [CommunicationsController::class, 'duplicate'])->name('communications.duplicate');
+        Route::delete('/communications/{id}', [CommunicationsController::class, 'destroy'])->name('communications.destroy');
+    });
+
+    Route::middleware('permission:payments')->group(function () {
+        Route::get('/payments', [PaymentsController::class, 'index'])->name('payments.index');
+        Route::post('/payments', [PaymentsController::class, 'store'])->name('payments.store');
+        Route::get('/payments/export', [PaymentsController::class, 'export'])->name('payments.export');
+        Route::post('/payments/{summit_registration}/resend-email', [PaymentsController::class, 'resendEmail'])->name('payments.resend-email');
+        Route::put('/payments/{summit_registration}/status', [PaymentsController::class, 'updatePaymentStatus'])->name('payments.update-status');
+    });
+
+    Route::middleware('permission:users')->group(function () {
+        Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('users.index');
+        Route::post('/users', [\App\Http\Controllers\Admin\UsersController::class, 'store'])->name('users.store');
+        Route::put('/users/{user}', [\App\Http\Controllers\Admin\UsersController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UsersController::class, 'destroy'])->name('users.destroy');
+    });
+
+    Route::middleware('permission:settings')->group(function () {
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::post('/settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.update-general');
+        Route::post('/settings/footer', [SettingsController::class, 'updateFooter'])->name('settings.update-footer');
+    });
+
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 });
 
