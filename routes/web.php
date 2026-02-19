@@ -62,7 +62,7 @@ Route::get('/your-stay-in-bhutan', [AdminController::class, 'yourStayPublic']);
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
-Route::get('/register-summit', fn () => Inertia::render('Register/Index'));
+Route::get('/register-summit', [\App\Http\Controllers\RegisterController::class, 'index']);
 Route::post('/register-summit', [ContactController::class, 'registration'])->name('registration.store');
 
 Route::get('/submissions', fn () => Inertia::render('Placeholders/ComingSoon', ['title' => 'Call for Submissions']));

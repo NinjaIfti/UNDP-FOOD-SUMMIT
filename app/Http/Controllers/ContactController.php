@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SummitRegistration;
+use App\Services\PackageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -29,6 +30,8 @@ class ContactController extends Controller
 
     public function registration(Request $request)
     {
+        $activePackageIds = array_map(fn ($p) => (string) $p['id'], PackageService::getActiveTiers());
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -42,7 +45,7 @@ class ContactController extends Controller
             'passport_expiry' => 'nullable|date',
             'arrival_date' => 'required|date',
             'departure_date' => 'required|date|after_or_equal:arrival_date',
-            'price_tier' => 'required|string|in:tier1,tier2,tier3',
+            'price_tier' => ['required', 'string', 'in:' . implode(',', $activePackageIds)],
             'field_visit' => 'boolean',
             'accessibility_needed' => 'required|string|in:yes,no',
             'accessibility_details' => 'nullable|string|max:1000',

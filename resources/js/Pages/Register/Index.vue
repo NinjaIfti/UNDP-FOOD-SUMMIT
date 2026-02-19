@@ -37,6 +37,13 @@ const form = useForm({
     photo: null,
 });
 
+const props = defineProps({
+    packages: {
+        type: Array,
+        default: () => [],
+    },
+});
+
 const photoPreview = ref(null);
 const page = usePage();
 const showSuccessModal = ref(!!page.props.flash?.success);
@@ -450,29 +457,26 @@ const steps = [
 
                         <!-- Price Tier Selection -->
                         <p class="mb-2 mt-6 font-title text-sm font-medium text-white/80">Select your price tier *</p>
-                        <div class="space-y-3">
+                        <p v-if="!packages.length" class="rounded-xl border border-white/20 bg-white/5 px-5 py-4 text-sm text-white/70">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
+                        <div v-else class="space-y-3">
                             <label
-                                v-for="tier in [
-                                    { value: 'tier1', label: 'Tier 1 — Standard', price: 'USD 850', desc: 'Individual participants, researchers, and independent professionals' },
-                                    { value: 'tier2', label: 'Tier 2 — Institutional', price: 'USD 1,200', desc: 'Government delegates, UN agencies, NGOs, and institutional representatives' },
-                                    { value: 'tier3', label: 'Tier 3 — Premium', price: 'USD 1,800', desc: 'Private sector, corporate sponsors, and premium participants with priority access' },
-                                ]"
-                                :key="tier.value"
+                                v-for="pkg in packages"
+                                :key="pkg.id"
                                 class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition"
-                                :class="form.price_tier === tier.value ? 'border-accent-2 bg-accent-2/10' : 'border-white/20 bg-white/5 hover:border-white/40'"
+                                :class="form.price_tier === pkg.id ? 'border-accent-2 bg-accent-2/10' : 'border-white/20 bg-white/5 hover:border-white/40'"
                             >
                                 <input
                                     type="radio"
                                     v-model="form.price_tier"
-                                    :value="tier.value"
+                                    :value="pkg.id"
                                     class="mt-1 h-4 w-4 accent-[#F59C0E]"
                                 />
                                 <div class="flex-1">
                                     <div class="flex items-baseline justify-between gap-3">
-                                        <span class="font-title font-semibold text-white">{{ tier.label }}</span>
-                                        <span class="shrink-0 font-title text-lg font-bold text-accent-2">{{ tier.price }}</span>
+                                        <span class="font-title font-semibold text-white">{{ pkg.name }}</span>
+                                        <span class="shrink-0 font-title text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
                                     </div>
-                                    <p class="mt-0.5 text-sm text-white/70">{{ tier.desc }}</p>
+                                    <p class="mt-0.5 text-sm text-white/70">{{ pkg.description }}</p>
                                 </div>
                             </label>
                         </div>

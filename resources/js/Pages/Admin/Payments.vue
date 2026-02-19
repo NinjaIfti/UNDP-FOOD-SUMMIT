@@ -12,6 +12,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    packages: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const searchQuery = ref('');
@@ -33,7 +37,7 @@ const addForm = useForm({
     email: '',
     organization: '',
     country: '',
-    price_tier: 'tier1',
+    price_tier: props.packages?.[0]?.id ?? '',
     field_visit: false,
     payment_status: 'pending',
     payment_amount: '',
@@ -534,9 +538,7 @@ const formatDate = (dateString) => {
                                 v-model="addForm.price_tier"
                                 class="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
                             >
-                                <option value="tier1">Tier 1</option>
-                                <option value="tier2">Tier 2</option>
-                                <option value="tier3">Tier 3</option>
+                                <option v-for="pkg in packages" :key="pkg.id" :value="pkg.id">{{ pkg.name }} — USD {{ Number(pkg.price).toLocaleString() }}</option>
                             </select>
                             <div v-if="addForm.errors.price_tier" class="text-xs text-red-600">
                                 {{ addForm.errors.price_tier }}

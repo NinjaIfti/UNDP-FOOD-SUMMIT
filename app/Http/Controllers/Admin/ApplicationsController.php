@@ -141,8 +141,13 @@ class ApplicationsController extends Controller
 
     public function show(SummitRegistration $summit_registration)
     {
+        $application = $summit_registration->toArray();
+        if (!empty($application['photo'])) {
+            $application['photo_url'] = asset($application['photo']);
+        }
+
         return Inertia::render('Admin/Applications/Show', [
-            'application' => $summit_registration,
+            'application' => $application,
         ]);
     }
 

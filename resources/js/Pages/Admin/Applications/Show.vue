@@ -146,9 +146,12 @@ const statusBadgeClass = (status) => {
                     </div>
                 </div>
 
-                <div v-if="application.photo" class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <h2 class="font-title text-lg font-semibold text-primary-1">Photo</h2>
-                    <img :src="application.photo" alt="Applicant photo" class="mt-4 h-32 w-24 rounded-lg object-cover" />
+                <div v-if="application.photo || application.photo_url" class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h2 class="font-title text-lg font-semibold text-primary-1">Photo / Document</h2>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <img :src="application.photo_url || application.photo" alt="Applicant photo" class="h-40 w-32 rounded-lg object-cover border border-gray-200" />
+                        <a :href="application.photo_url || application.photo" target="_blank" rel="noopener noreferrer" class="text-sm text-accent-1 hover:underline">Open full size in new tab</a>
+                    </div>
                 </div>
 
                 <p class="font-body text-xs text-gray-500">Submitted {{ formatDate(application.created_at) }}</p>

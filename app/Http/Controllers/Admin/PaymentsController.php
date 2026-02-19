@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SummitRegistration;
+use App\Services\PackageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -79,6 +80,7 @@ class PaymentsController extends Controller
         return Inertia::render('Admin/Payments', [
             'participants' => $participants,
             'stats' => $stats,
+            'packages' => PackageService::getActiveTiers(),
         ]);
     }
 
@@ -101,13 +103,15 @@ class PaymentsController extends Controller
 
     public function store(Request $request)
     {
+        $activePackageIds = array_map(fn ($p) => (string) $p['id'], PackageService::getActiveTiers());
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'organization' => 'required|string|max:255',
             'country' => 'required|string|max:255',
-            'price_tier' => 'required|string',
+            'price_tier' => ['required', 'string', 'in:' . implode(',', $activePackageIds)],
             'field_visit' => 'boolean',
             'payment_status' => 'required|in:paid,pending,partial,refunded',
             'payment_amount' => 'nullable|numeric|min:0',
