@@ -302,7 +302,7 @@ const iconMap = {
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <span class="text-sm text-gray-700">Emails opened</span>
                             <span class="text-lg font-bold text-[#4a7c59]">{{ emailActivity.opened ?? 0 }}</span>
-                        </div>
+                </div>
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <span class="text-sm text-gray-700">Payment links clicked</span>
                             <span class="text-lg font-bold text-[#d4af37]">{{ emailActivity.payment_clicked ?? 0 }}</span>
