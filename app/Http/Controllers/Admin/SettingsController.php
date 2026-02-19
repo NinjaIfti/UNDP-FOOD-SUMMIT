@@ -22,17 +22,19 @@ class SettingsController extends Controller
     {
         $validated = $request->validate([
             'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
-            'favicon' => 'nullable|image|mimes:png,jpg,jpeg,ico|max:1024',
+            'logo_secondary' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+            'favicon' => 'nullable|file|mimes:png,jpg,jpeg,ico,svg|max:2048',
             'newsletter_text' => 'nullable|string',
-            'contact_email' => 'nullable|email',
+            'contact_email' => 'nullable|string',
             'contact_phone' => 'nullable|string',
             'contact_location' => 'nullable|string',
-            'social_facebook' => 'nullable|url',
-            'social_twitter' => 'nullable|url',
-            'social_instagram' => 'nullable|url',
-            'social_linkedin' => 'nullable|url',
-            'social_youtube' => 'nullable|url',
+            'social_facebook' => 'nullable|string',
+            'social_twitter' => 'nullable|string',
+            'social_instagram' => 'nullable|string',
+            'social_linkedin' => 'nullable|string',
+            'social_youtube' => 'nullable|string',
             'delete_logo' => 'nullable|boolean',
+            'delete_logo_secondary' => 'nullable|boolean',
             'delete_favicon' => 'nullable|boolean',
         ]);
 
@@ -58,6 +60,26 @@ class SettingsController extends Controller
             unset($validated['logo']);
         }
 
+        if ($request->hasFile('logo_secondary')) {
+            if (!empty($currentSettings['logo_secondary']) && str_starts_with($currentSettings['logo_secondary'], '/') && file_exists(public_path($currentSettings['logo_secondary']))) {
+                @unlink(public_path($currentSettings['logo_secondary']));
+            }
+            $file = $request->file('logo_secondary');
+            $filename = 'logo_secondary_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand'))) {
+                mkdir(public_path('brand'), 0755, true);
+            }
+            $file->move(public_path('brand'), $filename);
+            $validated['logo_secondary'] = '/brand/' . $filename;
+        } elseif ($request->input('delete_logo_secondary')) {
+            if (!empty($currentSettings['logo_secondary']) && str_starts_with($currentSettings['logo_secondary'], '/') && file_exists(public_path($currentSettings['logo_secondary']))) {
+                @unlink(public_path($currentSettings['logo_secondary']));
+            }
+            $validated['logo_secondary'] = '';
+        } else {
+            unset($validated['logo_secondary']);
+        }
+
         if ($request->hasFile('favicon')) {
             if (!empty($currentSettings['favicon']) && str_starts_with($currentSettings['favicon'], '/') && file_exists(public_path($currentSettings['favicon']))) {
                 @unlink(public_path($currentSettings['favicon']));
@@ -78,13 +100,14 @@ class SettingsController extends Controller
             unset($validated['favicon']);
         }
 
-        unset($validated['delete_logo'], $validated['delete_favicon']);
+        unset($validated['delete_logo'], $validated['delete_logo_secondary'], $validated['delete_favicon']);
 
         $merged = array_merge($currentSettings, $validated);
         $this->saveSettings($merged);
 
         return redirect()->route('admin.settings.index')
-            ->with('success', 'Settings updated successfully.');
+            ->with('success', 'Settings updated successfully.')
+            ->with('settings', $merged);
     }
 
     public function updateGeneral(Request $request)
@@ -104,7 +127,8 @@ class SettingsController extends Controller
         }
 
         return [
-            'logo' => '',
+            'logo' => '/brand/logo2.png',
+            'logo_secondary' => '/brand/govt.png',
             'favicon' => '',
             'newsletter_text' => 'Subscribe to our newsletter',
             'contact_email' => 'info@foodsummit2026.org',

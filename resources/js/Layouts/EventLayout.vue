@@ -9,6 +9,9 @@ defineProps({
 
 const page = usePage();
 const blogEnabled = page.props.blog_enabled ?? false;
+const siteSettings = page.props.site_settings ?? {};
+const logo1 = siteSettings.logo_secondary || '/brand/govt.png';
+const logo2 = siteSettings.logo || '/brand/logo2.png';
 const mobileMenuOpen = ref(false);
 const isAtTop = ref(true);
 
@@ -33,8 +36,8 @@ onUnmounted(() => {
             <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
                     <Link href="/" class="flex items-center gap-2 sm:gap-3">
-                        <img src="/brand/govt.png" alt="Government of Bhutan" class="h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20" />
-                        <img src="/brand/logo2.png" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]" />
+                        <img :src="logo1" alt="Partner" class="h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20" />
+                        <img :src="logo2" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]" />
                     </Link>
                 </div>
                 <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">

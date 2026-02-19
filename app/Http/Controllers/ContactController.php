@@ -74,6 +74,6 @@ class ContactController extends Controller
 
         SummitRegistration::create($data);
 
-        return back()->with('success', 'Your registration application has been submitted successfully. Our team will review it and get back to you shortly.');
+        return back()->with('success', 'Thank you for registering with the GCFSS, our team will get back to you soon!');
     }
 }

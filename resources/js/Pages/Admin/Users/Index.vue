@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 
@@ -23,6 +23,7 @@ const showAddModal = ref(false);
 const showEditModal = ref(false);
 const selectedUser = ref(null);
 const openDropdown = ref(null);
+const dropdownPositions = ref({});
 
 const permissionLabels = [
     { key: 'homepage', label: 'Homepage' },
@@ -119,6 +120,24 @@ const handleDeleteUser = (userId) => {
     }
 };
 
+const toggleDropdown = (userId, event) => {
+    if (openDropdown.value === userId) {
+        openDropdown.value = null;
+    } else {
+        openDropdown.value = userId;
+        nextTick(() => {
+            const button = event.target.closest('button');
+            if (button) {
+                const rect = button.getBoundingClientRect();
+                dropdownPositions.value[userId] = {
+                    top: rect.bottom + 8,
+                    right: window.innerWidth - rect.right,
+                };
+            }
+        });
+    }
+};
+
 const openEditModal = (user) => {
     selectedUser.value = user;
     editForm.name = user.name;
@@ -156,7 +175,7 @@ const closeEditModal = () => {
 <template>
     <Head title="Users" />
     <AdminLayout>
-        <div class="mx-auto max-w-6xl space-y-6">
+        <div class="mx-auto max-w-6xl space-y-6 overflow-visible">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="mb-2 font-title text-2xl font-bold text-primary-1">Users</h1>
@@ -270,8 +289,8 @@ const closeEditModal = () => {
                 </div>
             </div>
 
-            <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-                <div class="overflow-x-auto">
+            <div class="rounded-lg border border-gray-200 bg-white shadow-sm overflow-visible">
+                <div class="overflow-x-auto overflow-y-visible">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -293,7 +312,7 @@ const closeEditModal = () => {
                                 <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Last Login
                                 </th>
-                                <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-copy">
+                                <th class="sticky right-0 bg-gray-50 px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-copy">
                                     Actions
                                 </th>
                             </tr>
@@ -302,7 +321,7 @@ const closeEditModal = () => {
                             <tr
                                 v-for="user in filteredUsers"
                                 :key="user.id"
-                                class="transition-colors hover:bg-gray-50"
+                                class="transition-colors hover:bg-gray-50 [&>td:last-child]:bg-white [&:hover>td:last-child]:bg-gray-50"
                             >
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -361,11 +380,11 @@ const closeEditModal = () => {
                                 <td class="whitespace-nowrap px-6 py-4 font-body text-sm text-copy">
                                     {{ user.last_login }}
                                 </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-right">
-                                    <div class="relative">
+                                <td class="sticky right-0 whitespace-nowrap bg-white px-6 py-4 text-right">
+                                    <div class="relative inline-block">
                                         <button
                                             type="button"
-                                            @click="openDropdown = openDropdown === user.id ? null : user.id"
+                                            @click="toggleDropdown(user.id, $event)"
                                             class="rounded-lg p-2 transition-colors hover:bg-gray-100"
                                         >
                                             <svg class="h-5 w-5 text-copy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -378,10 +397,12 @@ const closeEditModal = () => {
                                             </svg>
                                         </button>
 
-                                        <div
-                                            v-if="openDropdown === user.id"
-                                            class="absolute right-0 z-10 mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg"
-                                        >
+                                        <Teleport to="body">
+                                            <div
+                                                v-if="openDropdown === user.id"
+                                                class="fixed z-[100] w-48 rounded-lg border border-gray-200 bg-white shadow-lg"
+                                                :style="dropdownPositions[user.id] ? `top: ${dropdownPositions[user.id].top}px; right: ${dropdownPositions[user.id].right}px;` : ''"
+                                            >
                                             <button
                                                 type="button"
                                                 @click="openEditModal(user)"
@@ -412,7 +433,8 @@ const closeEditModal = () => {
                                                 </svg>
                                                 Delete User
                                             </button>
-                                        </div>
+                                            </div>
+                                        </Teleport>
                                     </div>
                                 </td>
                             </tr>
@@ -686,7 +708,7 @@ const closeEditModal = () => {
             <!-- Click outside to close dropdown -->
             <div
                 v-if="openDropdown"
-                class="fixed inset-0 z-0"
+                class="fixed inset-0 z-40"
                 @click="openDropdown = null"
             />
         </div>

@@ -8,31 +8,20 @@ use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determine the current asset version.
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
         $blogSettings = Storage::exists('admin/blog-settings.json')
             ? json_decode(Storage::get('admin/blog-settings.json'), true)
             : ['blog_enabled' => false];
+
+        $siteSettings = $this->getSiteSettings();
 
         return [
             ...parent::share($request),
@@ -45,6 +34,42 @@ class HandleInertiaRequests extends Middleware
                 'newsletter' => fn () => $request->session()->get('newsletter'),
             ],
             'blog_enabled' => $blogSettings['blog_enabled'] ?? false,
+            'site_settings' => $siteSettings,
+        ];
+    }
+
+    protected function getSiteSettings(): array
+    {
+        if (Storage::exists('admin/settings.json')) {
+            $s = json_decode(Storage::get('admin/settings.json'), true);
+            return [
+                'logo' => $s['logo'] ?? '/brand/logo2.png',
+                'logo_secondary' => $s['logo_secondary'] ?? '/brand/govt.png',
+                'favicon' => $s['favicon'] ?? '',
+                'newsletter_text' => $s['newsletter_text'] ?? 'Subscribe to our newsletter',
+                'contact_email' => $s['contact_email'] ?? 'info@foodsummit2026.org',
+                'contact_phone' => $s['contact_phone'] ?? '+975 1234 5678',
+                'contact_location' => $s['contact_location'] ?? "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan",
+                'social_facebook' => $s['social_facebook'] ?? '',
+                'social_twitter' => $s['social_twitter'] ?? '',
+                'social_instagram' => $s['social_instagram'] ?? '',
+                'social_linkedin' => $s['social_linkedin'] ?? '',
+                'social_youtube' => $s['social_youtube'] ?? '',
+            ];
+        }
+        return [
+            'logo' => '/brand/logo2.png',
+            'logo_secondary' => '/brand/govt.png',
+            'favicon' => '',
+            'newsletter_text' => 'Subscribe to our newsletter',
+            'contact_email' => 'info@foodsummit2026.org',
+            'contact_phone' => '+975 1234 5678',
+            'contact_location' => "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan",
+            'social_facebook' => '',
+            'social_twitter' => '',
+            'social_instagram' => '',
+            'social_linkedin' => '',
+            'social_youtube' => '',
         ];
     }
 }

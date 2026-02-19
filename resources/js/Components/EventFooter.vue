@@ -5,6 +5,23 @@ import { computed } from 'vue';
 const page = usePage();
 const successMessage = computed(() => page.props.flash?.success);
 const newsletterSuccess = computed(() => page.props.flash?.newsletter);
+const siteSettings = computed(() => page.props.site_settings ?? {});
+
+const newsletterText = computed(() => siteSettings.value.newsletter_text || 'Subscribe to our newsletter');
+const contactEmail = computed(() => siteSettings.value.contact_email || 'info@foodsummit2026.org');
+const contactPhone = computed(() => siteSettings.value.contact_phone || '+975 1234 5678');
+const contactLocation = computed(() => siteSettings.value.contact_location || "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan");
+
+const socialLinks = computed(() => {
+    const s = siteSettings.value;
+    return [
+        { name: 'Facebook', icon: 'facebook', url: s.social_facebook || '#' },
+        { name: 'Twitter', icon: 'twitter', url: s.social_twitter || '#' },
+        { name: 'Instagram', icon: 'instagram', url: s.social_instagram || '#' },
+        { name: 'LinkedIn', icon: 'linkedin', url: s.social_linkedin || '#' },
+        { name: 'YouTube', icon: 'youtube', url: s.social_youtube || '#' },
+    ];
+});
 
 const newsletterForm = useForm({ email: '' });
 function submitNewsletter() {
@@ -25,13 +42,6 @@ function submit() {
     });
 }
 
-const socialLinks = [
-    { name: 'Facebook', icon: 'facebook', url: '#' },
-    { name: 'Twitter', icon: 'twitter', url: '#' },
-    { name: 'Instagram', icon: 'instagram', url: '#' },
-    { name: 'LinkedIn', icon: 'linkedin', url: '#' },
-    { name: 'YouTube', icon: 'youtube', url: '#' },
-];
 </script>
 
 <template>
@@ -39,7 +49,7 @@ const socialLinks = [
         <div class="border-b border-white/10">
             <div class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
                 <div class="flex flex-col gap-2">
-                    <h3 class="font-title text-lg font-bold text-white">Subscribe to our newsletter</h3>
+                    <h3 class="font-title text-lg font-bold text-white">{{ newsletterText }}</h3>
                     <p v-if="newsletterSuccess" class="text-sm text-primary-2">{{ newsletterSuccess }}</p>
                 </div>
                 <form @submit.prevent="submitNewsletter" class="flex w-full max-w-md gap-2 sm:w-auto">
@@ -69,7 +79,7 @@ const socialLinks = [
                             </div>
                             <div>
                                 <p class="text-sm text-white/80">Email</p>
-                                <a href="mailto:info@foodsummit2026.org" class="font-body text-white hover:text-primary-2">info@foodsummit2026.org</a>
+                                <a :href="'mailto:' + contactEmail" class="font-body text-white hover:text-primary-2">{{ contactEmail }}</a>
                             </div>
                         </div>
                         <div class="flex gap-4">
@@ -80,7 +90,7 @@ const socialLinks = [
                             </div>
                             <div>
                                 <p class="text-sm text-white/80">Phone</p>
-                                <a href="tel:+97512345678" class="font-body text-white hover:text-primary-2">+975 1234 5678</a>
+                                <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="font-body text-white hover:text-primary-2">{{ contactPhone }}</a>
                             </div>
                         </div>
                         <div class="flex gap-4">
@@ -92,8 +102,7 @@ const socialLinks = [
                             </div>
                             <div>
                                 <p class="text-sm text-white/80">Location</p>
-                                <p class="font-body text-white">Royal Institute for Governance and Strategic Studies</p>
-                                <p class="font-body text-white">Thimphu, Bhutan</p>
+                                <p class="font-body text-white whitespace-pre-line">{{ contactLocation }}</p>
                             </div>
                         </div>
                     </div>

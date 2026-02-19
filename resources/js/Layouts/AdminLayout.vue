@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 
 const sidebarOpen = ref(false);
 const pagesExpanded = ref(true);
@@ -51,6 +51,9 @@ onMounted(() => {
     });
 });
 
+const page = usePage();
+const sidebarLogo = computed(() => page.props.site_settings?.logo || '/brand/logo2.png');
+
 const isDashboardActive = computed(() => route().current('admin.dashboard'));
 const isHomepageActive = computed(() => route().current('admin.homepage'));
 const isYourStayActive = computed(() => route().current('admin.your-stay'));
@@ -71,11 +74,11 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
             style="background-color: var(--color-sidebar-bg);"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
         >
-            <div class="flex h-16 items-center justify-between px-4 sm:px-6">
-                <img src="/brand/logo2.png" alt="Logo" class="h-8 w-auto sm:h-10" />
+            <div class="relative flex h-20 items-center justify-center px-4 sm:px-6">
+                <img :src="sidebarLogo" alt="Logo" class="h-14 w-auto max-w-full object-contain sm:h-16" />
                 <button
                     @click="sidebarOpen = false"
-                    class="rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-white hover:bg-white/10 lg:hidden"
                 >
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

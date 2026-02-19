@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
 const form = useForm({
@@ -38,6 +38,16 @@ const form = useForm({
 });
 
 const photoPreview = ref(null);
+const page = usePage();
+const showSuccessModal = ref(!!page.props.flash?.success);
+
+watch(() => page.props.flash?.success, (val) => {
+    if (val) showSuccessModal.value = true;
+});
+
+function closeSuccessModal() {
+    showSuccessModal.value = false;
+}
 
 function handlePhoto(e) {
     const file = e.target.files[0];
@@ -134,6 +144,33 @@ const steps = [
 <template>
     <Head title="Register — Global Conscious Food Systems Summit" />
     <EventLayout>
+        <!-- Success Modal -->
+        <div
+            v-if="showSuccessModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            @click.self="closeSuccessModal"
+        >
+            <div class="w-full max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-xl">
+                <div class="text-center">
+                    <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary-2/20">
+                        <svg class="h-8 w-8 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h3 class="font-title text-xl font-bold text-primary-1">Registration Submitted</h3>
+                    <p class="mt-3 font-body text-base text-copy">
+                        Thank you for registering with the GCFSS, our team will get back to you soon!
+                    </p>
+                    <button
+                        type="button"
+                        @click="closeSuccessModal"
+                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-title text-sm font-semibold text-white transition hover:bg-primary-2/90"
+                    >
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
         <!-- Hero Banner -->
         <section class="relative bg-primary-1 py-20 sm:py-28">
             <div class="absolute inset-0 opacity-20">

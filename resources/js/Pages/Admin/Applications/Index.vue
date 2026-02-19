@@ -73,6 +73,29 @@ const getHeardFromStyle = (label) => {
     return heardFromStyles[label] || heardFromStyles.Other;
 };
 
+const formatSubmittedDate = (dateString) => {
+    if (!dateString) return { date: '—', time: '' };
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return { date: '—', time: '' };
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const time = `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    
+    return {
+        date: `${day}-${month}-${year}`,
+        time: time,
+    };
+};
+
 function exportApplicationsPdf() {
     const rows = (props.applications?.data || []).map((app) => [
         `${app.first_name} ${app.last_name}`,
@@ -175,14 +198,14 @@ function exportApplicationsExcel() {
                     <button
                         type="button"
                         @click="exportApplicationsPdf"
-                        class="inline-flex items-center gap-2 rounded-full bg-accent-2 px-4 py-2 font-body text-sm font-medium text-white shadow-sm transition hover:bg-accent-2/90"
+                        class="inline-flex items-center gap-2 rounded-full bg-primary-2 px-4 py-2 font-body text-sm font-medium text-white shadow-sm transition hover:bg-primary-2/90"
                     >
                         <span>PDF</span>
                     </button>
                     <button
                         type="button"
                         @click="exportApplicationsExcel"
-                        class="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-body text-sm font-medium text-white shadow-sm transition hover:bg-ink/90"
+                        class="inline-flex items-center gap-2 rounded-full bg-primary-2 px-4 py-2 font-body text-sm font-medium text-white shadow-sm transition hover:bg-primary-2/90"
                     >
                         <span>Excel</span>
                     </button>
@@ -199,7 +222,7 @@ function exportApplicationsExcel() {
             <div class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
                     <p class="font-body text-xs text-copy">Pending Review</p>
-                    <p class="mt-2 font-title text-2xl font-semibold text-accent-2">{{ stats?.pending ?? 0 }}</p>
+                    <p class="mt-2 font-title text-2xl font-semibold text-primary-2">{{ stats?.pending ?? 0 }}</p>
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
                     <p class="font-body text-xs text-copy">Approved</p>
@@ -211,7 +234,7 @@ function exportApplicationsExcel() {
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
                     <p class="font-body text-xs text-copy">Waitlist</p>
-                    <p class="mt-2 font-title text-2xl font-semibold text-accent-2">{{ stats?.waitlisted ?? 0 }}</p>
+                    <p class="mt-2 font-title text-2xl font-semibold text-primary-2">{{ stats?.waitlisted ?? 0 }}</p>
                 </div>
             </div>
 
@@ -224,8 +247,7 @@ function exportApplicationsExcel() {
                         class="flex flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm"
                     >
                         <div
-                            class="flex h-10 w-10 items-center justify-center rounded-full"
-                            :class="getHeardFromStyle(label).bg + ' ' + getHeardFromStyle(label).color"
+                            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-2/10 text-primary-2"
                         >
                             <svg
                                 v-if="getHeardFromStyle(label).icon === 'mail'"
@@ -299,7 +321,7 @@ function exportApplicationsExcel() {
                             v-model="search"
                             type="text"
                             placeholder="Search by name, email, organization..."
-                            class="block w-full rounded-full border border-gray-300 py-2 pl-10 pr-4 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                            class="block w-full rounded-full border border-gray-300 py-2 pl-10 pr-4 font-body text-sm focus:border-primary-2 focus:outline-none focus:ring-2 focus:ring-primary-2/20"
                             @keyup.enter="applyFilters"
                         />
                         <svg
@@ -316,7 +338,7 @@ function exportApplicationsExcel() {
                             <select
                                 v-model="statusFilter"
                                 @change="applyFilters"
-                                class="rounded-full border border-gray-300 px-4 py-2 pl-9 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                class="rounded-full border border-gray-300 px-4 py-2 pl-9 font-body text-sm focus:border-primary-2 focus:outline-none focus:ring-2 focus:ring-primary-2/20"
                             >
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
@@ -335,7 +357,7 @@ function exportApplicationsExcel() {
                         </div>
                         <button
                             @click="applyFilters"
-                            class="rounded-full bg-primary-1 px-4 py-2 font-body text-sm font-medium text-white transition hover:bg-primary-1/90"
+                            class="rounded-full bg-primary-2 px-4 py-2 font-body text-sm font-medium text-white transition hover:bg-primary-2/90"
                         >
                             Apply
                         </button>
@@ -395,12 +417,15 @@ function exportApplicationsExcel() {
                                     {{ app.organization }}
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
-                                    <span class="inline-flex items-center rounded-full border border-amber-800/20 bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                                    <span class="inline-flex items-center rounded-full border border-primary-2/30 bg-primary-2/10 px-2.5 py-0.5 text-xs font-medium text-primary-2">
                                         {{ app.price_tier }}
                                     </span>
                                 </td>
-                                <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
-                                    {{ app.created_at }}
+                                <td class="px-4 py-3 text-sm font-body text-copy">
+                                    <div class="flex flex-col">
+                                        <span>{{ formatSubmittedDate(app.created_at).date }}</span>
+                                        <span class="text-xs text-gray-500">{{ formatSubmittedDate(app.created_at).time }}</span>
+                                    </div>
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3">
                                     <span
@@ -414,26 +439,26 @@ function exportApplicationsExcel() {
                                     <div class="flex flex-wrap items-center gap-2">
                                         <Link
                                             :href="route('admin.applications.show', app.id)"
-                                            class="rounded-lg border border-gray-300 px-3 py-2 font-body text-xs font-medium text-ink transition hover:bg-gray-50"
+                                            class="rounded-lg bg-primary-2 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-primary-2/90"
                                         >
                                             View
                                         </Link>
                                         <template v-if="app.status === 'pending'">
                                             <button
                                                 @click="approve(app.id)"
-                                                class="rounded-lg bg-green-600 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-green-700"
+                                                class="rounded-lg bg-primary-2 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-primary-2/90"
                                             >
                                                 Approve
                                             </button>
                                             <button
                                                 @click="waitlist(app.id)"
-                                                class="rounded-lg bg-amber-500 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-amber-600"
+                                                class="rounded-lg border border-primary-2 px-3 py-2 font-body text-xs font-medium text-primary-2 transition hover:bg-primary-2/10"
                                             >
                                                 Waitlist
                                             </button>
                                             <button
                                                 @click="reject(app.id)"
-                                                class="rounded-lg border border-red-200 px-3 py-2 font-body text-xs font-medium text-red-600 transition hover:bg-red-50"
+                                                class="rounded-lg border border-primary-2/50 px-3 py-2 font-body text-xs font-medium text-primary-1 transition hover:bg-primary-2/5"
                                             >
                                                 Reject
                                             </button>
@@ -441,13 +466,13 @@ function exportApplicationsExcel() {
                                         <template v-else-if="app.status === 'waitlisted'">
                                             <button
                                                 @click="approve(app.id)"
-                                                class="rounded-lg bg-green-600 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-green-700"
+                                                class="rounded-lg bg-primary-2 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-primary-2/90"
                                             >
                                                 Approve
                                             </button>
                                             <button
                                                 @click="reject(app.id)"
-                                                class="rounded-lg border border-red-200 px-3 py-2 font-body text-xs font-medium text-red-600 transition hover:bg-red-50"
+                                                class="rounded-lg border border-primary-2/50 px-3 py-2 font-body text-xs font-medium text-primary-1 transition hover:bg-primary-2/5"
                                             >
                                                 Reject
                                             </button>
@@ -470,7 +495,7 @@ function exportApplicationsExcel() {
                             :key="link.label"
                             :href="link.url || '#'"
                             class="rounded px-3 py-1 font-body text-sm"
-                            :class="link.active ? 'bg-primary-1 text-white' : 'text-ink hover:bg-gray-100'"
+                            :class="link.active ? 'bg-primary-2 text-white' : 'text-ink hover:bg-primary-2/10'"
                             v-html="link.label"
                         />
                     </div>

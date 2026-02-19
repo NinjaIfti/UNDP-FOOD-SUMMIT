@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     settings: {
@@ -13,6 +13,11 @@ const props = defineProps({
 const logoForm = useForm({
     logo: null,
     delete_logo: false,
+});
+
+const logoSecondaryForm = useForm({
+    logo_secondary: null,
+    delete_logo_secondary: false,
 });
 
 const faviconForm = useForm({
@@ -33,22 +38,20 @@ const footerForm = useForm({
 });
 
 const logoPreview = ref(props.settings.logo || '');
+const logoSecondaryPreview = ref(props.settings.logo_secondary || '');
 const faviconPreview = ref(props.settings.favicon || '');
 
 watch(() => props.settings.logo, (newLogo) => {
-    if (newLogo) {
-        logoPreview.value = newLogo;
-    } else if (!logoForm.logo) {
-        logoPreview.value = '';
-    }
+    if (newLogo) logoPreview.value = newLogo;
+    else if (!logoForm.logo) logoPreview.value = '';
 });
-
+watch(() => props.settings.logo_secondary, (v) => {
+    if (v) logoSecondaryPreview.value = v;
+    else if (!logoSecondaryForm.logo_secondary) logoSecondaryPreview.value = '';
+});
 watch(() => props.settings.favicon, (newFavicon) => {
-    if (newFavicon) {
-        faviconPreview.value = newFavicon;
-    } else if (!faviconForm.favicon) {
-        faviconPreview.value = '';
-    }
+    if (newFavicon) faviconPreview.value = newFavicon;
+    else if (!faviconForm.favicon) faviconPreview.value = '';
 });
 
 const handleLogoUpload = (e) => {
@@ -56,21 +59,25 @@ const handleLogoUpload = (e) => {
     if (file) {
         logoForm.logo = file;
         const reader = new FileReader();
-        reader.onloadend = () => {
-            logoPreview.value = reader.result;
-        };
+        reader.onloadend = () => { logoPreview.value = reader.result; };
         reader.readAsDataURL(file);
     }
 };
-
+const handleLogoSecondaryUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        logoSecondaryForm.logo_secondary = file;
+        const reader = new FileReader();
+        reader.onloadend = () => { logoSecondaryPreview.value = reader.result; };
+        reader.readAsDataURL(file);
+    }
+};
 const handleFaviconUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
         faviconForm.favicon = file;
         const reader = new FileReader();
-        reader.onloadend = () => {
-            faviconPreview.value = reader.result;
-        };
+        reader.onloadend = () => { faviconPreview.value = reader.result; };
         reader.readAsDataURL(file);
     }
 };
@@ -80,7 +87,11 @@ const removeLogo = () => {
     logoForm.delete_logo = true;
     logoPreview.value = '';
 };
-
+const removeLogoSecondary = () => {
+    logoSecondaryForm.logo_secondary = null;
+    logoSecondaryForm.delete_logo_secondary = true;
+    logoSecondaryPreview.value = '';
+};
 const removeFavicon = () => {
     faviconForm.favicon = null;
     faviconForm.delete_favicon = true;
@@ -88,72 +99,62 @@ const removeFavicon = () => {
 };
 
 const saveLogo = () => {
+    if (!logoForm.logo && !logoForm.delete_logo) return;
+    
     logoForm.post(route('admin.settings.update-general'), {
         preserveScroll: true,
-        onSuccess: () => {
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.logo) {
+                logoPreview.value = page.props.settings.logo;
+            } else {
+                logoPreview.value = '';
+            }
             logoForm.reset();
             logoForm.delete_logo = false;
         },
     });
 };
-
+const saveLogoSecondary = () => {
+    if (!logoSecondaryForm.logo_secondary && !logoSecondaryForm.delete_logo_secondary) return;
+    
+    logoSecondaryForm.post(route('admin.settings.update-general'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.logo_secondary) {
+                logoSecondaryPreview.value = page.props.settings.logo_secondary;
+            } else {
+                logoSecondaryPreview.value = '';
+            }
+            logoSecondaryForm.reset();
+            logoSecondaryForm.delete_logo_secondary = false;
+        },
+    });
+};
 const saveFavicon = () => {
+    if (!faviconForm.favicon && !faviconForm.delete_favicon) return;
+    
     faviconForm.post(route('admin.settings.update-general'), {
         preserveScroll: true,
-        onSuccess: () => {
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.favicon) {
+                faviconPreview.value = page.props.settings.favicon;
+            } else {
+                faviconPreview.value = '';
+            }
             faviconForm.reset();
             faviconForm.delete_favicon = false;
         },
-    });
-};
-
-const saveNewsletterText = () => {
-    footerForm.post(route('admin.settings.update-footer'), {
-        preserveScroll: true,
-        data: {
-            newsletter_text: footerForm.newsletter_text,
+        onError: (errors) => {
+            console.error('Favicon save error:', errors);
         },
     });
 };
 
-const saveContactEmail = () => {
-    footerForm.post(route('admin.settings.update-footer'), {
-        preserveScroll: true,
-        data: {
-            contact_email: footerForm.contact_email,
-        },
-    });
-};
-
-const saveContactPhone = () => {
-    footerForm.post(route('admin.settings.update-footer'), {
-        preserveScroll: true,
-        data: {
-            contact_phone: footerForm.contact_phone,
-        },
-    });
-};
-
-const saveContactLocation = () => {
-    footerForm.post(route('admin.settings.update-footer'), {
-        preserveScroll: true,
-        data: {
-            contact_location: footerForm.contact_location,
-        },
-    });
-};
-
-const saveSocialMediaLinks = () => {
-    footerForm.post(route('admin.settings.update-footer'), {
-        preserveScroll: true,
-        data: {
-            social_facebook: footerForm.social_facebook,
-            social_twitter: footerForm.social_twitter,
-            social_instagram: footerForm.social_instagram,
-            social_linkedin: footerForm.social_linkedin,
-            social_youtube: footerForm.social_youtube,
-        },
-    });
+const saveFooter = (fields) => {
+    router.post(route('admin.settings.update-footer'), fields, { preserveScroll: true });
 };
 </script>
 
@@ -171,8 +172,17 @@ const saveSocialMediaLinks = () => {
             </div>
 
             <!-- Flash Messages -->
-            <div v-if="$page.props.flash?.success" class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+            <div v-if="$page.props.flash?.success" class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-4">
                 {{ $page.props.flash.success }}
+            </div>
+            <div v-if="faviconForm.errors.favicon" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Favicon error: {{ faviconForm.errors.favicon }}
+            </div>
+            <div v-if="logoForm.errors.logo" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Logo error: {{ logoForm.errors.logo }}
+            </div>
+            <div v-if="logoSecondaryForm.errors.logo_secondary" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Logo 2 error: {{ logoSecondaryForm.errors.logo_secondary }}
             </div>
 
             <!-- General Settings -->
@@ -197,11 +207,11 @@ const saveSocialMediaLinks = () => {
                                 </svg>
                             </div>
                             <div class="flex-1">
-                                <h3 class="font-medium text-foreground mb-1">
-                                    Website Logo
+                                <h3 class="font-medium text-gray-900 mb-1">
+                                    Navbar Logo 1 (Main Summit Logo)
                                 </h3>
-                                <p class="text-sm text-muted-foreground mb-3">
-                                    Upload your organization's logo (recommended size: 200x60px, PNG or SVG)
+                                <p class="text-sm text-gray-500 mb-3">
+                                    Main logo displayed in the navbar (recommended size: 200x60px, PNG or SVG)
                                 </p>
                                 
                                 <div v-if="logoPreview" class="mb-3 p-3 border border-border rounded-lg bg-white inline-block">
@@ -241,6 +251,35 @@ const saveSocialMediaLinks = () => {
                         </div>
                     </div>
 
+                    <!-- Navbar Logo 2 (secondary / partner) -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#4a7c59]/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-[#4a7c59]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-medium text-gray-900 mb-1">Navbar Logo 2 (Partner Logo)</h3>
+                                <p class="text-sm text-gray-500 mb-3">
+                                    Second logo displayed in the navbar (e.g. Government of Bhutan, recommended 200x60px)
+                                </p>
+                                <div v-if="logoSecondaryPreview" class="mb-3 p-3 border border-gray-200 rounded-lg bg-white inline-block">
+                                    <img :src="logoSecondaryPreview" alt="Logo 2 preview" class="h-12 max-w-xs object-contain" />
+                                </div>
+                                <div class="flex gap-2">
+                                    <label class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                        Upload Logo 2
+                                        <input type="file" accept="image/png,image/svg+xml,image/jpeg" @change="handleLogoSecondaryUpload" class="hidden" />
+                                    </label>
+                                    <button v-if="logoSecondaryPreview" @click="removeLogoSecondary" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Remove</button>
+                                    <button v-if="logoSecondaryForm.logo_secondary || logoSecondaryForm.delete_logo_secondary" @click="saveLogoSecondary" :disabled="logoSecondaryForm.processing" class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] disabled:opacity-50">{{ logoSecondaryForm.processing ? 'Saving...' : 'Save Logo 2' }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Favicon Upload -->
                     <div class="border border-border rounded-lg p-4">
                         <div class="flex items-start gap-4">
@@ -269,7 +308,7 @@ const saveSocialMediaLinks = () => {
                                         Upload Favicon
                                         <input
                                             type="file"
-                                            accept="image/png,image/x-icon,image/jpeg"
+                                            accept="image/png,image/x-icon,image/jpeg,image/svg+xml,.ico"
                                             @change="handleFaviconUpload"
                                             class="hidden"
                                         />
@@ -335,7 +374,7 @@ const saveSocialMediaLinks = () => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveNewsletterText"
+                                        @click="saveFooter({ newsletter_text: footerForm.newsletter_text })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
@@ -372,7 +411,7 @@ const saveSocialMediaLinks = () => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveContactEmail"
+                                        @click="saveFooter({ contact_email: footerForm.contact_email })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
@@ -409,7 +448,7 @@ const saveSocialMediaLinks = () => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveContactPhone"
+                                        @click="saveFooter({ contact_phone: footerForm.contact_phone })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
@@ -446,7 +485,7 @@ const saveSocialMediaLinks = () => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveContactLocation"
+                                        @click="saveFooter({ contact_location: footerForm.contact_location })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
@@ -534,7 +573,7 @@ const saveSocialMediaLinks = () => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveSocialMediaLinks"
+                                        @click="saveFooter({ social_facebook: footerForm.social_facebook, social_twitter: footerForm.social_twitter, social_instagram: footerForm.social_instagram, social_linkedin: footerForm.social_linkedin, social_youtube: footerForm.social_youtube })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
