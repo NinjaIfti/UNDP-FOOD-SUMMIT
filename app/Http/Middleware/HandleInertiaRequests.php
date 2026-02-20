@@ -60,6 +60,10 @@ class HandleInertiaRequests extends Middleware
             'settings',
         ];
 
+        if ($user->hasRole('super-admin')) {
+            return array_fill_keys($keys, true);
+        }
+
         $permissions = [];
         foreach ($keys as $key) {
             $permissions[$key] = $user->hasPermissionTo($key);

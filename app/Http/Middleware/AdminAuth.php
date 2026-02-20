@@ -10,7 +10,7 @@ class AdminAuth
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::check() || !Auth::user()->hasAnyRole(['admin', 'super-admin', 'cms-admin'])) {
             return redirect()->route('admin.login');
         }
 
