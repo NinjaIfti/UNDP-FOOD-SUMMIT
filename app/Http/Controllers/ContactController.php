@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactSubmission;
 use App\Models\SummitRegistration;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ class ContactController extends Controller
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:5000',
         ]);
+
+        ContactSubmission::create($validated);
 
         return back()->with('success', 'Message sent successfully.');
     }

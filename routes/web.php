@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ApplicationsController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\CommunicationsController;
+use App\Http\Controllers\Admin\ContactSubmissionsController;
 use App\Http\Controllers\Admin\PackagesController;
 use App\Http\Controllers\Admin\PaymentsController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -134,6 +135,11 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
         Route::put('/communications/{id}', [CommunicationsController::class, 'update'])->name('communications.update');
         Route::post('/communications/{id}/duplicate', [CommunicationsController::class, 'duplicate'])->name('communications.duplicate');
         Route::delete('/communications/{id}', [CommunicationsController::class, 'destroy'])->name('communications.destroy');
+        Route::get('/contact-submissions', [ContactSubmissionsController::class, 'index'])->name('contact-submissions.index');
+        Route::get('/contact-submissions/{contact_submission}', [ContactSubmissionsController::class, 'show'])->name('contact-submissions.show');
+        Route::post('/contact-submissions/{contact_submission}/mark-as-read', [ContactSubmissionsController::class, 'markAsRead'])->name('contact-submissions.mark-as-read');
+        Route::post('/contact-submissions/{contact_submission}/mark-as-unread', [ContactSubmissionsController::class, 'markAsUnread'])->name('contact-submissions.mark-as-unread');
+        Route::delete('/contact-submissions/{contact_submission}', [ContactSubmissionsController::class, 'destroy'])->name('contact-submissions.destroy');
     });
 
     Route::middleware('admin.permission:payments')->group(function () {
