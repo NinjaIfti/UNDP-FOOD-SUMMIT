@@ -57,7 +57,7 @@ const filteredHotels = computed(() => {
                 <div class="grid md:grid-cols-2 gap-8 mb-8">
                     <!-- What's Included Card -->
                     <div v-if="settings.included_items && settings.included_items.length > 0" class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-primary-1 to-primary-1/90 p-4">
+                        <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
                             <div class="flex items-center gap-2">
                                 <div class="bg-white/20 p-2 rounded-lg">
                                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,13 +236,13 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.field_visits_expectations && settings.field_visits_expectations.length > 0" class="mx-auto mt-8 max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
+                    <div v-if="settings.field_visits_expectations && settings.field_visits_expectations.length > 0" class="mx-auto mt-8 max-w-2xl rounded-lg border border-primary-2/20 bg-white p-6">
                         <h3 class="font-title text-lg font-bold text-gray-900 sm:text-xl">
                             What to Expect
                         </h3>
                         <ul class="mt-4 list-none space-y-3 font-body text-gray-800">
                             <li v-for="(expectation, index) in settings.field_visits_expectations" :key="index" class="flex items-center justify-center gap-3">
-                                <span class="h-2 w-2 shrink-0 rounded-full bg-primary-1" />
+                                <span class="h-2 w-2 shrink-0 rounded-full bg-primary-2" />
                                 <span>{{ expectation }}</span>
                             </li>
                         </ul>
@@ -625,7 +625,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'all'"
                             :class="accommodationFilter === 'all'
-                                ? 'bg-primary-1 text-white'
+                                ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -634,7 +634,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'budget'"
                             :class="accommodationFilter === 'budget'
-                                ? 'bg-primary-1 text-white'
+                                ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -643,7 +643,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'mid-range'"
                             :class="accommodationFilter === 'mid-range'
-                                ? 'bg-primary-1 text-white'
+                                ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -652,7 +652,7 @@ const filteredHotels = computed(() => {
                         <button
                             @click="accommodationFilter = 'premium'"
                             :class="accommodationFilter === 'premium'
-                                ? 'bg-primary-1 text-white'
+                                ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
@@ -734,7 +734,7 @@ const filteredHotels = computed(() => {
                                     <span :class="{
                                         'bg-primary-2/20 text-primary-2': hotel.category === 'budget',
                                         'bg-accent-1/20 text-accent-1': hotel.category === 'mid-range',
-                                        'bg-primary-1/20 text-primary-1': hotel.category === 'premium'
+                                        'bg-primary-2/10 text-primary-1': hotel.category === 'premium'
                                     }" class="inline-block px-3 py-1 rounded-full text-xs font-medium">
                                         {{ hotel.category.charAt(0).toUpperCase() + hotel.category.slice(1).replace('-', ' ') }}
                                     </span>

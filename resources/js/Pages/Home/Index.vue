@@ -20,15 +20,15 @@ defineProps({
 <template>
     <Head title="Global Conscious Food Systems Summit" />
     <EventLayout>
-            <HeroSection :settings="settings" />
-            <SummitIntroSection :settings="settings" />
-            <CoOrganizersSection :settings="settings" />
-            <VideosSection :settings="settings" />
-            <CallToActionsSection :settings="settings" />
-            <FeaturedSpeakersSection :settings="settings" />
-            <ConsciousFoodSection :settings="settings" />
-            <OutcomesSection :settings="settings" />
-            <WhyBhutanSection :settings="settings" />
-            <EventsPlanSection :settings="settings" />
+        <HeroSection :settings="settings" />
+        <SummitIntroSection :settings="settings" />
+        <VideosSection :settings="settings" />
+        <CallToActionsSection :settings="settings" />
+        <FeaturedSpeakersSection :settings="settings" />
+        <ConsciousFoodSection :settings="settings" />
+        <OutcomesSection :settings="settings" />
+        <WhyBhutanSection :settings="settings" />
+        <EventsPlanSection :settings="settings" />
+        <CoOrganizersSection :settings="settings" />
     </EventLayout>
 </template>

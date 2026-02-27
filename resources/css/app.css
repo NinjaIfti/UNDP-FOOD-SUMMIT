@@ -8,6 +8,10 @@
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body), var(--font-fallback); }
     h1, h2, h3, h4, h5, h6 { font-family: var(--font-title), var(--font-fallback); }
+    p, .font-body {
+        text-align: justify;
+        text-justify: inter-word;
+    }
 }
 
 @layer utilities {

@@ -33,7 +33,7 @@ const organizers = computed(() => [
                     {{ settings.coorganizers_title }}
                 </h2>
                 
-                <div class="mt-12 grid grid-cols-3 gap-6 sm:mt-16 sm:gap-8 lg:gap-16">
+                <div class="mt-10 grid grid-cols-3 gap-6 sm:mt-12 sm:gap-8 lg:gap-14">
                     <a
                         v-for="org in organizers"
                         :key="org.name"
@@ -42,7 +42,7 @@ const organizers = computed(() => [
                         rel="noopener noreferrer"
                         class="group flex flex-col items-center text-center"
                     >
-                        <div class="flex h-32 items-center justify-center sm:h-36 lg:h-40">
+                        <div class="flex h-20 items-center justify-center sm:h-24 lg:h-28">
                             <img 
                                 :src="org.logo" 
                                 :alt="org.name" 

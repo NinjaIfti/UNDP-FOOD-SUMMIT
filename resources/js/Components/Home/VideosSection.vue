@@ -29,7 +29,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Videos</h2>
                 <div class="mt-12 grid gap-8 md:grid-cols-2">
-                    <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
+                    <div class="overflow-hidden rounded-xl bg-gray-50 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
                                 v-if="video1Embed"
@@ -41,9 +41,9 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
+                        <p class="bg-primary-2 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
                     </div>
-                    <div class="overflow-hidden rounded-xl bg-gray-100 shadow-lg transition hover:shadow-xl">
+                    <div class="overflow-hidden rounded-xl bg-gray-50 shadow-lg transition hover:shadow-xl">
                         <div class="aspect-video bg-gray-200">
                             <iframe
                                 v-if="video2Embed"
@@ -55,7 +55,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
+                        <p class="bg-primary-2 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
                     </div>
                 </div>
             </SectionReveal>

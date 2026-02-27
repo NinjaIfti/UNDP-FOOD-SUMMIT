@@ -24,6 +24,6 @@
 
   /* Typography */
   --font-body: 'EB Garamond', Garamond, Georgia, serif;
-  --font-title: 'DM Sans', Klein, Arial, Calibri, sans-serif;
+  --font-title: Klein, 'DM Sans', Arial, Calibri, sans-serif;
   --font-fallback: Arial, Calibri, sans-serif;
 }

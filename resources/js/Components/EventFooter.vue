@@ -45,7 +45,7 @@ function submit() {
 </script>
 
 <template>
-    <footer class="bg-[#0F1B2A]">
+    <footer class="bg-primary-1">
         <div class="border-b border-white/10">
             <div class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-8 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
                 <div class="flex flex-col gap-2">

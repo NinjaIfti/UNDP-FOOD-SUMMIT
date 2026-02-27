@@ -223,8 +223,8 @@ const defaultThemes = [
                         </div>
                     </div>
 
-                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl bg-primary-1 p-8 text-center sm:mt-16 sm:p-12">
-                        <p class="font-body text-lg leading-relaxed text-white sm:text-xl">
+                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl bg-primary-2/10 p-8 text-center sm:mt-16 sm:p-12">
+                        <p class="font-body text-lg leading-relaxed text-primary-1 sm:text-xl">
                             This is an invitation to bring your <span class="font-semibold">whole self</span>: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.
                         </p>
                     </div>

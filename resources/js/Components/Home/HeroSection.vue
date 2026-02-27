@@ -95,7 +95,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <section class="relative min-h-[85vh] overflow-hidden bg-primary-1 sm:min-h-[90vh]">
+    <section class="relative min-h-[85vh] overflow-hidden bg-primary-2/20 sm:min-h-[90vh]">
         <div class="absolute inset-0">
             <div
                 v-for="(slide, i) in slides"
@@ -105,9 +105,9 @@ onUnmounted(() => {
                 :style="{ backgroundImage: `url(${slide})` }"
             />
         </div>
-        <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/80 via-primary-1/60 to-primary-1" />
+        <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/70 via-primary-1/40 to-primary-2/70" />
         <div class="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[90vh] sm:px-6 lg:px-8">
-            <img src="/brand/logo2.png" alt="" class="mb-6 h-28 w-28 object-contain sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-52 lg:w-52" aria-hidden="true" />
+            <img src="/brand/logo2.png" alt="" class="mb-6 h-32 w-32 object-contain sm:h-40 sm:w-40 md:h-52 md:w-52 lg:h-64 lg:w-64" aria-hidden="true" />
             <h1 class="w-full text-center font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
                 {{ displayedTitle }}<span class="inline-block w-[3px] animate-pulse bg-accent-2 ml-1" style="height: 1em;">&nbsp;</span>
             </h1>
