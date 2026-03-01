@@ -26,7 +26,7 @@ const organizers = computed(() => [
 </script>
 
 <template>
-    <section class="relative overflow-hidden border-y border-primary-2/20 bg-white py-16 sm:py-20 lg:py-24">
+    <section class="relative overflow-hidden border-y border-primary-1/20 bg-primary-1/10 py-16 sm:py-20 lg:py-24">
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">

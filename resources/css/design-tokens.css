@@ -1,13 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* Primary */
+  /* Primary (hex for non-Tailwind use) */
   --color-primary-1: #342C22;
   --color-primary-2: #729430;
+  /* RGB channels so Tailwind opacity modifiers work (e.g. bg-primary-2/30) */
+  --color-primary-1-rgb: 52 44 34;
+  --color-primary-2-rgb: 114 148 48;
 
   /* Accent */
   --color-accent-1: #448AC9;
   --color-accent-2: #F59C0E;
+  --color-accent-1-rgb: 68 138 201;
+  --color-accent-2-rgb: 245 156 14;
 
   /* Neutrals */
   --color-white: #FFFFFF;

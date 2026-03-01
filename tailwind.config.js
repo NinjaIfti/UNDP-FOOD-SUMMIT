@@ -23,12 +23,12 @@ export default {
             },
             colors: {
                 primary: {
-                    1: 'var(--color-primary-1)',
-                    2: 'var(--color-primary-2)',
+                    1: 'rgb(var(--color-primary-1-rgb) / <alpha-value>)',
+                    2: 'rgb(var(--color-primary-2-rgb) / <alpha-value>)',
                 },
                 accent: {
-                    1: 'var(--color-accent-1)',
-                    2: 'var(--color-accent-2)',
+                    1: 'rgb(var(--color-accent-1-rgb) / <alpha-value>)',
+                    2: 'rgb(var(--color-accent-2-rgb) / <alpha-value>)',
                 },
                 ink: 'var(--color-text-dark)',
                 copy: 'var(--color-text-muted)',

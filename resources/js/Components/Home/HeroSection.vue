@@ -95,17 +95,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <section class="relative min-h-[85vh] overflow-hidden bg-primary-2/20 sm:min-h-[90vh]">
+    <section class="relative -mt-20 min-h-[calc(85vh+5rem)] overflow-hidden bg-primary-1/20 sm:-mt-24 sm:min-h-[calc(90vh+6rem)] lg:-mt-28 lg:min-h-[calc(90vh+7rem)] pt-20 sm:pt-24 lg:pt-28">
         <div class="absolute inset-0">
             <div
                 v-for="(slide, i) in slides"
                 :key="slide + i"
                 class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-                :class="i === currentIndex ? 'opacity-30' : 'opacity-0'"
+                :class="i === currentIndex ? 'opacity-85' : 'opacity-0'"
                 :style="{ backgroundImage: `url(${slide})` }"
             />
         </div>
-        <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/70 via-primary-1/40 to-primary-2/70" />
+        <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/50 via-primary-1/25 to-primary-1/50" />
         <div class="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[90vh] sm:px-6 lg:px-8">
             <img src="/brand/logo2.png" alt="" class="mb-6 h-32 w-32 object-contain sm:h-40 sm:w-40 md:h-52 md:w-52 lg:h-64 lg:w-64" aria-hidden="true" />
             <h1 class="w-full text-center font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
@@ -113,19 +113,19 @@ onUnmounted(() => {
             </h1>
             <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">{{ settings.hero_date }} · {{ settings.hero_location }}</p>
             <div class="mt-8 flex justify-center gap-2 sm:gap-6">
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
                     <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.days }}</span>
                     <span class="text-xs text-white/80 sm:text-sm">Days</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
                     <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.hours }}</span>
                     <span class="text-xs text-white/80 sm:text-sm">Hours</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
                     <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.minutes }}</span>
                     <span class="text-xs text-white/80 sm:text-sm">Min</span>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-white/10 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
                     <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.seconds }}</span>
                     <span class="text-xs text-white/80 sm:text-sm">Sec</span>
                 </div>

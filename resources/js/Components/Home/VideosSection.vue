@@ -24,13 +24,13 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
 </script>
 
 <template>
-    <section class="bg-white py-16 sm:py-24">
+    <section class="bg-primary-1/10 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Videos</h2>
                 <div class="mt-12 grid gap-8 md:grid-cols-2">
-                    <div class="overflow-hidden rounded-xl bg-gray-50 shadow-lg transition hover:shadow-xl">
-                        <div class="aspect-video bg-gray-200">
+                    <div class="overflow-hidden rounded-xl bg-primary-1/5 shadow-md transition hover:shadow-xl">
+                        <div class="aspect-video bg-primary-1/10">
                             <iframe
                                 v-if="video1Embed"
                                 :src="`${video1Embed}?rel=0`"
@@ -41,10 +41,10 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-2 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
+                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
                     </div>
-                    <div class="overflow-hidden rounded-xl bg-gray-50 shadow-lg transition hover:shadow-xl">
-                        <div class="aspect-video bg-gray-200">
+                    <div class="overflow-hidden rounded-xl bg-primary-1/5 shadow-md transition hover:shadow-xl">
+                        <div class="aspect-video bg-primary-1/10">
                             <iframe
                                 v-if="video2Embed"
                                 :src="`${video2Embed}?rel=0`"
@@ -55,7 +55,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-2 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
+                        <p class="bg-primary-1 p-4 font-title text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
                     </div>
                 </div>
             </SectionReveal>

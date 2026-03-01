@@ -22,8 +22,8 @@ defineProps({
     <EventLayout>
         <HeroSection :settings="settings" />
         <SummitIntroSection :settings="settings" />
-        <VideosSection :settings="settings" />
         <CallToActionsSection :settings="settings" />
+        <VideosSection :settings="settings" />
         <FeaturedSpeakersSection :settings="settings" />
         <ConsciousFoodSection :settings="settings" />
         <OutcomesSection :settings="settings" />

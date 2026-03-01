@@ -60,7 +60,7 @@ const goPrev = () => {
 </script>
 
 <template>
-    <section id="speakers" class="scroll-mt-24 bg-gray-50 py-16 sm:py-24">
+    <section id="speakers" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <!-- Title -->
@@ -80,7 +80,7 @@ const goPrev = () => {
                         @click="goPrev"
                         :disabled="!canGoPrev"
                         :class="{ 'opacity-30 cursor-not-allowed': !canGoPrev }"
-                        class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                        class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
                     >
                         <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -92,11 +92,11 @@ const goPrev = () => {
                         <div
                             v-for="speaker in visibleSpeakers"
                             :key="speaker.name"
-                            class="group flex flex-col items-center text-center"
+                            class="group flex flex-col items-center rounded-2xl border border-primary-1/20 bg-primary-1/5 p-6 text-center shadow-md transition hover:shadow-xl"
                         >
                             <!-- Circular Image with Border -->
                             <div class="relative mb-4">
-                                <div class="h-48 w-48 overflow-hidden rounded-full border-4 border-gray-900 bg-white p-1">
+                                <div class="h-48 w-48 overflow-hidden rounded-full border-4 border-primary-1 bg-primary-1/10 p-1">
                                     <img
                                         :src="speaker.image"
                                         :alt="speaker.name"
@@ -126,7 +126,7 @@ const goPrev = () => {
                         @click="goNext"
                         :disabled="!canGoNext"
                         :class="{ 'opacity-30 cursor-not-allowed': !canGoNext }"
-                        class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                        class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
                     >
                         <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

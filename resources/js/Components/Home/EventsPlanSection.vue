@@ -103,7 +103,7 @@ function formatTimeWithAMPM(timeStr) {
 </script>
 
 <template>
-    <section id="agenda" class="scroll-mt-24 bg-white py-16 sm:py-24">
+    <section id="agenda" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">{{ settings.events_title }}</h2>
@@ -118,7 +118,7 @@ function formatTimeWithAMPM(timeStr) {
                         class="rounded-full px-5 py-2.5 font-title text-sm font-semibold transition sm:px-6"
                         :class="activeDay === i
                             ? 'bg-accent-2 text-primary-1 shadow-md'
-                            : 'bg-primary-2/10 text-primary-1 hover:bg-primary-2/20'"
+                            : 'bg-primary-1/10 text-primary-1 hover:bg-primary-1/20'"
                     >
                         <span class="hidden sm:inline">{{ day.date }} · </span>{{ day.label }}
                     </button>
@@ -134,7 +134,7 @@ function formatTimeWithAMPM(timeStr) {
                 <div class="mt-8">
                     <div class="relative mx-auto max-w-3xl">
                         <!-- Timeline line -->
-                        <div class="absolute left-[7px] top-3 bottom-3 w-0.5 bg-primary-2/20 sm:left-[99px]" />
+                        <div class="absolute left-[7px] top-3 bottom-3 w-0.5 bg-primary-1/20 sm:left-[99px]" />
 
                         <div
                             v-for="(item, i) in days[activeDay].schedule"
@@ -151,10 +151,10 @@ function formatTimeWithAMPM(timeStr) {
                                 <span
                                     class="h-4 w-4 rounded-full border-2"
                                     :class="item.type === 'break'
-                                        ? 'border-gray-300 bg-gray-100'
+                                        ? 'border-primary-1/20 bg-primary-1/10'
                                         : item.type === 'speaker'
                                             ? 'border-accent-2 bg-accent-2'
-                                            : 'border-primary-2 bg-primary-2'"
+                                            : 'border-primary-1 bg-primary-1'"
                                 />
                             </div>
 
@@ -162,8 +162,8 @@ function formatTimeWithAMPM(timeStr) {
                             <div
                                 class="flex-1 rounded-xl border px-5 py-4 transition"
                                 :class="item.type === 'break'
-                                    ? 'border-gray-200 bg-gray-50'
-                                    : 'border-primary-2/20 bg-primary-2/5 hover:shadow-md'"
+                                    ? 'border-primary-1/20 bg-primary-1/5'
+                                    : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
                             >
                                 <p class="whitespace-nowrap font-title text-xs font-medium text-accent-2 sm:hidden">{{ formatTimeWithAMPM(item.time) }}</p>
                                 <h4

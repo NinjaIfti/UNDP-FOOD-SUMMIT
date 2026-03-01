@@ -10,6 +10,7 @@ defineProps({
 const page = usePage();
 const blogEnabled = page.props.blog_enabled ?? false;
 const siteSettings = page.props.site_settings ?? {};
+const isHomePage = page.url === '/' || page.url === '';
 const logo1 = siteSettings.logo_secondary || '/brand/govt.png';
 const logo2 = siteSettings.logo || '/brand/logo2.png';
 const mobileMenuOpen = ref(false);
@@ -30,8 +31,8 @@ onUnmounted(() => {
 <template>
     <div class="flex min-h-screen flex-col">
         <header
-            class="fixed top-0 left-0 right-0 z-50 h-20 border-b backdrop-blur-md transition-all duration-300 sm:h-24 lg:h-28"
-            :class="isAtTop ? 'border-white/10 bg-black/95' : 'border-black/10 bg-white/95'"
+            class="fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300 sm:h-24 lg:h-28"
+            :class="isAtTop && isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-md'"
         >
             <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
@@ -42,12 +43,12 @@ onUnmounted(() => {
                 </div>
                 <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
-                        <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Home</Link>
-                        <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Experience</Link>
-                        <Link href="/your-stay-in-bhutan" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                        <Link href="/faq" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">FAQs</Link>
-                        <Link v-if="blogEnabled" href="/blog" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Blog</Link>
-                        <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="isAtTop ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-black hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                        <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
+                        <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
+                        <Link href="/your-stay-in-bhutan" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
+                        <Link href="/faq" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
+                        <Link v-if="blogEnabled" href="/blog" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
+                        <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Get Involved</Link>
                         <Link
                             href="/register-summit"
                             class="flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
@@ -61,7 +62,7 @@ onUnmounted(() => {
                     <button
                         type="button"
                         class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
-                        :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
+                        :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
                         aria-label="Toggle menu"
                         @click="mobileMenuOpen = !mobileMenuOpen"
                     >
@@ -76,16 +77,16 @@ onUnmounted(() => {
             </div>
             <div
                 v-show="mobileMenuOpen"
-                class="border-t px-4 py-4 sm:hidden"
-                :class="isAtTop ? 'border-white/10 bg-black' : 'border-black/10 bg-white'"
+                class="px-4 py-4 sm:hidden"
+                :class="isAtTop ? 'bg-primary-1' : 'bg-white'"
             >
                 <nav class="flex flex-col gap-1">
-                    <Link href="/" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
-                    <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
-                    <Link href="/your-stay-in-bhutan" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
-                    <Link href="/faq" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
-                    <Link v-if="blogEnabled" href="/blog" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
-                    <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="isAtTop ? 'text-white/90 hover:bg-white/10' : 'text-black hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
+                    <Link href="/" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
+                    <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
+                    <Link href="/your-stay-in-bhutan" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
+                    <Link href="/faq" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
+                    <Link v-if="blogEnabled" href="/blog" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
+                    <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
                     <Link
                         href="/register-summit"
                         class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
@@ -99,7 +100,7 @@ onUnmounted(() => {
                 </nav>
             </div>
         </header>
-        <main class="flex-1 pt-20 sm:pt-24 lg:pt-28">
+        <main class="flex-1 bg-primary-1/10 pt-20 sm:pt-24 lg:pt-28">
             <slot />
         </main>
         <EventFooter />

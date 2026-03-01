@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-    <section class="bg-white py-16 sm:py-24 lg:py-32">
+    <section class="bg-gradient-to-b from-primary-1/25 to-primary-1/10 py-16 sm:py-24 lg:py-32">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <div class="mx-auto max-w-3xl text-center">
