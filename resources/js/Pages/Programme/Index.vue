@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
+import EventsPlanSection from '@/Components/Home/EventsPlanSection.vue';
 
 const props = defineProps({
     settings: {
@@ -196,67 +197,107 @@ const defaultThemes = [
 <template>
     <Head title="Programme & Experience" />
     <EventLayout>
-        <section class="bg-gradient-to-b from-primary-2/10 to-white py-16 sm:py-24 lg:py-32">
+
+        <!-- ① A Transformative Summit Experience -->
+        <section id="transformative-experience" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl text-center">
-                        <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
-                            {{ sectionTitle }}
+                    <!-- Section label + title -->
+                    <div class="mb-12 text-center sm:mb-16">
+                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 1</p>
+                        <h1 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
+                            A Transformative Summit Experience
                         </h1>
-                        <p class="mt-6 font-body text-xl leading-relaxed text-primary-1 sm:text-2xl lg:text-3xl font-semibold">
-                            {{ subtitle }}
-                        </p>
                     </div>
 
-                    <div class="mx-auto mt-12 max-w-4xl space-y-6 sm:mt-16">
+                    <!-- Two-column: text left, photo right -->
+                    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+                        <!-- Text column -->
+                        <div>
+                            <p class="font-body text-xl font-bold leading-relaxed text-primary-1 sm:text-2xl">
+                                The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.
+                            </p>
+                            <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.
+                            </p>
+                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.
+                            </p>
+                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.
+                            </p>
+                        </div>
+
+                        <!-- Photo column -->
+                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                            <img
+                                src="/brand/img55.jpg"
+                                alt="Summit experience"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- What to expect list -->
+                    <div class="mt-16 space-y-4">
+                        <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">What to Expect</h2>
                         <div
                             v-for="(item, index) in expectations"
                             :key="index"
-                            class="flex gap-4 rounded-xl bg-white p-6 shadow-sm transition hover:shadow-md"
+                            class="flex gap-4 rounded-xl border border-primary-1/20 bg-primary-1/5 p-6 shadow-md transition hover:shadow-xl"
                         >
                             <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-2">
                                 <span class="font-title text-sm font-bold text-primary-1">{{ index + 1 }}</span>
                             </div>
-                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
-                                {{ item }}
-                            </p>
+                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">{{ item }}</p>
                         </div>
-                    </div>
-
-                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl bg-primary-2/10 p-8 text-center sm:mt-16 sm:p-12">
-                        <p class="font-body text-lg leading-relaxed text-primary-1 sm:text-xl">
-                            This is an invitation to bring your <span class="font-semibold">whole self</span>: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.
-                        </p>
-                    </div>
-
-                    <div class="mx-auto mt-8 text-center sm:mt-12">
-                        <a 
-                            href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 rounded-full bg-accent-1 px-8 py-4 font-title text-base font-semibold text-white shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:text-lg"
-                        >
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span>Call for Submissions</span>
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </a>
-                        <p class="mt-4 font-body text-sm text-copy sm:text-base">
-                            Contribute your experience — respond to our Call for Submissions and help shape the Summit.
-                        </p>
                     </div>
                 </SectionReveal>
             </div>
         </section>
 
-        <section id="core-themes" class="bg-white pt-0 pb-16 sm:pt-2 sm:pb-24 lg:pt-4 lg:pb-32">
+        <!-- ①a Call for Submissions -->
+        <section id="call-for-submissions" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <SectionReveal>
+                    <div class="mx-auto max-w-3xl text-center">
+                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 1a</p>
+                        <h2 class="mt-2 font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
+                            Call for Submissions
+                        </h2>
+                        <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
+                            Contribute your experience — respond to our Call for Submissions and help shape the Summit.
+                        </p>
+                        <div class="mt-8">
+                            <a
+                                href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 rounded-full bg-accent-1 px-8 py-4 font-title text-base font-semibold text-white shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:text-lg"
+                            >
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Download Call for Submissions</span>
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </SectionReveal>
+            </div>
+        </section>
+
+        <!-- ② Core Themes -->
+        <section id="core-themes" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
-                        <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 2</p>
+                        <h2 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
                             Core Themes
                         </h2>
                         <p class="mt-6 font-body text-base leading-relaxed text-copy sm:text-lg">
@@ -273,10 +314,10 @@ const defaultThemes = [
                             type="button"
                             :disabled="!canPrevTheme"
                             :class="{ 'opacity-30 cursor-not-allowed': !canPrevTheme }"
-                            class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                            class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
                             @click="prevThemes"
                         >
-                            <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
@@ -292,11 +333,11 @@ const defaultThemes = [
                                     class="flex shrink-0 px-2"
                                     :style="{ width: `${100 / totalPages / themesPerView}%` }"
                                 >
-                                    <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-xl">
+                                    <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-1/20 bg-primary-1/5 shadow-md transition hover:shadow-xl">
                                         <div class="relative aspect-[4/3] overflow-hidden">
-                                            <img 
-                                                :src="theme.image || '/brand/themes/1.jpg'" 
-                                                :alt="theme.title || 'Theme'" 
+                                            <img
+                                                :src="theme.image || '/brand/themes/1.jpg'"
+                                                :alt="theme.title || 'Theme'"
                                                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                                 loading="lazy"
                                             />
@@ -307,7 +348,7 @@ const defaultThemes = [
                                         <div class="flex flex-1 flex-col p-6">
                                             <h3 class="font-title text-lg font-bold text-primary-1">{{ theme.title }}</h3>
                                             <p class="mt-3 flex-1 font-body text-base leading-relaxed text-copy line-clamp-4 sm:text-lg">{{ theme.description }}</p>
-                                            <div class="mt-4 border-t border-primary-2/10 pt-4">
+                                            <div class="mt-4 border-t border-primary-1/10 pt-4">
                                                 <p class="font-body text-sm text-copy">
                                                     <span class="font-semibold">Team Lead:</span> {{ theme.lead }}
                                                 </p>
@@ -325,10 +366,10 @@ const defaultThemes = [
                             type="button"
                             :disabled="!canNextTheme"
                             :class="{ 'opacity-30 cursor-not-allowed': !canNextTheme }"
-                            class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-3 shadow-lg transition hover:bg-gray-50 disabled:hover:bg-white"
+                            class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
                             @click="nextThemes"
                         >
-                            <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
@@ -342,5 +383,62 @@ const defaultThemes = [
                 </SectionReveal>
             </div>
         </section>
+
+        <!-- ③ Building a Global Movement -->
+        <section id="global-movement" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-24 lg:py-32">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <SectionReveal>
+                    <div class="mx-auto max-w-4xl text-center">
+                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 3</p>
+                        <h2 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                            Building a Global Movement
+                        </h2>
+                        <p class="mt-6 font-body text-lg leading-relaxed text-copy sm:text-xl">
+                            The Summit is more than a conference — it is a catalyst for lasting change. By convening diverse voices from across the globe, we aim to spark a movement that transforms food systems from the inside out.
+                        </p>
+                    </div>
+
+                    <div class="mx-auto mt-12 grid gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-2">
+                                <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Connect & Collaborate</h3>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Bring together 350–500 changemakers — governments, farmers, youth, civil society, researchers, and private sector — in meaningful dialogue and co-creation.</p>
+                        </div>
+                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-1">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Amplify Impact</h3>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Share knowledge, innovations, and stories that inspire systemic change — bridging local wisdom with global action to advance conscious food systems worldwide.</p>
+                        </div>
+                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl sm:col-span-2 lg:col-span-1">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-1">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Drive Transformation</h3>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Forge commitments, partnerships, and pathways that outlast the Summit — embedding conscious values into food policy, practice, and culture at every level.</p>
+                        </div>
+                    </div>
+
+                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-accent-2/30 bg-accent-2/10 p-8 text-center sm:mt-16 sm:p-12">
+                        <p class="font-body text-lg font-semibold leading-relaxed text-primary-1 sm:text-xl">
+                            "The Summit will advance Bhutan's National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while highlighting Bhutan's leadership in driving conscious food systems transformation globally."
+                        </p>
+                    </div>
+                </SectionReveal>
+            </div>
+        </section>
+
+        <!-- Events Plan -->
+        <EventsPlanSection :settings="settings" />
+
     </EventLayout>
 </template>

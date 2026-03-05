@@ -65,10 +65,10 @@ const goPrev = () => {
             <SectionReveal>
                 <!-- Title -->
                 <div class="mb-12 text-center">
-                    <h2 class="mx-auto font-title text-3xl font-bold uppercase tracking-wide text-gray-900 sm:text-4xl">
+                    <h2 class="mx-auto font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
                         {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
                     </h2>
-                    <p v-if="settings?.speakers_section_subtitle" class="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-gray-600 sm:text-lg">
+                    <p v-if="settings?.speakers_section_subtitle" class="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-copy sm:text-lg">
                         {{ settings.speakers_section_subtitle }}
                     </p>
                 </div>
@@ -108,13 +108,13 @@ const goPrev = () => {
 
                             <!-- Speaker Info -->
                             <div class="w-full px-4">
-                                <h3 class="font-title text-base font-bold uppercase tracking-wide text-gray-900">
+                                <h3 class="font-title text-base font-bold uppercase tracking-wide text-primary-1">
                                     {{ speaker.name }}
                                 </h3>
-                                <p class="mt-1 font-body text-sm font-semibold uppercase tracking-wide text-red-600">
+                                <p class="mt-1 font-body text-sm font-semibold uppercase tracking-wide text-accent-1">
                                     {{ speaker.role }}
                                 </p>
-                                <p class="mt-3 font-body text-base leading-relaxed text-gray-600 sm:text-lg">
+                                <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
                                     {{ speaker.bio }}
                                 </p>
                             </div>

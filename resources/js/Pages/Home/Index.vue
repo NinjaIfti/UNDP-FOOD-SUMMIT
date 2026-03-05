@@ -9,7 +9,6 @@ import ConsciousFoodSection from '@/Components/Home/ConsciousFoodSection.vue';
 import OutcomesSection from '@/Components/Home/OutcomesSection.vue';
 import FeaturedSpeakersSection from '@/Components/Home/FeaturedSpeakersSection.vue';
 import WhyBhutanSection from '@/Components/Home/WhyBhutanSection.vue';
-import EventsPlanSection from '@/Components/Home/EventsPlanSection.vue';
 import CallToActionsSection from '@/Components/Home/CallToActionsSection.vue';
 
 defineProps({
@@ -28,7 +27,6 @@ defineProps({
         <ConsciousFoodSection :settings="settings" />
         <OutcomesSection :settings="settings" />
         <WhyBhutanSection :settings="settings" />
-        <EventsPlanSection :settings="settings" />
         <CoOrganizersSection :settings="settings" />
     </EventLayout>
 </template>

@@ -201,7 +201,7 @@ function submit() {
                 <Link href="/#speakers" class="text-sm text-white/80 transition hover:text-white">Speakers</Link>
                 <Link href="/register-summit" class="text-sm text-white/80 transition hover:text-white">Register</Link>
             </div>
-            <p class="mt-6 text-center text-sm text-white/60">© Global Conscious Food Systems Alliance · 31 Aug – 4 Sep 2026</p>
+            <p class="mt-6 text-center text-sm text-white/60">Global Conscious Food Systems Summit – 31 Aug – 4 Sep 2026</p>
         </div>
     </footer>
 </template>
