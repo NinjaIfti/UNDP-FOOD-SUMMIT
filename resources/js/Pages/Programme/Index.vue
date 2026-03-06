@@ -204,8 +204,7 @@ const defaultThemes = [
                 <SectionReveal>
                     <!-- Section label + title -->
                     <div class="mb-12 text-center sm:mb-16">
-                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 1</p>
-                        <h1 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
+                        <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
                             A Transformative Summit Experience
                         </h1>
                     </div>
@@ -249,7 +248,7 @@ const defaultThemes = [
                             class="flex gap-4 rounded-xl border border-primary-1/20 bg-primary-1/5 p-6 shadow-md transition hover:shadow-xl"
                         >
                             <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-2">
-                                <span class="font-title text-sm font-bold text-primary-1">{{ index + 1 }}</span>
+                                <span class="font-body text-sm font-bold text-primary-1">{{ index + 1 }}</span>
                             </div>
                             <p class="font-body text-base leading-relaxed text-ink sm:text-lg">{{ item }}</p>
                         </div>
@@ -259,32 +258,53 @@ const defaultThemes = [
         </section>
 
         <!-- ①a Call for Submissions -->
-        <section id="call-for-submissions" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-20">
+        <section id="call-for-submissions" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-24">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-3xl text-center">
-                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 1a</p>
-                        <h2 class="mt-2 font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
+                    <!-- Title -->
+                    <div class="mb-12 text-center">
+                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
                             Call for Submissions
                         </h2>
-                        <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">
-                            Contribute your experience — respond to our Call for Submissions and help shape the Summit.
-                        </p>
-                        <div class="mt-8">
-                            <a
-                                href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 rounded-full bg-accent-1 px-8 py-4 font-title text-base font-semibold text-white shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:text-lg"
-                            >
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <span>Download Call for Submissions</span>
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </a>
+                    </div>
+
+                    <!-- Two-column: photo left, text right -->
+                    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+                        <!-- Photo -->
+                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                            <img
+                                src="/brand/img34.jpg"
+                                alt="Call for Submissions"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+
+                        <!-- Text -->
+                        <div>
+                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                                The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.
+                            </p>
+                            <p class="mt-4 font-body text-base font-bold leading-relaxed text-primary-1 sm:text-lg">
+                                Apply by 31st of March!
+                            </p>
+                            <div class="mt-8">
+                                <a
+                                    href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 rounded-full bg-accent-1 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:text-lg"
+                                >
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span>Help shape the Summit! Respond to our Call for Submissions</span>
+                                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </SectionReveal>
@@ -296,12 +316,11 @@ const defaultThemes = [
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
-                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 2</p>
-                        <h2 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                        <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
                             Core Themes
                         </h2>
                         <p class="mt-6 font-body text-base leading-relaxed text-copy sm:text-lg">
-                            The following themes have been identified to guide the Summit preparation process. Proposals may align with one or more of the themes. Please note these will not be isolated tracks and submissions demonstrating interconnections between these themes are welcome. We are also open to proposals on other topics as long as their relevance to conscious food systems is demonstrated.
+                            The Summit will weave together the following core themes. Rather than isolated tracks, they are intended to intersect and inform one another, reflecting the interconnected nature of conscious food systems.
                         </p>
                     </div>
 
@@ -388,15 +407,43 @@ const defaultThemes = [
         <section id="global-movement" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl text-center">
-                        <p class="font-title text-sm font-semibold uppercase tracking-widest text-accent-2">Section 3</p>
-                        <h2 class="mt-2 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                    <!-- Title -->
+                    <div class="mb-12 text-center">
+                        <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
                             Building a Global Movement
                         </h2>
-                        <p class="mt-6 font-body text-lg leading-relaxed text-copy sm:text-xl">
-                            The Summit is more than a conference — it is a catalyst for lasting change. By convening diverse voices from across the globe, we aim to spark a movement that transforms food systems from the inside out.
-                        </p>
                     </div>
+
+                    <!-- Two-column: text left, photo right -->
+                    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+                        <!-- Text -->
+                        <div>
+                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                                Policymakers, farmers, Indigenous leaders, researchers, businesses, youth, philanthropies, academia, civil society actors, and consciousness practitioners will assemble in one circle for a deeply transformative experience.
+                            </p>
+                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                High-level dialogues will include the participation of the Prime Minister of Bhutan, as well as heads of state and ministers from other countries.
+                            </p>
+                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                Participants will also have the opportunity to take part in immersive site visits to local initiatives and conscious food projects.
+                            </p>
+                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                                Together, these exchanges will help catalyse connections and contribute to a growing global movement for conscious food systems.
+                            </p>
+                        </div>
+
+                        <!-- Photo -->
+                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                            <img
+                                src="/brand/img30.jpg"
+                                alt="Building a Global Movement"
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                    
 
                     <div class="mx-auto mt-12 grid gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
                         <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl">

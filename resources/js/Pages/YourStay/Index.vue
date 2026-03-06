@@ -147,7 +147,7 @@ const filteredHotels = computed(() => {
                         v-for="tab in tabs"
                         :key="tab.id"
                         type="button"
-                        class="inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 font-title text-sm font-semibold transition sm:px-5 sm:py-2.5 sm:text-base first:ml-2 last:mr-2 sm:first:ml-4 sm:last:mr-4"
+                        class="inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 font-body text-sm font-semibold transition sm:px-5 sm:py-2.5 sm:text-base first:ml-2 last:mr-2 sm:first:ml-4 sm:last:mr-4"
                         :class="activeTab === tab.id
                             ? 'bg-primary-1 text-white'
                             : 'bg-gray-100 text-ink hover:bg-gray-200'"
@@ -222,7 +222,7 @@ const filteredHotels = computed(() => {
 
                     <div class="mx-auto mt-6 max-w-2xl rounded-lg border border-accent-2 bg-accent-2/10 p-4 sm:p-5">
                         <div class="flex items-start gap-3">
-                            <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-2 font-title text-xs font-bold text-primary-1">
+                            <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-xs font-bold text-primary-1">
                                 i
                             </div>
                             <div>
@@ -324,8 +324,8 @@ const filteredHotels = computed(() => {
                                         <template v-for="(route, index) in settings.flight_routes" :key="index">
                                             <tr v-if="route.is_note && route.airline" class="border-b border-gray-200 bg-blue-50">
                                                 <td colspan="4" class="px-4 py-3 text-center">
-                                                    <a v-if="route.airline_url" :href="route.airline_url" target="_blank" rel="noopener noreferrer" class="font-title text-primary-1 font-semibold hover:underline">{{ route.airline }}</a>
-                                                    <span v-else class="font-title text-primary-1 font-semibold">{{ route.airline }}</span>
+                                                    <a v-if="route.airline_url" :href="route.airline_url" target="_blank" rel="noopener noreferrer" class="font-body text-primary-1 font-semibold hover:underline">{{ route.airline }}</a>
+                                                    <span v-else class="font-body text-primary-1 font-semibold">{{ route.airline }}</span>
                                                 </td>
                                             </tr>
                                             <tr v-if="route.is_note && route.note" class="border-b border-gray-200 hover:bg-gray-50">
@@ -949,7 +949,7 @@ const filteredHotels = computed(() => {
                         <div class="space-y-3">
                             <div v-for="(cost, index) in settings.companions_costs" :key="index" class="flex justify-between items-center py-3" :class="index < settings.companions_costs.length - 1 ? 'border-b border-gray-100' : ''">
                                 <span class="font-body text-gray-700">{{ cost.item }}</span>
-                                <span class="font-title font-semibold text-gray-900">{{ cost.amount }}</span>
+                                <span class="font-body font-semibold text-gray-900">{{ cost.amount }}</span>
                             </div>
                             <div v-if="settings.companions_costs_note" class="bg-blue-50 rounded-lg p-4 mt-4">
                                 <p class="font-body text-sm text-gray-700">
@@ -997,7 +997,7 @@ const filteredHotels = computed(() => {
                                 class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                             >
                                 <div>
-                                    <p class="font-title font-medium text-gray-900">{{ resource.title }}</p>
+                                    <p class="font-body font-medium text-gray-900">{{ resource.title }}</p>
                                     <p class="font-body text-sm text-gray-600">{{ resource.description }}</p>
                                 </div>
                                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

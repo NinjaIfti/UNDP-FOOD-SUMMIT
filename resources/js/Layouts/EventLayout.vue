@@ -43,15 +43,15 @@ onUnmounted(() => {
                 </div>
                 <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
-                        <Link href="/" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
-                        <Link href="/programme" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
-                        <Link href="/your-stay-in-bhutan" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                        <Link href="/faq" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
-                        <Link v-if="blogEnabled" href="/blog" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
-                        <Link href="/get-involved" class="flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                        <Link href="/" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
+                        <Link href="/programme" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
+                        <Link href="/your-stay-in-bhutan" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
+                        <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
+                        <Link v-if="blogEnabled" href="/blog" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
+                        <Link href="/get-involved" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Get Involved</Link>
                         <Link
                             href="/register-summit"
-                            class="flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
+                            class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
                         >
                             Register
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,15 +81,15 @@ onUnmounted(() => {
                 :class="isAtTop ? 'bg-primary-1' : 'bg-white'"
             >
                 <nav class="flex flex-col gap-1">
-                    <Link href="/" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
-                    <Link href="/programme" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
-                    <Link href="/your-stay-in-bhutan" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
-                    <Link href="/faq" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
-                    <Link v-if="blogEnabled" href="/blog" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
-                    <Link href="/get-involved" class="rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
+                    <Link href="/" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
+                    <Link href="/programme" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
+                    <Link href="/your-stay-in-bhutan" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
+                    <Link href="/faq" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
+                    <Link v-if="blogEnabled" href="/blog" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
+                    <Link href="/get-involved" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
                     <Link
                         href="/register-summit"
-                        class="rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
+                        class="font-body rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
                         @click="mobileMenuOpen = false"
                     >
                         Register

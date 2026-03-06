@@ -46,102 +46,95 @@ function nextSlide() {
     }
 }
 
-const titleText = props.settings.hero_title;
-const displayedTitle = ref('');
-let charIndex = 0;
-let typingInterval;
-let eraseInterval;
-let pauseTimeout;
-const isTyping = ref(true);
-
-function startTyping() {
-    isTyping.value = true;
-    typingInterval = setInterval(() => {
-        if (charIndex < titleText.length) {
-            displayedTitle.value = titleText.slice(0, charIndex + 1);
-            charIndex++;
-        } else {
-            clearInterval(typingInterval);
-            pauseTimeout = setTimeout(startErasing, 3000);
-        }
-    }, 60);
-}
-
-function startErasing() {
-    isTyping.value = false;
-    eraseInterval = setInterval(() => {
-        if (charIndex > 0) {
-            charIndex--;
-            displayedTitle.value = titleText.slice(0, charIndex);
-        } else {
-            clearInterval(eraseInterval);
-            pauseTimeout = setTimeout(startTyping, 500);
-        }
-    }, 30);
-}
-
 onMounted(() => {
     timer = setInterval(() => { now.value = new Date(); }, 1000);
-    slideInterval = setInterval(nextSlide, 5000);
-    startTyping();
+    slideInterval = setInterval(nextSlide, 6000);
 });
 onUnmounted(() => {
     clearInterval(timer);
     clearInterval(slideInterval);
-    clearInterval(typingInterval);
-    clearInterval(eraseInterval);
-    clearTimeout(pauseTimeout);
 });
 </script>
 
 <template>
-    <section class="relative -mt-20 min-h-[calc(85vh+5rem)] overflow-hidden bg-primary-1/20 sm:-mt-24 sm:min-h-[calc(90vh+6rem)] lg:-mt-28 lg:min-h-[calc(90vh+7rem)] pt-20 sm:pt-24 lg:pt-28">
+    <section class="relative -mt-20 min-h-[calc(90vh+5rem)] overflow-hidden bg-primary-1 sm:-mt-24 sm:min-h-[calc(92vh+6rem)] lg:-mt-28 lg:min-h-[calc(92vh+7rem)] pt-20 sm:pt-24 lg:pt-28">
+
+        <!-- Slides with Ken Burns soft zoom -->
         <div class="absolute inset-0">
             <div
                 v-for="(slide, i) in slides"
                 :key="slide + i"
-                class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-                :class="i === currentIndex ? 'opacity-85' : 'opacity-0'"
+                class="absolute inset-0 bg-cover bg-center"
+                :class="i === currentIndex ? 'hero-slide-active' : 'hero-slide-inactive'"
                 :style="{ backgroundImage: `url(${slide})` }"
             />
         </div>
-        <div class="absolute inset-0 z-10 bg-gradient-to-b from-primary-1/50 via-primary-1/25 to-primary-1/50" />
-        <div class="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center justify-center px-4 py-24 text-center sm:min-h-[90vh] sm:px-6 lg:px-8">
-            <img src="/brand/logo2.png" alt="" class="mb-6 h-32 w-32 object-contain sm:h-40 sm:w-40 md:h-52 md:w-52 lg:h-64 lg:w-64" aria-hidden="true" />
-            <h1 class="w-full text-center font-title text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
-                {{ displayedTitle }}<span class="inline-block w-[3px] animate-pulse bg-accent-2 ml-1" style="height: 1em;">&nbsp;</span>
-            </h1>
-            <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">{{ settings.hero_date }} · {{ settings.hero_location }}</p>
-            <div class="mt-8 flex justify-center gap-2 sm:gap-6">
-                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
-                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.days }}</span>
-                    <span class="text-xs text-white/80 sm:text-sm">Days</span>
+
+        <!-- Dark gradient overlay — heavier on left so text is readable -->
+        <div class="absolute inset-0 z-10 bg-gradient-to-r from-primary-1/85 via-primary-1/50 to-primary-1/10" />
+        <div class="absolute inset-0 z-10 bg-gradient-to-t from-primary-1/60 via-transparent to-primary-1/30" />
+
+        <!-- Content — left aligned -->
+        <div class="relative z-20 mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-24 sm:px-10 lg:px-16">
+            <div class="max-w-2xl">
+
+                <h1 class="font-title text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                    {{ settings.hero_title }}
+                </h1>
+
+                <p class="mt-5 font-body text-lg font-medium text-white/80 sm:text-xl">
+                    {{ settings.hero_date }} · {{ settings.hero_location }}
+                </p>
+
+                <!-- Countdown -->
+                <div class="mt-8 flex flex-wrap gap-3 sm:gap-4">
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                        <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.days }}</span>
+                        <span class="font-body text-xs text-white/70 sm:text-sm">Days</span>
+                    </div>
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                        <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.hours }}</span>
+                        <span class="font-body text-xs text-white/70 sm:text-sm">Hours</span>
+                    </div>
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                        <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.minutes }}</span>
+                        <span class="font-body text-xs text-white/70 sm:text-sm">Minutes</span>
+                    </div>
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                        <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.seconds }}</span>
+                        <span class="font-body text-xs text-white/70 sm:text-sm">Seconds</span>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
-                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.hours }}</span>
-                    <span class="text-xs text-white/80 sm:text-sm">Hours</span>
-                </div>
-                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
-                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.minutes }}</span>
-                    <span class="text-xs text-white/80 sm:text-sm">Min</span>
-                </div>
-                <div class="flex flex-col items-center rounded-lg bg-primary-1/20 px-3 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
-                    <span class="font-title text-2xl font-bold text-white sm:text-3xl md:text-4xl">{{ countdown.seconds }}</span>
-                    <span class="text-xs text-white/80 sm:text-sm">Sec</span>
-                </div>
+
+                <!-- Register button -->
+                <Link
+                    href="/register-summit"
+                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-primary-1 shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
+                >
+                    Register Now
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </Link>
             </div>
-            <p class="mt-6 max-w-3xl font-body text-lg font-bold leading-relaxed text-white/90 sm:text-2xl">
-                {{ settings.hero_description }}
-            </p>
-            <Link
-                href="/register-summit"
-                class="mt-10 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-title text-base font-semibold text-primary-1 shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
-            >
-                Register Now
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </Link>
         </div>
     </section>
 </template>
+
+<style scoped>
+.hero-slide-active {
+    opacity: 1;
+    animation: kenBurns 8s ease-in-out forwards;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.hero-slide-inactive {
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+@keyframes kenBurns {
+    0%   { transform: scale(1.0) translateX(0); }
+    100% { transform: scale(1.08) translateX(-1%); }
+}
+</style>

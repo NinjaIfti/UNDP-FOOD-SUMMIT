@@ -115,7 +115,7 @@ const ctaCards = computed(() => {
                                     </svg>
                                 </div>
                                 <div class="text-left">
-                                    <p :class="card.style === 'primary' ? 'font-title text-lg font-bold text-white sm:text-xl' : 'font-title text-lg font-bold text-primary-1 sm:text-xl'">{{ card.title }}</p>
+                                    <p :class="card.style === 'primary' ? 'font-body text-lg font-bold text-white sm:text-xl' : 'font-body text-lg font-bold text-primary-1 sm:text-xl'">{{ card.title }}</p>
                                     <p class="mt-1 font-body text-sm" :class="card.style === 'primary' ? 'text-white/90' : 'text-copy'">{{ card.subtitle }}</p>
                                 </div>
                             </div>

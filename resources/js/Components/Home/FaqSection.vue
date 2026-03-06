@@ -26,7 +26,7 @@ function toggle(index) {
 </script>
 
 <template>
-    <section class="bg-gradient-to-b from-white to-primary-2/5 py-16 sm:py-24 lg:py-32">
+    <section class="bg-primary-1/10 py-16 sm:py-24 lg:py-32">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
@@ -36,14 +36,14 @@ function toggle(index) {
                     <div
                         v-for="(faq, index) in faqs"
                         :key="index"
-                        class="overflow-hidden rounded-xl border border-primary-2/20 bg-white shadow-sm transition hover:shadow-md"
+                        class="overflow-hidden rounded-xl border border-primary-1/20 bg-primary-1/5 shadow-sm transition hover:shadow-md"
                     >
                         <button
                             type="button"
                             @click="toggle(index)"
-                            class="flex w-full items-center justify-between gap-4 px-6 py-4 text-left font-body transition hover:bg-primary-2/5"
+                            class="flex w-full items-center justify-between gap-4 px-6 py-4 text-left font-body transition hover:bg-primary-1/10"
                         >
-                            <span class="font-title text-base font-semibold text-primary-1 sm:text-lg">{{ faq.question }}</span>
+                            <span class="font-body text-base font-semibold text-primary-1 sm:text-lg">{{ faq.question }}</span>
                             <svg
                                 class="h-5 w-5 shrink-0 text-primary-1 transition-transform"
                                 :class="openIndex === index ? 'rotate-180' : ''"
@@ -56,7 +56,7 @@ function toggle(index) {
                         </button>
                         <div
                             v-show="openIndex === index"
-                            class="border-t border-primary-2/10 px-6 py-4"
+                            class="border-t border-primary-1/10 px-6 py-4"
                         >
                             <div class="faq-answer font-body text-base leading-relaxed text-ink" v-html="faq.answer"></div>
                         </div>

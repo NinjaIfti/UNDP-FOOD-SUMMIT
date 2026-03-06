@@ -171,7 +171,7 @@ const steps = [
                     <button
                         type="button"
                         @click="closeSuccessModal"
-                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-title text-sm font-semibold text-white transition hover:bg-primary-2/90"
+                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-body text-sm font-semibold text-white transition hover:bg-primary-2/90"
                     >
                         OK
                     </button>
@@ -186,7 +186,7 @@ const steps = [
             <div class="absolute inset-0 bg-gradient-to-b from-primary-1/70 via-primary-1/30 to-primary-2/60" />
             <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
                 <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Register Now!</h1>
-                <p class="mt-4 font-title text-lg font-medium text-accent-2 sm:text-xl">Global Conscious Food Systems Summit · 31 Aug – 4 Sep 2026 · Bhutan</p>
+                <p class="mt-4 font-body text-lg font-medium text-accent-2 sm:text-xl">Global Conscious Food Systems Summit · 31 Aug – 4 Sep 2026 · Bhutan</p>
             </div>
         </section>
 
@@ -200,7 +200,7 @@ const steps = [
                     Participation in an event of this nature requires a carefully coordinated registration and travel process, particularly due to the specific entry regulations and visa procedures for visiting Bhutan.
                 </p>
                 <div class="mt-6 rounded-xl border-l-4 border-accent-2 bg-accent-2/10 px-6 py-4">
-                    <p class="font-title text-sm font-semibold uppercase tracking-wide text-accent-2">Important Note</p>
+                    <p class="font-body text-sm font-semibold uppercase tracking-wide text-accent-2">Important Note</p>
                     <p class="mt-1 font-body text-base text-ink">
                         We strongly recommend that participants do not book international travel or accommodation arrangements until their visa entry permission has been officially approved.
                     </p>
@@ -217,7 +217,7 @@ const steps = [
                 <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Registration Process</h2>
                 <div class="mt-12 space-y-6">
                     <div v-for="step in steps" :key="step.number" class="flex gap-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-title text-sm font-bold text-primary-1">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-sm font-bold text-primary-1">
                             {{ step.number }}
                         </div>
                         <div class="flex-1 pt-1">
@@ -251,7 +251,7 @@ const steps = [
                 <form @submit.prevent="submit" class="mt-10 space-y-6">
                     <!-- Section 1: Personal Information -->
                     <fieldset>
-                        <legend class="font-title text-lg font-semibold text-accent-2">Section 1 — Personal Information</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 1 — Personal Information</legend>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="first_name" class="mb-1 block text-sm font-medium text-primary-1">First Name (as in Passport/ID) *</label>
@@ -353,7 +353,7 @@ const steps = [
 
                     <!-- Section 2: Visa Information -->
                     <fieldset>
-                        <legend class="font-title text-lg font-semibold text-accent-2">Section 2 — Visa Information</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 2 — Visa Information</legend>
                         <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <p class="font-body text-sm leading-relaxed text-copy">
                                 Visa arrangements for this event will be fully coordinated by the organizing team. Upon approval of your registration, the organizers will guide you through the visa process and provide the necessary official documentation required for your application. Please ensure that the passport details submitted below are accurate and match your travel documents.
@@ -413,11 +413,11 @@ const steps = [
 
                     <!-- Section 3: Select Your Price -->
                     <fieldset>
-                        <legend class="font-title text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
 
                         <!-- What's included -->
                         <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-title text-sm font-semibold text-primary-1">The ticket price includes:</p>
+                            <p class="font-body text-sm font-semibold text-primary-1">The ticket price includes:</p>
                             <ul class="mt-2 space-y-1.5 text-sm text-copy">
                                 <li class="flex gap-2">
                                     <span class="mt-1 text-primary-2">&#10003;</span>
@@ -441,7 +441,7 @@ const steps = [
                                 </li>
                             </ul>
 
-                            <p class="mt-4 font-title text-sm font-semibold text-primary-1">Please note the ticket price does not include:</p>
+                            <p class="mt-4 font-body text-sm font-semibold text-primary-1">Please note the ticket price does not include:</p>
                             <ul class="mt-2 space-y-1.5 text-sm text-copy">
                                 <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> International travel to and from Bhutan</li>
                                 <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> Accommodation costs in Paro</li>
@@ -456,7 +456,7 @@ const steps = [
                         </div>
 
                         <!-- Price Tier Selection -->
-                        <p class="mb-2 mt-6 font-title text-sm font-medium text-primary-1">Select your price tier *</p>
+                        <p class="mb-2 mt-6 font-body text-sm font-medium text-primary-1">Select your price tier *</p>
                         <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-sm text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                         <div v-else class="space-y-3">
                             <label
@@ -473,8 +473,8 @@ const steps = [
                                 />
                                 <div class="flex-1">
                                     <div class="flex items-baseline justify-between gap-3">
-                                        <span class="font-title font-semibold text-primary-1">{{ pkg.name }}</span>
-                                        <span class="shrink-0 font-title text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
+                                        <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
+                                        <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
                                     </div>
                                     <p class="mt-0.5 text-sm text-white/70">{{ pkg.description }}</p>
                                 </div>
@@ -491,8 +491,8 @@ const steps = [
                                     class="mt-1 h-4 w-4 accent-[#729430]"
                                 />
                                 <div>
-                                    <span class="font-title font-semibold text-primary-1">Field Visits on 31 August</span>
-                                    <span class="ml-2 font-title text-sm font-bold text-primary-2">(+ additional cost)</span>
+                                    <span class="font-body font-semibold text-primary-1">Field Visits on 31 August</span>
+                                    <span class="ml-2 font-body text-sm font-bold text-primary-2">(+ additional cost)</span>
                                     <p class="mt-0.5 text-sm text-copy">Guided visits to organic farms in the Paro Valley, including farm-to-table lunch experience and hands-on workshops with local farmers. Exact pricing to be confirmed.</p>
                                 </div>
                             </label>
@@ -500,7 +500,7 @@ const steps = [
 
                         <!-- Accessibility -->
                         <div class="mt-6">
-                            <p class="mb-2 font-title text-sm font-medium text-primary-1">Do you require any accessibility support? *</p>
+                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Do you require any accessibility support? *</p>
                             <div class="flex gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.accessibility_needed === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.accessibility_needed" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
@@ -526,7 +526,7 @@ const steps = [
 
                         <!-- Dietary Preferences -->
                         <div class="mt-6">
-                            <label for="dietary" class="mb-2 block font-title text-sm font-medium text-primary-1">Dietary Preferences *</label>
+                            <label for="dietary" class="mb-2 block font-body text-sm font-medium text-primary-1">Dietary Preferences *</label>
                             <select
                                 id="dietary"
                                 v-model="form.dietary"
@@ -554,7 +554,7 @@ const steps = [
 
                         <!-- How did you hear about this event -->
                         <div class="mt-6">
-                            <p class="mb-2 font-title text-sm font-medium text-primary-1">How did you hear about this event?</p>
+                            <p class="mb-2 font-body text-sm font-medium text-primary-1">How did you hear about this event?</p>
                             <div class="grid gap-2 sm:grid-cols-2">
                                 <label
                                     v-for="source in ['Email Newsletter', 'Social Media', 'Referral', 'Partner Organization', 'Website Search']"
@@ -586,7 +586,7 @@ const steps = [
 
                     <!-- Section 4: Additional Participants -->
                     <fieldset>
-                        <legend class="font-title text-lg font-semibold text-accent-2">Section 4 — Additional Participants</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 4 — Additional Participants</legend>
                         <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <p class="font-body text-sm leading-relaxed text-copy">
                                 If you are traveling with a family member, companion, or guest, please provide their information below. Passport details are collected solely to allow the organizing team to fully coordinate the visa entry permission process for accompanying persons.
@@ -596,7 +596,7 @@ const steps = [
                         <div class="mt-4 space-y-6">
                             <div v-for="(member, i) in form.additional_members" :key="i" class="rounded-xl border border-primary-2/20 bg-white px-5 py-5">
                                 <div class="flex items-center justify-between">
-                                    <h4 class="font-title text-sm font-semibold text-primary-1">Additional Member {{ i + 1 }}</h4>
+                                    <h4 class="font-body text-sm font-semibold text-primary-1">Additional Member {{ i + 1 }}</h4>
                                     <button
                                         v-if="form.additional_members.length > 1"
                                         type="button"
@@ -658,14 +658,14 @@ const steps = [
 
                     <!-- Section 5: Others -->
                     <fieldset>
-                        <legend class="font-title text-lg font-semibold text-accent-2">Section 5 — Others</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 5 — Others</legend>
 
                         <!-- Engage with CoFSA -->
-                        <h4 class="mt-4 font-title text-sm font-semibold uppercase tracking-wide text-primary-1">Engage with CoFSA</h4>
+                        <h4 class="mt-4 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Engage with CoFSA</h4>
 
                         <!-- CoFSA Membership -->
                         <div class="mt-4">
-                            <p class="mb-2 font-title text-sm font-medium text-primary-1">Would you like to become a Member of CoFSA? *</p>
+                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Would you like to become a Member of CoFSA? *</p>
                             <div class="rounded-xl border border-primary-2/15 bg-white px-5 py-3 mb-3">
                                 <p class="font-body text-sm leading-relaxed text-copy">
                                     The <a href="https://consciousfoodsystems.org/" target="_blank" rel="noopener noreferrer" class="font-semibold text-accent-2 hover:underline">Conscious Food Systems Alliance (CoFSA)</a> is a growing community of practitioners united to integrate consciousness into food systems transformation. As a member, you gain access to resources, events, and a network of changemakers working toward regenerative food futures.
@@ -686,7 +686,7 @@ const steps = [
 
                         <!-- CoFSA Newsletter -->
                         <div class="mt-6">
-                            <p class="mb-2 font-title text-sm font-medium text-primary-1">Would you like to subscribe to CoFSA's Newsletter to receive resources and connect with the community? *</p>
+                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Would you like to subscribe to CoFSA's Newsletter to receive resources and connect with the community? *</p>
                             <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.cofsa_newsletter === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.cofsa_newsletter" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
@@ -701,7 +701,7 @@ const steps = [
                         </div>
 
                         <!-- Emergency Contact -->
-                        <h4 class="mt-8 font-title text-sm font-semibold uppercase tracking-wide text-primary-1">Emergency Contact *</h4>
+                        <h4 class="mt-8 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Emergency Contact *</h4>
                         <div class="mt-3 grid gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="emergency_name" class="mb-1 block text-sm font-medium text-primary-1">Full Name *</label>
@@ -754,7 +754,7 @@ const steps = [
                         </div>
 
                         <!-- Document Uploads -->
-                        <h4 class="mt-8 font-title text-sm font-semibold uppercase tracking-wide text-primary-1">Document Uploads</h4>
+                        <h4 class="mt-8 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Document Uploads</h4>
                         <div class="mt-3">
                             <p class="mb-3 font-body text-sm text-copy">Please upload a personal photo of yourself for visa purposes. The photo should be a recent passport-style photograph with a plain background.</p>
                             <div v-if="!photoPreview" class="flex items-center justify-center">
@@ -762,7 +762,7 @@ const steps = [
                                     <svg class="mb-3 h-10 w-10 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    <span class="font-title text-sm font-medium text-primary-1">Click to upload photo</span>
+                                    <span class="font-body text-sm font-medium text-primary-1">Click to upload photo</span>
                                     <span class="mt-1 text-xs text-copy">JPG, PNG — max 5MB</span>
                                     <input type="file" accept="image/jpeg,image/png" class="hidden" @change="handlePhoto" />
                                 </label>
@@ -791,7 +791,7 @@ const steps = [
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="w-full rounded-xl bg-accent-2 py-4 font-title text-lg font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
+                            class="w-full rounded-xl bg-accent-2 py-4 font-body text-lg font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
                         >
                             {{ form.processing ? 'Submitting...' : 'Submit Registration Application' }}
                         </button>

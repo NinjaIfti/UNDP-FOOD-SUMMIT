@@ -78,7 +78,7 @@ function submit() {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-white/80">Email</p>
+                                <p class="font-body text-sm text-white/80">Email</p>
                                 <a :href="'mailto:' + contactEmail" class="font-body text-white hover:text-primary-2">{{ contactEmail }}</a>
                             </div>
                         </div>
@@ -89,7 +89,7 @@ function submit() {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-white/80">Phone</p>
+                                <p class="font-body text-sm text-white/80">Phone</p>
                                 <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="font-body text-white hover:text-primary-2">{{ contactPhone }}</a>
                             </div>
                         </div>
@@ -101,7 +101,7 @@ function submit() {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-white/80">Location</p>
+                                <p class="font-body text-sm text-white/80">Location</p>
                                 <p class="font-body text-white whitespace-pre-line">{{ contactLocation }}</p>
                             </div>
                         </div>
