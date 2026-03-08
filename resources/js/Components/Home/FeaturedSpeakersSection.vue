@@ -60,7 +60,7 @@ const goPrev = () => {
 </script>
 
 <template>
-    <section id="speakers" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
+    <section id="speakers" class="scroll-mt-24 bg-white py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <!-- Title -->
@@ -92,7 +92,7 @@ const goPrev = () => {
                         <div
                             v-for="speaker in visibleSpeakers"
                             :key="speaker.name"
-                            class="group flex flex-col items-center rounded-2xl border border-primary-1/20 bg-primary-1/5 p-6 text-center shadow-md transition hover:shadow-xl"
+                            class="group flex flex-col items-center rounded-2xl border border-primary-1/20 bg-white p-6 text-center shadow-md transition hover:shadow-xl"
                         >
                             <!-- Circular Image with Border -->
                             <div class="relative mb-4">

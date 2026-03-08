@@ -10,9 +10,9 @@ defineProps({
     <section class="bg-gradient-to-b from-primary-1/25 to-primary-1/10 py-16 sm:py-24 lg:py-32">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <div class="mx-auto max-w-3xl text-center">
+                <div class="text-center">
                     <h2
-                        class="mx-auto font-title text-2xl font-bold uppercase leading-tight tracking-wide text-primary-1 sm:text-3xl lg:text-4xl"
+                        class="font-title text-2xl font-bold uppercase leading-tight tracking-wide text-primary-1 sm:text-3xl lg:text-4xl"
                         style="text-wrap: balance;"
                     >
                         {{ settings.summit_intro_title }}

@@ -276,7 +276,7 @@ const defaultThemes = [
                             <img
                                 src="/brand/img34.jpg"
                                 alt="Call for Submissions"
-                                class="h-full w-full object-cover"
+                                class="h-72 w-full object-cover sm:h-96"
                                 loading="lazy"
                             />
                         </div>

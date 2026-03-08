@@ -115,7 +115,7 @@ function formatTimeWithAMPM(timeStr) {
                         v-for="(day, i) in days"
                         :key="i"
                         @click="activeDay = i"
-                        class="rounded-full px-5 py-2.5 font-title text-sm font-semibold transition sm:px-6"
+                        class="rounded-full px-5 py-2.5 font-body text-sm font-semibold transition sm:px-6"
                         :class="activeDay === i
                             ? 'bg-accent-2 text-primary-1 shadow-md'
                             : 'bg-primary-1/10 text-primary-1 hover:bg-primary-1/20'"
@@ -124,61 +124,27 @@ function formatTimeWithAMPM(timeStr) {
                     </button>
                 </div>
 
-                <!-- Day Title -->
-                <div class="mt-8 text-center">
-                    <h3 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">{{ days[activeDay].title }}</h3>
-                    <p class="mt-1 font-title text-sm font-medium text-accent-2">{{ days[activeDay].date }}, 2026</p>
-                </div>
-
-                <!-- Schedule Timeline -->
+                <!-- Schedule -->
                 <div class="mt-8">
-                    <div class="relative mx-auto max-w-3xl">
-                        <!-- Timeline line -->
-                        <div class="absolute left-[7px] top-3 bottom-3 w-0.5 bg-primary-1/20 sm:left-[99px]" />
-
+                    <div class="mx-auto max-w-3xl space-y-3">
                         <div
                             v-for="(item, i) in days[activeDay].schedule"
                             :key="i"
-                            class="relative flex items-center gap-4 py-3 sm:gap-6"
+                            class="rounded-xl border px-5 py-4 transition text-center"
+                            :class="item.type === 'break'
+                                ? 'border-primary-1/20 bg-primary-1/5'
+                                : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
                         >
-                            <!-- Time -->
-                            <div class="hidden w-28 shrink-0 text-right sm:block">
-                                <span class="whitespace-nowrap font-title text-sm font-medium text-copy">{{ formatTimeWithAMPM(item.time) }}</span>
-                            </div>
-
-                            <!-- Dot -->
-                            <div class="relative z-10 flex shrink-0">
-                                <span
-                                    class="h-4 w-4 rounded-full border-2"
-                                    :class="item.type === 'break'
-                                        ? 'border-primary-1/20 bg-primary-1/10'
-                                        : item.type === 'speaker'
-                                            ? 'border-accent-2 bg-accent-2'
-                                            : 'border-primary-1 bg-primary-1'"
-                                />
-                            </div>
-
-                            <!-- Content Card -->
-                            <div
-                                class="flex-1 rounded-xl border px-5 py-4 transition"
-                                :class="item.type === 'break'
-                                    ? 'border-primary-1/20 bg-primary-1/5'
-                                    : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
+                            <p class="font-body text-xs font-medium text-accent-2">{{ formatTimeWithAMPM(item.time) }}</p>
+                            <h4
+                                class="mt-1 font-body font-semibold"
+                                :class="item.type === 'break' ? 'text-sm text-copy' : 'text-base text-primary-1'"
                             >
-                                <p class="whitespace-nowrap font-title text-xs font-medium text-accent-2 sm:hidden">{{ formatTimeWithAMPM(item.time) }}</p>
-                                <h4
-                                    class="font-title font-semibold"
-                                    :class="item.type === 'break' ? 'text-sm text-copy' : 'text-base text-primary-1'"
-                                >
-                                    {{ item.title }}
-                                </h4>
-                                <p v-if="item.speaker" class="mt-1 font-body text-sm text-copy">
-                                    <svg class="mr-1 inline h-3.5 w-3.5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    {{ item.speaker }}
-                                </p>
-                            </div>
+                                {{ item.title }}
+                            </h4>
+                            <p v-if="item.speaker" class="mt-1 font-body text-sm text-copy">
+                                {{ item.speaker }}
+                            </p>
                         </div>
                     </div>
                 </div>

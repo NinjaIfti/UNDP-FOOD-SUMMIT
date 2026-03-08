@@ -52,7 +52,7 @@ const actions = computed(() => props.settings?.cta_actions || [
 </script>
 
 <template>
-    <section id="cta" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
+    <section id="cta" class="scroll-mt-24 bg-white py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
@@ -69,7 +69,7 @@ const actions = computed(() => props.settings?.cta_actions || [
                             :href="action.href"
                             :target="action.external ? '_blank' : undefined"
                             :rel="action.external ? 'noopener noreferrer' : undefined"
-                            class="group flex flex-col rounded-2xl border border-primary-1/20 bg-primary-1/5 p-6 shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+                            class="group flex flex-col rounded-2xl border border-primary-1/20 bg-white p-6 shadow-md transition hover:-translate-y-1 hover:shadow-xl"
                         >
                             <!-- Icon -->
                             <div :class="[action.color, 'flex h-12 w-12 items-center justify-center rounded-xl']">
