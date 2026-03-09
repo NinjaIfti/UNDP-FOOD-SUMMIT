@@ -55,9 +55,13 @@ const actions = computed(() => props.settings?.cta_actions || [
     <section id="cta" class="scroll-mt-24 bg-white py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-                    {{ settings?.cta_section_title || 'Call to Actions' }}
-                </h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                    <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+                        {{ settings?.cta_section_title || 'Call to Actions' }}
+                    </h2>
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                </div>
                 <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">
                     {{ settings?.cta_section_subtitle || 'There are many ways to get involved with the Summit. Choose how you\'d like to participate.' }}
                 </p>

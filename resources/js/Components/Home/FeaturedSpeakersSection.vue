@@ -65,9 +65,13 @@ const goPrev = () => {
             <SectionReveal>
                 <!-- Title -->
                 <div class="mb-12 text-center">
-                    <h2 class="mx-auto max-w-2xl font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
-                        {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
-                    </h2>
+                    <div class="flex items-center justify-center gap-10">
+                        <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                        <h2 class="mx-auto max-w-2xl font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                            {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
+                        </h2>
+                        <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                    </div>
                     <p
                         v-if="settings?.speakers_section_subtitle"
                         class="mx-auto mt-4 max-w-2xl text-center font-body text-base leading-relaxed text-copy sm:text-lg"
@@ -78,12 +82,12 @@ const goPrev = () => {
 
                 <!-- Speakers Carousel -->
                 <div class="relative">
-                    <!-- Previous Arrow -->
+                    <!-- Previous Arrow (desktop only) -->
                     <button
                         @click="goPrev"
                         :disabled="!canGoPrev"
                         :class="{ 'opacity-30 cursor-not-allowed': !canGoPrev }"
-                        class="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
+                        class="absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20 lg:flex"
                     >
                         <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -91,15 +95,15 @@ const goPrev = () => {
                     </button>
 
                     <!-- Speakers Grid -->
-                    <div class="mx-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="mx-6 grid grid-cols-1 gap-8 sm:mx-8 sm:grid-cols-2 lg:mx-12 lg:grid-cols-3">
                         <div
                             v-for="speaker in visibleSpeakers"
                             :key="speaker.name"
-                            class="group flex flex-col items-center rounded-2xl border border-primary-1/20 bg-white p-6 text-center shadow-md transition hover:shadow-xl"
+                            class="group flex h-full flex-col items-center justify-center rounded-[28px] border border-primary-1/10 bg-[#F4F1EA] px-8 py-8 text-center shadow-md transition hover:-translate-y-1 hover:shadow-xl"
                         >
                             <!-- Circular Image with Border -->
                             <div class="relative mb-4">
-                                <div class="h-48 w-48 overflow-hidden rounded-full border-4 border-primary-1 bg-primary-1/10 p-1">
+                                <div class="h-44 w-44 overflow-hidden rounded-full border-[6px] border-accent-2 bg-white p-1 shadow-md">
                                     <img
                                         :src="speaker.image"
                                         :alt="speaker.name"
@@ -111,25 +115,25 @@ const goPrev = () => {
 
                             <!-- Speaker Info -->
                             <div class="w-full px-4">
-                                <h3 class="font-title text-base font-bold uppercase tracking-wide text-primary-1">
+                                <h3 class="mx-auto max-w-xs font-title text-lg font-bold text-primary-1">
                                     {{ speaker.name }}
                                 </h3>
-                                <p class="mt-1 font-body text-sm font-semibold uppercase tracking-wide text-accent-1">
+                                <p class="mt-1 mx-auto max-w-xs text-center font-body text-sm font-semibold text-primary-2">
                                     {{ speaker.role }}
                                 </p>
-                                <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
+                                <p class="mt-2 mx-auto max-w-xs text-center font-body text-sm leading-snug text-copy sm:text-base">
                                     {{ speaker.bio }}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Next Arrow -->
+                    <!-- Next Arrow (desktop only) -->
                     <button
                         @click="goNext"
                         :disabled="!canGoNext"
                         :class="{ 'opacity-30 cursor-not-allowed': !canGoNext }"
-                        class="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20"
+                        class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-primary-1/20 p-3 shadow-lg transition hover:bg-primary-1/30 disabled:hover:bg-primary-1/20 lg:flex"
                     >
                         <svg class="h-6 w-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

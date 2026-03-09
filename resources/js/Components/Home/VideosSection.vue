@@ -24,10 +24,14 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
 </script>
 
 <template>
-    <section class="bg-primary-1/10 py-16 sm:py-24">
+    <section class="bg-[#F4F1EA] py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Videos</h2>
+                <div class="flex items-center justify-center gap-10">
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                    <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Videos</h2>
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                </div>
                 <div class="mt-12 grid gap-8 md:grid-cols-2">
                     <div class="overflow-hidden rounded-xl bg-primary-1/5 shadow-md transition hover:shadow-xl">
                         <div class="aspect-video bg-primary-1/10">

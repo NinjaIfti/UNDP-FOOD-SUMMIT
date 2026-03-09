@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import EventFooter from '@/Components/EventFooter.vue';
 
@@ -10,7 +10,7 @@ defineProps({
 const page = usePage();
 const blogEnabled = page.props.blog_enabled ?? false;
 const siteSettings = page.props.site_settings ?? {};
-const isHomePage = page.url === '/' || page.url === '';
+const isHomePage = computed(() => page.url === '/' || page.url === '');
 const logo1 = siteSettings.logo_secondary || '/brand/govt.png';
 const logo2 = siteSettings.logo || '/brand/logo2.png';
 const mobileMenuOpen = ref(false);

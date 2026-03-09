@@ -238,21 +238,6 @@ const defaultThemes = [
                             />
                         </div>
                     </div>
-
-                    <!-- What to expect list -->
-                    <div class="mt-16 space-y-4">
-                        <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">What to Expect</h2>
-                        <div
-                            v-for="(item, index) in expectations"
-                            :key="index"
-                            class="flex gap-4 rounded-xl border border-primary-1/20 bg-primary-1/5 p-6 shadow-md transition hover:shadow-xl"
-                        >
-                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-2">
-                                <span class="font-body text-sm font-bold text-primary-1">{{ index + 1 }}</span>
-                            </div>
-                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">{{ item }}</p>
-                        </div>
-                    </div>
                 </SectionReveal>
             </div>
         </section>
