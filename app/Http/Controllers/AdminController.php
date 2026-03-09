@@ -723,10 +723,40 @@ class AdminController extends Controller
     public function updateProgramme(Request $request)
     {
         $validationRules = [
-            'expect_section_title' => 'nullable|string',
-            'expect_subtitle' => 'nullable|string',
-            'expectations' => 'nullable|array',
-            'expectations.*' => 'nullable|string',
+            // Section 1 – A Transformative Summit Experience
+            'transform_title' => 'nullable|string',
+            'transform_p1' => 'nullable|string',
+            'transform_p2' => 'nullable|string',
+            'transform_p3' => 'nullable|string',
+            'transform_p4' => 'nullable|string',
+            'transform_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+
+            // Section 1a – Call for Submissions
+            'cfs_title' => 'nullable|string',
+            'cfs_body' => 'nullable|string',
+            'cfs_apply' => 'nullable|string',
+            'cfs_button' => 'nullable|string',
+            'cfs_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+
+            // Section 2 – Core Themes intro
+            'core_title' => 'nullable|string',
+            'core_intro' => 'nullable|string',
+
+            // Section 3 – Building a Global Movement
+            'global_title' => 'nullable|string',
+            'global_p1' => 'nullable|string',
+            'global_p2' => 'nullable|string',
+            'global_p3' => 'nullable|string',
+            'global_p4' => 'nullable|string',
+            'global_quote' => 'nullable|string',
+            'global_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+
+            // Section 3 – cards
+            'global_cards' => 'nullable|array',
+            'global_cards.*.title' => 'nullable|string',
+            'global_cards.*.body' => 'nullable|string',
+
+            // Theme cards
             'themes' => 'nullable|array',
             'themes.*.number' => 'nullable|integer',
             'themes.*.title' => 'nullable|string',
@@ -746,6 +776,7 @@ class AdminController extends Controller
 
         $currentSettings = $this->getProgrammeSettings();
         $themes = $validated['themes'] ?? $currentSettings['themes'] ?? [];
+        $globalCards = $validated['global_cards'] ?? $currentSettings['global_cards'] ?? [];
 
         foreach ($themes as $index => &$theme) {
             if (!isset($theme['image']) && isset($currentSettings['themes'][$index]['image'])) {
@@ -771,12 +802,87 @@ class AdminController extends Controller
             }
         }
 
-        $merged = array_merge($currentSettings, [
-            'expect_section_title' => $validated['expect_section_title'] ?? $currentSettings['expect_section_title'] ?? null,
-            'expect_subtitle' => $validated['expect_subtitle'] ?? $currentSettings['expect_subtitle'] ?? null,
-            'expectations' => $validated['expectations'] ?? $currentSettings['expectations'] ?? null,
-            'themes' => array_values($themes),
-        ]);
+        // Section 1 image handling
+        $transformImage = $currentSettings['transform_image'] ?? '/brand/img55.jpg';
+        if ($request->hasFile('transform_image')) {
+            if (!empty($transformImage) && str_starts_with($transformImage, '/') && file_exists(public_path($transformImage))) {
+                @unlink(public_path($transformImage));
+            }
+            $file = $request->file('transform_image');
+            $filename = 'transform_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/experience'))) {
+                mkdir(public_path('brand/experience'), 0755, true);
+            }
+            $file->move(public_path('brand/experience'), $filename);
+            $transformImage = '/brand/experience/' . $filename;
+        }
+
+        // Section 1a image handling
+        $cfsImage = $currentSettings['cfs_image'] ?? '/brand/img34.jpg';
+        if ($request->hasFile('cfs_image')) {
+            if (!empty($cfsImage) && str_starts_with($cfsImage, '/') && file_exists(public_path($cfsImage))) {
+                @unlink(public_path($cfsImage));
+            }
+            $file = $request->file('cfs_image');
+            $filename = 'cfs_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/experience'))) {
+                mkdir(public_path('brand/experience'), 0755, true);
+            }
+            $file->move(public_path('brand/experience'), $filename);
+            $cfsImage = '/brand/experience/' . $filename;
+        }
+
+        // Section 3 image handling
+        $globalImage = $currentSettings['global_image'] ?? '/brand/img30.jpg';
+        if ($request->hasFile('global_image')) {
+            if (!empty($globalImage) && str_starts_with($globalImage, '/') && file_exists(public_path($globalImage))) {
+                @unlink(public_path($globalImage));
+            }
+            $file = $request->file('global_image');
+            $filename = 'global_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/experience'))) {
+                mkdir(public_path('brand/experience'), 0755, true);
+            }
+            $file->move(public_path('brand/experience'), $filename);
+            $globalImage = '/brand/experience/' . $filename;
+        }
+
+        $merged = array_merge(
+            $currentSettings,
+            [
+                // Section 1
+                'transform_title' => $validated['transform_title'] ?? ($currentSettings['transform_title'] ?? null),
+                'transform_p1' => $validated['transform_p1'] ?? ($currentSettings['transform_p1'] ?? null),
+                'transform_p2' => $validated['transform_p2'] ?? ($currentSettings['transform_p2'] ?? null),
+                'transform_p3' => $validated['transform_p3'] ?? ($currentSettings['transform_p3'] ?? null),
+                'transform_p4' => $validated['transform_p4'] ?? ($currentSettings['transform_p4'] ?? null),
+                'transform_image' => $transformImage,
+
+                // Section 1a
+                'cfs_title' => $validated['cfs_title'] ?? ($currentSettings['cfs_title'] ?? null),
+                'cfs_body' => $validated['cfs_body'] ?? ($currentSettings['cfs_body'] ?? null),
+                'cfs_apply' => $validated['cfs_apply'] ?? ($currentSettings['cfs_apply'] ?? null),
+                'cfs_button' => $validated['cfs_button'] ?? ($currentSettings['cfs_button'] ?? null),
+                'cfs_image' => $cfsImage,
+
+                // Section 2
+                'core_title' => $validated['core_title'] ?? ($currentSettings['core_title'] ?? null),
+                'core_intro' => $validated['core_intro'] ?? ($currentSettings['core_intro'] ?? null),
+
+                // Section 3
+                'global_title' => $validated['global_title'] ?? ($currentSettings['global_title'] ?? null),
+                'global_p1' => $validated['global_p1'] ?? ($currentSettings['global_p1'] ?? null),
+                'global_p2' => $validated['global_p2'] ?? ($currentSettings['global_p2'] ?? null),
+                'global_p3' => $validated['global_p3'] ?? ($currentSettings['global_p3'] ?? null),
+                'global_p4' => $validated['global_p4'] ?? ($currentSettings['global_p4'] ?? null),
+                'global_quote' => $validated['global_quote'] ?? ($currentSettings['global_quote'] ?? null),
+                'global_image' => $globalImage,
+
+                // Theme cards
+                'themes' => array_values($themes),
+                'global_cards' => array_values($globalCards),
+            ]
+        );
 
         Storage::put('admin/programme-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
 
@@ -790,16 +896,50 @@ class AdminController extends Controller
         }
 
         return [
-            'expect_section_title' => 'WHAT TO EXPECT',
-            'expect_subtitle' => 'A Transformative Experience',
-            'expectations' => [
-                'High-level dialogues, including the participation of the Prime Minister of Bhutan, heads of state and ministers from other countries',
-                'Participatory and transformative knowledge exchanges, including through dialogue, storytelling and creative or embodied methods.',
-                'Strategic and interactive discussions and space for personal connections to foster collaboration',
-                'Experiential practices such as meditation, nature connection and mindful food rituals, engaging hearts, minds, and multiple senses',
-                'Immersive site visits to local initiatives and conscious food projects',
-                'A journey of personal and collective transformation and inspiration',
+            // Section 1 – A Transformative Summit Experience
+            'transform_title' => 'A Transformative Summit Experience',
+            'transform_p1' => 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.',
+            'transform_p2' => 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.',
+            'transform_p3' => 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
+            'transform_p4' => 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
+            'transform_image' => '/brand/img55.jpg',
+
+            // Section 1a – Call for Submissions
+            'cfs_title' => 'Call for Submissions',
+            'cfs_body' => 'The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
+            'cfs_apply' => 'Apply by 31st of March!',
+            'cfs_button' => 'Help shape the Summit! Respond to our Call for Submissions',
+            'cfs_image' => '/brand/img34.jpg',
+
+            // Section 2 – Core Themes intro
+            'core_title' => 'Core Themes',
+            'core_intro' => 'The Summit will weave together the following core themes. Rather than isolated tracks, they are intended to intersect and inform one another, reflecting the interconnected nature of conscious food systems.',
+
+            // Section 3 – Building a Global Movement
+            'global_title' => 'Building a Global Movement',
+            'global_p1' => 'Policymakers, farmers, Indigenous leaders, researchers, businesses, youth, philanthropies, academia, civil society actors, and consciousness practitioners will assemble in one circle for a deeply transformative experience.',
+            'global_p2' => 'High-level dialogues will include the participation of the Prime Minister of Bhutan, as well as heads of state and ministers from other countries.',
+            'global_p3' => 'Participants will also have the opportunity to take part in immersive site visits to local initiatives and conscious food projects.',
+            'global_p4' => 'Together, these exchanges will help catalyse connections and contribute to a growing global movement for conscious food systems.',
+            'global_quote' => "The Summit will advance Bhutan's National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while highlighting Bhutan's leadership in driving conscious food systems transformation globally.",
+            'global_image' => '/brand/img30.jpg',
+
+            'global_cards' => [
+                [
+                    'title' => 'Connect & Collaborate',
+                    'body' => 'Bring together 350–500 changemakers — governments, farmers, youth, civil society, researchers, and private sector — in meaningful dialogue and co-creation.',
+                ],
+                [
+                    'title' => 'Amplify Impact',
+                    'body' => 'Share knowledge, innovations, and stories that inspire systemic change — bridging local wisdom with global action to advance conscious food systems worldwide.',
+                ],
+                [
+                    'title' => 'Drive Transformation',
+                    'body' => 'Forge commitments, partnerships, and pathways that outlast the Summit — embedding conscious values into food policy, practice, and culture at every level.',
+                ],
             ],
+
+            // Core theme cards
             'themes' => [
                 ['number' => 1, 'title' => "Farmers' wellbeing and the inner dimension of agroecology", 'description' => "This area focuses on the wellbeing of farmers and producers (including foresters, livestock herders and fisherworkers) and the inner dimensions of agroecology. It explores how awareness, care, dignity, and connection to Nature influence sustainable farming practices, resilience, decision making, and regenerative land stewardship.", 'image' => '/brand/themes/1.jpg', 'contact' => 'jimena.gomez@undp.org', 'lead' => 'Jimena Gomez'],
                 ['number' => 2, 'title' => "Conscious food policy and governance", 'description' => "This workstream examines how values, awareness, mindsets and inner capacities can shape food related policies, governance mechanisms, and investment flows. It includes reflections on equitable and ethical decision-making, participatory governance, long-term thinking, and aligning public and private investments with regenerative and sustainable food systems.", 'image' => '/brand/themes/2.jpg', 'contact' => 'charlotte.dufour@undp.org', 'lead' => 'Charlotte Dufour'],

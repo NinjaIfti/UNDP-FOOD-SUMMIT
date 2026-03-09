@@ -15,20 +15,7 @@ const props = defineProps({
 const themeIndex = ref(0);
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
-const sectionTitle = computed(() => props.settings?.expect_section_title || 'What to Expect');
-const subtitle = computed(() => props.settings?.expect_subtitle || 'A Transformative Experience');
-const expectations = computed(() => {
-    const list = props.settings?.expectations;
-    if (Array.isArray(list) && list.length) return list.filter(Boolean);
-    return [
-        'High-level dialogues, including the participation of the Prime Minister of Bhutan, heads of state and ministers from other countries',
-        'Participatory and transformative knowledge exchanges, including through dialogue, storytelling and creative or embodied methods.',
-        'Strategic and interactive discussions and space for personal connections to foster collaboration',
-        'Experiential practices such as meditation, nature connection and mindful food rituals, engaging hearts, minds, and multiple senses',
-        'Immersive site visits to local initiatives and conscious food projects',
-        'A journey of personal and collective transformation and inspiration',
-    ];
-});
+const sectionTitle = computed(() => props.settings?.transform_title || 'A Transformative Summit Experience');
 
 const themesPerView = computed(() => {
     if (windowWidth.value < 640) return 1;
@@ -40,6 +27,34 @@ const themes = computed(() => {
     const list = props.settings?.themes;
     if (Array.isArray(list) && list.length) return list.filter(t => t && (t.title || t.description));
     return defaultThemes;
+});
+
+const defaultGlobalCards = [
+    {
+        title: 'Connect & Collaborate',
+        body: 'Bring together 350–500 changemakers — governments, farmers, youth, civil society, researchers, and private sector — in meaningful dialogue and co-creation.',
+    },
+    {
+        title: 'Amplify Impact',
+        body: 'Share knowledge, innovations, and stories that inspire systemic change — bridging local wisdom with global action to advance conscious food systems worldwide.',
+    },
+    {
+        title: 'Drive Transformation',
+        body: 'Forge commitments, partnerships, and pathways that outlast the Summit — embedding conscious values into food policy, practice, and culture at every level.',
+    },
+];
+
+const globalCards = computed(() => {
+    const list = props.settings?.global_cards;
+    if (Array.isArray(list) && list.length) {
+        return list
+            .filter(card => card && (card.title || card.body))
+            .map(card => ({
+                title: card.title || '',
+                body: card.body || '',
+            }));
+    }
+    return defaultGlobalCards;
 });
 
 const totalPages = computed(() => Math.ceil(themes.value.length / themesPerView.value));
@@ -205,7 +220,7 @@ const defaultThemes = [
                     <!-- Section label + title -->
                     <div class="mb-12 text-center sm:mb-16">
                         <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
-                            A Transformative Summit Experience
+                            {{ sectionTitle }}
                         </h1>
                     </div>
 
@@ -215,23 +230,23 @@ const defaultThemes = [
                         <!-- Text column -->
                         <div>
                             <p class="font-body text-xl font-bold leading-relaxed text-primary-1 sm:text-2xl">
-                                The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.
+                                {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
                             </p>
                             <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.
+                                {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
                             </p>
                             <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.
+                                {{ settings.transform_p3 || 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.' }}
                             </p>
                             <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.
+                                {{ settings.transform_p4 || 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.' }}
                             </p>
                         </div>
 
                         <!-- Photo column -->
                         <div class="overflow-hidden rounded-2xl shadow-xl">
                             <img
-                                src="/brand/img55.jpg"
+                                :src="settings.transform_image || '/brand/img55.jpg'"
                                 alt="Summit experience"
                                 class="h-full w-full object-cover"
                                 loading="lazy"
@@ -249,7 +264,7 @@ const defaultThemes = [
                     <!-- Title -->
                     <div class="mb-12 text-center">
                         <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
-                            Call for Submissions
+                            {{ settings.cfs_title || 'Call for Submissions' }}
                         </h2>
                     </div>
 
@@ -259,7 +274,7 @@ const defaultThemes = [
                         <!-- Photo -->
                         <div class="overflow-hidden rounded-2xl shadow-xl">
                             <img
-                                src="/brand/img34.jpg"
+                                :src="settings.cfs_image || '/brand/img34.jpg'"
                                 alt="Call for Submissions"
                                 class="h-72 w-full object-cover sm:h-96"
                                 loading="lazy"
@@ -269,10 +284,10 @@ const defaultThemes = [
                         <!-- Text -->
                         <div>
                             <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
-                                The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.
+                                {{ settings.cfs_body || 'The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.' }}
                             </p>
                             <p class="mt-4 font-body text-base font-bold leading-relaxed text-primary-1 sm:text-lg">
-                                Apply by 31st of March!
+                                {{ settings.cfs_apply || 'Apply by 31st of March!' }}
                             </p>
                             <div class="mt-8">
                                 <a
@@ -284,7 +299,7 @@ const defaultThemes = [
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    <span>Help shape the Summit! Respond to our Call for Submissions</span>
+                                    <span>{{ settings.cfs_button || 'Help shape the Summit! Respond to our Call for Submissions' }}</span>
                                     <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                     </svg>
@@ -302,10 +317,10 @@ const defaultThemes = [
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
-                            Core Themes
+                            {{ settings.core_title || 'Core Themes' }}
                         </h2>
                         <p class="mt-6 font-body text-base leading-relaxed text-copy sm:text-lg">
-                            The Summit will weave together the following core themes. Rather than isolated tracks, they are intended to intersect and inform one another, reflecting the interconnected nature of conscious food systems.
+                            {{ settings.core_intro || 'The Summit will weave together the following core themes. Rather than isolated tracks, they are intended to intersect and inform one another, reflecting the interconnected nature of conscious food systems.' }}
                         </p>
                     </div>
 
@@ -395,7 +410,7 @@ const defaultThemes = [
                     <!-- Title -->
                     <div class="mb-12 text-center">
                         <h2 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
-                            Building a Global Movement
+                            {{ settings.global_title || 'Building a Global Movement' }}
                         </h2>
                     </div>
 
@@ -405,23 +420,23 @@ const defaultThemes = [
                         <!-- Text -->
                         <div>
                             <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
-                                Policymakers, farmers, Indigenous leaders, researchers, businesses, youth, philanthropies, academia, civil society actors, and consciousness practitioners will assemble in one circle for a deeply transformative experience.
+                                {{ settings.global_p1 || 'Policymakers, farmers, Indigenous leaders, researchers, businesses, youth, philanthropies, academia, civil society actors, and consciousness practitioners will assemble in one circle for a deeply transformative experience.' }}
                             </p>
                             <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                High-level dialogues will include the participation of the Prime Minister of Bhutan, as well as heads of state and ministers from other countries.
+                                {{ settings.global_p2 || 'High-level dialogues will include the participation of the Prime Minister of Bhutan, as well as heads of state and ministers from other countries.' }}
                             </p>
                             <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                Participants will also have the opportunity to take part in immersive site visits to local initiatives and conscious food projects.
+                                {{ settings.global_p3 || 'Participants will also have the opportunity to take part in immersive site visits to local initiatives and conscious food projects.' }}
                             </p>
                             <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                Together, these exchanges will help catalyse connections and contribute to a growing global movement for conscious food systems.
+                                {{ settings.global_p4 || 'Together, these exchanges will help catalyse connections and contribute to a growing global movement for conscious food systems.' }}
                             </p>
                         </div>
 
                         <!-- Photo -->
                         <div class="overflow-hidden rounded-2xl shadow-xl">
                             <img
-                                src="/brand/img30.jpg"
+                                :src="settings.global_image || '/brand/img30.jpg'"
                                 alt="Building a Global Movement"
                                 class="h-full w-full object-cover"
                                 loading="lazy"
@@ -431,38 +446,56 @@ const defaultThemes = [
                     
 
                     <div class="mx-auto mt-12 grid gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
-                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-2">
-                                <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <div
+                            v-for="(card, index) in globalCards"
+                            :key="index"
+                            class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl sm:col-span-1"
+                            :class="index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''"
+                        >
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-xl"
+                                :class="index === 0 ? 'bg-accent-2' : index === 1 ? 'bg-accent-1' : 'bg-primary-1'"
+                            >
+                                <svg
+                                    v-if="index === 0"
+                                    class="h-6 w-6 text-primary-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                            </div>
-                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Connect & Collaborate</h3>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Bring together 350–500 changemakers — governments, farmers, youth, civil society, researchers, and private sector — in meaningful dialogue and co-creation.</p>
-                        </div>
-                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-1">
-                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg
+                                    v-else-if="index === 1"
+                                    class="h-6 w-6 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 1 2 2v2.945M8 3.935V5.5A2.5 2.5 0 0 0 10.5 8h.5a2 2 0 0 1 2 2 2 2 0 1 0 4 0 2 2 0 0 1 2-2h1.064M15 20.488V18a2 2 0 0 1 2-2h3.064M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
                                 </svg>
-                            </div>
-                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Amplify Impact</h3>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Share knowledge, innovations, and stories that inspire systemic change — bridging local wisdom with global action to advance conscious food systems worldwide.</p>
-                        </div>
-                        <div class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl sm:col-span-2 lg:col-span-1">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-1">
-                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg
+                                    v-else
+                                    class="h-6 w-6 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                             </div>
-                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">Drive Transformation</h3>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy">Forge commitments, partnerships, and pathways that outlast the Summit — embedding conscious values into food policy, practice, and culture at every level.</p>
+                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">
+                                {{ card.title }}
+                            </h3>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                                {{ card.body }}
+                            </p>
                         </div>
                     </div>
 
                     <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-accent-2/30 bg-accent-2/10 p-8 text-center sm:mt-16 sm:p-12">
                         <p class="font-body text-lg font-semibold leading-relaxed text-primary-1 sm:text-xl">
-                            "The Summit will advance Bhutan's National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while highlighting Bhutan's leadership in driving conscious food systems transformation globally."
+                            "{{ settings.global_quote || "The Summit will advance Bhutan's National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while highlighting Bhutan's leadership in driving conscious food systems transformation globally." }}"
                         </p>
                     </div>
                 </SectionReveal>
