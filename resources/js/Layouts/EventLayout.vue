@@ -100,7 +100,7 @@ onUnmounted(() => {
                 </nav>
             </div>
         </header>
-        <main class="flex-1 bg-primary-1/10 pt-20 sm:pt-24 lg:pt-28">
+        <main class="flex-1 bg-white pt-20 sm:pt-24 lg:pt-28">
             <slot />
         </main>
         <EventFooter />

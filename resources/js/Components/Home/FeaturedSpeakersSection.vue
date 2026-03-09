@@ -65,10 +65,13 @@ const goPrev = () => {
             <SectionReveal>
                 <!-- Title -->
                 <div class="mb-12 text-center">
-                    <h2 class="mx-auto font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                    <h2 class="mx-auto max-w-2xl font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
                         {{ settings?.speakers_section_title || 'EVENT SPEAKERS' }}
                     </h2>
-                    <p v-if="settings?.speakers_section_subtitle" class="mx-auto mt-4 max-w-2xl font-body text-base leading-relaxed text-copy sm:text-lg">
+                    <p
+                        v-if="settings?.speakers_section_subtitle"
+                        class="mx-auto mt-4 max-w-2xl text-center font-body text-base leading-relaxed text-copy sm:text-lg"
+                    >
                         {{ settings.speakers_section_subtitle }}
                     </p>
                 </div>

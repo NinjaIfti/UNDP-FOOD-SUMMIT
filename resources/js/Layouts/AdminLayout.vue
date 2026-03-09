@@ -61,7 +61,7 @@ const isYourStayActive = computed(() => route().current('admin.your-stay'));
 </script>
 
 <template>
-    <div class="flex h-screen bg-gray-100">
+    <div class="admin-font flex h-screen bg-gray-100">
         <!-- Mobile Overlay -->
         <div
             v-show="sidebarOpen"

@@ -15,6 +15,20 @@
 }
 
 @layer utilities {
+    .admin-font {
+        font-family: 'DM Sans', Arial, Calibri, sans-serif;
+    }
+
+    .admin-font h1,
+    .admin-font h2,
+    .admin-font h3,
+    .admin-font h4,
+    .admin-font h5,
+    .admin-font h6,
+    .admin-font .font-title {
+        font-family: 'DM Sans', Arial, Calibri, sans-serif;
+    }
+
     .sidebar-scroll {
         scrollbar-width: thin;
         scrollbar-color: rgba(255, 255, 255, 0.3) transparent;

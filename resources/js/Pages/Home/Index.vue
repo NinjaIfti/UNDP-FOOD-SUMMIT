@@ -25,7 +25,7 @@ defineProps({
         <VideosSection :settings="settings" />
         <FeaturedSpeakersSection :settings="settings" />
         <ConsciousFoodSection :settings="settings" />
-        <OutcomesSection :settings="settings" />
+        <!-- <OutcomesSection :settings="settings" /> -->
         <WhyBhutanSection :settings="settings" />
         <CoOrganizersSection :settings="settings" />
     </EventLayout>

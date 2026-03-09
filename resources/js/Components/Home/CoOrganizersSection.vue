@@ -30,28 +30,28 @@ const organizers = computed(() => [
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-                    {{ settings.coorganizers_title }}
+                    Co-Organizers
                 </h2>
+                <p class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg">
+                    Our work and impact would not be possible without the dedicated financial support of numerous individuals, foundations and companies who are committed to its success.
+                </p>
                 
-                <div class="mt-10 grid grid-cols-3 gap-6 sm:mt-12 sm:gap-8 lg:gap-14">
+                <div class="mt-8 flex items-center justify-center gap-3 sm:gap-4 lg:gap-5">
                     <a
                         v-for="org in organizers"
                         :key="org.name"
                         :href="org.url"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group flex flex-col items-center text-center"
+                        class="group flex items-center justify-center"
                     >
-                        <div class="flex h-20 items-center justify-center sm:h-24 lg:h-28">
+                        <div class="flex h-16 items-center justify-center sm:h-20 lg:h-24">
                             <img 
                                 :src="org.logo" 
                                 :alt="org.name" 
-                                class="max-h-full w-auto object-contain transition duration-300 group-hover:scale-105"
+                                class="max-h-full max-w-[350px] object-contain transition duration-300 group-hover:scale-105"
                             />
                         </div>
-                        <h3 class="mt-6 font-title text-lg font-semibold text-primary-1 transition group-hover:text-accent-1 sm:text-xl">
-                            {{ org.name }}
-                        </h3>
                     </a>
                 </div>
             </SectionReveal>
