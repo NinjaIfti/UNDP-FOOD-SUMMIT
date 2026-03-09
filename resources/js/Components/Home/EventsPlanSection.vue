@@ -106,7 +106,14 @@ function formatTimeWithAMPM(timeStr) {
     <section id="agenda" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">{{ settings.events_title }}</h2>
+                <!-- Title with gradient lines -->
+                <div class="flex items-center justify-center gap-6">
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                    <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+                        Events Plan
+                    </h2>
+                    <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
+                </div>
                 <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">{{ settings.events_subtitle }}</p>
 
                 <!-- Day Tabs -->
@@ -115,13 +122,23 @@ function formatTimeWithAMPM(timeStr) {
                         v-for="(day, i) in days"
                         :key="i"
                         @click="activeDay = i"
-                        class="rounded-full px-5 py-2.5 font-body text-sm font-semibold transition sm:px-6"
+                        class="rounded-full px-6 py-2.5 font-body text-sm font-semibold transition sm:px-7"
                         :class="activeDay === i
                             ? 'bg-accent-2 text-primary-1 shadow-md'
-                            : 'bg-primary-1/10 text-primary-1 hover:bg-primary-1/20'"
+                            : 'bg-white text-primary-1 border border-primary-1/20 hover:bg-primary-1/10'"
                     >
-                        <span class="hidden sm:inline">{{ day.date }} · </span>{{ day.label }}
+                        {{ day.date }} - {{ day.label }}
                     </button>
+                </div>
+
+                <!-- Active Day Title + Date -->
+                <div class="mt-6 text-center">
+                    <h3 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">
+                        {{ days[activeDay].title }}
+                    </h3>
+                    <p class="mt-1 font-body text-sm font-medium text-accent-2 text-center">
+                        {{ days[activeDay].date }}, 2026
+                    </p>
                 </div>
 
                 <!-- Schedule -->
