@@ -78,7 +78,7 @@ onUnmounted(() => {
             <div
                 v-show="mobileMenuOpen"
                 class="px-4 py-4 sm:hidden"
-                :class="isAtTop ? 'bg-primary-1' : 'bg-white'"
+                :class="(isAtTop && isHomePage) ? 'bg-primary-1' : 'bg-white'"
             >
                 <nav class="flex flex-col gap-1">
                     <Link href="/" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>

@@ -26,7 +26,7 @@ function toggle(index) {
 </script>
 
 <template>
-    <section class="bg-primary-1/10 py-16 sm:py-24 lg:py-32">
+    <section class="bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">

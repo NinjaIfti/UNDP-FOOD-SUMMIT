@@ -17,6 +17,8 @@ const speakers = computed(() => props.settings?.speakers || [
 
 const currentIndex = ref(0);
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
+const autoSlideInterval = ref(null);
+const touchStartX = ref(0);
 
 const speakersPerView = computed(() => {
     if (windowWidth.value < 640) return 1;
@@ -39,11 +41,50 @@ function onResize() {
     if (currentIndex.value > maxStart) currentIndex.value = maxStart;
 }
 
+function startAutoSlide() {
+    if (autoSlideInterval.value) return;
+    autoSlideInterval.value = setInterval(() => {
+        // Only auto-slide when there is something to slide
+        if (speakers.value.length > speakersPerView.value) {
+            if (canGoNext.value) {
+                currentIndex.value++;
+            } else {
+                currentIndex.value = 0;
+            }
+        }
+    }, 6000);
+}
+
+function stopAutoSlide() {
+    if (autoSlideInterval.value) {
+        clearInterval(autoSlideInterval.value);
+        autoSlideInterval.value = null;
+    }
+}
+
+function onTouchStart(event) {
+    if (!event.touches || !event.touches.length) return;
+    touchStartX.value = event.touches[0].clientX;
+}
+
+function onTouchEnd(event) {
+    if (!event.changedTouches || !event.changedTouches.length) return;
+    const deltaX = event.changedTouches[0].clientX - touchStartX.value;
+    const threshold = 40;
+    if (deltaX > threshold) {
+        goPrev();
+    } else if (deltaX < -threshold) {
+        goNext();
+    }
+}
+
 onMounted(() => {
     window.addEventListener('resize', onResize);
+    startAutoSlide();
 });
 onUnmounted(() => {
     window.removeEventListener('resize', onResize);
+    stopAutoSlide();
 });
 
 const goNext = () => {
@@ -81,7 +122,11 @@ const goPrev = () => {
                 </div>
 
                 <!-- Speakers Carousel -->
-                <div class="relative">
+                <div
+                    class="relative"
+                    @touchstart.passive="onTouchStart"
+                    @touchend.passive="onTouchEnd"
+                >
                     <!-- Previous Arrow (desktop only) -->
                     <button
                         @click="goPrev"

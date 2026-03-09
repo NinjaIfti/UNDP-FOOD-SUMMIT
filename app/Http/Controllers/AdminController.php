@@ -699,7 +699,18 @@ class AdminController extends Controller
 
     public function programmePublic()
     {
-        $settings = $this->getProgrammeSettings();
+        // Base Programme/Experience page content
+        $programmeSettings = $this->getProgrammeSettings();
+
+        // Reuse Events Plan configuration from Homepage settings
+        $homepageSettings = $this->getHomepageSettings();
+
+        $settings = array_merge($programmeSettings, [
+            'events_title' => $homepageSettings['events_title'] ?? 'Events Plan',
+            'events_subtitle' => $homepageSettings['events_subtitle'] ?? '31 August – 4 September 2026 · Thimphu, Bhutan',
+            'events_days' => $homepageSettings['events_days'] ?? [],
+        ]);
+
         return Inertia::render('Programme/Index', ['settings' => $settings]);
     }
 

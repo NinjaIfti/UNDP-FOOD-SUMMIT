@@ -106,7 +106,7 @@ function formatTimeWithAMPM(timeStr) {
     <section id="agenda" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <!-- Title with gradient lines -->
+                <!-- Title, subtitle, and day tabs (outside white box) -->
                 <div class="flex items-center justify-center gap-6">
                     <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
                     <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
@@ -114,9 +114,10 @@ function formatTimeWithAMPM(timeStr) {
                     </h2>
                     <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
                 </div>
-                <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">{{ settings.events_subtitle }}</p>
+                <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">
+                    {{ settings.events_subtitle }}
+                </p>
 
-                <!-- Day Tabs -->
                 <div class="mt-10 flex flex-wrap justify-center gap-2">
                     <button
                         v-for="(day, i) in days"
@@ -131,37 +132,59 @@ function formatTimeWithAMPM(timeStr) {
                     </button>
                 </div>
 
-                <!-- Active Day Title + Date -->
-                <div class="mt-6 text-center">
-                    <h3 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">
-                        {{ days[activeDay].title }}
-                    </h3>
-                    <p class="mt-1 font-body text-sm font-medium text-accent-2 text-center">
-                        {{ days[activeDay].date }}, 2026
-                    </p>
-                </div>
+                <!-- White box: active day details + schedule -->
+                <div class="mx-auto mt-8 max-w-4xl rounded-3xl bg-white p-6 shadow-md sm:p-8">
+                    <!-- Active Day Title + Date -->
+                    <div class="text-center">
+                        <h3 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">
+                            {{ days[activeDay].title }}
+                        </h3>
+                        <p class="mt-1 font-body text-sm font-medium text-accent-2 text-center">
+                            {{ days[activeDay].date }}, 2026
+                        </p>
+                    </div>
 
-                <!-- Schedule -->
-                <div class="mt-8">
-                    <div class="mx-auto max-w-3xl space-y-3">
-                        <div
-                            v-for="(item, i) in days[activeDay].schedule"
-                            :key="i"
-                            class="rounded-xl border px-5 py-4 transition text-center"
-                            :class="item.type === 'break'
-                                ? 'border-primary-1/20 bg-primary-1/5'
-                                : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
-                        >
-                            <p class="font-body text-xs font-medium text-accent-2">{{ formatTimeWithAMPM(item.time) }}</p>
-                            <h4
-                                class="mt-1 font-body font-semibold"
-                                :class="item.type === 'break' ? 'text-sm text-copy' : 'text-base text-primary-1'"
+                    <!-- Schedule -->
+                    <div class="mt-8">
+                        <div class="mx-auto max-w-3xl space-y-3">
+                            <div
+                                v-for="(item, i) in days[activeDay].schedule"
+                                :key="i"
+                                class="flex items-stretch gap-4"
                             >
-                                {{ item.title }}
-                            </h4>
-                            <p v-if="item.speaker" class="mt-1 font-body text-sm text-copy">
-                                {{ item.speaker }}
-                            </p>
+                                <!-- Time + dot on the left -->
+                                <div class="flex w-40 items-center justify-end gap-2 sm:w-48">
+                                    <p class="font-body text-xs font-medium text-primary-1 text-right sm:text-sm">
+                                        {{ formatTimeWithAMPM(item.time) }}
+                                    </p>
+                                    <span
+                                        class="inline-block h-2.5 w-2.5 rounded-full"
+                                        :class="item.type === 'break'
+                                            ? 'bg-primary-1/40'
+                                            : item.type === 'speaker'
+                                                ? 'bg-primary-1'
+                                                : 'bg-accent-2'"
+                                    />
+                                </div>
+
+                                <!-- Content card -->
+                                <div
+                                    class="flex-1 rounded-xl border px-5 py-4 transition"
+                                    :class="item.type === 'break'
+                                        ? 'border-primary-1/20 bg-primary-1/5'
+                                        : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
+                                >
+                                    <h4
+                                        class="font-body font-semibold"
+                                        :class="item.type === 'break' ? 'text-sm text-copy' : 'text-base text-primary-1'"
+                                    >
+                                        {{ item.title }}
+                                    </h4>
+                                    <p v-if="item.speaker" class="mt-1 font-body text-sm text-copy">
+                                        {{ item.speaker }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

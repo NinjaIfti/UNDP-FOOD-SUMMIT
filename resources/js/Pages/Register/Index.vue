@@ -221,7 +221,9 @@ const steps = [
                             {{ step.number }}
                         </div>
                         <div class="flex-1 pt-1">
-                            <h3 class="font-title text-lg font-bold text-primary-1">Step {{ step.number }} — {{ step.title }}</h3>
+                            <h3 class="font-title text-lg font-bold text-primary-1">
+                                Step <span class="font-body">{{ step.number }}</span> — {{ step.title }}
+                            </h3>
                             <p class="mt-1 font-body text-base leading-relaxed text-copy">{{ step.desc }}</p>
                         </div>
                     </div>

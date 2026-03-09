@@ -109,7 +109,7 @@ onUnmounted(() => {
                 <!-- Register button -->
                 <Link
                     href="/register-summit"
-                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-primary-1 shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
+                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
                 >
                     Register Now
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
