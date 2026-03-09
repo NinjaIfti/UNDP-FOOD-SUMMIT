@@ -95,7 +95,7 @@ const goPrev = () => {
                     </button>
 
                     <!-- Speakers Grid -->
-                    <div class="mx-6 grid grid-cols-1 gap-8 sm:mx-8 sm:grid-cols-2 lg:mx-12 lg:grid-cols-3">
+                    <div class="mx-6 grid grid-cols-1 gap-8 sm:mx-8 sm:grid-cols-2 lg:mx-12 lg:grid-cols-4">
                         <div
                             v-for="speaker in visibleSpeakers"
                             :key="speaker.name"
