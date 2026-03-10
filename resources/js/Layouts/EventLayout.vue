@@ -46,9 +46,9 @@ onUnmounted(() => {
                         <Link href="/" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
                         <Link href="/programme" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
                         <Link href="/your-stay-in-bhutan" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                        <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
                         <Link v-if="blogEnabled" href="/blog" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
                         <Link href="/get-involved" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Get Involved</Link>
+                        <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
                         <Link
                             href="/register-summit"
                             class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
@@ -84,9 +84,9 @@ onUnmounted(() => {
                     <Link href="/" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
                     <Link href="/programme" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
                     <Link href="/your-stay-in-bhutan" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
-                    <Link href="/faq" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
                     <Link v-if="blogEnabled" href="/blog" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
                     <Link href="/get-involved" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
+                    <Link href="/faq" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
                     <Link
                         href="/register-summit"
                         class="font-body rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
@@ -100,7 +100,8 @@ onUnmounted(() => {
                 </nav>
             </div>
         </header>
-        <main class="flex-1 bg-white pt-20 sm:pt-24 lg:pt-28">
+        <!-- Same page bg as SummitIntroSection / home sections (#F4F1EA) -->
+        <main class="flex-1 bg-[#F4F1EA] pt-20 sm:pt-24 lg:pt-28">
             <slot />
         </main>
         <EventFooter />

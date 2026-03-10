@@ -1,35 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* Klein font family */
+/* Titles: Proxima Nova from public/fonts/proximanova.otf (replaces Klein for headings) */
 @font-face {
-  font-family: 'Klein';
-  src: url('/fonts/Klein-Condensed-ExtraBold-trial.ttf') format('truetype');
-  font-weight: 700 900;
+  font-family: 'Proxima Nova';
+  src: url('/fonts/proximanova.otf') format('opentype');
+  font-weight: 600 900;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Klein';
-  src: url('/fonts/Klein-Condensed-ExtraBold-Italic-trial.ttf') format('truetype');
-  font-weight: 700 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Klein';
-  src: url('/fonts/Klein-Text-Book-trial.ttf') format('truetype');
-  font-weight: 400 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Klein';
-  src: url('/fonts/Klein-Text-Book-Italic-trial.ttf') format('truetype');
-  font-weight: 400 600;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -62,6 +38,7 @@
 
   /* Typography */
   --font-body: Garamond, 'EB Garamond', Georgia, serif;
-  --font-title: Klein, 'DM Sans', Arial, Calibri, sans-serif;
+  /* No fallback stack — bold/titles use Proxima Nova only */
+  --font-title: 'Proxima Nova';
   --font-fallback: Arial, Calibri, sans-serif;
 }

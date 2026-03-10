@@ -45,7 +45,6 @@ const form = useForm({
     transform_p2: props.settings?.transform_p2 ?? 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.',
     transform_p3: props.settings?.transform_p3 ?? 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
     transform_p4: props.settings?.transform_p4 ?? 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
-    transformImageFile: null,
 
     // Section 1a – Call for Submissions
     cfs_title: props.settings?.cfs_title ?? 'Call for Submissions',
@@ -116,13 +115,6 @@ function clearThemeImage(index) {
     form.themes[index].deleteImage = false;
 }
 
-function onTransformImageChange(event) {
-    const file = event.target?.files?.[0];
-    if (file) {
-        form.transformImageFile = file;
-    }
-}
-
 function onCfsImageChange(event) {
     const file = event.target?.files?.[0];
     if (file) {
@@ -140,9 +132,6 @@ function onGlobalImageChange(event) {
 function submit() {
     const formData = { ...form.data() };
     formData.themes = form.themes.map(({ imageFile, deleteImage, ...t }) => ({ ...t }));
-    if (form.transformImageFile) {
-        formData.transform_image = form.transformImageFile;
-    }
     if (form.cfsImageFile) {
         formData.cfs_image = form.cfsImageFile;
     }
@@ -192,25 +181,6 @@ function submit() {
                 <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Section 1 – A Transformative Summit Experience</h3>
                     <div class="space-y-4">
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Current image</label>
-                            <div class="mt-2 flex items-center gap-4">
-                                <img
-                                    :src="props.settings?.transform_image || '/brand/img55.jpg'"
-                                    alt="Current section image"
-                                    class="h-24 w-32 rounded-lg border border-gray-200 object-cover"
-                                />
-                                <div class="flex-1">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        @change="onTransformImageChange"
-                                        class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
-                                    />
-                                    <p class="mt-1 text-xs text-gray-500">Upload a new image to replace this one (JPG, PNG, WEBP, max 4MB).</p>
-                                </div>
-                            </div>
-                        </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Title</label>
                             <input v-model="form.transform_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />

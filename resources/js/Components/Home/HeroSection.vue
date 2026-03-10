@@ -59,12 +59,12 @@ onUnmounted(() => {
 <template>
     <section class="relative -mt-20 min-h-[calc(90vh+5rem)] overflow-hidden bg-primary-1 sm:-mt-24 sm:min-h-[calc(92vh+6rem)] lg:-mt-28 lg:min-h-[calc(92vh+7rem)] pt-20 sm:pt-24 lg:pt-28">
 
-        <!-- Slides with Ken Burns soft zoom -->
-        <div class="absolute inset-0">
+        <!-- Slides: bg-contain so uploaded images are never cropped (letterbox uses primary-1) -->
+        <div class="absolute inset-0 bg-primary-1">
             <div
                 v-for="(slide, i) in slides"
                 :key="slide + i"
-                class="absolute inset-0 bg-cover bg-center"
+                class="absolute inset-0 bg-contain bg-center bg-no-repeat"
                 :class="i === currentIndex ? 'hero-slide-active' : 'hero-slide-inactive'"
                 :style="{ backgroundImage: `url(${slide})` }"
             />
@@ -122,19 +122,14 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* No zoom animation — zoom would crop again with bg-contain */
 .hero-slide-active {
     opacity: 1;
-    animation: kenBurns 8s ease-in-out forwards;
     transition: opacity 1.5s ease-in-out;
 }
 
 .hero-slide-inactive {
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
-}
-
-@keyframes kenBurns {
-    0%   { transform: scale(1.0) translateX(0); }
-    100% { transform: scale(1.08) translateX(-1%); }
 }
 </style>

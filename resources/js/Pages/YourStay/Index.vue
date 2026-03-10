@@ -34,7 +34,7 @@ const filteredHotels = computed(() => {
     <Head title="Your Stay in Bhutan" />
     <EventLayout>
         <!-- Participation Costs Section -->
-        <section class="bg-gradient-to-br from-amber-50 to-red-50 py-16 px-6">
+        <section class="bg-[#F4F1EA] py-16 px-6">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-12">
                     <h2 class="font-title text-4xl font-bold text-gray-900 mb-4">
@@ -44,7 +44,7 @@ const filteredHotels = computed(() => {
                         <p class="font-body text-lg text-gray-700 leading-relaxed">
                             {{ settings.participation_costs_description || 'Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.' }}
                         </p>
-                        <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-r-lg">
+                        <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-none">
                             <p class="font-body text-gray-800">
                                 <strong>
                                     {{ settings.participation_costs_announcement || 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.' }}
@@ -56,10 +56,10 @@ const filteredHotels = computed(() => {
 
                 <div class="grid md:grid-cols-2 gap-8 mb-8">
                     <!-- What's Included Card -->
-                    <div v-if="settings.included_items && settings.included_items.length > 0" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div v-if="settings.included_items && settings.included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
                             <div class="flex items-center gap-2">
-                                <div class="bg-white/20 p-2 rounded-lg">
+                                <div class="bg-white/20 p-2 rounded-none">
                                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
@@ -71,10 +71,10 @@ const filteredHotels = computed(() => {
                         </div>
                         
                         <div class="p-6 space-y-5">
-                            <div v-for="(item, index) in settings.included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-accent-2/10 p-4 rounded-lg border border-accent-2/30' : '']">
+                            <div v-for="(item, index) in settings.included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-accent-2/10 p-4 rounded-none border border-accent-2/30' : '']">
                                 <div class="flex-shrink-0 mt-1">
                                     <div :class="[
-                                        'p-2 rounded-lg',
+                                        'p-2 rounded-none',
                                         item.highlighted ? 'bg-accent-2/30' : index % 5 === 0 ? 'bg-primary-2/20' : index % 5 === 1 ? 'bg-accent-2/20' : index % 5 === 2 ? 'bg-blue-100' : index % 5 === 3 ? 'bg-purple-100' : 'bg-gray-100'
                                     ]">
                                         <svg class="w-5 h-5" :class="[
@@ -99,10 +99,10 @@ const filteredHotels = computed(() => {
                     </div>
 
                     <!-- What's NOT Included Card -->
-                    <div v-if="settings.not_included_items && settings.not_included_items.length > 0" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div v-if="settings.not_included_items && settings.not_included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-gray-600 to-gray-800 p-4">
                             <div class="flex items-center gap-2">
-                                <div class="bg-white/20 p-2 rounded-lg">
+                                <div class="bg-white/20 p-2 rounded-none">
                                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
@@ -114,10 +114,10 @@ const filteredHotels = computed(() => {
                         </div>
                         
                         <div class="p-6 space-y-5">
-                            <div v-for="(item, index) in settings.not_included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-gray-50 p-4 rounded-lg border border-gray-200' : '']">
+                            <div v-for="(item, index) in settings.not_included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-gray-50 p-4 rounded-none border border-gray-200' : '']">
                                 <div class="flex-shrink-0 mt-1">
                                     <div :class="[
-                                        'p-2 rounded-lg',
+                                        'p-2 rounded-none',
                                         item.highlighted ? 'bg-gray-200' : 'bg-gray-100'
                                     ]">
                                         <svg class="w-5 h-5" :class="[
@@ -138,7 +138,7 @@ const filteredHotels = computed(() => {
             </div>
         </section>
 
-        <section class="border-b border-gray-200 bg-white">
+        <section class="border-b border-gray-200 bg-[#F4F1EA]">
             <div class="mx-auto px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
                 <div
                     class="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1 pl-2 pr-8 sm:px-0 lg:justify-center tab-scroll-container"
@@ -213,14 +213,14 @@ const filteredHotels = computed(() => {
             </div>
         </section>
 
-        <section class="bg-white py-12 sm:py-16 lg:py-20">
+        <section class="bg-[#F4F1EA] py-12 sm:py-16 lg:py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div v-show="activeTab === 'field-visits'" class="mx-auto max-w-3xl text-center">
                     <h2 class="font-title text-4xl font-bold text-gray-900 sm:text-5xl">
                         {{ settings.field_visits_title || 'Will There Be Field Visits?' }}
                     </h2>
 
-                    <div class="mx-auto mt-6 max-w-2xl rounded-lg border border-accent-2 bg-accent-2/10 p-4 sm:p-5">
+                    <div class="mx-auto mt-6 max-w-2xl rounded-none border border-accent-2 bg-accent-2/10 p-4 sm:p-5">
                         <div class="flex items-start gap-3">
                             <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-xs font-bold text-primary-1">
                                 i
@@ -236,7 +236,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.field_visits_expectations && settings.field_visits_expectations.length > 0" class="mx-auto mt-8 max-w-2xl rounded-lg border border-primary-2/20 bg-white p-6">
+                    <div v-if="settings.field_visits_expectations && settings.field_visits_expectations.length > 0" class="mx-auto mt-8 max-w-2xl rounded-none border border-primary-2/20 bg-white p-6">
                         <h3 class="font-title text-lg font-bold text-gray-900 sm:text-xl">
                             What to Expect
                         </h3>
@@ -252,7 +252,7 @@ const filteredHotels = computed(() => {
                 <div v-show="activeTab === 'air-travel'" class="mx-auto max-w-4xl space-y-8">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.air_travel_title || 'Air Travel to Paro' }}</h2>
 
-                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-xl p-6">
+                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-none p-6">
                         <div class="flex gap-4">
                             <svg class="w-6 h-6 text-accent-1 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -276,7 +276,7 @@ const filteredHotels = computed(() => {
                             {{ settings.airlines_title || 'Airlines Operating to Paro' }}
                         </h3>
                         <div class="grid md:grid-cols-2 gap-4">
-                            <div v-for="(airline, index) in settings.airlines" :key="index" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div v-for="(airline, index) in settings.airlines" :key="index" class="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="h-48 overflow-hidden">
                                     <img
                                         :src="airline.image || '/brand/plane1.jpg'"
@@ -309,7 +309,7 @@ const filteredHotels = computed(() => {
                         <h3 class="font-title text-2xl font-semibold text-gray-900 mb-4">
                             {{ settings.flight_table_title || 'List of available flights to Paro' }}
                         </h3>
-                        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                        <div class="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm">
                             <div class="overflow-x-auto">
                                 <table class="w-full">
                                     <thead>
@@ -372,7 +372,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.transit_visa_title || settings.transit_visa_description" class="bg-accent-2/10 border-2 border-accent-2/30 rounded-xl p-6">
+                    <div v-if="settings.transit_visa_title || settings.transit_visa_description" class="bg-accent-2/10 border-2 border-accent-2/30 rounded-none p-6">
                         <div class="flex gap-4">
                             <svg class="w-6 h-6 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -424,7 +424,7 @@ const filteredHotels = computed(() => {
                     <!-- Summit Visa Support -->
                     <div
                         v-if="settings.visa_support_points && settings.visa_support_points.length > 0"
-                        class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-xl p-6 shadow-md"
+                        class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-none p-6 shadow-md"
                     >
                         <div class="flex items-start gap-4">
                             <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,7 +451,7 @@ const filteredHotels = computed(() => {
                     <!-- Important Notes -->
                     <div
                         v-if="settings.visa_important_points && settings.visa_important_points.length > 0"
-                        class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm"
+                        class="bg-white rounded-none border border-gray-200 p-6 shadow-sm"
                     >
                         <div class="flex items-start gap-4">
                             <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -478,7 +478,7 @@ const filteredHotels = computed(() => {
                     <!-- Applying Independently -->
                     <div
                         v-if="settings.visa_independent_points && settings.visa_independent_points.length > 0"
-                        class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm"
+                        class="bg-white rounded-none border border-gray-200 p-6 shadow-sm"
                     >
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.visa_independent_title || 'Applying Independently' }}
@@ -516,9 +516,9 @@ const filteredHotels = computed(() => {
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.arrival_title || 'Upon Arrival in Bhutan' }}</h2>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-3 bg-accent-2/20 rounded-lg">
+                                <div class="p-3 bg-accent-2/20 rounded-none">
                                     <svg class="w-6 h-6 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                     </svg>
@@ -531,7 +531,7 @@ const filteredHotels = computed(() => {
                                 <p v-if="settings.mobile_description">
                                     {{ settings.mobile_description }}
                                 </p>
-                                <div v-if="settings.mobile_providers && settings.mobile_providers.length > 0" class="bg-gray-50 rounded-lg p-4 space-y-2">
+                                <div v-if="settings.mobile_providers && settings.mobile_providers.length > 0" class="bg-gray-50 rounded-none p-4 space-y-2">
                                     <p class="font-medium text-gray-900">Providers:</p>
                                     <ul class="space-y-1">
                                         <li v-for="(provider, index) in settings.mobile_providers" :key="index" class="flex items-start gap-2">
@@ -540,7 +540,7 @@ const filteredHotels = computed(() => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div v-if="settings.mobile_cost" class="bg-accent-2/10 border border-accent-2/30 rounded-lg p-4">
+                                <div v-if="settings.mobile_cost" class="bg-accent-2/10 border border-accent-2/30 rounded-none p-4">
                                     <p class="font-medium text-gray-900">{{ settings.mobile_cost }}</p>
                                     <p v-if="settings.mobile_cost_note" class="text-sm text-gray-600 mt-1">
                                         {{ settings.mobile_cost_note }}
@@ -552,9 +552,9 @@ const filteredHotels = computed(() => {
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="p-3 bg-primary-2/20 rounded-lg">
+                                <div class="p-3 bg-primary-2/20 rounded-none">
                                     <svg class="w-6 h-6 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
                                     </svg>
@@ -564,7 +564,7 @@ const filteredHotels = computed(() => {
                                 </h3>
                             </div>
                             <div class="space-y-3 font-body text-gray-700">
-                                <div v-if="settings.currency_local" class="bg-gray-50 rounded-lg p-4">
+                                <div v-if="settings.currency_local" class="bg-gray-50 rounded-none p-4">
                                     <p class="font-medium text-gray-900 mb-2">Local Currency:</p>
                                     <p class="text-lg font-bold text-primary-1">
                                         {{ settings.currency_local }}
@@ -582,7 +582,7 @@ const filteredHotels = computed(() => {
                                         </li>
                                     </ul>
                                 </div>
-                                <div v-if="settings.currency_tip" class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                <div v-if="settings.currency_tip" class="bg-blue-50 border border-blue-200 rounded-none p-3">
                                     <p class="text-sm text-gray-700">
                                         💡 <strong>Tip:</strong> {{ settings.currency_tip }}
                                     </p>
@@ -593,7 +593,7 @@ const filteredHotels = computed(() => {
 
                     <div
                         v-if="settings.arrival_tips_points && settings.arrival_tips_points.length > 0"
-                        class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200 p-6"
+                        class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-none border border-gray-200 p-6"
                     >
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.arrival_tips_title || 'Other Arrival Tips' }}
@@ -615,7 +615,7 @@ const filteredHotels = computed(() => {
                 <div v-show="activeTab === 'accommodation'" class="mx-auto max-w-6xl space-y-6">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.accommodation_title || 'Accommodation in Paro' }}</h2>
 
-                    <div v-if="settings.accommodation_important" class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div v-if="settings.accommodation_important" class="bg-blue-50 border border-blue-200 rounded-none p-6">
                         <p class="font-body text-gray-800">
                             <strong>{{ settings.accommodation_important }}</strong>
                         </p>
@@ -664,7 +664,7 @@ const filteredHotels = computed(() => {
                         <div
                             v-for="hotel in filteredHotels"
                             :key="hotel.name"
-                            class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all"
+                            class="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all"
                         >
                             <div class="h-48 overflow-hidden bg-gray-200">
                                 <img
@@ -683,7 +683,7 @@ const filteredHotels = computed(() => {
                             <div class="p-6">
                                 <div class="flex items-start justify-between mb-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2 bg-accent-2/20 rounded-lg">
+                                        <div class="p-2 bg-accent-2/20 rounded-none">
                                             <svg class="w-5 h-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                             </svg>
@@ -743,7 +743,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.accommodation_booking_tips && settings.accommodation_booking_tips.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-xl p-6">
+                    <div v-if="settings.accommodation_booking_tips && settings.accommodation_booking_tips.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-none p-6">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-3">
                             {{ settings.accommodation_booking_tips_title || 'Booking Tips' }}
                         </h3>
@@ -760,15 +760,15 @@ const filteredHotels = computed(() => {
                 <div v-show="activeTab === 'extend'" class="mx-auto max-w-4xl space-y-6">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.extend_title || 'Extend Your Stay in Bhutan' }}</h2>
 
-                    <div v-if="settings.extend_intro" class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-300 p-6">
+                    <div v-if="settings.extend_intro" class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-none border-2 border-purple-300 p-6">
                         <p class="font-body text-lg text-gray-800">
                             {{ settings.extend_intro }}
                         </p>
                     </div>
 
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="p-3 bg-amber-100 rounded-lg">
+                            <div class="p-3 bg-amber-100 rounded-none">
                                 <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
@@ -794,9 +794,9 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="p-3 bg-green-100 rounded-lg">
+                            <div class="p-3 bg-green-100 rounded-none">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
                                 </svg>
@@ -809,7 +809,7 @@ const filteredHotels = computed(() => {
                         </div>
 
                         <div class="space-y-4">
-                            <div v-if="settings.extend_sdf_amount" class="bg-accent-2/10 border border-accent-2/30 rounded-lg p-4">
+                            <div v-if="settings.extend_sdf_amount" class="bg-accent-2/10 border border-accent-2/30 rounded-none p-4">
                                 <p class="font-body text-gray-900 mb-1">
                                     <strong class="text-xl">{{ settings.extend_sdf_amount }}</strong> per night
                                 </p>
@@ -842,7 +842,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-xl p-6">
+                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-none p-6">
                         <div class="flex gap-4">
                             <svg class="w-6 h-6 text-accent-1 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -863,7 +863,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.extend_portal_title || settings.extend_portal_url" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.extend_portal_title || settings.extend_portal_url" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.extend_portal_title || 'Ready to Extend?' }}
                         </h3>
@@ -884,12 +884,12 @@ const filteredHotels = computed(() => {
                         </a>
                     </div>
 
-                    <div v-if="settings.extend_activities && settings.extend_activities.length > 0" class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200 p-6">
+                    <div v-if="settings.extend_activities && settings.extend_activities.length > 0" class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-none border border-gray-200 p-6">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.extend_activities_title || 'Popular Extension Activities' }}
                         </h3>
                         <div class="grid md:grid-cols-2 gap-4">
-                            <div v-for="(activity, index) in settings.extend_activities" :key="index" class="bg-white rounded-lg p-4">
+                            <div v-for="(activity, index) in settings.extend_activities" :key="index" class="bg-white rounded-none p-4">
                                 <h4 class="font-title font-semibold text-gray-900 mb-2">{{ activity.title }}</h4>
                                 <p class="font-body text-sm text-gray-600">
                                     {{ activity.description }}
@@ -903,7 +903,7 @@ const filteredHotels = computed(() => {
                 <div v-show="activeTab === 'companions'" class="mx-auto max-w-4xl space-y-6">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.companions_title || 'Travel With Companions' }}</h2>
 
-                    <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border-2 border-blue-300 p-6">
+                    <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-none border-2 border-blue-300 p-6">
                         <div class="flex gap-4">
                             <svg class="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -914,7 +914,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.companions_requirements && settings.companions_requirements.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_requirements && settings.companions_requirements.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_requirements_title || 'Key Requirements for Companions' }}
                         </h3>
@@ -925,7 +925,7 @@ const filteredHotels = computed(() => {
                                 class="flex items-start gap-4"
                                 :class="index < settings.companions_requirements.length - 1 ? 'pb-4 border-b border-gray-100' : ''"
                             >
-                                <div class="p-2 bg-accent-1/20 rounded-lg flex-shrink-0">
+                                <div class="p-2 bg-accent-1/20 rounded-none flex-shrink-0">
                                     <svg class="w-5 h-5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
@@ -942,7 +942,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.companions_costs && settings.companions_costs.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_costs && settings.companions_costs.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_costs_title || 'Expected Costs for Companions' }}
                         </h3>
@@ -951,7 +951,7 @@ const filteredHotels = computed(() => {
                                 <span class="font-body text-gray-700">{{ cost.item }}</span>
                                 <span class="font-body font-semibold text-gray-900">{{ cost.amount }}</span>
                             </div>
-                            <div v-if="settings.companions_costs_note" class="bg-blue-50 rounded-lg p-4 mt-4">
+                            <div v-if="settings.companions_costs_note" class="bg-blue-50 rounded-none p-4 mt-4">
                                 <p class="font-body text-sm text-gray-700">
                                     <strong>{{ settings.companions_costs_note }}</strong>
                                 </p>
@@ -959,7 +959,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.companions_considerations && settings.companions_considerations.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-xl p-6">
+                    <div v-if="settings.companions_considerations && settings.companions_considerations.length > 0" class="bg-accent-2/10 border border-accent-2/30 rounded-none p-6">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_considerations_title || 'Special Considerations' }}
                         </h3>
@@ -971,7 +971,7 @@ const filteredHotels = computed(() => {
                         </ul>
                     </div>
 
-                    <div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_tips_title || 'Planning Tips' }}
                         </h3>
@@ -983,7 +983,7 @@ const filteredHotels = computed(() => {
                         </div>
                     </div>
 
-                    <div v-if="settings.companions_resources && settings.companions_resources.length > 0" class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <div v-if="settings.companions_resources && settings.companions_resources.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_resources_title || 'Helpful Resources' }}
                         </h3>
@@ -994,7 +994,7 @@ const filteredHotels = computed(() => {
                                 :href="resource.url"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                class="flex items-center justify-between p-4 bg-gray-50 rounded-none hover:bg-gray-100 transition-colors"
                             >
                                 <div>
                                     <p class="font-body font-medium text-gray-900">{{ resource.title }}</p>

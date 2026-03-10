@@ -37,7 +37,8 @@ export default {
             },
             fontFamily: {
                 body: ['var(--font-body)', 'var(--font-fallback)'],
-                title: ['var(--font-title)', 'var(--font-fallback)'],
+                title: ['var(--font-title)'],
+                /* sans keeps fallbacks for non-title UI; headings use font-title (Proxima only) */
                 sans: ['var(--font-title)', ...defaultTheme.fontFamily.sans],
                 serif: ['var(--font-body)', ...defaultTheme.fontFamily.serif],
             },

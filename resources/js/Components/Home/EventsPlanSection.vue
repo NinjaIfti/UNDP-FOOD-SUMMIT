@@ -103,16 +103,14 @@ function formatTimeWithAMPM(timeStr) {
 </script>
 
 <template>
-    <section id="agenda" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24">
+    <section id="agenda" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-                <!-- Title, subtitle, and day tabs (outside white box) -->
-                <div class="flex items-center justify-center gap-6">
-                    <div class="hidden h-[3px] w-48 bg-gradient-to-r from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
-                    <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+                <!-- Title + subtitle -->
+                <div class="text-center">
+                    <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
                         Events Plan
                     </h2>
-                    <div class="hidden h-[3px] w-48 bg-gradient-to-l from-transparent via-accent-2/70 to-accent-2 sm:block lg:w-80" />
                 </div>
                 <p class="mx-auto mt-3 max-w-2xl text-center font-body text-copy">
                     {{ settings.events_subtitle }}
@@ -126,14 +124,14 @@ function formatTimeWithAMPM(timeStr) {
                         class="rounded-full px-6 py-2.5 font-body text-sm font-semibold transition sm:px-7"
                         :class="activeDay === i
                             ? 'bg-accent-2 text-primary-1 shadow-md'
-                            : 'bg-white text-primary-1 border border-primary-1/20 hover:bg-primary-1/10'"
+                            : 'bg-primary-1/5 text-primary-1 border border-primary-1/20 hover:bg-primary-1/10'"
                     >
                         {{ day.date }} - {{ day.label }}
                     </button>
                 </div>
 
-                <!-- White box: active day details + schedule -->
-                <div class="mx-auto mt-8 max-w-4xl rounded-3xl bg-white p-6 shadow-md sm:p-8">
+                <!-- Panel: active day details + schedule (white, square) -->
+                <div class="mx-auto mt-8 max-w-4xl rounded-none border border-primary-1/10 bg-white p-6 shadow-md sm:p-8">
                     <!-- Active Day Title + Date -->
                     <div class="text-center">
                         <h3 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">
@@ -169,10 +167,10 @@ function formatTimeWithAMPM(timeStr) {
 
                                 <!-- Content card -->
                                 <div
-                                    class="flex-1 rounded-xl border px-5 py-4 transition"
+                                    class="flex-1 rounded-none bg-primary-1/5 px-5 py-4 transition"
                                     :class="item.type === 'break'
-                                        ? 'border-primary-1/20 bg-primary-1/5'
-                                        : 'border-primary-1/20 bg-primary-1/5 hover:shadow-md'"
+                                        ? ''
+                                        : 'hover:shadow-md'"
                                 >
                                     <h4
                                         class="font-body font-semibold"

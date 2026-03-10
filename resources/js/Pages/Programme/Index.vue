@@ -85,6 +85,17 @@ onUnmounted(() => {
     clearInterval(autoSlideInterval);
 });
 
+const cardSectionIds = ['call-for-submissions', 'core-themes', 'global-movement'];
+
+function scrollToCardSection(index) {
+    const id = cardSectionIds[index];
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
 const defaultThemes = [
     {
         number: 1,
@@ -214,43 +225,83 @@ const defaultThemes = [
     <EventLayout>
 
         <!-- ① A Transformative Summit Experience -->
-        <section id="transformative-experience" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24 lg:py-32">
+        <section id="transformative-experience" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <!-- Section label + title -->
-                    <div class="mb-12 text-center sm:mb-16">
+                    <div class="mx-auto max-w-3xl text-center">
                         <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
                             {{ sectionTitle }}
                         </h1>
+                        <p class="mt-8 font-body text-xl font-bold leading-relaxed text-primary-1 sm:text-2xl">
+                            {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
+                        </p>
+                        <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
+                            {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
+                        </p>
+                        <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                            {{ settings.transform_p3 || 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.' }}
+                        </p>
+                        <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
+                            {{ settings.transform_p4 || 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.' }}
+                        </p>
                     </div>
 
-                    <!-- Two-column: text left, photo right -->
-                    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-
-                        <!-- Text column -->
-                        <div>
-                            <p class="font-body text-xl font-bold leading-relaxed text-primary-1 sm:text-2xl">
-                                {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
+                    <!-- Global movement feature cards (same content as admin Section 3 cards) -->
+                    <div class="mx-auto mt-12 grid max-w-7xl gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
+                        <div
+                            v-for="(card, index) in globalCards"
+                            :key="index"
+                            class="rounded-none bg-primary-1/5 p-8 shadow-md transition sm:col-span-1"
+                            :class="[
+                                index === 2 ? 'sm:col-span-2 lg:col-span-1' : '',
+                                index < 3
+                                    ? 'cursor-pointer hover:shadow-xl hover:ring-2 hover:ring-accent-1/40 focus:outline-none focus:ring-2 focus:ring-accent-1'
+                                    : 'hover:shadow-xl',
+                            ]"
+                            :role="index < 3 ? 'button' : undefined"
+                            :tabindex="index < 3 ? 0 : undefined"
+                            @click="index < 3 && scrollToCardSection(index)"
+                            @keydown.enter.prevent="index < 3 && scrollToCardSection(index)"
+                            @keydown.space.prevent="index < 3 && scrollToCardSection(index)"
+                        >
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-none"
+                                :class="index === 0 ? 'bg-accent-2' : index === 1 ? 'bg-accent-1' : 'bg-primary-1'"
+                            >
+                                <svg
+                                    v-if="index === 0"
+                                    class="h-6 w-6 text-primary-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <svg
+                                    v-else-if="index === 1"
+                                    class="h-6 w-6 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 1 2 2v2.945M8 3.935V5.5A2.5 2.5 0 0 0 10.5 8h.5a2 2 0 0 1 2 2 2 2 0 1 0 4 0 2 2 0 0 1 2-2h1.064M15 20.488V18a2 2 0 0 1 2-2h3.064M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                                </svg>
+                                <svg
+                                    v-else
+                                    class="h-6 w-6 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">
+                                {{ card.title }}
+                            </h3>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                                {{ card.body }}
                             </p>
-                            <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
-                            </p>
-                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                {{ settings.transform_p3 || 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.' }}
-                            </p>
-                            <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
-                                {{ settings.transform_p4 || 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.' }}
-                            </p>
-                        </div>
-
-                        <!-- Photo column -->
-                        <div class="overflow-hidden rounded-2xl shadow-xl">
-                            <img
-                                :src="settings.transform_image || '/brand/img55.jpg'"
-                                alt="Summit experience"
-                                class="h-full w-full object-cover"
-                                loading="lazy"
-                            />
                         </div>
                     </div>
                 </SectionReveal>
@@ -258,7 +309,7 @@ const defaultThemes = [
         </section>
 
         <!-- ①a Call for Submissions -->
-        <section id="call-for-submissions" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-24">
+        <section id="call-for-submissions" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <!-- Title -->
@@ -272,7 +323,7 @@ const defaultThemes = [
                     <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
 
                         <!-- Photo -->
-                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                        <div class="overflow-hidden rounded-none shadow-xl">
                             <img
                                 :src="settings.cfs_image || '/brand/img34.jpg'"
                                 alt="Call for Submissions"
@@ -283,24 +334,21 @@ const defaultThemes = [
 
                         <!-- Text -->
                         <div>
-                            <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                            <p class="font-body text-lg leading-relaxed text-ink sm:text-xl">
                                 {{ settings.cfs_body || 'The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.' }}
                             </p>
-                            <p class="mt-4 font-body text-base font-bold leading-relaxed text-primary-1 sm:text-lg">
+                            <p class="mt-4 font-body text-lg font-bold leading-relaxed text-primary-1 sm:text-xl">
                                 {{ settings.cfs_apply || 'Apply by 31st of March!' }}
                             </p>
-                            <div class="mt-8">
+                            <div class="mt-6">
                                 <a
                                     href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-2 rounded-full bg-accent-1 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:text-lg"
+                                    class="inline-flex items-center gap-2 rounded-full bg-primary-1 px-6 py-3 font-body text-base font-semibold text-white shadow-md transition hover:bg-primary-1/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-1 focus:ring-offset-2 focus:ring-offset-[#F4F1EA] sm:px-8 sm:py-3.5 sm:text-lg"
                                 >
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <span>{{ settings.cfs_button || 'Help shape the Summit! Respond to our Call for Submissions' }}</span>
-                                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <span>Help shape the Summit</span>
+                                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                     </svg>
                                 </a>
@@ -312,7 +360,7 @@ const defaultThemes = [
         </section>
 
         <!-- ② Core Themes -->
-        <section id="core-themes" class="scroll-mt-24 bg-primary-1/10 py-16 sm:py-24 lg:py-32">
+        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -352,7 +400,7 @@ const defaultThemes = [
                                     class="flex shrink-0 px-2"
                                     :style="{ width: `${100 / totalPages / themesPerView}%` }"
                                 >
-                                    <div class="group flex h-full flex-col overflow-hidden rounded-2xl border border-primary-1/20 bg-primary-1/5 shadow-md transition hover:shadow-xl">
+                                    <div class="group flex h-full flex-col overflow-hidden rounded-none bg-primary-1/5 shadow-md transition hover:shadow-xl">
                                         <div class="relative aspect-[4/3] overflow-hidden">
                                             <img
                                                 :src="theme.image || '/brand/themes/1.jpg'"
@@ -360,14 +408,14 @@ const defaultThemes = [
                                                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                                 loading="lazy"
                                             />
-                                            <div class="absolute top-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent-2">
+                                            <div class="absolute top-4 left-4 flex h-10 w-10 items-center justify-center rounded-none bg-accent-2">
                                                 <span class="font-title text-lg font-bold text-primary-1">{{ theme.number }}</span>
                                             </div>
                                         </div>
                                         <div class="flex flex-1 flex-col p-6">
                                             <h3 class="font-title text-lg font-bold text-primary-1">{{ theme.title }}</h3>
                                             <p class="mt-3 flex-1 font-body text-base leading-relaxed text-copy line-clamp-4 sm:text-lg">{{ theme.description }}</p>
-                                            <div class="mt-4 border-t border-primary-1/10 pt-4">
+                                            <div class="mt-4 pt-4">
                                                 <p class="font-body text-sm text-copy">
                                                     <span class="font-semibold">Team Lead:</span> {{ theme.lead }}
                                                 </p>
@@ -404,7 +452,7 @@ const defaultThemes = [
         </section>
 
         <!-- ③ Building a Global Movement -->
-        <section id="global-movement" class="scroll-mt-24 bg-primary-1/5 py-16 sm:py-24 lg:py-32">
+        <section id="global-movement" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <!-- Title -->
@@ -434,7 +482,7 @@ const defaultThemes = [
                         </div>
 
                         <!-- Photo -->
-                        <div class="overflow-hidden rounded-2xl shadow-xl">
+                        <div class="overflow-hidden rounded-none shadow-xl">
                             <img
                                 :src="settings.global_image || '/brand/img30.jpg'"
                                 alt="Building a Global Movement"
@@ -442,61 +490,6 @@ const defaultThemes = [
                                 loading="lazy"
                             />
                         </div>
-                    </div>
-                    
-
-                    <div class="mx-auto mt-12 grid gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
-                        <div
-                            v-for="(card, index) in globalCards"
-                            :key="index"
-                            class="rounded-2xl border border-primary-1/20 bg-primary-1/5 p-8 shadow-md transition hover:shadow-xl sm:col-span-1"
-                            :class="index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''"
-                        >
-                            <div
-                                class="flex h-12 w-12 items-center justify-center rounded-xl"
-                                :class="index === 0 ? 'bg-accent-2' : index === 1 ? 'bg-accent-1' : 'bg-primary-1'"
-                            >
-                                <svg
-                                    v-if="index === 0"
-                                    class="h-6 w-6 text-primary-1"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <svg
-                                    v-else-if="index === 1"
-                                    class="h-6 w-6 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 1 2 2v2.945M8 3.935V5.5A2.5 2.5 0 0 0 10.5 8h.5a2 2 0 0 1 2 2 2 2 0 1 0 4 0 2 2 0 0 1 2-2h1.064M15 20.488V18a2 2 0 0 1 2-2h3.064M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                                </svg>
-                                <svg
-                                    v-else
-                                    class="h-6 w-6 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">
-                                {{ card.title }}
-                            </h3>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy">
-                                {{ card.body }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-accent-2/30 bg-accent-2/10 p-8 text-center sm:mt-16 sm:p-12">
-                        <p class="font-body text-lg font-semibold leading-relaxed text-primary-1 sm:text-xl">
-                            "{{ settings.global_quote || "The Summit will advance Bhutan's National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while highlighting Bhutan's leadership in driving conscious food systems transformation globally." }}"
-                        </p>
                     </div>
                 </SectionReveal>
             </div>

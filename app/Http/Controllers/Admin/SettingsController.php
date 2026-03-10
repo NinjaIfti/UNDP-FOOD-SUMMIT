@@ -33,6 +33,7 @@ class SettingsController extends Controller
             'social_instagram' => 'nullable|string',
             'social_linkedin' => 'nullable|string',
             'social_youtube' => 'nullable|string',
+            'footer_support_text' => 'nullable|string',
             'delete_logo' => 'nullable|boolean',
             'delete_logo_secondary' => 'nullable|boolean',
             'delete_favicon' => 'nullable|boolean',
@@ -139,6 +140,7 @@ class SettingsController extends Controller
             'social_instagram' => 'https://instagram.com/gcfss2026',
             'social_linkedin' => 'https://linkedin.com/company/gcfss2026',
             'social_youtube' => 'https://youtube.com/@gcfss2026',
+            'footer_support_text' => '24/7 support provided by the Global Conscious Food Systems Summit event team.',
         ];
     }
 

@@ -12,6 +12,15 @@ const contactEmail = computed(() => siteSettings.value.contact_email || 'info@fo
 const contactPhone = computed(() => siteSettings.value.contact_phone || '+975 1234 5678');
 const contactLocation = computed(() => siteSettings.value.contact_location || "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan");
 
+const footerSupportDefault = '24/7 support provided by the Global Conscious Food Systems Summit event team.';
+const footerSupportText = computed(() => {
+    const raw = siteSettings.value.footer_support_text;
+    if (raw === '') return null;
+    const t = (raw == null ? '' : String(raw)).trim();
+    if (!t && raw == null) return footerSupportDefault;
+    return t || null;
+});
+
 const socialLinks = computed(() => {
     const s = siteSettings.value;
     return [
@@ -73,29 +82,29 @@ function submit() {
                     <div class="mt-6 space-y-6">
                         <div class="flex gap-4">
                             <div class="flex h-10 w-10 shrink-0 items-center justify-center">
-                                <svg class="h-5 w-5 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="h-5 w-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                             </div>
                             <div>
                                 <p class="font-body text-sm text-white/80">Email</p>
-                                <a :href="'mailto:' + contactEmail" class="font-body text-white hover:text-primary-2">{{ contactEmail }}</a>
+                                <a :href="'mailto:' + contactEmail" class="font-body text-white hover:text-accent-2">{{ contactEmail }}</a>
                             </div>
                         </div>
                         <div class="flex gap-4">
                             <div class="flex h-10 w-10 shrink-0 items-center justify-center">
-                                <svg class="h-5 w-5 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="h-5 w-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                 </svg>
                             </div>
                             <div>
                                 <p class="font-body text-sm text-white/80">Phone</p>
-                                <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="font-body text-white hover:text-primary-2">{{ contactPhone }}</a>
+                                <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="font-body text-white hover:text-accent-2">{{ contactPhone }}</a>
                             </div>
                         </div>
                         <div class="flex gap-4">
                             <div class="flex h-10 w-10 shrink-0 items-center justify-center">
-                                <svg class="h-5 w-5 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="h-5 w-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
@@ -132,6 +141,12 @@ function submit() {
                             </svg>
                         </a>
                     </div>
+                    <p
+                        v-if="footerSupportText"
+                        class="mt-4 max-w-sm whitespace-pre-line font-body text-sm leading-relaxed text-white/65"
+                    >
+                        {{ footerSupportText }}
+                    </p>
                 </div>
                 <div class="lg:col-span-3">
                     <h3 class="font-title text-xl font-bold text-white sm:text-2xl">Send Us a Message</h3>
@@ -188,7 +203,7 @@ function submit() {
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="w-full rounded-lg bg-primary-2 py-4 font-title font-semibold text-white transition hover:bg-primary-2/90 disabled:opacity-50"
+                            class="w-full rounded-lg bg-accent-2 py-4 font-title font-semibold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
                         >
                             {{ form.processing ? 'Sending...' : 'Send Message' }}
                         </button>

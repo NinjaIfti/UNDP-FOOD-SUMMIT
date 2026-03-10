@@ -289,12 +289,14 @@ class AdminController extends Controller
             'conscious_food_title' => 'nullable|string',
             'conscious_food_description' => 'nullable|string',
             'conscious_food_cofsa_text' => 'nullable|string',
+            'conscious_food_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'outcomes_title' => 'nullable|string',
             'outcomes_description' => 'nullable|string',
             'outcomes_list' => 'nullable|array',
             'bhutan_title' => 'nullable|string',
             'bhutan_text1' => 'nullable|string',
             'bhutan_text2' => 'nullable|string',
+            'bhutan_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'events_title' => 'nullable|string',
             'events_subtitle' => 'nullable|string',
             'events_days' => 'nullable|array',
@@ -375,6 +377,49 @@ class AdminController extends Controller
 
         // Remove delete flags from validated data
         unset($validated['delete_govt_logo'], $validated['delete_undp_logo'], $validated['delete_cofsa_logo']);
+
+        // Conscious Food section background image (store path string only in JSON)
+        $consciousFoodImage = $currentSettings['conscious_food_image'] ?? '/brand/img41.jpg';
+        if ($request->hasFile('conscious_food_image')) {
+            if (!empty($consciousFoodImage) && str_starts_with($consciousFoodImage, '/brand/') && $consciousFoodImage !== '/brand/img41.jpg' && file_exists(public_path($consciousFoodImage))) {
+                @unlink(public_path($consciousFoodImage));
+            }
+            $file = $request->file('conscious_food_image');
+            $filename = 'conscious_food_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand'))) {
+                mkdir(public_path('brand'), 0755, true);
+            }
+            $file->move(public_path('brand'), $filename);
+            $consciousFoodImage = '/brand/' . $filename;
+        }
+        unset($validated['conscious_food_image']);
+        $validated['conscious_food_image'] = $consciousFoodImage;
+
+        // Why Bhutan section image (store path string only in JSON)
+        $bhutanImage = $currentSettings['bhutan_image'] ?? '/brand/img41.jpg';
+        if (!is_string($bhutanImage) || $bhutanImage === '') {
+            $bhutanImage = '/brand/img41.jpg';
+        }
+        if ($request->hasFile('bhutan_image')) {
+            $file = $request->file('bhutan_image');
+            if (is_array($file)) {
+                $file = $file[0] ?? null;
+            }
+            if ($file && $file->isValid()) {
+                $pathForDisk = ltrim($bhutanImage, '/');
+                if ($bhutanImage !== '/brand/img41.jpg' && str_starts_with($bhutanImage, '/brand/') && file_exists(public_path($pathForDisk))) {
+                    @unlink(public_path($pathForDisk));
+                }
+                $filename = 'bhutan_' . time() . '.' . $file->getClientOriginalExtension();
+                if (!is_dir(public_path('brand'))) {
+                    mkdir(public_path('brand'), 0755, true);
+                }
+                $file->move(public_path('brand'), $filename);
+                $bhutanImage = '/brand/' . $filename;
+            }
+        }
+        unset($validated['bhutan_image']);
+        $validated['bhutan_image'] = $bhutanImage;
 
         // Handle speaker image uploads
         if (isset($validated['speakers']) && is_array($validated['speakers'])) {
@@ -545,6 +590,7 @@ class AdminController extends Controller
             'conscious_food_title' => 'Conscious Food Systems: Not just what we eat, but how we grow, share and value food.',
             'conscious_food_description' => 'Food systems are at the heart of pressing global challenges: climate change, environmental pollution, biodiversity decline, and land degradation. The need for a bold and innovative path, harnessing the power of consciousness, mindfulness, and ethical decision-making, has never been more urgent.',
             'conscious_food_cofsa_text' => 'The Conscious Food Systems Alliance (CoFSA), convened by UNDP, is a movement of food, agriculture, and consciousness practitioners united around a common goal: to support people from across food and agriculture systems in integrating inner development, mindfulness and ethical practices into their work—fostering transformation from the inside out.',
+            'conscious_food_image' => '/brand/img41.jpg',
             'outcomes_title' => 'Activating the Heart of Food Systems Transformation',
             'outcomes_description' => 'This landmark gathering will advance a new paradigm for food systems transformation—one that recognizes the vital role of culture, values, spirituality, happiness and inner development in catalyzing systemic change.',
             'outcomes_list' => [
@@ -557,6 +603,7 @@ class AdminController extends Controller
             'bhutan_title' => 'Bhutan: An Inspiration and Innovator in Sustainable Transformation',
             'bhutan_text1' => 'Bhutan offers a uniquely inspiring setting for this summit. Guided by the holistic philosophy of Gross National Happiness, and through forward-looking initiatives, such as the Gelephu Mindfulness City and its 100% organic agriculture goal, Bhutan exemplifies how consciousness and sustainability can shape national development.',
             'bhutan_text2' => 'The Summit will advance Bhutan\'s National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while also highlighting Bhutan\'s leadership in driving conscious food systems transformation globally.',
+            'bhutan_image' => '/brand/img41.jpg',
             'events_title' => 'Events Plan',
             'events_subtitle' => '31 August – 4 September 2026 · Thimphu, Bhutan',
             'events_days' => [
@@ -729,7 +776,6 @@ class AdminController extends Controller
             'transform_p2' => 'nullable|string',
             'transform_p3' => 'nullable|string',
             'transform_p4' => 'nullable|string',
-            'transform_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
 
             // Section 1a – Call for Submissions
             'cfs_title' => 'nullable|string',
@@ -802,21 +848,6 @@ class AdminController extends Controller
             }
         }
 
-        // Section 1 image handling
-        $transformImage = $currentSettings['transform_image'] ?? '/brand/img55.jpg';
-        if ($request->hasFile('transform_image')) {
-            if (!empty($transformImage) && str_starts_with($transformImage, '/') && file_exists(public_path($transformImage))) {
-                @unlink(public_path($transformImage));
-            }
-            $file = $request->file('transform_image');
-            $filename = 'transform_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/experience'))) {
-                mkdir(public_path('brand/experience'), 0755, true);
-            }
-            $file->move(public_path('brand/experience'), $filename);
-            $transformImage = '/brand/experience/' . $filename;
-        }
-
         // Section 1a image handling
         $cfsImage = $currentSettings['cfs_image'] ?? '/brand/img34.jpg';
         if ($request->hasFile('cfs_image')) {
@@ -856,7 +887,6 @@ class AdminController extends Controller
                 'transform_p2' => $validated['transform_p2'] ?? ($currentSettings['transform_p2'] ?? null),
                 'transform_p3' => $validated['transform_p3'] ?? ($currentSettings['transform_p3'] ?? null),
                 'transform_p4' => $validated['transform_p4'] ?? ($currentSettings['transform_p4'] ?? null),
-                'transform_image' => $transformImage,
 
                 // Section 1a
                 'cfs_title' => $validated['cfs_title'] ?? ($currentSettings['cfs_title'] ?? null),
@@ -884,6 +914,8 @@ class AdminController extends Controller
             ]
         );
 
+        unset($merged['transform_image']);
+
         Storage::put('admin/programme-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
 
         return back()->with('success', 'Programme & Experience updated successfully.');
@@ -902,7 +934,6 @@ class AdminController extends Controller
             'transform_p2' => 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.',
             'transform_p3' => 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
             'transform_p4' => 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
-            'transform_image' => '/brand/img55.jpg',
 
             // Section 1a – Call for Submissions
             'cfs_title' => 'Call for Submissions',

@@ -92,12 +92,14 @@ const form = useForm({
         { name: 'Speaker Six', role: 'Sustainability', bio: 'Environmental strategist working on sustainable food supply chains.', image: '/brand/img33.jpg' },
     ]).map(speaker => ({
         ...speaker,
+        details: speaker.details ?? '',
         imageFile: null,
         deleteImage: false
     })),
     conscious_food_title: props.settings.conscious_food_title,
     conscious_food_description: props.settings.conscious_food_description,
     conscious_food_cofsa_text: props.settings.conscious_food_cofsa_text,
+    consciousFoodImageFile: null,
     outcomes_title: props.settings.outcomes_title,
     outcomes_description: props.settings.outcomes_description,
     outcomes_list: props.settings.outcomes_list || [
@@ -110,6 +112,7 @@ const form = useForm({
     bhutan_title: props.settings.bhutan_title,
     bhutan_text1: props.settings.bhutan_text1,
     bhutan_text2: props.settings.bhutan_text2,
+    bhutanImageFile: null,
     events_title: props.settings.events_title,
     events_subtitle: props.settings.events_subtitle,
     events_days: props.settings.events_days || [
@@ -223,8 +226,9 @@ function handleSlideUpload(index, event) {
 }
 
 const submit = () => {
-    // Create a clean copy of the form data
-    const formData = { ...form.data() };
+    // Create a clean copy of the form data (omit file-only fields)
+    const { consciousFoodImageFile, bhutanImageFile, ...rest } = form.data();
+    const formData = { ...rest };
     
     // Prepare speaker image files for upload
     form.speakers.forEach((speaker, index) => {
@@ -242,7 +246,14 @@ const submit = () => {
             formData[`hero_slide_${index}`] = form.hero_slide_files[index];
         }
     });
-    
+
+    if (form.consciousFoodImageFile) {
+        formData.conscious_food_image = form.consciousFoodImageFile;
+    }
+    if (form.bhutanImageFile) {
+        formData.bhutan_image = form.bhutanImageFile;
+    }
+
     // Submit with all the data including files
     form.transform(() => formData).post(route('admin.homepage.update'), {
         forceFormData: true,
@@ -388,11 +399,13 @@ const submit = () => {
                         </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">First Paragraph</label>
-                            <textarea v-model="form.summit_intro_text1" rows="4" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                            <p class="mt-1 font-body text-xs text-copy">Press Enter for new lines; they appear on the site.</p>
+                            <textarea v-model="form.summit_intro_text1" rows="8" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Second Paragraph</label>
-                            <textarea v-model="form.summit_intro_text2" rows="4" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                            <p class="mt-1 font-body text-xs text-copy">Press Enter for new lines; they appear on the site.</p>
+                            <textarea v-model="form.summit_intro_text2" rows="8" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
                     </div>
                 </div>
@@ -400,6 +413,26 @@ const submit = () => {
                 <!-- Conscious Food Section -->
                 <div v-show="activeTab === 'conscious'" class="rounded-xl bg-white p-6 shadow-sm">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Conscious Food Systems</h3>
+
+                    <div class="mb-6 rounded-lg border border-gray-200 p-4">
+                        <label class="block font-body text-sm font-medium text-ink">Section background image</label>
+                        <p class="mt-1 font-body text-xs text-gray-500">Full-bleed image behind the text. JPG, PNG or WEBP, max 5MB.</p>
+                        <div class="mt-3 flex flex-wrap items-center gap-4">
+                            <img
+                                :src="settings.conscious_food_image || '/brand/img41.jpg'"
+                                alt="Current background"
+                                class="h-24 w-40 rounded-lg border border-gray-200 object-cover"
+                            />
+                            <div class="flex-1 min-w-[200px]">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white"
+                                    @change="(e) => { const f = e.target.files?.[0]; form.consciousFoodImageFile = f || null; }"
+                                />
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="space-y-4">
                         <div>
@@ -693,6 +726,11 @@ const submit = () => {
                                     <textarea v-model="speaker.bio" rows="2" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                                 </div>
                                 <div>
+                                    <label class="block font-body text-xs font-medium text-ink">Popup details</label>
+                                    <p class="mt-0.5 font-body text-xs text-copy">Shown when a visitor clicks the speaker card. Use Enter for new lines.</p>
+                                    <textarea v-model="speaker.details" rows="4" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Optional longer bio, links, session info…"></textarea>
+                                </div>
+                                <div>
                                     <label class="block font-body text-xs font-medium text-ink">Speaker Image</label>
                                     <div class="mt-1 space-y-2">
                                         <div v-if="speaker.image && !speaker.deleteImage" class="flex items-center gap-3">
@@ -742,7 +780,7 @@ const submit = () => {
 
                         <button
                             type="button"
-                            @click="form.speakers.push({ name: '', role: '', bio: '', image: '', imageFile: null, deleteImage: false })"
+                            @click="form.speakers.push({ name: '', role: '', bio: '', details: '', image: '', imageFile: null, deleteImage: false })"
                             class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-title text-sm font-semibold text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
                         >
                             + Add New Speaker
@@ -753,6 +791,26 @@ const submit = () => {
                 <!-- Why Bhutan Section -->
                 <div v-show="activeTab === 'bhutan'" class="rounded-xl bg-white p-6 shadow-sm">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Why Bhutan</h3>
+
+                    <div class="mb-6 rounded-lg border border-gray-200 p-4">
+                        <label class="block font-body text-sm font-medium text-ink">Section image</label>
+                        <p class="mt-1 font-body text-xs text-gray-500">Photo shown beside the text. JPG, PNG or WEBP, max 5MB.</p>
+                        <div class="mt-3 flex flex-wrap items-center gap-4">
+                            <img
+                                :src="settings.bhutan_image || '/brand/img41.jpg'"
+                                alt="Current Why Bhutan image"
+                                class="h-24 w-40 rounded-lg border border-gray-200 object-cover"
+                            />
+                            <div class="min-w-[200px] flex-1">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white"
+                                    @change="(e) => { const f = e.target.files?.[0]; form.bhutanImageFile = f || null; }"
+                                />
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="space-y-4">
                         <div>

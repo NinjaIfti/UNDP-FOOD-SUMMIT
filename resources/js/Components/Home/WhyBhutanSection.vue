@@ -7,12 +7,17 @@ defineProps({
 </script>
 
 <template>
-    <section class="bg-white py-16 sm:py-24">
+    <section class="bg-[#F4F1EA] py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
                 <SectionReveal>
-                    <div class="overflow-hidden rounded-2xl shadow-xl">
-                        <img src="/brand/img41.jpg" alt="Community in agriculture - Bhutan" class="h-64 w-full object-cover sm:h-80 lg:h-96" loading="lazy" />
+                    <div class="overflow-hidden rounded-none shadow-xl">
+                        <img
+                            :src="settings.bhutan_image || '/brand/img41.jpg'"
+                            alt="Community in agriculture - Bhutan"
+                            class="h-64 w-full rounded-none object-cover sm:h-80 lg:h-96"
+                            loading="lazy"
+                        />
                     </div>
                 </SectionReveal>
                 <SectionReveal :delay="150">

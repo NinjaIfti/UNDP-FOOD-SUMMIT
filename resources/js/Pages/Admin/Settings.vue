@@ -35,6 +35,7 @@ const footerForm = useForm({
     social_instagram: props.settings.social_instagram || '',
     social_linkedin: props.settings.social_linkedin || '',
     social_youtube: props.settings.social_youtube || '',
+    footer_support_text: props.settings.footer_support_text || '',
 });
 
 const logoPreview = ref(props.settings.logo || '');
@@ -490,6 +491,39 @@ const saveFooter = (fields) => {
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
                                         {{ footerForm.processing ? 'Saving...' : 'Save Contact Location' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support line under social icons -->
+                    <div class="border border-border rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#d4af37]/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-medium text-foreground mb-1">Footer support line</h3>
+                                <p class="text-sm text-muted-foreground mb-3">
+                                    Shown under the social media icons in the footer (e.g. 24/7 support message). Leave empty to hide.
+                                </p>
+                                <textarea
+                                    v-model="footerForm.footer_support_text"
+                                    rows="2"
+                                    class="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d5f3f] bg-white text-sm"
+                                    placeholder="24/7 support provided by the event team."
+                                />
+                                <div class="mt-3">
+                                    <button
+                                        type="button"
+                                        @click="saveFooter({ footer_support_text: footerForm.footer_support_text })"
+                                        :disabled="footerForm.processing"
+                                        class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
+                                    >
+                                        {{ footerForm.processing ? 'Saving...' : 'Save Support Line' }}
                                     </button>
                                 </div>
                             </div>

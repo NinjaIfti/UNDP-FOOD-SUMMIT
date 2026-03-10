@@ -39,7 +39,7 @@ const ctaCards = computed(() => {
 <template>
     <Head title="Get Involved" />
     <EventLayout>
-        <section class="bg-gradient-to-b from-accent-1/10 to-white py-10 sm:py-16 lg:py-20">
+        <section class="bg-[#F4F1EA] py-10 sm:py-16 lg:py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -49,29 +49,29 @@ const ctaCards = computed(() => {
                         <p class="mt-4 font-body text-lg leading-relaxed text-ink sm:text-xl">{{ heroSubtitle }}</p>
                     </div>
 
-                    <div class="mx-auto mt-8 max-w-4xl rounded-2xl bg-white p-6 shadow-sm sm:mt-10 sm:p-8">
+                    <div class="mx-auto mt-8 max-w-4xl rounded-none bg-white p-6 shadow-sm sm:mt-10 sm:p-8">
                         <p class="font-body text-base leading-relaxed text-copy sm:text-lg">{{ heroIntro }}</p>
                     </div>
                 </SectionReveal>
             </div>
         </section>
 
-        <section class="bg-white pt-6 pb-10 sm:pt-8 sm:pb-16">
+        <section class="bg-[#F4F1EA] pt-6 pb-10 sm:pt-8 sm:pb-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
                         <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">{{ categoriesSectionTitle }}</h2>
-                        <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">{{ categoriesSectionSubtitle }}</p>
+                        <p class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg">{{ categoriesSectionSubtitle }}</p>
                     </div>
 
                     <div class="mx-auto mt-8 grid max-w-5xl gap-6 sm:mt-10 lg:grid-cols-2">
                         <div
                             v-for="(category, index) in submissionCategories"
                             :key="index"
-                            class="flex flex-col rounded-2xl border border-primary-2/20 bg-white p-6 shadow-sm transition hover:shadow-md"
+                            class="flex flex-col rounded-none border border-primary-2/20 bg-white p-6 shadow-sm transition hover:shadow-md"
                         >
                             <div class="flex items-start gap-4">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-2">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-accent-2">
                                     <svg v-if="category.icon === 'presentation'" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                                     </svg>
@@ -90,7 +90,7 @@ const ctaCards = computed(() => {
             </div>
         </section>
 
-        <section class="bg-primary-2/5 py-10 sm:py-16">
+        <section class="bg-[#F4F1EA] py-10 sm:py-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -106,10 +106,10 @@ const ctaCards = computed(() => {
                             :href="card.href"
                             target="_blank"
                             rel="noopener noreferrer"
-                            :class="(card.style === 'primary' ? 'group flex items-center justify-between rounded-2xl bg-accent-1 p-5 shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:p-6' : 'group flex items-center justify-between rounded-2xl border-2 border-primary-1 bg-white p-5 shadow-sm transition hover:bg-primary-1/5 hover:shadow-md sm:p-6')"
+                            :class="(card.style === 'primary' ? 'group flex items-center justify-between rounded-none bg-accent-1 p-5 shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:p-6' : 'group flex items-center justify-between rounded-none border-2 border-primary-1 bg-white p-5 shadow-sm transition hover:bg-primary-1/5 hover:shadow-md sm:p-6')"
                         >
                             <div class="flex items-center gap-4">
-                                <div :class="card.style === 'primary' ? 'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20' : 'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-1'">
+                                <div :class="card.style === 'primary' ? 'flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-white/20' : 'flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-primary-1'">
                                     <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>

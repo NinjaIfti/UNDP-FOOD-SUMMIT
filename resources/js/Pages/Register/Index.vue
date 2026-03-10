@@ -45,6 +45,117 @@ const props = defineProps({
 });
 
 const photoPreview = ref(null);
+
+const phoneCountryCodes = [
+    { code: '+93', label: 'Afghanistan (+93)' },
+    { code: '+355', label: 'Albania (+355)' },
+    { code: '+213', label: 'Algeria (+213)' },
+    { code: '+376', label: 'Andorra (+376)' },
+    { code: '+244', label: 'Angola (+244)' },
+    { code: '+54', label: 'Argentina (+54)' },
+    { code: '+374', label: 'Armenia (+374)' },
+    { code: '+61', label: 'Australia (+61)' },
+    { code: '+43', label: 'Austria (+43)' },
+    { code: '+880', label: 'Bangladesh (+880)' },
+    { code: '+32', label: 'Belgium (+32)' },
+    { code: '+975', label: 'Bhutan (+975)' },
+    { code: '+55', label: 'Brazil (+55)' },
+    { code: '+1', label: 'Canada / USA (+1)' },
+    { code: '+56', label: 'Chile (+56)' },
+    { code: '+86', label: 'China (+86)' },
+    { code: '+57', label: 'Colombia (+57)' },
+    { code: '+506', label: 'Costa Rica (+506)' },
+    { code: '+385', label: 'Croatia (+385)' },
+    { code: '+420', label: 'Czech Republic (+420)' },
+    { code: '+45', label: 'Denmark (+45)' },
+    { code: '+20', label: 'Egypt (+20)' },
+    { code: '+251', label: 'Ethiopia (+251)' },
+    { code: '+358', label: 'Finland (+358)' },
+    { code: '+33', label: 'France (+33)' },
+    { code: '+49', label: 'Germany (+49)' },
+    { code: '+30', label: 'Greece (+30)' },
+    { code: '+852', label: 'Hong Kong (+852)' },
+    { code: '+36', label: 'Hungary (+36)' },
+    { code: '+354', label: 'Iceland (+354)' },
+    { code: '+91', label: 'India (+91)' },
+    { code: '+62', label: 'Indonesia (+62)' },
+    { code: '+98', label: 'Iran (+98)' },
+    { code: '+964', label: 'Iraq (+964)' },
+    { code: '+353', label: 'Ireland (+353)' },
+    { code: '+972', label: 'Israel (+972)' },
+    { code: '+39', label: 'Italy (+39)' },
+    { code: '+81', label: 'Japan (+81)' },
+    { code: '+962', label: 'Jordan (+962)' },
+    { code: '+7', label: 'Kazakhstan / Russia (+7)' },
+    { code: '+254', label: 'Kenya (+254)' },
+    { code: '+965', label: 'Kuwait (+965)' },
+    { code: '+856', label: 'Laos (+856)' },
+    { code: '+961', label: 'Lebanon (+961)' },
+    { code: '+218', label: 'Libya (+218)' },
+    { code: '+370', label: 'Lithuania (+370)' },
+    { code: '+352', label: 'Luxembourg (+352)' },
+    { code: '+60', label: 'Malaysia (+60)' },
+    { code: '+960', label: 'Maldives (+960)' },
+    { code: '+356', label: 'Malta (+356)' },
+    { code: '+52', label: 'Mexico (+52)' },
+    { code: '+377', label: 'Monaco (+377)' },
+    { code: '+976', label: 'Mongolia (+976)' },
+    { code: '+212', label: 'Morocco (+212)' },
+    { code: '+95', label: 'Myanmar (+95)' },
+    { code: '+977', label: 'Nepal (+977)' },
+    { code: '+31', label: 'Netherlands (+31)' },
+    { code: '+64', label: 'New Zealand (+64)' },
+    { code: '+234', label: 'Nigeria (+234)' },
+    { code: '+47', label: 'Norway (+47)' },
+    { code: '+968', label: 'Oman (+968)' },
+    { code: '+92', label: 'Pakistan (+92)' },
+    { code: '+507', label: 'Panama (+507)' },
+    { code: '+595', label: 'Paraguay (+595)' },
+    { code: '+51', label: 'Peru (+51)' },
+    { code: '+63', label: 'Philippines (+63)' },
+    { code: '+48', label: 'Poland (+48)' },
+    { code: '+351', label: 'Portugal (+351)' },
+    { code: '+974', label: 'Qatar (+974)' },
+    { code: '+40', label: 'Romania (+40)' },
+    { code: '+966', label: 'Saudi Arabia (+966)' },
+    { code: '+65', label: 'Singapore (+65)' },
+    { code: '+421', label: 'Slovakia (+421)' },
+    { code: '+27', label: 'South Africa (+27)' },
+    { code: '+82', label: 'South Korea (+82)' },
+    { code: '+34', label: 'Spain (+34)' },
+    { code: '+94', label: 'Sri Lanka (+94)' },
+    { code: '+46', label: 'Sweden (+46)' },
+    { code: '+41', label: 'Switzerland (+41)' },
+    { code: '+886', label: 'Taiwan (+886)' },
+    { code: '+255', label: 'Tanzania (+255)' },
+    { code: '+66', label: 'Thailand (+66)' },
+    { code: '+228', label: 'Togo (+228)' },
+    { code: '+216', label: 'Tunisia (+216)' },
+    { code: '+90', label: 'Turkey (+90)' },
+    { code: '+256', label: 'Uganda (+256)' },
+    { code: '+380', label: 'Ukraine (+380)' },
+    { code: '+971', label: 'United Arab Emirates (+971)' },
+    { code: '+44', label: 'United Kingdom (+44)' },
+    { code: '+598', label: 'Uruguay (+598)' },
+    { code: '+998', label: 'Uzbekistan (+998)' },
+    { code: '+58', label: 'Venezuela (+58)' },
+    { code: '+84', label: 'Vietnam (+84)' },
+    { code: '+967', label: 'Yemen (+967)' },
+    { code: '+260', label: 'Zambia (+260)' },
+    { code: '+263', label: 'Zimbabwe (+263)' },
+];
+const phoneCountryCode = ref('+975');
+const phoneLocal = ref('');
+const phoneClientError = ref('');
+
+function buildFullPhone() {
+    const code = (phoneCountryCode.value || '').trim();
+    const local = (phoneLocal.value || '').trim().replace(/\s+/g, ' ');
+    if (!code && !local) return '';
+    if (!local) return code;
+    if (!code) return local;
+    return `${code} ${local}`.trim();
+}
 const page = usePage();
 const showSuccessModal = ref(!!page.props.flash?.success);
 
@@ -109,12 +220,21 @@ const countries = [
 ];
 
 function submit() {
+    phoneClientError.value = '';
+    form.phone = buildFullPhone();
+    if (!form.phone.trim()) {
+        phoneClientError.value = 'Please choose a country code and enter your phone number.';
+        return;
+    }
     form.post('/register-summit', {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
             form.reset();
             photoPreview.value = null;
+            phoneCountryCode.value = '+975';
+            phoneLocal.value = '';
+            phoneClientError.value = '';
         },
     });
 }
@@ -179,19 +299,19 @@ const steps = [
             </div>
         </div>
         <!-- Hero Banner -->
-        <section class="relative bg-primary-2/10 py-20 sm:py-28">
+        <section class="relative bg-[#F4F1EA] py-20 sm:py-28">
             <div class="absolute inset-0 opacity-20">
                 <img src="/brand/img34.jpg" alt="" class="h-full w-full object-cover" aria-hidden="true" />
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-primary-1/70 via-primary-1/30 to-primary-2/60" />
             <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
                 <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Register Now!</h1>
-                <p class="mt-4 font-body text-lg font-medium text-accent-2 sm:text-xl">Global Conscious Food Systems Summit · 31 Aug – 4 Sep 2026 · Bhutan</p>
+                <p class="mx-auto mt-4 max-w-2xl text-center font-body text-lg font-medium text-accent-2 sm:text-xl">Global Conscious Food Systems Summit · 31 Aug – 4 Sep 2026 · Bhutan</p>
             </div>
         </section>
 
         <!-- Intro -->
-        <section class="bg-white py-16 sm:py-20">
+        <section class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <p class="font-body text-lg leading-relaxed text-ink">
                     We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit in Bhutan. Please note that space is limited, and we encourage timely submission of registration applications to support an efficient review and coordination process.
@@ -212,7 +332,7 @@ const steps = [
         </section>
 
         <!-- Steps -->
-        <section class="border-y border-primary-2/20 bg-primary-2/5 py-16 sm:py-20">
+        <section class="border-y border-primary-1/10 bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Registration Process</h2>
                 <div class="mt-12 space-y-6">
@@ -232,7 +352,7 @@ const steps = [
         </section>
 
         <!-- Closing Note -->
-        <section class="bg-white py-12 sm:py-16">
+        <section class="bg-[#F4F1EA] py-12 sm:py-16">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
                     We appreciate your understanding and cooperation as we coordinate these steps with care. Please rest assured that our team will be spearheading the process closely to ensure timely approvals and a smooth, efficient experience. We look forward to accompanying you every step of the way toward an inspiring gathering in Bhutan.
@@ -245,7 +365,7 @@ const steps = [
         </section>
 
         <!-- Registration Form -->
-        <section id="form" class="bg-primary-2/5 py-16 sm:py-20">
+        <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-copy">Fill out the form below to begin your registration process</p>
@@ -292,16 +412,29 @@ const steps = [
                                 <p v-if="form.errors.email" class="mt-1 text-sm text-red-400">{{ form.errors.email }}</p>
                             </div>
                             <div>
-                                <label for="phone" class="mb-1 block text-sm font-medium text-primary-1">Phone Number (incl. international code) *</label>
-                                <input
-                                    id="phone"
-                                    v-model="form.phone"
-                                    type="tel"
-                                    required
-                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                    placeholder="+1 234 567 8900"
-                                />
-                                <p v-if="form.errors.phone" class="mt-1 text-sm text-red-400">{{ form.errors.phone }}</p>
+                                <label class="mb-1 block text-sm font-medium text-primary-1">Phone Number *</label>
+                                <p class="mb-2 font-body text-xs text-copy">Choose your country code, then enter your number (no need to type the code again).</p>
+                                <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+                                    <select
+                                        v-model="phoneCountryCode"
+                                        class="w-full shrink-0 rounded-lg border border-primary-2/20 bg-white px-3 py-3 text-ink sm:w-52 focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                    >
+                                        <option v-for="item in phoneCountryCodes" :key="item.code" :value="item.code" class="text-gray-800">
+                                            {{ item.label }}
+                                        </option>
+                                    </select>
+                                    <input
+                                        id="phone"
+                                        v-model="phoneLocal"
+                                        type="tel"
+                                        autocomplete="tel-national"
+                                        class="min-w-0 flex-1 rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                        placeholder="e.g. 234 567 8900"
+                                    />
+                                </div>
+                                <p v-if="phoneClientError || form.errors.phone" class="mt-1 text-sm text-red-400">
+                                    {{ phoneClientError || form.errors.phone }}
+                                </p>
                             </div>
                             <div>
                                 <label for="country" class="mb-1 block text-sm font-medium text-primary-1">Country of Residence</label>
@@ -478,7 +611,7 @@ const steps = [
                                         <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
                                         <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
                                     </div>
-                                    <p class="mt-0.5 text-sm text-white/70">{{ pkg.description }}</p>
+                                    <p class="mt-0.5 text-sm text-ink">{{ pkg.description }}</p>
                                 </div>
                             </label>
                         </div>
@@ -789,11 +922,11 @@ const steps = [
                     </fieldset>
 
                     <!-- Submit -->
-                    <div class="pt-2">
+                    <div class="flex flex-col items-center pt-2">
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="w-full rounded-xl bg-accent-2 py-4 font-body text-lg font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
+                            class="inline-flex items-center justify-center rounded-xl bg-accent-2 px-8 py-2.5 font-body text-sm font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
                         >
                             {{ form.processing ? 'Submitting...' : 'Submit Registration Application' }}
                         </button>
