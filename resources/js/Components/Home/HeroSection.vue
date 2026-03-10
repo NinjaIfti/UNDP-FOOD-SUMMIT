@@ -39,6 +39,24 @@ const slides = computed(() => {
     return defaultSlides;
 });
 const currentIndex = ref(0);
+const slideOrientation = ref({});
+
+function onSlideLoad(i, e) {
+    const img = e.target;
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    slideOrientation.value = {
+        ...slideOrientation.value,
+        [i]: img.naturalHeight >= img.naturalWidth ? 'portrait' : 'landscape',
+    };
+}
+
+function slideImgClass(i) {
+    const o = slideOrientation.value[i];
+    if (o === 'portrait') {
+        return 'hero-slide-img hero-slide-img-portrait';
+    }
+    return 'hero-slide-img hero-slide-img-landscape';
+}
 
 function nextSlide() {
     if (slides.value.length > 0) {
@@ -57,17 +75,26 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <section class="relative -mt-20 min-h-[calc(90vh+5rem)] overflow-hidden bg-primary-1 sm:-mt-24 sm:min-h-[calc(92vh+6rem)] lg:-mt-28 lg:min-h-[calc(92vh+7rem)] pt-20 sm:pt-24 lg:pt-28">
+    <section class="relative -mt-20 min-h-screen overflow-hidden bg-primary-1 sm:-mt-24 lg:-mt-28 pt-20 sm:pt-24 lg:pt-28">
 
-        <!-- Slides: bg-contain so uploaded images are never cropped (letterbox uses primary-1) -->
-        <div class="absolute inset-0 bg-primary-1">
+        <!-- Slides: full-bleed layer (extends under navbar). Images never cropped; portrait fills height, landscape fills width -->
+        <div class="absolute -top-20 bottom-0 left-0 right-0 z-0 min-h-screen w-full bg-primary-1 sm:-top-24 lg:-top-28">
             <div
                 v-for="(slide, i) in slides"
                 :key="slide + i"
-                class="absolute inset-0 bg-contain bg-center bg-no-repeat"
+                class="absolute inset-0 flex items-center justify-center bg-primary-1"
                 :class="i === currentIndex ? 'hero-slide-active' : 'hero-slide-inactive'"
-                :style="{ backgroundImage: `url(${slide})` }"
-            />
+            >
+                <img
+                    :src="slide"
+                    alt=""
+                    class="block"
+                    :class="slideImgClass(i)"
+                    :loading="i === 0 ? 'eager' : 'lazy'"
+                    decoding="async"
+                    @load="onSlideLoad(i, $event)"
+                />
+            </div>
         </div>
 
         <!-- Dark gradient overlay — heavier on left so text is readable -->
@@ -122,7 +149,28 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* No zoom animation — zoom would crop again with bg-contain */
+/* Full span without cropping: portrait fills slide height, landscape fills width; letterbox uses primary-1 */
+.hero-slide-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+.hero-slide-img-portrait {
+    height: 100%;
+    width: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.hero-slide-img-landscape {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
 .hero-slide-active {
     opacity: 1;
     transition: opacity 1.5s ease-in-out;
