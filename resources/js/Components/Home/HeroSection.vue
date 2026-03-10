@@ -55,6 +55,9 @@ function slideImgClass(i) {
     if (o === 'portrait') {
         return 'hero-slide-img hero-slide-img-portrait';
     }
+    if (o === 'landscape') {
+        return 'hero-slide-img hero-slide-img-landscape';
+    }
     return 'hero-slide-img hero-slide-img-landscape';
 }
 
@@ -77,18 +80,17 @@ onUnmounted(() => {
 <template>
     <section class="relative -mt-20 min-h-screen overflow-hidden bg-primary-1 sm:-mt-24 lg:-mt-28 pt-20 sm:pt-24 lg:pt-28">
 
-        <!-- Slides: full-bleed layer (extends under navbar). Images never cropped; portrait fills height, landscape fills width -->
-        <div class="absolute -top-20 bottom-0 left-0 right-0 z-0 min-h-screen w-full bg-primary-1 sm:-top-24 lg:-top-28">
+        <!-- Slides: full-bleed layer. Landscape = cover fills section (no grey bars). Portrait = cover fills full width (zoom/crop top-bottom only). -->
+        <div class="absolute -top-20 bottom-0 left-0 right-0 z-0 min-h-screen w-full overflow-hidden bg-primary-1 sm:-top-24 lg:-top-28">
             <div
                 v-for="(slide, i) in slides"
                 :key="slide + i"
-                class="absolute inset-0 flex items-center justify-center bg-primary-1"
+                class="absolute inset-0 overflow-hidden bg-primary-1"
                 :class="i === currentIndex ? 'hero-slide-active' : 'hero-slide-inactive'"
             >
                 <img
                     :src="slide"
                     alt=""
-                    class="block"
                     :class="slideImgClass(i)"
                     :loading="i === 0 ? 'eager' : 'lazy'"
                     decoding="async"
@@ -149,26 +151,32 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Full span without cropping: portrait fills slide height, landscape fills width; letterbox uses primary-1 */
-.hero-slide-img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-.hero-slide-img-portrait {
-    height: 100%;
-    width: auto;
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-}
+/* Landscape: cover entire slide so no grey bands at sides or below */
 .hero-slide-img-landscape {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/*
+ * Portrait only: scale by width so the photo always spans full screen width;
+ * taller-than-wide images get top/bottom cropped (zoom), no side grey.
+ */
+.hero-slide-img-portrait {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
 }
 
 .hero-slide-active {
