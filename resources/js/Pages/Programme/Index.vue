@@ -228,7 +228,7 @@ const defaultThemes = [
         <section id="transformative-experience" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-3xl text-center">
+                    <div class="mx-auto max-w-6xl text-center">
                         <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
                             {{ sectionTitle }}
                         </h1>
@@ -251,7 +251,7 @@ const defaultThemes = [
                         <div
                             v-for="(card, index) in globalCards"
                             :key="index"
-                            class="rounded-none bg-primary-1/5 p-8 shadow-md transition sm:col-span-1"
+                            class="flex flex-col items-center rounded-none bg-primary-1/5 p-8 text-center shadow-md transition sm:col-span-1"
                             :class="[
                                 index === 2 ? 'sm:col-span-2 lg:col-span-1' : '',
                                 index < 3
@@ -264,13 +264,10 @@ const defaultThemes = [
                             @keydown.enter.prevent="index < 3 && scrollToCardSection(index)"
                             @keydown.space.prevent="index < 3 && scrollToCardSection(index)"
                         >
-                            <div
-                                class="flex h-12 w-12 items-center justify-center rounded-none"
-                                :class="index === 0 ? 'bg-accent-2' : index === 1 ? 'bg-accent-1' : 'bg-primary-1'"
-                            >
+                            <div class="flex h-12 w-full items-center justify-center">
                                 <svg
                                     v-if="index === 0"
-                                    class="h-6 w-6 text-primary-1"
+                                    class="h-8 w-8 text-primary-1"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -279,7 +276,7 @@ const defaultThemes = [
                                 </svg>
                                 <svg
                                     v-else-if="index === 1"
-                                    class="h-6 w-6 text-white"
+                                    class="h-8 w-8 text-primary-1"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -288,7 +285,7 @@ const defaultThemes = [
                                 </svg>
                                 <svg
                                     v-else
-                                    class="h-6 w-6 text-white"
+                                    class="h-8 w-8 text-primary-1"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -296,7 +293,7 @@ const defaultThemes = [
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                             </div>
-                            <h3 class="mt-4 font-title text-xl font-bold text-primary-1">
+                            <h3 class="mt-4 w-full font-title text-xl font-bold text-primary-1">
                                 {{ card.title }}
                             </h3>
                             <p class="mt-3 font-body text-base leading-relaxed text-copy">
