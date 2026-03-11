@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactSubmission;
 use App\Models\SummitRegistration;
+use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -79,6 +80,11 @@ class ContactController extends Controller
         }
 
         SummitRegistration::create($data);
+
+        $dashTicket = app(DashTicketService::class);
+        if ($dashTicket->isConfigured()) {
+            $dashTicket->registerUser($data);
+        }
 
         return back()->with('success', 'Thank you for registering with the GCFSS, our team will get back to you soon!');
     }

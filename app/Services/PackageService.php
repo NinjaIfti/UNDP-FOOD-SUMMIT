@@ -44,4 +44,19 @@ class PackageService
             fn ($t) => $t['active'] ?? true
         ));
     }
+
+    public static function getPriceForTier(?string $tierId): ?float
+    {
+        if ($tierId === null || $tierId === '') {
+            return null;
+        }
+        $tiers = self::getTiers();
+        foreach ($tiers as $tier) {
+            if ((string) ($tier['id'] ?? '') === (string) $tierId) {
+                $price = $tier['price'] ?? null;
+                return $price !== null ? (float) $price : null;
+            }
+        }
+        return null;
+    }
 }
