@@ -26,6 +26,7 @@ class DashTicketService
 
     /**
      * Register a user with DashTicket after summit registration.
+     *
      * Returns true on success (201/200), false on failure. Logs errors.
      */
     public function registerUser(array $registration): bool
@@ -88,6 +89,82 @@ class DashTicketService
             ]);
 
             return false;
+        }
+    }
+
+    /**
+     * Check ticket purchase status for a user by email.
+     *
+     * Returns an array on success:
+     * [
+     *     'email' => string,
+     *     'ticket_purchased' => bool,
+     *     'found' => bool, // false when API returns 404
+     * ]
+     *
+     * Returns null on configuration or transport errors.
+     */
+    public function getTicketStatus(string $email): ?array
+    {
+        if (! $this->isConfigured()) {
+            Log::warning('DashTicket: API key not configured, skipping ticket status check');
+
+            return null;
+        }
+
+        $normalizedEmail = strtolower(trim($email));
+        if ($normalizedEmail === '') {
+            Log::warning('DashTicket: Empty email provided for ticket status check');
+
+            return null;
+        }
+
+        $url = $this->baseUrl . '/api/v1/integrations/ticket-status';
+
+        try {
+            $response = Http::timeout(10)
+                ->withHeaders([
+                    'X-API-Key' => $this->apiKey,
+                    'Content-Type' => 'application/json',
+                ])
+                ->get($url, ['email' => $normalizedEmail]);
+
+            if ($response->status() === 200) {
+                $data = $response->json() ?? [];
+
+                return [
+                    'email' => $data['email'] ?? $normalizedEmail,
+                    'ticket_purchased' => (bool) ($data['ticket_purchased'] ?? false),
+                    'found' => true,
+                ];
+            }
+
+            if ($response->status() === 404) {
+                Log::info('DashTicket: Ticket status user not found', [
+                    'email' => $normalizedEmail,
+                ]);
+
+                return [
+                    'email' => $normalizedEmail,
+                    'ticket_purchased' => false,
+                    'found' => false,
+                ];
+            }
+
+            Log::warning('DashTicket: Ticket status check failed', [
+                'email' => $normalizedEmail,
+                'status' => $response->status(),
+                'body' => $response->json(),
+            ]);
+
+            return null;
+        } catch (\Throwable $e) {
+            Log::error('DashTicket: Ticket status exception', [
+                'email' => $normalizedEmail,
+                'message' => $e->getMessage(),
+            ]);
+
+            return null;
         }
     }
 
