@@ -25,6 +25,14 @@ const tabs = [
 ];
 
 const form = useForm({
+    // Hero header
+    yourstay_hero_title: props.settings.yourstay_hero_title || '',
+    yourstay_hero_subtitle: props.settings.yourstay_hero_subtitle || '',
+    yourstay_hero_slides: props.settings.yourstay_hero_slides || [],
+    yourstayHeroImageFile: null,
+    yourstayHeroSlide1File: null,
+    yourstayHeroSlide2File: null,
+    yourstayHeroSlide3File: null,
     participation_costs_title: props.settings.participation_costs_title || '',
     participation_costs_description: props.settings.participation_costs_description || '',
     participation_costs_announcement: props.settings.participation_costs_announcement || '',
@@ -109,8 +117,24 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('admin.your-stay.update'), {
+    const data = { ...form.data() };
+
+    if (form.yourstayHeroImageFile) {
+        data.yourstay_hero_image = form.yourstayHeroImageFile;
+    }
+    if (form.yourstayHeroSlide1File) {
+        data.yourstay_hero_slide_1_file = form.yourstayHeroSlide1File;
+    }
+    if (form.yourstayHeroSlide2File) {
+        data.yourstay_hero_slide_2_file = form.yourstayHeroSlide2File;
+    }
+    if (form.yourstayHeroSlide3File) {
+        data.yourstay_hero_slide_3_file = form.yourstayHeroSlide3File;
+    }
+
+    form.transform(() => data).post(route('admin.your-stay.update'), {
         preserveScroll: true,
+        forceFormData: true,
     });
 };
 
@@ -183,9 +207,112 @@ const removeObjectItem = (arrayName, index) => {
             <form @submit.prevent="submit" class="space-y-4 sm:space-y-6">
                 <!-- Participation Costs Section -->
                 <div v-show="activeTab === 'participation-costs'" class="rounded-xl bg-white p-4 shadow-sm sm:p-6">
-                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Participation Costs</h3>
+                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Participation Costs & Hero Header</h3>
                     
                     <div class="space-y-4">
+                        <!-- Hero header controls -->
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                            <h4 class="mb-3 font-title text-base font-bold text-primary-1">Hero Header (Your Stay page)</h4>
+                            <div class="space-y-4">
+                                <div class="grid gap-4 sm:grid-cols-[auto,1fr] items-center">
+                                    <div>
+                                        <p class="font-body text-xs font-medium text-ink mb-2">Current image</p>
+                                        <img
+                                            :src="props.settings?.yourstay_hero_image || '/brand/img34.jpg'"
+                                            alt="Current Your Stay hero image"
+                                            class="h-24 w-40 rounded-lg border border-gray-200 object-cover"
+                                        />
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block font-body text-sm font-medium text-ink">Upload main hero image</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.yourstayHeroImageFile = f || null; }"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                        />
+                                        <p class="mt-1 text-xs text-gray-500">JPG, PNG, WEBP, max 4MB.</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label class="block font-body text-sm font-medium text-ink">Hero title</label>
+                                        <input
+                                            v-model="form.yourstay_hero_title"
+                                            type="text"
+                                            placeholder="Your Stay in Bhutan"
+                                            class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block font-body text-sm font-medium text-ink">Hero description (first paragraph)</label>
+                                        <input
+                                            v-model="form.yourstay_hero_subtitle"
+                                            type="text"
+                                            placeholder="Short description shown inside the image"
+                                            class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Additional slider images (optional)</label>
+                                    <p class="mt-1 text-xs text-gray-500">If you upload more than one image (main + extras), the header will fade between them.</p>
+
+                                    <!-- Existing slides -->
+                                    <div v-if="form.yourstay_hero_slides && form.yourstay_hero_slides.length" class="mt-3 space-y-2">
+                                        <p class="text-xs font-medium text-gray-700">Current additional slides</p>
+                                        <div
+                                            v-for="(slide, index) in form.yourstay_hero_slides"
+                                            :key="slide + index"
+                                            class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-2"
+                                        >
+                                            <img
+                                                :src="slide"
+                                                alt="Slide image"
+                                                class="h-14 w-20 rounded-md border border-gray-200 object-cover"
+                                            />
+                                            <div class="flex-1">
+                                                <p class="truncate text-xs text-gray-600">{{ slide }}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                                @click="form.yourstay_hero_slides.splice(index, 1)"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- New uploads -->
+                                    <div class="mt-3 space-y-2">
+                                        <p class="text-xs font-medium text-gray-700">Upload up to 3 additional images</p>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.yourstayHeroSlide1File = f || null; }"
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.yourstayHeroSlide2File = f || null; }"
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.yourstayHeroSlide3File = f || null; }"
+                                        />
+                                        <p class="mt-1 text-xs text-gray-500">JPG, PNG, WEBP, max 4MB each.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Section Title</label>
                             <input v-model="form.participation_costs_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />

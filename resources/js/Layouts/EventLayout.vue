@@ -11,8 +11,15 @@ const page = usePage();
 const blogEnabled = page.props.blog_enabled ?? false;
 const siteSettings = page.props.site_settings ?? {};
 const isHomePage = computed(() => page.url === '/' || page.url === '');
-const logo1 = siteSettings.logo_secondary || '/brand/govt.png';
-const logo2 = siteSettings.logo || '/brand/logo2.png';
+const logos = computed(() => {
+    const raw = [
+        siteSettings.logo_secondary || '/brand/govt.png',
+        siteSettings.logo || '/brand/logo2.png',
+        siteSettings.logo_third || '',
+        siteSettings.logo_fourth || '',
+    ];
+    return raw.filter((v, index) => v && index < 4);
+});
 const mobileMenuOpen = ref(false);
 const isAtTop = ref(true);
 
@@ -37,13 +44,23 @@ onUnmounted(() => {
             <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
                     <Link href="/" class="flex items-center gap-2 sm:gap-3">
-                        <img :src="logo1" alt="Partner" class="h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20" />
-                        <img :src="logo2" alt="Global Conscious Food Systems Summit" class="h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]" />
+                        <img
+                            v-for="(logo, index) in logos"
+                            :key="index"
+                            :src="logo"
+                            :alt="`Navbar logo ${index + 1}`"
+                            :class="[
+                                index === 0
+                                    ? 'h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20'
+                                    : 'h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]',
+                            ]"
+                        />
                     </Link>
                 </div>
                 <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
                         <Link href="/" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
+                        <Link href="/speakers" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Speakers</Link>
                         <Link href="/programme" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
                         <Link href="/your-stay-in-bhutan" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
                         <Link v-if="blogEnabled" href="/blog" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
@@ -51,7 +68,7 @@ onUnmounted(() => {
                         <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition lg:px-3 lg:text-base" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
                         <Link
                             href="/register-summit"
-                            class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
+                            class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-white px-3 py-2 text-sm font-semibold text-primary-1 transition hover:bg-white/90 lg:px-4 lg:text-base"
                         >
                             Register
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,6 +99,7 @@ onUnmounted(() => {
             >
                 <nav class="flex flex-col gap-1">
                     <Link href="/" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
+                    <Link href="/speakers" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Speakers</Link>
                     <Link href="/programme" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
                     <Link href="/your-stay-in-bhutan" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
                     <Link v-if="blogEnabled" href="/blog" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
@@ -89,7 +107,7 @@ onUnmounted(() => {
                     <Link href="/faq" class="font-body rounded-md px-4 py-3 text-base font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
                     <Link
                         href="/register-summit"
-                        class="font-body rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
+                        class="font-body rounded-md bg-white px-4 py-3 text-center text-base font-semibold text-primary-1 transition hover:bg-white/90 inline-flex items-center justify-center gap-2"
                         @click="mobileMenuOpen = false"
                     >
                         Register

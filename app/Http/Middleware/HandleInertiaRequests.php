@@ -79,6 +79,8 @@ class HandleInertiaRequests extends Middleware
             return [
                 'logo' => $s['logo'] ?? '/brand/logo2.png',
                 'logo_secondary' => $s['logo_secondary'] ?? '/brand/govt.png',
+                'logo_third' => $s['logo_third'] ?? '',
+                'logo_fourth' => $s['logo_fourth'] ?? '',
                 'favicon' => $s['favicon'] ?? '',
                 'newsletter_text' => $s['newsletter_text'] ?? 'Subscribe to our newsletter',
                 'contact_email' => $s['contact_email'] ?? 'info@foodsummit2026.org',
@@ -94,6 +96,8 @@ class HandleInertiaRequests extends Middleware
         return [
             'logo' => '/brand/logo2.png',
             'logo_secondary' => '/brand/govt.png',
+            'logo_third' => '',
+            'logo_fourth' => '',
             'favicon' => '',
             'newsletter_text' => 'Subscribe to our newsletter',
             'contact_email' => 'info@foodsummit2026.org',

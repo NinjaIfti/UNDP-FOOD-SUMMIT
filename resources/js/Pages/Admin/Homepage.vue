@@ -27,12 +27,17 @@ const form = useForm({
     summit_intro_text1: props.settings.summit_intro_text1,
     summit_intro_text2: props.settings.summit_intro_text2,
     coorganizers_title: props.settings.coorganizers_title,
+    coorganizers_subtitle: props.settings.coorganizers_subtitle,
     govt_logo: null,
     undp_logo: null,
     cofsa_logo: null,
+    coorganizer_logo_4: null,
+    coorganizer_logo_5: null,
     delete_govt_logo: false,
     delete_undp_logo: false,
     delete_cofsa_logo: false,
+    delete_coorganizer_logo_4: false,
+    delete_coorganizer_logo_5: false,
     video1_title: props.settings.video1_title,
     video1_url: props.settings.video1_url,
     video2_title: props.settings.video2_title,
@@ -501,8 +506,13 @@ const submit = () => {
                     
                     <div class="space-y-6">
                         <div>
-                            <label class="block font-body text-sm font-medium text-ink">Section Title</label>
-                            <input v-model="form.coorganizers_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                            <label class="block font-body text-sm font-medium text-ink">Section Subtitle</label>
+                            <textarea
+                                v-model="form.coorganizers_subtitle"
+                                rows="3"
+                                class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                placeholder="Short description below the Co-organizers title"
+                            ></textarea>
                         </div>
 
                         <!-- Government Logo -->
@@ -571,7 +581,51 @@ const submit = () => {
                             />
                         </div>
 
-                        <p class="font-body text-sm text-copy">Upload new logos or delete existing ones. Logos will be displayed side by side on the website.</p>
+                        <!-- Additional Co-organizer Logo 4 -->
+                        <div class="rounded-lg border border-gray-200 p-4">
+                            <h4 class="mb-3 font-title text-sm font-bold text-primary-1">Additional Co-organizer Logo 4</h4>
+                            <div v-if="settings.coorganizer_logo_4" class="mb-3">
+                                <img :src="settings.coorganizer_logo_4" alt="Co-organizer Logo 4" class="h-24 w-auto object-contain" />
+                                <button
+                                    type="button"
+                                    @click="form.delete_coorganizer_logo_4 = !form.delete_coorganizer_logo_4"
+                                    class="mt-2 rounded-md px-3 py-1 text-sm font-medium transition"
+                                    :class="form.delete_coorganizer_logo_4 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                >
+                                    {{ form.delete_coorganizer_logo_4 ? 'Undo Delete' : 'Delete Logo' }}
+                                </button>
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                @change="form.coorganizer_logo_4 = $event.target.files[0]"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-accent-1 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-1/90"
+                            />
+                        </div>
+
+                        <!-- Additional Co-organizer Logo 5 -->
+                        <div class="rounded-lg border border-gray-200 p-4">
+                            <h4 class="mb-3 font-title text-sm font-bold text-primary-1">Additional Co-organizer Logo 5</h4>
+                            <div v-if="settings.coorganizer_logo_5" class="mb-3">
+                                <img :src="settings.coorganizer_logo_5" alt="Co-organizer Logo 5" class="h-24 w-auto object-contain" />
+                                <button
+                                    type="button"
+                                    @click="form.delete_coorganizer_logo_5 = !form.delete_coorganizer_logo_5"
+                                    class="mt-2 rounded-md px-3 py-1 text-sm font-medium transition"
+                                    :class="form.delete_coorganizer_logo_5 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                >
+                                    {{ form.delete_coorganizer_logo_5 ? 'Undo Delete' : 'Delete Logo' }}
+                                </button>
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                @change="form.coorganizer_logo_5 = $event.target.files[0]"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-accent-1 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-1/90"
+                            />
+                        </div>
+
+                        <p class="font-body text-sm text-copy">Upload new logos or delete existing ones. Up to five logos will be displayed side by side on the website.</p>
                     </div>
                 </div>
 

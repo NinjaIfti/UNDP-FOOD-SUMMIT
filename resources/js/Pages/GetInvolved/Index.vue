@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
@@ -11,6 +11,33 @@ const props = defineProps({
 const heroTitle = computed(() => props.settings?.hero_title ?? 'Call for Submissions');
 const heroSubtitle = computed(() => props.settings?.hero_subtitle ?? 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.');
 const heroIntro = computed(() => props.settings?.hero_intro ?? 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.');
+
+const heroSlides = computed(() => {
+    const base = props.settings?.hero_image || '/brand/img34.jpg';
+    const extras = Array.isArray(props.settings?.hero_slides)
+        ? props.settings.hero_slides.filter(src => src && typeof src === 'string' && src.trim().length > 0)
+        : [];
+    const all = [base, ...extras];
+    return all.filter((src, index) => all.indexOf(src) === index);
+});
+
+const activeHeroSlide = ref(0);
+
+let heroInterval;
+
+onMounted(() => {
+    heroInterval = setInterval(() => {
+        if (heroSlides.value.length > 1) {
+            activeHeroSlide.value = (activeHeroSlide.value + 1) % heroSlides.value.length;
+        }
+    }, 7000);
+});
+
+onUnmounted(() => {
+    if (heroInterval) {
+        clearInterval(heroInterval);
+    }
+});
 
 const categoriesSectionTitle = computed(() => props.settings?.categories_section_title ?? 'Submission Categories');
 const categoriesSectionSubtitle = computed(() => props.settings?.categories_section_subtitle ?? 'Applicants may submit one or more proposals under the following categories:');
@@ -39,24 +66,51 @@ const ctaCards = computed(() => {
 <template>
     <Head title="Get Involved" />
     <EventLayout>
-        <section class="bg-[#F4F1EA] py-10 sm:py-16 lg:py-20">
+        <!-- Hero header with image & text inside -->
+        <section class="relative bg-[#F4F1EA] py-0">
+            <div class="w-full">
+                <div class="overflow-hidden rounded-none">
+                    <div class="relative w-full min-h-[35vh] sm:min-h-[40vh] lg:min-h-[45vh]">
+                        <div
+                            v-for="(slide, index) in heroSlides"
+                            :key="slide + index"
+                            class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+                            :class="index === activeHeroSlide ? 'opacity-100' : 'opacity-0'"
+                        >
+                            <img
+                                :src="slide"
+                                alt=""
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="absolute inset-0 bg-black/45" />
+                        <div class="absolute inset-0 flex items-center justify-center px-4 sm:px-8">
+                            <div class="max-w-4xl text-center">
+                                <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
+                                    {{ heroTitle }}
+                                </h1>
+                                <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                    {{ heroSubtitle }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-14 lg:pb-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl text-center">
-                        <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
-                            {{ heroTitle }}
-                        </h1>
-                        <p class="mt-4 font-body text-lg leading-relaxed text-ink sm:text-xl">{{ heroSubtitle }}</p>
-                    </div>
-
-                    <div class="mx-auto mt-8 max-w-4xl rounded-none bg-white p-6 shadow-sm sm:mt-10 sm:p-8">
+                    <div class="mx-auto max-w-4xl rounded-none bg-white p-6 shadow-sm sm:p-8">
                         <p class="font-body text-base leading-relaxed text-copy sm:text-lg">{{ heroIntro }}</p>
                     </div>
                 </SectionReveal>
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] pt-6 pb-10 sm:pt-8 sm:pb-16">
+        <section class="bg-[#F4F1EA] pt-6 pb-10 sm:pt-8 sm:pb-14">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -90,7 +144,7 @@ const ctaCards = computed(() => {
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] py-10 sm:py-16">
+        <section class="bg-[#F4F1EA] py-10 sm:py-14">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">

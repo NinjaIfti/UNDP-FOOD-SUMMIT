@@ -99,37 +99,40 @@ onUnmounted(() => {
             </div>
         </div>
 
-        <!-- Dark gradient overlay — heavier on left so text is readable -->
-        <div class="absolute inset-0 z-10 bg-gradient-to-r from-primary-1/85 via-primary-1/50 to-primary-1/10" />
-        <div class="absolute inset-0 z-10 bg-gradient-to-t from-primary-1/60 via-transparent to-primary-1/30" />
-
-        <!-- Content — left aligned -->
-        <div class="relative z-20 mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-24 sm:px-10 lg:px-16">
-            <div class="max-w-2xl">
+        <!-- Content -->
+        <div class="relative z-20 mx-auto flex min-h-[90vh] max-w-7xl flex-col items-center justify-center px-6 py-24 sm:px-10 lg:px-16">
+            <div class="max-w-3xl text-center">
 
                 <h1 class="font-title text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
                     {{ settings.hero_title }}
                 </h1>
 
-                <p class="mt-5 font-body text-lg font-medium text-white/80 sm:text-xl">
+                <p class="mt-5 w-full font-body text-xl font-semibold text-white/90 sm:text-2xl text-center">
                     {{ settings.hero_date }} · {{ settings.hero_location }}
                 </p>
 
+                <p
+                    v-if="settings.hero_description"
+                    class="mt-4 max-w-3xl mx-auto font-body text-xl text-white/90 sm:text-2xl text-center"
+                >
+                    {{ settings.hero_description }}
+                </p>
+
                 <!-- Countdown -->
-                <div class="mt-8 flex flex-wrap gap-3 sm:gap-4">
-                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                <div class="mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 sm:px-6 sm:py-4">
                         <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.days }}</span>
                         <span class="font-body text-xs text-white/70 sm:text-sm">Days</span>
                     </div>
-                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 sm:px-6 sm:py-4">
                         <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.hours }}</span>
                         <span class="font-body text-xs text-white/70 sm:text-sm">Hours</span>
                     </div>
-                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 sm:px-6 sm:py-4">
                         <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.minutes }}</span>
                         <span class="font-body text-xs text-white/70 sm:text-sm">Minutes</span>
                     </div>
-                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+                    <div class="flex flex-col items-center rounded-lg bg-black/40 px-4 py-3 sm:px-6 sm:py-4">
                         <span class="font-body text-2xl font-bold text-white sm:text-3xl">{{ countdown.seconds }}</span>
                         <span class="font-body text-xs text-white/70 sm:text-sm">Seconds</span>
                     </div>
@@ -138,7 +141,7 @@ onUnmounted(() => {
                 <!-- Register button -->
                 <Link
                     href="/register-summit"
-                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg"
+                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg mx-auto"
                 >
                     Register Now
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

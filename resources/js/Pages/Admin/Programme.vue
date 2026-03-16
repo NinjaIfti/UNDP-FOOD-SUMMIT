@@ -45,6 +45,11 @@ const form = useForm({
     transform_p2: props.settings?.transform_p2 ?? 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.',
     transform_p3: props.settings?.transform_p3 ?? 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
     transform_p4: props.settings?.transform_p4 ?? 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
+    transformImageFile: null,
+    transform_slides: Array.isArray(props.settings?.transform_slides) ? props.settings.transform_slides : [],
+    transform_slide_1_file: null,
+    transform_slide_2_file: null,
+    transform_slide_3_file: null,
 
     // Section 1a – Call for Submissions
     cfs_title: props.settings?.cfs_title ?? 'Call for Submissions',
@@ -138,6 +143,9 @@ function submit() {
     if (form.globalImageFile) {
         formData.global_image = form.globalImageFile;
     }
+    if (form.transformImageFile) {
+        formData.transform_image = form.transformImageFile;
+    }
 
     form.themes.forEach((theme, index) => {
         if (theme.imageFile) {
@@ -147,6 +155,16 @@ function submit() {
             formData[`theme_${index}_delete_image`] = true;
         }
     });
+
+    if (form.transform_slide_1_file) {
+        formData.transform_slide_1_file = form.transform_slide_1_file;
+    }
+    if (form.transform_slide_2_file) {
+        formData.transform_slide_2_file = form.transform_slide_2_file;
+    }
+    if (form.transform_slide_3_file) {
+        formData.transform_slide_3_file = form.transform_slide_3_file;
+    }
     form.transform(() => formData).post(route('admin.programme.update'), {
         forceFormData: true,
         preserveScroll: true,
@@ -181,6 +199,79 @@ function submit() {
                 <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Section 1 – A Transformative Summit Experience</h3>
                     <div class="space-y-4">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Header image</label>
+                            <div class="mt-2 flex items-center gap-4">
+                                <img
+                                    :src="props.settings?.transform_image || '/brand/img34.jpg'"
+                                    alt="Current section header image"
+                                    class="h-24 w-32 rounded-lg border border-gray-200 object-cover"
+                                />
+                                <div class="flex-1">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        @change="(e) => { const f = e.target?.files?.[0]; form.transformImageFile = f || null; }"
+                                        class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                    />
+                                    <p class="mt-1 text-xs text-gray-500">Full-width header image behind the title (JPG, PNG, WEBP, max 4MB).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Additional slider images (optional)</label>
+                            <p class="mt-1 text-xs text-gray-500">Upload more images to create a slider. If only one image is set, the header will stay static.</p>
+
+                            <!-- Existing slides -->
+                            <div v-if="form.transform_slides && form.transform_slides.length" class="mt-3 space-y-2">
+                                <p class="text-xs font-medium text-gray-700">Current slides</p>
+                                <div
+                                    v-for="(slide, index) in form.transform_slides"
+                                    :key="slide + index"
+                                    class="flex items-center gap-3 rounded-lg border border-gray-200 p-2"
+                                >
+                                    <img
+                                        :src="slide"
+                                        alt="Slide image"
+                                        class="h-14 w-20 rounded-md border border-gray-200 object-cover"
+                                    />
+                                    <div class="flex-1">
+                                        <p class="truncate text-xs text-gray-600">{{ slide }}</p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                        @click="form.transform_slides.splice(index, 1)"
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- New uploads -->
+                            <div class="mt-3 space-y-2">
+                                <p class="text-xs font-medium text-gray-700">Upload up to 3 additional images</p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                    @change="(e) => { const f = e.target?.files?.[0]; form.transform_slide_1_file = f || null; }"
+                                />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                    @change="(e) => { const f = e.target?.files?.[0]; form.transform_slide_2_file = f || null; }"
+                                />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                    @change="(e) => { const f = e.target?.files?.[0]; form.transform_slide_3_file = f || null; }"
+                                />
+                                <p class="mt-1 text-xs text-gray-500">JPG, PNG, WEBP, max 4MB each.</p>
+                            </div>
+                        </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Title</label>
                             <input v-model="form.transform_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />

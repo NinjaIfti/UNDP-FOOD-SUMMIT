@@ -20,6 +20,11 @@ const form = useForm({
     hero_title: props.settings?.hero_title ?? 'Call for Submissions',
     hero_subtitle: props.settings?.hero_subtitle ?? 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.',
     hero_intro: props.settings?.hero_intro ?? 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
+    hero_image_file: null,
+    hero_slides: props.settings?.hero_slides ?? [],
+    hero_slide_1_file: null,
+    hero_slide_2_file: null,
+    hero_slide_3_file: null,
     categories_section_title: props.settings?.categories_section_title ?? 'Submission Categories',
     categories_section_subtitle: props.settings?.categories_section_subtitle ?? 'Applicants may submit one or more proposals under the following categories:',
     categories: (Array.isArray(props.settings?.categories) && props.settings.categories.length > 0 ? props.settings.categories : defaultCategories).map(c => ({
@@ -55,7 +60,25 @@ function removeCtaCard(index) {
 }
 
 function submit() {
-    form.post(route('admin.get-involved.update'), { preserveScroll: true });
+    const data = { ...form.data() };
+
+    if (form.hero_image_file) {
+        data.hero_image = form.hero_image_file;
+    }
+    if (form.hero_slide_1_file) {
+        data.hero_slide_1_file = form.hero_slide_1_file;
+    }
+    if (form.hero_slide_2_file) {
+        data.hero_slide_2_file = form.hero_slide_2_file;
+    }
+    if (form.hero_slide_3_file) {
+        data.hero_slide_3_file = form.hero_slide_3_file;
+    }
+
+    form.transform(() => data).post(route('admin.get-involved.update'), {
+        preserveScroll: true,
+        forceFormData: true,
+    });
 }
 </script>
 
@@ -81,6 +104,85 @@ function submit() {
                 <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Hero Section</h3>
                     <div class="space-y-4">
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                            <h4 class="mb-3 font-title text-base font-bold text-primary-1">Hero image & slider</h4>
+                            <div class="space-y-4">
+                                <div class="grid items-center gap-4 sm:grid-cols-[auto,1fr]">
+                                    <div>
+                                        <p class="mb-2 font-body text-xs font-medium text-ink">Current image</p>
+                                        <img
+                                            :src="props.settings?.hero_image || '/brand/img34.jpg'"
+                                            alt="Current Get Involved hero image"
+                                            class="h-24 w-40 rounded-lg border border-gray-200 object-cover"
+                                        />
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block font-body text-sm font-medium text-ink">Upload main hero image</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.hero_image_file = f || null; }"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                        />
+                                        <p class="mt-1 text-xs text-gray-500">JPG, PNG, WEBP, max 4MB.</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block font-body text-sm font-medium text-ink">Additional slider images (optional)</label>
+                                    <p class="mt-1 text-xs text-gray-500">If more than one image exists (main + extras), the hero will fade between them.</p>
+
+                                    <div v-if="form.hero_slides && form.hero_slides.length" class="mt-3 space-y-2">
+                                        <p class="text-xs font-medium text-gray-700">Current additional slides</p>
+                                        <div
+                                            v-for="(slide, index) in form.hero_slides"
+                                            :key="slide + index"
+                                            class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-2"
+                                        >
+                                            <img
+                                                :src="slide"
+                                                alt="Slide image"
+                                                class="h-14 w-20 rounded-md border border-gray-200 object-cover"
+                                            />
+                                            <div class="flex-1">
+                                                <p class="truncate text-xs text-gray-600">{{ slide }}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                                @click="form.hero_slides.splice(index, 1)"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 space-y-2">
+                                        <p class="text-xs font-medium text-gray-700">Upload up to 3 additional images</p>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.hero_slide_1_file = f || null; }"
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.hero_slide_2_file = f || null; }"
+                                        />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                            @change="(e) => { const f = e.target?.files?.[0]; form.hero_slide_3_file = f || null; }"
+                                        />
+                                        <p class="mt-1 text-xs text-gray-500">JPG, PNG, WEBP, max 4MB each.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Title</label>
                             <input v-model="form.hero_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />

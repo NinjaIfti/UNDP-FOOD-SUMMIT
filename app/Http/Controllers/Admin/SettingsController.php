@@ -23,6 +23,8 @@ class SettingsController extends Controller
         $validated = $request->validate([
             'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'logo_secondary' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+            'logo_third' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+            'logo_fourth' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'favicon' => 'nullable|file|mimes:png,jpg,jpeg,ico,svg|max:2048',
             'newsletter_text' => 'nullable|string',
             'contact_email' => 'nullable|string',
@@ -36,6 +38,8 @@ class SettingsController extends Controller
             'footer_support_text' => 'nullable|string',
             'delete_logo' => 'nullable|boolean',
             'delete_logo_secondary' => 'nullable|boolean',
+            'delete_logo_third' => 'nullable|boolean',
+            'delete_logo_fourth' => 'nullable|boolean',
             'delete_favicon' => 'nullable|boolean',
         ]);
 
@@ -81,6 +85,46 @@ class SettingsController extends Controller
             unset($validated['logo_secondary']);
         }
 
+        if ($request->hasFile('logo_third')) {
+            if (!empty($currentSettings['logo_third']) && str_starts_with($currentSettings['logo_third'], '/') && file_exists(public_path($currentSettings['logo_third']))) {
+                @unlink(public_path($currentSettings['logo_third']));
+            }
+            $file = $request->file('logo_third');
+            $filename = 'logo_third_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand'))) {
+                mkdir(public_path('brand'), 0755, true);
+            }
+            $file->move(public_path('brand'), $filename);
+            $validated['logo_third'] = '/brand/' . $filename;
+        } elseif ($request->input('delete_logo_third')) {
+            if (!empty($currentSettings['logo_third']) && str_starts_with($currentSettings['logo_third'], '/') && file_exists(public_path($currentSettings['logo_third']))) {
+                @unlink(public_path($currentSettings['logo_third']));
+            }
+            $validated['logo_third'] = '';
+        } else {
+            unset($validated['logo_third']);
+        }
+
+        if ($request->hasFile('logo_fourth')) {
+            if (!empty($currentSettings['logo_fourth']) && str_starts_with($currentSettings['logo_fourth'], '/') && file_exists(public_path($currentSettings['logo_fourth']))) {
+                @unlink(public_path($currentSettings['logo_fourth']));
+            }
+            $file = $request->file('logo_fourth');
+            $filename = 'logo_fourth_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand'))) {
+                mkdir(public_path('brand'), 0755, true);
+            }
+            $file->move(public_path('brand'), $filename);
+            $validated['logo_fourth'] = '/brand/' . $filename;
+        } elseif ($request->input('delete_logo_fourth')) {
+            if (!empty($currentSettings['logo_fourth']) && str_starts_with($currentSettings['logo_fourth'], '/') && file_exists(public_path($currentSettings['logo_fourth']))) {
+                @unlink(public_path($currentSettings['logo_fourth']));
+            }
+            $validated['logo_fourth'] = '';
+        } else {
+            unset($validated['logo_fourth']);
+        }
+
         if ($request->hasFile('favicon')) {
             if (!empty($currentSettings['favicon']) && str_starts_with($currentSettings['favicon'], '/') && file_exists(public_path($currentSettings['favicon']))) {
                 @unlink(public_path($currentSettings['favicon']));
@@ -101,7 +145,13 @@ class SettingsController extends Controller
             unset($validated['favicon']);
         }
 
-        unset($validated['delete_logo'], $validated['delete_logo_secondary'], $validated['delete_favicon']);
+        unset(
+            $validated['delete_logo'],
+            $validated['delete_logo_secondary'],
+            $validated['delete_logo_third'],
+            $validated['delete_logo_fourth'],
+            $validated['delete_favicon'],
+        );
 
         $merged = array_merge($currentSettings, $validated);
         $this->saveSettings($merged);
@@ -130,6 +180,8 @@ class SettingsController extends Controller
         return [
             'logo' => '/brand/logo2.png',
             'logo_secondary' => '/brand/govt.png',
+            'logo_third' => '',
+            'logo_fourth' => '',
             'favicon' => '',
             'newsletter_text' => 'Subscribe to our newsletter',
             'contact_email' => 'info@foodsummit2026.org',

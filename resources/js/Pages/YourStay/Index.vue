@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
@@ -28,29 +28,102 @@ const filteredHotels = computed(() => {
     }
     return hotels.value.filter(hotel => hotel.category === accommodationFilter.value);
 });
+
+const heroTitle = computed(() => {
+    if (props.settings?.yourstay_hero_title) {
+        return props.settings.yourstay_hero_title;
+    }
+    return props.settings?.participation_costs_title || 'WHAT ARE THE PARTICIPATION COSTS?';
+});
+
+const heroSubtitle = computed(() => {
+    if (props.settings?.yourstay_hero_subtitle) {
+        return props.settings.yourstay_hero_subtitle;
+    }
+    return (
+        props.settings?.participation_costs_description ||
+        'Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.'
+    );
+});
+
+const heroSlides = computed(() => {
+    const base = props.settings?.yourstay_hero_image || '/brand/img34.jpg';
+    const extras = Array.isArray(props.settings?.yourstay_hero_slides)
+        ? props.settings.yourstay_hero_slides.filter(src => src && typeof src === 'string' && src.trim().length > 0)
+        : [];
+    const all = [base, ...extras];
+    return all.filter((src, index) => all.indexOf(src) === index);
+});
+
+const activeHeroSlide = ref(0);
+
+let heroInterval;
+
+onMounted(() => {
+    heroInterval = setInterval(() => {
+        if (heroSlides.value.length > 1) {
+            activeHeroSlide.value = (activeHeroSlide.value + 1) % heroSlides.value.length;
+        }
+    }, 7000);
+});
+
+onUnmounted(() => {
+    if (heroInterval) {
+        clearInterval(heroInterval);
+    }
+});
 </script>
 
 <template>
-    <Head title="Your Stay in Bhutan" />
-    <EventLayout>
-        <!-- Participation Costs Section -->
-        <section class="bg-[#F4F1EA] py-16 px-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="font-title text-4xl font-bold text-gray-900 mb-4">
-                        {{ settings.participation_costs_title || 'WHAT ARE THE PARTICIPATION COSTS?' }}
-                    </h2>
-                    <div class="max-w-3xl mx-auto space-y-4">
-                        <p class="font-body text-lg text-gray-700 leading-relaxed">
-                            {{ settings.participation_costs_description || 'Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.' }}
-                        </p>
-                        <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-none">
-                            <p class="font-body text-gray-800">
-                                <strong>
-                                    {{ settings.participation_costs_announcement || 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.' }}
-                                </strong>
-                            </p>
+        <Head title="Your Stay in Bhutan" />
+        <EventLayout>
+
+        <!-- Hero header -->
+        <section class="relative bg-[#F4F1EA] py-0">
+            <div class="w-full">
+                <div class="overflow-hidden rounded-none">
+                    <div
+                        class="relative w-full min-h-[35vh] sm:min-h-[40vh] lg:min-h-[45vh]"
+                    >
+                        <div
+                            v-for="(slide, index) in heroSlides"
+                            :key="slide + index"
+                            class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+                            :class="index === activeHeroSlide ? 'opacity-100' : 'opacity-0'"
+                        >
+                            <img
+                                :src="slide"
+                                alt=""
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
                         </div>
+                        <div class="absolute inset-0 bg-black/45" />
+                        <div class="absolute inset-0 flex items-center justify-center px-4 sm:px-8">
+                            <div class="max-w-4xl text-center">
+                                <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
+                                    {{ heroTitle }}
+                                </h1>
+                                <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                    {{ heroSubtitle }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Participation Costs Section -->
+        <section class="bg-[#F4F1EA] py-10 px-6 sm:py-12 lg:py-14">
+            <div class="max-w-6xl mx-auto">
+                <div class="max-w-3xl mx-auto mb-8">
+                    <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-none">
+                        <p class="font-body text-gray-800">
+                            <strong>
+                                {{ settings.participation_costs_announcement || 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.' }}
+                            </strong>
+                        </p>
                     </div>
                 </div>
 
@@ -139,7 +212,7 @@ const filteredHotels = computed(() => {
         </section>
 
         <section class="border-b border-gray-200 bg-[#F4F1EA]">
-            <div class="mx-auto px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto px-4 py-3 sm:py-4 sm:px-6 lg:px-8">
                 <div
                     class="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1 pl-2 pr-8 sm:px-0 lg:justify-center tab-scroll-container"
                 >
@@ -213,7 +286,7 @@ const filteredHotels = computed(() => {
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] py-12 sm:py-16 lg:py-20">
+        <section class="bg-[#F4F1EA] py-10 sm:py-12 lg:py-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div v-show="activeTab === 'field-visits'" class="mx-auto max-w-3xl text-center">
                     <h2 class="font-title text-4xl font-bold text-gray-900 sm:text-5xl">

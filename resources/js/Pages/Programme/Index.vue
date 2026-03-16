@@ -17,6 +17,34 @@ const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024
 
 const sectionTitle = computed(() => props.settings?.transform_title || 'A Transformative Summit Experience');
 
+const transformSlides = computed(() => {
+    const base = props.settings?.transform_image || '/brand/img34.jpg';
+    const extras = Array.isArray(props.settings?.transform_slides)
+        ? props.settings.transform_slides.filter(src => src && typeof src === 'string' && src.trim().length > 0)
+        : [];
+    const all = [base, ...extras];
+    // Remove duplicates while preserving order
+    return all.filter((src, index) => all.indexOf(src) === index);
+});
+
+const activeTransformSlide = ref(0);
+
+let transformInterval;
+
+onMounted(() => {
+    transformInterval = setInterval(() => {
+        if (transformSlides.value.length > 1) {
+            activeTransformSlide.value = (activeTransformSlide.value + 1) % transformSlides.value.length;
+        }
+    }, 7000);
+});
+
+onUnmounted(() => {
+    if (transformInterval) {
+        clearInterval(transformInterval);
+    }
+});
+
 const themesPerView = computed(() => {
     if (windowWidth.value < 640) return 1;
     if (windowWidth.value < 1024) return 2;
@@ -225,17 +253,43 @@ const defaultThemes = [
     <EventLayout>
 
         <!-- ① A Transformative Summit Experience -->
-        <section id="transformative-experience" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="transformative-experience" class="relative scroll-mt-24 bg-[#F4F1EA] py-0">
+            <div class="w-full">
                 <SectionReveal>
-                    <div class="mx-auto max-w-6xl text-center">
-                        <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
-                            {{ sectionTitle }}
-                        </h1>
-                        <p class="mt-8 font-body text-xl font-bold leading-relaxed text-primary-1 sm:text-2xl">
-                            {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
-                        </p>
-                        <p class="mt-6 font-body text-base leading-relaxed text-ink sm:text-lg">
+                    <!-- Full-width image slider with overlayed content -->
+                    <div class="overflow-hidden rounded-none">
+                        <div
+                            class="relative w-full min-h-[35vh] sm:min-h-[40vh] lg:min-h-[45vh]"
+                        >
+                            <div
+                                v-for="(slide, index) in transformSlides"
+                                :key="slide + index"
+                                class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+                                :class="index === activeTransformSlide ? 'opacity-100' : 'opacity-0'"
+                            >
+                                <img
+                                    :src="slide"
+                                    alt=""
+                                    class="h-full w-full object-cover"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <div class="absolute inset-0 bg-black/45" />
+                            <div class="absolute inset-0 flex items-center justify-center px-4 sm:px-8">
+                                <div class="max-w-5xl text-center">
+                                    <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
+                                        {{ sectionTitle }}
+                                    </h1>
+                                    <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                        {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mx-auto max-w-6xl px-4 pb-10 pt-10 text-center sm:px-6 lg:px-8">
+                        <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
                             {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
                         </p>
                         <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
@@ -247,7 +301,7 @@ const defaultThemes = [
                     </div>
 
                     <!-- Global movement feature cards (same content as admin Section 3 cards) -->
-                    <div class="mx-auto mt-12 grid max-w-7xl gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="mx-auto mt-12 grid max-w-7xl gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-6 lg:px-8">
                         <div
                             v-for="(card, index) in globalCards"
                             :key="index"
@@ -306,7 +360,7 @@ const defaultThemes = [
         </section>
 
         <!-- ①a Call for Submissions -->
-        <section id="call-for-submissions" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24">
+        <section id="call-for-submissions" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <!-- Title -->
@@ -357,7 +411,7 @@ const defaultThemes = [
         </section>
 
         <!-- ② Core Themes -->
-        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
+        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-18">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -370,7 +424,7 @@ const defaultThemes = [
                     </div>
 
                     <div
-                        class="relative mt-12 sm:mt-16"
+                        class="relative mt-8 sm:mt-10"
                         @mouseenter="autoSlidePaused = true"
                         @mouseleave="autoSlidePaused = false"
                     >
@@ -449,7 +503,7 @@ const defaultThemes = [
         </section>
 
         <!-- ③ Building a Global Movement -->
-        <section id="global-movement" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24 lg:py-32">
+        <section id="global-movement" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-18">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <!-- Title -->

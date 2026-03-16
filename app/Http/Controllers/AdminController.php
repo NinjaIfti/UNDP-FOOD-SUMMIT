@@ -270,12 +270,17 @@ class AdminController extends Controller
             'summit_intro_text1' => 'nullable|string',
             'summit_intro_text2' => 'nullable|string',
             'coorganizers_title' => 'nullable|string',
+            'coorganizers_subtitle' => 'nullable|string',
             'govt_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'undp_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'cofsa_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'coorganizer_logo_4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'coorganizer_logo_5' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'delete_govt_logo' => 'nullable|boolean',
             'delete_undp_logo' => 'nullable|boolean',
             'delete_cofsa_logo' => 'nullable|boolean',
+            'delete_coorganizer_logo_4' => 'nullable|boolean',
+            'delete_coorganizer_logo_5' => 'nullable|boolean',
             'video1_title' => 'nullable|string',
             'video1_url' => 'nullable|string',
             'video2_title' => 'nullable|string',
@@ -353,6 +358,26 @@ class AdminController extends Controller
             $validated['cofsa_logo'] = '/brand/' . $filename;
         }
 
+        if ($request->hasFile('coorganizer_logo_4')) {
+            if (isset($currentSettings['coorganizer_logo_4']) && $currentSettings['coorganizer_logo_4'] && file_exists(public_path($currentSettings['coorganizer_logo_4']))) {
+                unlink(public_path($currentSettings['coorganizer_logo_4']));
+            }
+            $file = $request->file('coorganizer_logo_4');
+            $filename = 'coorganizer4_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('brand'), $filename);
+            $validated['coorganizer_logo_4'] = '/brand/' . $filename;
+        }
+
+        if ($request->hasFile('coorganizer_logo_5')) {
+            if (isset($currentSettings['coorganizer_logo_5']) && $currentSettings['coorganizer_logo_5'] && file_exists(public_path($currentSettings['coorganizer_logo_5']))) {
+                unlink(public_path($currentSettings['coorganizer_logo_5']));
+            }
+            $file = $request->file('coorganizer_logo_5');
+            $filename = 'coorganizer5_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('brand'), $filename);
+            $validated['coorganizer_logo_5'] = '/brand/' . $filename;
+        }
+
         // Handle logo deletions
         if ($request->input('delete_govt_logo') && isset($currentSettings['govt_logo'])) {
             if (file_exists(public_path($currentSettings['govt_logo']))) {
@@ -375,8 +400,28 @@ class AdminController extends Controller
             $validated['cofsa_logo'] = '/brand/cofsa.png';
         }
 
+        if ($request->input('delete_coorganizer_logo_4') && isset($currentSettings['coorganizer_logo_4'])) {
+            if ($currentSettings['coorganizer_logo_4'] && file_exists(public_path($currentSettings['coorganizer_logo_4']))) {
+                unlink(public_path($currentSettings['coorganizer_logo_4']));
+            }
+            $validated['coorganizer_logo_4'] = '';
+        }
+
+        if ($request->input('delete_coorganizer_logo_5') && isset($currentSettings['coorganizer_logo_5'])) {
+            if ($currentSettings['coorganizer_logo_5'] && file_exists(public_path($currentSettings['coorganizer_logo_5']))) {
+                unlink(public_path($currentSettings['coorganizer_logo_5']));
+            }
+            $validated['coorganizer_logo_5'] = '';
+        }
+
         // Remove delete flags from validated data
-        unset($validated['delete_govt_logo'], $validated['delete_undp_logo'], $validated['delete_cofsa_logo']);
+        unset(
+            $validated['delete_govt_logo'],
+            $validated['delete_undp_logo'],
+            $validated['delete_cofsa_logo'],
+            $validated['delete_coorganizer_logo_4'],
+            $validated['delete_coorganizer_logo_5'],
+        );
 
         // Conscious Food section background image (store path string only in JSON)
         $consciousFoodImage = $currentSettings['conscious_food_image'] ?? '/brand/img41.jpg';
@@ -526,9 +571,12 @@ class AdminController extends Controller
             'summit_intro_text1' => 'This landmark global gathering aims to facilitate high-level dialogue, knowledge exchange, and partnership-building around advancing conscious, inclusive, and sustainable food systems. Key themes include food consciousness, agroecology, and the role of spirituality and culture in supporting nature-friendly agriculture.',
             'summit_intro_text2' => 'The Summit will convene 350–500 national and global changemakers—governments, indigenous communities, farmers, youth leaders, civil society, the private sector, and academia—prioritizing gender balance, inclusion, and meaningful participation of underrepresented voices.',
             'coorganizers_title' => 'Co-organizers',
+            'coorganizers_subtitle' => 'Our work and impact would not be possible without the dedicated financial support of numerous individuals, foundations and companies who are committed to its success.',
             'govt_logo' => '/brand/govt.png',
             'undp_logo' => '/brand/undp.png',
             'cofsa_logo' => '/brand/cofsa.png',
+            'coorganizer_logo_4' => '',
+            'coorganizer_logo_5' => '',
             'video1_title' => 'Summit Video',
             'video1_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
             'video2_title' => 'HPM Video',
@@ -629,6 +677,12 @@ class AdminController extends Controller
         ];
     }
 
+    public function speakersPublic()
+    {
+        $settings = $this->getHomepageSettings();
+        return Inertia::render('Speakers/Index', ['settings' => $settings]);
+    }
+
     public function faqPublic()
     {
         $settings = $this->getFaqSettings();
@@ -684,6 +738,9 @@ class AdminController extends Controller
             'hero_title' => 'nullable|string',
             'hero_subtitle' => 'nullable|string',
             'hero_intro' => 'nullable|string',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'hero_slides' => 'nullable|array',
+            'hero_slides.*' => 'nullable|string',
             'categories_section_title' => 'nullable|string',
             'categories_section_subtitle' => 'nullable|string',
             'categories' => 'nullable|array',
@@ -700,7 +757,51 @@ class AdminController extends Controller
             'cta_cards.*.style' => 'nullable|string|in:primary,secondary',
         ]);
 
-        $merged = array_merge($this->getGetInvolvedSettings(), $validated);
+        $current = $this->getGetInvolvedSettings();
+
+        // Hero main image
+        $heroImage = $current['hero_image'] ?? '/brand/img34.jpg';
+        if ($request->hasFile('hero_image')) {
+            if (!empty($heroImage) && str_starts_with($heroImage, '/') && file_exists(public_path($heroImage))) {
+                @unlink(public_path($heroImage));
+            }
+            $file = $request->file('hero_image');
+            $filename = 'getinvolved_hero_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/getinvolved'))) {
+                mkdir(public_path('brand/getinvolved'), 0755, true);
+            }
+            $file->move(public_path('brand/getinvolved'), $filename);
+            $heroImage = '/brand/getinvolved/' . $filename;
+        }
+
+        // Hero slides
+        $existingSlides = $validated['hero_slides'] ?? $current['hero_slides'] ?? [];
+        if (!is_array($existingSlides)) {
+            $existingSlides = [];
+        }
+        $heroSlides = array_values(array_filter($existingSlides, static fn ($value) => is_string($value) && $value !== ''));
+
+        foreach ([1, 2, 3] as $i) {
+            $key = 'hero_slide_' . $i . '_file';
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                $filename = 'getinvolved_hero_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
+                if (!is_dir(public_path('brand/getinvolved'))) {
+                    mkdir(public_path('brand/getinvolved'), 0755, true);
+                }
+                $file->move(public_path('brand/getinvolved'), $filename);
+                $heroSlides[] = '/brand/getinvolved/' . $filename;
+            }
+        }
+
+        $merged = array_merge(
+            $current,
+            $validated,
+            [
+                'hero_image' => $heroImage,
+                'hero_slides' => array_values($heroSlides),
+            ]
+        );
         Storage::put('admin/get-involved-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
 
         return back()->with('success', 'Get Involved page updated successfully.');
@@ -716,6 +817,8 @@ class AdminController extends Controller
             'hero_title' => 'Call for Submissions',
             'hero_subtitle' => 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.',
             'hero_intro' => 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
+            'hero_image' => '/brand/img34.jpg',
+            'hero_slides' => [],
             'categories_section_title' => 'Submission Categories',
             'categories_section_subtitle' => 'Applicants may submit one or more proposals under the following categories:',
             'categories' => [
@@ -796,6 +899,9 @@ class AdminController extends Controller
             'global_p4' => 'nullable|string',
             'global_quote' => 'nullable|string',
             'global_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'transform_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'transform_slides' => 'nullable|array',
+            'transform_slides.*' => 'nullable|string',
 
             // Section 3 – cards
             'global_cards' => 'nullable|array',
@@ -823,6 +929,40 @@ class AdminController extends Controller
         $currentSettings = $this->getProgrammeSettings();
         $themes = $validated['themes'] ?? $currentSettings['themes'] ?? [];
         $globalCards = $validated['global_cards'] ?? $currentSettings['global_cards'] ?? [];
+
+        // Section 1 header image
+        $transformImage = $currentSettings['transform_image'] ?? '/brand/img34.jpg';
+        if ($request->hasFile('transform_image')) {
+            if (!empty($transformImage) && str_starts_with($transformImage, '/') && file_exists(public_path($transformImage))) {
+                @unlink(public_path($transformImage));
+            }
+            $file = $request->file('transform_image');
+            $filename = 'programme_transform_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/experience'))) {
+                mkdir(public_path('brand/experience'), 0755, true);
+            }
+            $file->move(public_path('brand/experience'), $filename);
+            $transformImage = '/brand/experience/' . $filename;
+        }
+
+        $existingSlides = $validated['transform_slides'] ?? $currentSettings['transform_slides'] ?? [];
+        if (!is_array($existingSlides)) {
+            $existingSlides = [];
+        }
+        $transformSlides = array_values(array_filter($existingSlides, static fn ($value) => is_string($value) && $value !== ''));
+
+        foreach ([1, 2, 3] as $i) {
+            $key = 'transform_slide_' . $i . '_file';
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                $filename = 'programme_transform_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
+                if (!is_dir(public_path('brand/experience'))) {
+                    mkdir(public_path('brand/experience'), 0755, true);
+                }
+                $file->move(public_path('brand/experience'), $filename);
+                $transformSlides[] = '/brand/experience/' . $filename;
+            }
+        }
 
         foreach ($themes as $index => &$theme) {
             if (!isset($theme['image']) && isset($currentSettings['themes'][$index]['image'])) {
@@ -887,6 +1027,8 @@ class AdminController extends Controller
                 'transform_p2' => $validated['transform_p2'] ?? ($currentSettings['transform_p2'] ?? null),
                 'transform_p3' => $validated['transform_p3'] ?? ($currentSettings['transform_p3'] ?? null),
                 'transform_p4' => $validated['transform_p4'] ?? ($currentSettings['transform_p4'] ?? null),
+                'transform_image' => $transformImage,
+                'transform_slides' => array_values($transformSlides),
 
                 // Section 1a
                 'cfs_title' => $validated['cfs_title'] ?? ($currentSettings['cfs_title'] ?? null),
@@ -914,8 +1056,6 @@ class AdminController extends Controller
             ]
         );
 
-        unset($merged['transform_image']);
-
         Storage::put('admin/programme-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
 
         return back()->with('success', 'Programme & Experience updated successfully.');
@@ -934,6 +1074,8 @@ class AdminController extends Controller
             'transform_p2' => 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.',
             'transform_p3' => 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
             'transform_p4' => 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
+            'transform_image' => '/brand/img34.jpg',
+            'transform_slides' => ['/brand/img34.jpg'],
 
             // Section 1a – Call for Submissions
             'cfs_title' => 'Call for Submissions',
@@ -1002,6 +1144,13 @@ class AdminController extends Controller
         $allData = $request->all();
         
         $validationRules = [
+            // Hero header
+            'yourstay_hero_title' => 'nullable|string',
+            'yourstay_hero_subtitle' => 'nullable|string',
+            'yourstay_hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'yourstay_hero_slides' => 'nullable|array',
+            'yourstay_hero_slides.*' => 'nullable|string',
+
             'participation_costs_title' => 'nullable|string',
             'participation_costs_description' => 'nullable|string',
             'participation_costs_announcement' => 'nullable|string',
@@ -1087,7 +1236,52 @@ class AdminController extends Controller
 
         $validated = $request->validate($validationRules);
         $currentSettings = $this->getYourStaySettings();
-        $merged = array_merge($currentSettings, $validated);
+
+        // Hero image handling
+        $heroImage = $currentSettings['yourstay_hero_image'] ?? '/brand/img34.jpg';
+        if ($request->hasFile('yourstay_hero_image')) {
+            if (!empty($heroImage) && str_starts_with($heroImage, '/') && file_exists(public_path($heroImage))) {
+                @unlink(public_path($heroImage));
+            }
+            $file = $request->file('yourstay_hero_image');
+            $filename = 'yourstay_hero_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand/yourstay'))) {
+                mkdir(public_path('brand/yourstay'), 0755, true);
+            }
+            $file->move(public_path('brand/yourstay'), $filename);
+            $heroImage = '/brand/yourstay/' . $filename;
+        }
+
+        // Hero slides handling: existing string paths + any new uploads
+        $existingSlides = $validated['yourstay_hero_slides'] ?? $currentSettings['yourstay_hero_slides'] ?? [];
+        if (!is_array($existingSlides)) {
+            $existingSlides = [];
+        }
+        $heroSlides = array_values(array_filter($existingSlides, static fn ($value) => is_string($value) && $value !== ''));
+
+        foreach ([1, 2, 3] as $i) {
+            $key = 'yourstay_hero_slide_' . $i . '_file';
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                $filename = 'yourstay_hero_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
+                if (!is_dir(public_path('brand/yourstay'))) {
+                    mkdir(public_path('brand/yourstay'), 0755, true);
+                }
+                $file->move(public_path('brand/yourstay'), $filename);
+                $heroSlides[] = '/brand/yourstay/' . $filename;
+            }
+        }
+
+        $merged = array_merge(
+            $currentSettings,
+            $validated,
+            [
+                'yourstay_hero_title' => $validated['yourstay_hero_title'] ?? ($currentSettings['yourstay_hero_title'] ?? null),
+                'yourstay_hero_subtitle' => $validated['yourstay_hero_subtitle'] ?? ($currentSettings['yourstay_hero_subtitle'] ?? null),
+                'yourstay_hero_image' => $heroImage,
+                'yourstay_hero_slides' => array_values($heroSlides),
+            ]
+        );
 
         Storage::put('admin/yourstay-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
 
@@ -1106,6 +1300,11 @@ class AdminController extends Controller
     private function getDefaultYourStaySettings()
     {
         return [
+            'yourstay_hero_title' => 'Your Stay in Bhutan',
+            'yourstay_hero_subtitle' => 'Practical guidance for travel, visas, accommodation, and extending your visit.',
+            'yourstay_hero_image' => '/brand/img34.jpg',
+            'yourstay_hero_slides' => [],
+
             'participation_costs_title' => 'WHAT ARE THE PARTICIPATION COSTS?',
             'participation_costs_description' => 'Participation in the Conscious Food Systems Summit requires an entrance ticket, which helps cover the essential costs of organizing and delivering the event, including venue arrangements, meals, local logistics, and administrative coordination.',
             'participation_costs_announcement' => 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.',

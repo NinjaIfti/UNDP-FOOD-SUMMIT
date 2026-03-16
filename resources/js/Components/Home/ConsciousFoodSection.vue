@@ -23,10 +23,10 @@ defineProps({
                     <h2 class="mx-auto font-title text-2xl font-bold leading-tight text-white sm:text-3xl lg:text-4xl" style="text-wrap: balance; max-width: 100%;">
                         {{ settings.conscious_food_title }}
                     </h2>
-                    <p class="mt-6 font-body text-lg leading-relaxed text-white/90">
+                    <p class="mt-6 font-body text-xl font-semibold leading-relaxed text-white">
                         {{ settings.conscious_food_description }}
                     </p>
-                    <p class="mt-4 font-body text-base leading-relaxed text-white/80">
+                    <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white/90">
                         {{ settings.conscious_food_cofsa_text }}
                     </p>
                 </div>

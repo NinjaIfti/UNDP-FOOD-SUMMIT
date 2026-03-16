@@ -20,6 +20,16 @@ const logoSecondaryForm = useForm({
     delete_logo_secondary: false,
 });
 
+const logoThirdForm = useForm({
+    logo_third: null,
+    delete_logo_third: false,
+});
+
+const logoFourthForm = useForm({
+    logo_fourth: null,
+    delete_logo_fourth: false,
+});
+
 const faviconForm = useForm({
     favicon: null,
     delete_favicon: false,
@@ -40,6 +50,8 @@ const footerForm = useForm({
 
 const logoPreview = ref(props.settings.logo || '');
 const logoSecondaryPreview = ref(props.settings.logo_secondary || '');
+const logoThirdPreview = ref(props.settings.logo_third || '');
+const logoFourthPreview = ref(props.settings.logo_fourth || '');
 const faviconPreview = ref(props.settings.favicon || '');
 
 watch(() => props.settings.logo, (newLogo) => {
@@ -49,6 +61,14 @@ watch(() => props.settings.logo, (newLogo) => {
 watch(() => props.settings.logo_secondary, (v) => {
     if (v) logoSecondaryPreview.value = v;
     else if (!logoSecondaryForm.logo_secondary) logoSecondaryPreview.value = '';
+});
+watch(() => props.settings.logo_third, (v) => {
+    if (v) logoThirdPreview.value = v;
+    else if (!logoThirdForm.logo_third) logoThirdPreview.value = '';
+});
+watch(() => props.settings.logo_fourth, (v) => {
+    if (v) logoFourthPreview.value = v;
+    else if (!logoFourthForm.logo_fourth) logoFourthPreview.value = '';
 });
 watch(() => props.settings.favicon, (newFavicon) => {
     if (newFavicon) faviconPreview.value = newFavicon;
@@ -73,6 +93,24 @@ const handleLogoSecondaryUpload = (e) => {
         reader.readAsDataURL(file);
     }
 };
+const handleLogoThirdUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        logoThirdForm.logo_third = file;
+        const reader = new FileReader();
+        reader.onloadend = () => { logoThirdPreview.value = reader.result; };
+        reader.readAsDataURL(file);
+    }
+};
+const handleLogoFourthUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        logoFourthForm.logo_fourth = file;
+        const reader = new FileReader();
+        reader.onloadend = () => { logoFourthPreview.value = reader.result; };
+        reader.readAsDataURL(file);
+    }
+};
 const handleFaviconUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -92,6 +130,16 @@ const removeLogoSecondary = () => {
     logoSecondaryForm.logo_secondary = null;
     logoSecondaryForm.delete_logo_secondary = true;
     logoSecondaryPreview.value = '';
+};
+const removeLogoThird = () => {
+    logoThirdForm.logo_third = null;
+    logoThirdForm.delete_logo_third = true;
+    logoThirdPreview.value = '';
+};
+const removeLogoFourth = () => {
+    logoFourthForm.logo_fourth = null;
+    logoFourthForm.delete_logo_fourth = true;
+    logoFourthPreview.value = '';
 };
 const removeFavicon = () => {
     faviconForm.favicon = null;
@@ -130,6 +178,40 @@ const saveLogoSecondary = () => {
             }
             logoSecondaryForm.reset();
             logoSecondaryForm.delete_logo_secondary = false;
+        },
+    });
+};
+const saveLogoThird = () => {
+    if (!logoThirdForm.logo_third && !logoThirdForm.delete_logo_third) return;
+
+    logoThirdForm.post(route('admin.settings.update-general'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.logo_third) {
+                logoThirdPreview.value = page.props.settings.logo_third;
+            } else {
+                logoThirdPreview.value = '';
+            }
+            logoThirdForm.reset();
+            logoThirdForm.delete_logo_third = false;
+        },
+    });
+};
+const saveLogoFourth = () => {
+    if (!logoFourthForm.logo_fourth && !logoFourthForm.delete_logo_fourth) return;
+
+    logoFourthForm.post(route('admin.settings.update-general'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.logo_fourth) {
+                logoFourthPreview.value = page.props.settings.logo_fourth;
+            } else {
+                logoFourthPreview.value = '';
+            }
+            logoFourthForm.reset();
+            logoFourthForm.delete_logo_fourth = false;
         },
     });
 };
@@ -184,6 +266,12 @@ const saveFooter = (fields) => {
             </div>
             <div v-if="logoSecondaryForm.errors.logo_secondary" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
                 Logo 2 error: {{ logoSecondaryForm.errors.logo_secondary }}
+            </div>
+            <div v-if="logoThirdForm.errors.logo_third" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Logo 3 error: {{ logoThirdForm.errors.logo_third }}
+            </div>
+            <div v-if="logoFourthForm.errors.logo_fourth" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Logo 4 error: {{ logoFourthForm.errors.logo_fourth }}
             </div>
 
             <!-- General Settings -->
@@ -276,6 +364,86 @@ const saveFooter = (fields) => {
                                     </label>
                                     <button v-if="logoSecondaryPreview" @click="removeLogoSecondary" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Remove</button>
                                     <button v-if="logoSecondaryForm.logo_secondary || logoSecondaryForm.delete_logo_secondary" @click="saveLogoSecondary" :disabled="logoSecondaryForm.processing" class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] disabled:opacity-50">{{ logoSecondaryForm.processing ? 'Saving...' : 'Save Logo 2' }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navbar Logo 3 -->
+                    <div class="border border-border rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#4a7c59]/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-[#4a7c59]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-medium text-gray-900 mb-1">Navbar Logo 3</h3>
+                                <p class="text-sm text-gray-500 mb-3">
+                                    Optional third logo displayed in the navbar (same size as existing logos)
+                                </p>
+                                <div v-if="logoThirdPreview" class="mb-3 p-3 border border-gray-200 rounded-lg bg-white inline-block">
+                                    <img :src="logoThirdPreview" alt="Logo 3 preview" class="h-12 max-w-xs object-contain" />
+                                </div>
+                                <div class="flex gap-2">
+                                    <label class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        Upload Logo 3
+                                        <input type="file" accept="image/png,image/svg+xml,image/jpeg" @change="handleLogoThirdUpload" class="hidden" />
+                                    </label>
+                                    <button v-if="logoThirdPreview" @click="removeLogoThird" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">
+                                        Remove
+                                    </button>
+                                    <button
+                                        v-if="logoThirdForm.logo_third || logoThirdForm.delete_logo_third"
+                                        @click="saveLogoThird"
+                                        :disabled="logoThirdForm.processing"
+                                        class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] disabled:opacity-50"
+                                    >
+                                        {{ logoThirdForm.processing ? 'Saving...' : 'Save Logo 3' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navbar Logo 4 -->
+                    <div class="border border-border rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#4a7c59]/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-[#4a7c59]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-medium text-gray-900 mb-1">Navbar Logo 4</h3>
+                                <p class="text-sm text-gray-500 mb-3">
+                                    Optional fourth logo displayed in the navbar (same size as existing logos)
+                                </p>
+                                <div v-if="logoFourthPreview" class="mb-3 p-3 border border-gray-200 rounded-lg bg-white inline-block">
+                                    <img :src="logoFourthPreview" alt="Logo 4 preview" class="h-12 max-w-xs object-contain" />
+                                </div>
+                                <div class="flex gap-2">
+                                    <label class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        Upload Logo 4
+                                        <input type="file" accept="image/png,image/svg+xml,image/jpeg" @change="handleLogoFourthUpload" class="hidden" />
+                                    </label>
+                                    <button v-if="logoFourthPreview" @click="removeLogoFourth" class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">
+                                        Remove
+                                    </button>
+                                    <button
+                                        v-if="logoFourthForm.logo_fourth || logoFourthForm.delete_logo_fourth"
+                                        @click="saveLogoFourth"
+                                        :disabled="logoFourthForm.processing"
+                                        class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] disabled:opacity-50"
+                                    >
+                                        {{ logoFourthForm.processing ? 'Saving...' : 'Save Logo 4' }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
