@@ -40,6 +40,7 @@ const form = useForm({
     field_visits_info: props.settings.field_visits_info || '',
     field_visits_pending: props.settings.field_visits_pending || '',
     field_visits_expectations: props.settings.field_visits_expectations || [],
+    air_travel_intro: props.settings.air_travel_intro || '',
     air_travel_title: props.settings.air_travel_title || '',
     air_travel_guidance_title: props.settings.air_travel_guidance_title || '',
     air_travel_guidance_points: props.settings.air_travel_guidance_points || [],
@@ -438,6 +439,10 @@ const removeObjectItem = (arrayName, index) => {
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Air Travel</h3>
                     
                     <div class="space-y-4">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Intro Text</label>
+                            <textarea v-model="form.air_travel_intro" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Title</label>
                             <input v-model="form.air_travel_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
