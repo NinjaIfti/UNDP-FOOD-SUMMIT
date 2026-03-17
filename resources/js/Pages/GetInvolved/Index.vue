@@ -61,16 +61,28 @@ const ctaCards = computed(() => {
         { href: 'https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf', title: 'Full Submission Guidelines', subtitle: 'View details, eligibility criteria and guidelines', style: 'secondary' },
     ];
 });
+
+const spreadTitle = computed(() => props.settings?.spread_title || 'Spread the word!');
+const spreadBody = computed(() => props.settings?.spread_body || 'PENDING: Communication Toolkit will be provided by COFSA soon.');
+const spreadPending = computed(() => props.settings?.spread_pending || '');
+
+const partnersTitle = computed(() => props.settings?.partners_title || 'Together with our partners');
+const partnersBody = computed(() => props.settings?.partners_body || 'This Summit is made possible through strong partnerships');
+const partnersPending = computed(() => props.settings?.partners_pending || 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS');
+const partnerLogos = computed(() => (Array.isArray(props.settings?.partners_logos) ? props.settings.partners_logos.filter(v => v && v.trim()) : []));
+
+const financialTitle = computed(() => props.settings?.financial_title || 'Financial support to expand Summit impact');
+const financialBody = computed(() => props.settings?.financial_body || '');
 </script>
 
 <template>
     <Head title="Get Involved" />
     <EventLayout>
-        <!-- Hero header with image & text inside -->
+        <!-- 1) Call for Submissions -->
         <section class="relative bg-[#F4F1EA] py-0">
             <div class="w-full">
                 <div class="overflow-hidden rounded-none">
-                    <div class="relative w-full min-h-[35vh] sm:min-h-[40vh] lg:min-h-[45vh]">
+                    <div class="relative w-full min-h-[28vh] sm:min-h-[32vh] lg:min-h-[36vh]">
                         <div
                             v-for="(slide, index) in heroSlides"
                             :key="slide + index"
@@ -90,7 +102,7 @@ const ctaCards = computed(() => {
                                 <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
                                     {{ heroTitle }}
                                 </h1>
-                                <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                <p class="mx-auto mt-4 text-center font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
                                     {{ heroSubtitle }}
                                 </p>
                             </div>
@@ -100,43 +112,115 @@ const ctaCards = computed(() => {
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-14 lg:pb-16">
+        <!-- Two-up cards: Call for submissions + Communication toolkit -->
+        <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl rounded-none bg-white p-6 shadow-sm sm:p-8">
-                        <p class="font-body text-base leading-relaxed text-copy sm:text-lg">{{ heroIntro }}</p>
+                    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
+                        <!-- Call for submissions card -->
+                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
+                                {{ heroTitle }}
+                            </h2>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
+                                {{ heroIntro }}
+                            </p>
+
+                            <div class="mt-6 border-t border-primary-1/10 pt-6">
+                                <h3 class="font-title text-lg font-bold text-primary-1">
+                                    {{ categoriesSectionTitle }}
+                                </h3>
+                                <p class="mt-2 font-body text-sm leading-relaxed text-copy sm:text-base">
+                                    {{ categoriesSectionSubtitle }}
+                                </p>
+
+                                <div class="mt-4 space-y-3">
+                                    <div
+                                        v-for="(category, index) in submissionCategories"
+                                        :key="index"
+                                        class="rounded-none border border-primary-2/20 bg-primary-1/5 p-4"
+                                    >
+                                        <h4 class="font-title text-base font-bold text-primary-1">
+                                            {{ category.title }}
+                                        </h4>
+                                        <p class="mt-1 font-body text-sm leading-relaxed text-copy">
+                                            {{ category.description }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex flex-col gap-3">
+                                <a
+                                    v-for="(card, index) in ctaCards"
+                                    :key="index"
+                                    :href="card.href"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="group flex items-center justify-between rounded-none px-5 py-4 shadow-sm transition sm:px-6"
+                                    :class="card.style === 'primary'
+                                        ? 'bg-accent-1 text-white hover:bg-accent-1/90 hover:shadow-md'
+                                        : 'border-2 border-primary-1 bg-white text-primary-1 hover:bg-primary-1/5 hover:shadow-md'"
+                                >
+                                    <div class="text-left">
+                                        <p class="font-body text-base font-bold sm:text-lg">
+                                            {{ card.title }}
+                                        </p>
+                                        <p
+                                            class="mt-1 font-body text-sm"
+                                            :class="card.style === 'primary' ? 'text-white/90' : 'text-copy'"
+                                        >
+                                            {{ card.subtitle }}
+                                        </p>
+                                    </div>
+                                    <svg class="h-5 w-5 shrink-0 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Communication toolkit card -->
+                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
+                                {{ spreadTitle }}
+                            </h2>
+                            <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
+                                {{ spreadBody }}
+                            </p>
+                            <p v-if="spreadPending" class="mt-3 font-body text-sm font-semibold text-primary-1">
+                                {{ spreadPending }}
+                            </p>
+                        </div>
                     </div>
                 </SectionReveal>
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] pt-6 pb-10 sm:pt-8 sm:pb-14">
+        <!-- 3) Together with our partners -->
+        <section class="bg-[#F4F1EA] py-8 sm:py-10">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
-                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">{{ categoriesSectionTitle }}</h2>
-                        <p class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg">{{ categoriesSectionSubtitle }}</p>
+                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+                            {{ partnersTitle }}
+                        </h2>
+                        <p class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg">
+                            {{ partnersBody }}
+                        </p>
+                        <p v-if="partnersPending" class="mx-auto mt-3 max-w-3xl text-center font-body text-sm font-semibold text-primary-1">
+                            {{ partnersPending }}
+                        </p>
                     </div>
 
-                    <div class="mx-auto mt-8 grid max-w-5xl gap-6 sm:mt-10 lg:grid-cols-2">
-                        <div
-                            v-for="(category, index) in submissionCategories"
-                            :key="index"
-                            class="flex flex-col rounded-none border border-primary-2/20 bg-white p-6 shadow-sm transition hover:shadow-md"
-                        >
-                            <div class="flex items-start gap-4">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-accent-2">
-                                    <svg v-if="category.icon === 'presentation'" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                                    </svg>
-                                    <svg v-else class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-title text-xl font-bold text-primary-1">{{ category.title }}</h3>
-                                    <p class="mt-2 font-body text-base leading-relaxed text-copy">{{ category.description }}</p>
-                                </div>
+                    <div v-if="partnerLogos.length" class="mx-auto mt-8 max-w-6xl">
+                        <div class="flex gap-3 overflow-x-auto pb-2 justify-center">
+                            <div
+                                v-for="(logo, index) in partnerLogos"
+                                :key="logo + index"
+                                class="flex h-16 w-24 shrink-0 items-center justify-center rounded-none border border-primary-1/10 bg-white p-2 shadow-sm"
+                            >
+                                <img :src="logo" alt="Partner logo" class="h-full w-full object-contain" loading="lazy" />
                             </div>
                         </div>
                     </div>
@@ -144,39 +228,23 @@ const ctaCards = computed(() => {
             </div>
         </section>
 
-        <section class="bg-[#F4F1EA] py-10 sm:py-14">
+        <!-- 4) Financial support -->
+        <section class="bg-[#F4F1EA] py-8 sm:py-10 lg:py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl text-center">
-                        <p class="font-body text-lg leading-relaxed text-ink sm:text-xl">{{ ctaParagraph1 }}</p>
-                        <p class="mt-4 font-body text-base leading-relaxed text-copy sm:text-lg">{{ ctaParagraph2 }}</p>
-                        <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg font-semibold">{{ ctaParagraph3 }}</p>
-                    </div>
-
-                    <div class="mx-auto mt-8 flex max-w-3xl flex-col gap-4 sm:mt-10">
-                        <a
-                            v-for="(card, index) in ctaCards"
-                            :key="index"
-                            :href="card.href"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            :class="(card.style === 'primary' ? 'group flex items-center justify-between rounded-none bg-accent-1 p-5 shadow-lg transition hover:bg-accent-1/90 hover:shadow-xl sm:p-6' : 'group flex items-center justify-between rounded-none border-2 border-primary-1 bg-white p-5 shadow-sm transition hover:bg-primary-1/5 hover:shadow-md sm:p-6')"
-                        >
-                            <div class="flex items-center gap-4">
-                                <div :class="card.style === 'primary' ? 'flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-white/20' : 'flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-primary-1'">
-                                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </div>
-                                <div class="text-left">
-                                    <p :class="card.style === 'primary' ? 'font-body text-lg font-bold text-white sm:text-xl' : 'font-body text-lg font-bold text-primary-1 sm:text-xl'">{{ card.title }}</p>
-                                    <p class="mt-1 font-body text-sm" :class="card.style === 'primary' ? 'text-white/90' : 'text-copy'">{{ card.subtitle }}</p>
-                                </div>
-                            </div>
-                            <svg class="h-6 w-6 shrink-0 transition group-hover:translate-x-1" :class="card.style === 'primary' ? 'text-white' : 'text-primary-1'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </a>
+                    <div class="mx-auto max-w-4xl rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8 text-center">
+                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl text-center">
+                            {{ financialTitle }}
+                        </h2>
+                        <div class="mt-4 space-y-4">
+                            <p
+                                v-for="(para, index) in (financialBody || '').split('\\n').map(p => p.trim()).filter(Boolean)"
+                                :key="index"
+                                class="mx-auto text-center font-body text-base leading-relaxed text-copy sm:text-lg"
+                            >
+                                {{ para }}
+                            </p>
+                        </div>
                     </div>
                 </SectionReveal>
             </div>

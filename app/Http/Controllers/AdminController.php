@@ -741,6 +741,16 @@ class AdminController extends Controller
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'hero_slides' => 'nullable|array',
             'hero_slides.*' => 'nullable|string',
+            'spread_title' => 'nullable|string',
+            'spread_body' => 'nullable|string',
+            'spread_pending' => 'nullable|string',
+            'partners_title' => 'nullable|string',
+            'partners_body' => 'nullable|string',
+            'partners_pending' => 'nullable|string',
+            'partners_logos' => 'nullable|array',
+            'partners_logos.*' => 'nullable|string',
+            'financial_title' => 'nullable|string',
+            'financial_body' => 'nullable|string',
             'categories_section_title' => 'nullable|string',
             'categories_section_subtitle' => 'nullable|string',
             'categories' => 'nullable|array',
@@ -794,12 +804,33 @@ class AdminController extends Controller
             }
         }
 
+        // Partners logos
+        $existingPartnerLogos = $validated['partners_logos'] ?? $current['partners_logos'] ?? [];
+        if (!is_array($existingPartnerLogos)) {
+            $existingPartnerLogos = [];
+        }
+        $partnerLogos = array_values(array_filter($existingPartnerLogos, static fn ($value) => is_string($value) && $value !== ''));
+
+        foreach ([1, 2, 3, 4, 5, 6] as $i) {
+            $key = 'partner_logo_' . $i . '_file';
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                $filename = 'getinvolved_partner_logo_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
+                if (!is_dir(public_path('brand/getinvolved/partners'))) {
+                    mkdir(public_path('brand/getinvolved/partners'), 0755, true);
+                }
+                $file->move(public_path('brand/getinvolved/partners'), $filename);
+                $partnerLogos[] = '/brand/getinvolved/partners/' . $filename;
+            }
+        }
+
         $merged = array_merge(
             $current,
             $validated,
             [
                 'hero_image' => $heroImage,
                 'hero_slides' => array_values($heroSlides),
+                'partners_logos' => array_values($partnerLogos),
             ]
         );
         Storage::put('admin/get-involved-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
@@ -819,6 +850,15 @@ class AdminController extends Controller
             'hero_intro' => 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
             'hero_image' => '/brand/img34.jpg',
             'hero_slides' => [],
+            'spread_title' => 'Spread the word!',
+            'spread_body' => 'PENDING: Communication Toolkit will be provided by COFSA soon.',
+            'spread_pending' => '',
+            'partners_title' => 'Together with our partners',
+            'partners_body' => 'This Summit is made possible through strong partnerships.',
+            'partners_pending' => 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS',
+            'partners_logos' => [],
+            'financial_title' => 'Financial support to expand Summit impact',
+            'financial_body' => 'At the Global Conscious Food Systems Summxit 2026, our priority is to expand the impact and accessibility of this gathering to all sectors and stakeholders, especially grassroots champions, small-scale producers, and those working actively in the field to shape the future of food systems.\n\nWe believe that diverse participation strengthens collective learning, fosters inclusive dialogue, and amplifies transformative action.\n\nTo make this vision a reality, we are seeking financial support from institutions, partners, and donors who share our commitment to equitable access and meaningful engagement.\n\nFinancial contributions can be made through sponsorship, partnerships, or directed grant support. For more information on how your organization or institution can support this initiative—including available sponsorship tiers, recognition opportunities, and impact highlights—please contact the Summit team at Thomas.Legrand@undp.org.',
             'categories_section_title' => 'Submission Categories',
             'categories_section_subtitle' => 'Applicants may submit one or more proposals under the following categories:',
             'categories' => [
@@ -902,6 +942,12 @@ class AdminController extends Controller
             'transform_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'transform_slides' => 'nullable|array',
             'transform_slides.*' => 'nullable|string',
+
+            // Section 1 – Programme highlights
+            'programme_highlights_subtitle' => 'nullable|string',
+            'programme_highlights' => 'nullable|array',
+            'programme_highlights.*.title' => 'nullable|string',
+            'programme_highlights.*.body' => 'nullable|string',
 
             // Section 3 – cards
             'global_cards' => 'nullable|array',
@@ -1029,6 +1075,8 @@ class AdminController extends Controller
                 'transform_p4' => $validated['transform_p4'] ?? ($currentSettings['transform_p4'] ?? null),
                 'transform_image' => $transformImage,
                 'transform_slides' => array_values($transformSlides),
+                'programme_highlights_subtitle' => $validated['programme_highlights_subtitle'] ?? ($currentSettings['programme_highlights_subtitle'] ?? null),
+                'programme_highlights' => array_values($validated['programme_highlights'] ?? ($currentSettings['programme_highlights'] ?? [])),
 
                 // Section 1a
                 'cfs_title' => $validated['cfs_title'] ?? ($currentSettings['cfs_title'] ?? null),
@@ -1076,6 +1124,29 @@ class AdminController extends Controller
             'transform_p4' => 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
             'transform_image' => '/brand/img34.jpg',
             'transform_slides' => ['/brand/img34.jpg'],
+            'programme_highlights_subtitle' => 'Programme Highlights: Exploring the Summit Day by Day',
+            'programme_highlights' => [
+                [
+                    'title' => 'Monday, 31 August 2026. Stepping into Bhutan through immersive experiences (optional)',
+                    'body' => 'Take advantage of this day to connect with the Bhutanese nature, people, spirituality and the philosophy of Gross National Happiness through immersive experiences exploring conscious food systems. Meet farmers, learn how food, culture, and ecology are deeply interwoven in everyday life, or visit the iconic Tiger’s Nest Monastery.',
+                ],
+                [
+                    'title' => 'Tuesday, 01 September 2026. Igniting Consciousness for Systemic Transformation (High level segment)',
+                    'body' => 'Kick off the summit with visionary leaders and changemakers exploring how consciousness can catalyze systemic transformation. Through the opening ceremony, inspiring dialogues and experiential activities, participants will reflect on conscious leadership and connect with the deeper purpose and values driving the global conscious food systems movement.',
+                ],
+                [
+                    'title' => 'Wednesday, 02 September 2026. Exploring Conscious Food Systems in practice',
+                    'body' => 'Celebrate the release of our collective vision for conscious food systems and travel across continents through pioneering stories, models and practices. In interactive sessions and sharing circles, realize the power of healing for food systems transformation and the role of inner capacities in the agroecological transition.',
+                ],
+                [
+                    'title' => 'Thursday, 03 September, 2026. Bhutan: A Living Laboratory for Conscious Food Systems',
+                    'body' => 'Immerse yourself in Bhutan’s unique approach to food systems, where culture, spirituality, and the philosophy of Gross National Happiness guide nature-friendly agriculture. Experience local practices and products firsthand and explore how indigenous knowledge, faith-based perspectives and consciousness practices can foster regenerative food systems and conscious consumption across the world.',
+                ],
+                [
+                    'title' => 'Friday, 04 September, 2026. From Inspiration to Collective Action',
+                    'body' => 'Conclude the summit by exploring pathways to scale conscious food systems through enabling policy, effective governance, and collaborative strategies that turn ideas into action. Share and listen to personal insights and commitments in circles and co-create collective recommendations before celebrating achievements with a vibrant cultural show and festive closing party.',
+                ],
+            ],
 
             // Section 1a – Call for Submissions
             'cfs_title' => 'Call for Submissions',

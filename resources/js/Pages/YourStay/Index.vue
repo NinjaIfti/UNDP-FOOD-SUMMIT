@@ -104,7 +104,7 @@ onUnmounted(() => {
                                 <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
                                     {{ heroTitle }}
                                 </h1>
-                                <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                <p class="mx-auto mt-4 text-center font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
                                     {{ heroSubtitle }}
                                 </p>
                             </div>

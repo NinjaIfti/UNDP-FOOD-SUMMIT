@@ -46,6 +46,35 @@ const form = useForm({
     transform_p3: props.settings?.transform_p3 ?? 'We invite you to bring your whole self: your lived experience, innovative practices, ancestral wisdom, research, policy insights, entrepreneurial ideas, and inner knowing.',
     transform_p4: props.settings?.transform_p4 ?? 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.',
     transformImageFile: null,
+    programme_highlights_subtitle: props.settings?.programme_highlights_subtitle ?? 'Programme Highlights: Exploring the Summit Day by Day',
+    programme_highlights: (Array.isArray(props.settings?.programme_highlights) && props.settings.programme_highlights.length > 0
+        ? props.settings.programme_highlights
+        : [
+            {
+                title: 'Monday, 31 August 2026. Stepping into Bhutan through immersive experiences (optional)',
+                body: 'Take advantage of this day to connect with the Bhutanese nature, people, spirituality and the philosophy of Gross National Happiness through immersive experiences exploring conscious food systems. Meet farmers, learn how food, culture, and ecology are deeply interwoven in everyday life, or visit the iconic Tiger’s Nest Monastery.',
+            },
+            {
+                title: 'Tuesday, 01 September 2026. Igniting Consciousness for Systemic Transformation (High level segment)',
+                body: 'Kick off the summit with visionary leaders and changemakers exploring how consciousness can catalyze systemic transformation. Through the opening ceremony, inspiring dialogues and experiential activities, participants will reflect on conscious leadership and connect with the deeper purpose and values driving the global conscious food systems movement.',
+            },
+            {
+                title: 'Wednesday, 02 September 2026. Exploring Conscious Food Systems in practice',
+                body: 'Celebrate the release of our collective vision for conscious food systems and travel across continents through pioneering stories, models and practices. In interactive sessions and sharing circles, realize the power of healing for food systems transformation and the role of inner capacities in the agroecological transition.',
+            },
+            {
+                title: 'Thursday, 03 September, 2026. Bhutan: A Living Laboratory for Conscious Food Systems',
+                body: 'Immerse yourself in Bhutan’s unique approach to food systems, where culture, spirituality, and the philosophy of Gross National Happiness guide nature-friendly agriculture. Experience local practices and products firsthand and explore how indigenous knowledge, faith-based perspectives and consciousness practices can foster regenerative food systems and conscious consumption across the world.',
+            },
+            {
+                title: 'Friday, 04 September, 2026. From Inspiration to Collective Action',
+                body: 'Conclude the summit by exploring pathways to scale conscious food systems through enabling policy, effective governance, and collaborative strategies that turn ideas into action. Share and listen to personal insights and commitments in circles and co-create collective recommendations before celebrating achievements with a vibrant cultural show and festive closing party.',
+            },
+        ]
+    ).map(item => ({
+        title: item.title ?? '',
+        body: item.body ?? '',
+    })),
     transform_slides: Array.isArray(props.settings?.transform_slides) ? props.settings.transform_slides : [],
     transform_slide_1_file: null,
     transform_slide_2_file: null,
@@ -291,6 +320,54 @@ function submit() {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Paragraph 4</label>
                             <textarea v-model="form.transform_p4" rows="3" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border-t border-gray-200 pt-6">
+                        <h4 class="mb-3 font-title text-sm font-bold text-primary-1">Programme Highlights</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block font-body text-sm font-medium text-ink">Subtitle</label>
+                                <input v-model="form.programme_highlights_subtitle" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                            </div>
+
+                            <div class="space-y-4">
+                                <div
+                                    v-for="(item, index) in form.programme_highlights"
+                                    :key="index"
+                                    class="rounded-lg border border-gray-200 p-4"
+                                >
+                                    <div class="mb-3 flex items-center justify-between">
+                                        <h5 class="font-title text-sm font-bold text-primary-1">Day {{ index + 1 }}</h5>
+                                        <button
+                                            type="button"
+                                            class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                                            @click="form.programme_highlights.splice(index, 1)"
+                                            v-if="form.programme_highlights.length > 1"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Title line</label>
+                                            <input v-model="item.title" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                        </div>
+                                        <div>
+                                            <label class="block font-body text-xs font-medium text-ink">Paragraph</label>
+                                            <textarea v-model="item.body" rows="4" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-body text-sm font-medium text-gray-600 transition hover:border-primary-1 hover:bg-primary-1/5 hover:text-primary-1"
+                                @click="form.programme_highlights.push({ title: '', body: '' })"
+                            >
+                                + Add day box
+                            </button>
                         </div>
                     </div>
                 </div>

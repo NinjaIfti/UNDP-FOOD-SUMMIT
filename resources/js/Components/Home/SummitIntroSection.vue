@@ -18,10 +18,10 @@ defineProps({
                         {{ settings.summit_intro_title }}
                     </h2>
                     <!-- whitespace-pre-line so admin textarea newlines show as line breaks -->
-                    <p class="mt-6 whitespace-pre-line font-body text-xl leading-relaxed text-ink sm:text-2xl">
+                    <p class="mt-6 whitespace-pre-line font-body text-lg leading-relaxed text-ink sm:text-xl">
                         {{ settings.summit_intro_text1 }}
                     </p>
-                    <p class="mt-4 whitespace-pre-line font-body text-xl leading-relaxed text-ink sm:text-2xl">
+                    <p class="mt-4 whitespace-pre-line font-body text-lg leading-relaxed text-ink sm:text-xl">
                         {{ settings.summit_intro_text2 }}
                     </p>
                 </div>

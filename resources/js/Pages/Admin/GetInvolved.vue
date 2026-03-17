@@ -25,6 +25,21 @@ const form = useForm({
     hero_slide_1_file: null,
     hero_slide_2_file: null,
     hero_slide_3_file: null,
+    spread_title: props.settings?.spread_title ?? 'Spread the word!',
+    spread_body: props.settings?.spread_body ?? 'PENDING: Communication Toolkit will be provided by COFSA soon.',
+    spread_pending: props.settings?.spread_pending ?? '',
+    partners_title: props.settings?.partners_title ?? 'Together with our partners',
+    partners_body: props.settings?.partners_body ?? 'This Summit is made possible through strong partnerships.',
+    partners_pending: props.settings?.partners_pending ?? 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS',
+    partners_logos: props.settings?.partners_logos ?? [],
+    partner_logo_1_file: null,
+    partner_logo_2_file: null,
+    partner_logo_3_file: null,
+    partner_logo_4_file: null,
+    partner_logo_5_file: null,
+    partner_logo_6_file: null,
+    financial_title: props.settings?.financial_title ?? 'Financial support to expand Summit impact',
+    financial_body: props.settings?.financial_body ?? '',
     categories_section_title: props.settings?.categories_section_title ?? 'Submission Categories',
     categories_section_subtitle: props.settings?.categories_section_subtitle ?? 'Applicants may submit one or more proposals under the following categories:',
     categories: (Array.isArray(props.settings?.categories) && props.settings.categories.length > 0 ? props.settings.categories : defaultCategories).map(c => ({
@@ -74,6 +89,12 @@ function submit() {
     if (form.hero_slide_3_file) {
         data.hero_slide_3_file = form.hero_slide_3_file;
     }
+    if (form.partner_logo_1_file) data.partner_logo_1_file = form.partner_logo_1_file;
+    if (form.partner_logo_2_file) data.partner_logo_2_file = form.partner_logo_2_file;
+    if (form.partner_logo_3_file) data.partner_logo_3_file = form.partner_logo_3_file;
+    if (form.partner_logo_4_file) data.partner_logo_4_file = form.partner_logo_4_file;
+    if (form.partner_logo_5_file) data.partner_logo_5_file = form.partner_logo_5_file;
+    if (form.partner_logo_6_file) data.partner_logo_6_file = form.partner_logo_6_file;
 
     form.transform(() => data).post(route('admin.get-involved.update'), {
         preserveScroll: true,
@@ -283,6 +304,90 @@ function submit() {
                             </div>
                         </div>
                         <button type="button" @click="addCtaCard" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-body text-sm font-medium text-gray-600 transition hover:border-primary-1 hover:bg-primary-1/5 hover:text-primary-1">+ Add CTA card</button>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Spread the word</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Title</label>
+                            <input v-model="form.spread_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Text</label>
+                            <textarea v-model="form.spread_body" rows="3" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Pending note (optional)</label>
+                            <input v-model="form.spread_pending" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Together with our partners</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Sub-section title</label>
+                            <input v-model="form.partners_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Text</label>
+                            <textarea v-model="form.partners_body" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Pending note (optional)</label>
+                            <input v-model="form.partners_pending" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                            <h4 class="mb-3 font-title text-base font-bold text-primary-1">Partner logos</h4>
+
+                            <div v-if="form.partners_logos && form.partners_logos.length" class="space-y-2">
+                                <div
+                                    v-for="(logo, index) in form.partners_logos"
+                                    :key="logo + index"
+                                    class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-2"
+                                >
+                                    <img :src="logo" alt="Partner logo" class="h-12 w-20 rounded-md border border-gray-200 object-contain bg-white" />
+                                    <p class="flex-1 truncate text-xs text-gray-600">{{ logo }}</p>
+                                    <button
+                                        type="button"
+                                        class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                        @click="form.partners_logos.splice(index, 1)"
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 space-y-2">
+                                <p class="text-xs font-medium text-gray-700">Upload up to 6 logos</p>
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_1_file = f || null; }" />
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_2_file = f || null; }" />
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_3_file = f || null; }" />
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_4_file = f || null; }" />
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_5_file = f || null; }" />
+                                <input type="file" accept="image/*" class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90" @change="(e) => { const f = e.target?.files?.[0]; form.partner_logo_6_file = f || null; }" />
+                                <p class="mt-1 text-xs text-gray-500">PNG recommended for logos. Max 4MB each.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Financial support to expand Summit impact</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Sub-section title</label>
+                            <input v-model="form.financial_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Text</label>
+                            <textarea v-model="form.financial_body" rows="8" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                            <p class="mt-1 text-xs text-gray-500">New lines will show as separate paragraphs on the site.</p>
+                        </div>
                     </div>
                 </div>
 

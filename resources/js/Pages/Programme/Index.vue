@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 import SectionReveal from '@/Components/Home/SectionReveal.vue';
-import EventsPlanSection from '@/Components/Home/EventsPlanSection.vue';
+// import EventsPlanSection from '@/Components/Home/EventsPlanSection.vue';
 
 const props = defineProps({
     settings: {
@@ -83,6 +83,45 @@ const globalCards = computed(() => {
             }));
     }
     return defaultGlobalCards;
+});
+
+const highlightsSubtitle = computed(() => props.settings?.programme_highlights_subtitle || 'Programme Highlights: Exploring the Summit Day by Day');
+
+const defaultHighlights = [
+    {
+        title: 'Monday, 31 August 2026. Stepping into Bhutan through immersive experiences (optional)',
+        body: 'Take advantage of this day to connect with the Bhutanese nature, people, spirituality and the philosophy of Gross National Happiness through immersive experiences exploring conscious food systems. Meet farmers, learn how food, culture, and ecology are deeply interwoven in everyday life, or visit the iconic Tiger’s Nest Monastery.',
+    },
+    {
+        title: 'Tuesday, 01 September 2026. Igniting Consciousness for Systemic Transformation (High level segment)',
+        body: 'Kick off the summit with visionary leaders and changemakers exploring how consciousness can catalyze systemic transformation. Through the opening ceremony, inspiring dialogues and experiential activities, participants will reflect on conscious leadership and connect with the deeper purpose and values driving the global conscious food systems movement.',
+    },
+    {
+        title: 'Wednesday, 02 September 2026. Exploring Conscious Food Systems in practice',
+        body: 'Celebrate the release of our collective vision for conscious food systems and travel across continents through pioneering stories, models and practices. In interactive sessions and sharing circles, realize the power of healing for food systems transformation and the role of inner capacities in the agroecological transition.',
+    },
+    {
+        title: 'Thursday, 03 September, 2026. Bhutan: A Living Laboratory for Conscious Food Systems',
+        body: 'Immerse yourself in Bhutan’s unique approach to food systems, where culture, spirituality, and the philosophy of Gross National Happiness guide nature-friendly agriculture. Experience local practices and products firsthand and explore how indigenous knowledge, faith-based perspectives and consciousness practices can foster regenerative food systems and conscious consumption across the world.',
+    },
+    {
+        title: 'Friday, 04 September, 2026. From Inspiration to Collective Action',
+        body: 'Conclude the summit by exploring pathways to scale conscious food systems through enabling policy, effective governance, and collaborative strategies that turn ideas into action. Share and listen to personal insights and commitments in circles and co-create collective recommendations before celebrating achievements with a vibrant cultural show and festive closing party.',
+    },
+];
+
+const programmeHighlights = computed(() => {
+    const list = props.settings?.programme_highlights;
+    if (Array.isArray(list) && list.length) {
+        const cleaned = list
+            .filter(item => item && (item.title || item.body))
+            .map(item => ({
+                title: item.title || '',
+                body: item.body || '',
+            }));
+        if (cleaned.length) return cleaned;
+    }
+    return defaultHighlights;
 });
 
 const totalPages = computed(() => Math.ceil(themes.value.length / themesPerView.value));
@@ -298,6 +337,31 @@ const defaultThemes = [
                         <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
                             {{ settings.transform_p4 || 'The Summit will combine case studies with interactive workshops involving learning, co-creation and deepening consciousness-based practices, fostering both personal transformation and systemic change.' }}
                         </p>
+                    </div>
+
+                    <!-- Programme highlights -->
+                    <div class="mx-auto mt-12 max-w-7xl px-4 sm:mt-14 sm:px-6 lg:px-8">
+                        <div class="mx-auto max-w-4xl text-center">
+                            <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+                                {{ highlightsSubtitle }}
+                            </h2>
+                        </div>
+
+                        <div class="mx-auto mt-8 grid max-w-6xl gap-6 sm:mt-10 lg:grid-cols-2">
+                            <div
+                                v-for="(item, index) in programmeHighlights"
+                                :key="index"
+                                class="rounded-none border border-primary-1/10 bg-primary-1/5 p-6 shadow-sm transition hover:shadow-md"
+                                :class="index === programmeHighlights.length - 1 ? 'lg:col-span-2' : ''"
+                            >
+                                <h3 class="font-title text-lg font-bold text-primary-1 sm:text-xl">
+                                    {{ item.title }}
+                                </h3>
+                                <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
+                                    {{ item.body }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Global movement feature cards (same content as admin Section 3 cards) -->
@@ -547,7 +611,7 @@ const defaultThemes = [
         </section>
 
         <!-- Events Plan -->
-        <EventsPlanSection :settings="settings" />
+        <!-- <EventsPlanSection :settings="settings" /> -->
 
     </EventLayout>
 </template>
