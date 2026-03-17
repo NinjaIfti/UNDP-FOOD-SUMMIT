@@ -793,148 +793,68 @@ onUnmounted(() => {
                 <div v-show="activeTab === 'extend'" class="mx-auto max-w-4xl space-y-6">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.extend_title || 'Extend Your Stay in Bhutan' }}</h2>
 
-                    <div v-if="settings.extend_intro" class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-none border-2 border-purple-300 p-6">
-                        <p class="font-body text-lg text-gray-800">
-                            {{ settings.extend_intro }}
+                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm space-y-5">
+                        <p class="font-body text-gray-800 text-lg">
+                            It will be possible for participants to extend the duration of their stay in Bhutan beyond the Summit visa period.
                         </p>
-                    </div>
 
-                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="p-3 bg-amber-100 rounded-none">
-                                <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-title text-xl font-semibold text-gray-900 mb-2">
-                                    {{ settings.extend_process_title || 'Extension Process' }}
-                                </h3>
-                                <p v-if="settings.extend_process_description" class="font-body text-gray-700">
-                                    {{ settings.extend_process_description }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div v-if="settings.extend_process_steps && settings.extend_process_steps.length > 0" class="space-y-4">
-                            <div v-for="(step, index) in settings.extend_process_steps" :key="index" class="flex items-start gap-3 font-body text-gray-700">
-                                <span class="text-primary-1 font-bold mt-1">{{ index + 1 }}.</span>
-                                <div>
-                                    <p class="font-medium">{{ step.title }}</p>
-                                    <p v-if="step.note" class="text-sm text-gray-600">{{ step.note }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="p-3 bg-green-100 rounded-none">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-title text-xl font-semibold text-gray-900 mb-2">
-                                    {{ settings.extend_costs_title || 'Extension Costs' }}
-                                </h3>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4">
-                            <div v-if="settings.extend_sdf_amount" class="bg-accent-2/10 border border-accent-2/30 rounded-none p-4">
-                                <p class="font-body text-gray-900 mb-1">
-                                    <strong class="text-xl">{{ settings.extend_sdf_amount }}</strong> per night
-                                </p>
-                                <p v-if="settings.extend_sdf_note" class="font-body text-sm text-gray-600">
-                                    {{ settings.extend_sdf_note }}
-                                </p>
-                            </div>
-
-                            <div v-if="settings.extend_additional_costs && settings.extend_additional_costs.length > 0" class="space-y-2 font-body text-gray-700">
-                                <p class="font-medium">Additional costs to consider:</p>
-                                <ul class="space-y-2 ml-4">
-                                    <li class="flex items-start gap-2">
-                                        <span class="text-primary-1">•</span>
-                                        <span>Accommodation (varies by hotel)</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="text-primary-1">•</span>
-                                        <span>Licensed tour guide (mandatory)</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="text-primary-1">•</span>
-                                        <span>Transportation for sightseeing</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <span class="text-primary-1">•</span>
-                                        <span>Meals outside hotel</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-none p-6">
-                        <div class="flex gap-4">
-                            <svg class="w-6 h-6 text-accent-1 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div class="space-y-3">
-                                <h3 class="font-title text-xl font-semibold text-gray-900">
-                                    {{ settings.extend_requirement_title || 'Important Requirement' }}
-                                </h3>
-                                <div class="font-body text-gray-700 space-y-2">
-                                    <p v-if="settings.extend_requirement_description">
-                                        {{ settings.extend_requirement_description }}
-                                    </p>
-                                    <p v-if="settings.extend_requirement_note" class="text-sm">
-                                        {{ settings.extend_requirement_note }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-if="settings.extend_portal_title || settings.extend_portal_url" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
-                        <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
-                            {{ settings.extend_portal_title || 'Ready to Extend?' }}
-                        </h3>
-                        <p v-if="settings.extend_portal_description" class="font-body text-gray-700 mb-4">
-                            {{ settings.extend_portal_description }}
+                        <p class="font-body text-gray-800 text-lg">
+                            After arrival in the country, participants may apply independently to extend their visa by modifying it through Bhutan’s official online visa portal (<a href="https://immi.gov.bt/home/" target="_blank" rel="noopener noreferrer" class="text-primary-1 font-semibold hover:underline">https://immi.gov.bt/home/</a>), changing the visa category from a non-tourist visa to a tourist visa.
                         </p>
-                        <a
-                            v-if="settings.extend_portal_url"
-                            :href="settings.extend_portal_url"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-6 py-3 bg-primary-1 text-white rounded-lg hover:bg-primary-1/90 transition-colors"
-                        >
-                            Official Visa Portal
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </a>
-                    </div>
 
-                    <div v-if="settings.extend_activities && settings.extend_activities.length > 0" class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-none border border-gray-200 p-6">
-                        <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
-                            {{ settings.extend_activities_title || 'Popular Extension Activities' }}
-                        </h3>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div v-for="(activity, index) in settings.extend_activities" :key="index" class="bg-white rounded-none p-4">
-                                <h4 class="font-title font-semibold text-gray-900 mb-2">{{ activity.title }}</h4>
-                                <p class="font-body text-sm text-gray-600">
-                                    {{ activity.description }}
-                                </p>
-                            </div>
+                        <div class="pt-2">
+                            <p class="font-body font-semibold text-gray-900">Please note:</p>
+                            <ul class="mt-3 space-y-2 font-body text-gray-800">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary-1 mt-1">•</span>
+                                    <span>Visa extensions must be arranged directly by the participant</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary-1 mt-1">•</span>
+                                    <span>The total duration of stay in Bhutan may be extended up to 90 days, including the initial Summit visa period.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary-1 mt-1">•</span>
+                                    <span>In the case of an extended stay, participants will be required to pay the Sustainable Development Fee (SDF), which is normally USD 100 per adult per night, for all additional nights beyond the Summit dates.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary-1 mt-1">•</span>
+                                    <span>Please also be aware that, to travel around Bhutan as a tourist, visitors are required to book an official licensed travel guide. Independent travel to touristic sites and movement around the country is not permitted without a guide.</span>
+                                </li>
+                            </ul>
                         </div>
+
+                        <p class="font-body text-gray-800 text-lg">
+                            Please find the list of licensed tourist guides provided by the Department of Tourism here:
+                            <a
+                                href="https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-primary-1 font-semibold hover:underline break-all"
+                            >
+                                https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf
+                            </a>
+                        </p>
                     </div>
                 </div>
 
                 <!-- Companions Tab -->
                 <div v-show="activeTab === 'companions'" class="mx-auto max-w-4xl space-y-6">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.companions_title || 'Travel With Companions' }}</h2>
+
+                    <div class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
+                        <p class="font-body text-gray-800">
+                            Visa web:
+                            <a
+                                href="https://immi.gov.bt/home/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-primary-1 font-semibold hover:underline"
+                            >
+                                https://immi.gov.bt/home/
+                            </a>
+                        </p>
+                    </div>
 
                     <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-none border-2 border-blue-300 p-6">
                         <div class="flex gap-4">

@@ -42,7 +42,13 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    yourStaySettings: {
+        type: Object,
+        default: () => ({}),
+    },
 });
+
+const yourStay = props.yourStaySettings || {};
 
 const photoPreview = ref(null);
 
@@ -550,44 +556,84 @@ const steps = [
                     <fieldset>
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
 
-                        <!-- What's included -->
-                        <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-body text-sm font-semibold text-primary-1">The ticket price includes:</p>
-                            <ul class="mt-2 space-y-1.5 text-sm text-copy">
-                                <li class="flex gap-2">
-                                    <span class="mt-1 text-primary-2">&#10003;</span>
-                                    Entrance and participation in the event from 01–04 September
-                                </li>
-                                <li class="flex gap-2">
-                                    <span class="mt-1 text-primary-2">&#10003;</span>
-                                    <span>Daily meals at the venue: lunch each day, two tea/coffee breaks per day, and two to three group dinners <span class="text-copy/70">(to be confirmed)</span></span>
-                                </li>
-                                <li class="flex gap-2">
-                                    <span class="mt-1 text-primary-2">&#10003;</span>
-                                    Visa application fee of BTN 5,000 and full coordination of the visa entry permission process
-                                </li>
-                                <li class="flex gap-2">
-                                    <span class="mt-1 text-primary-2">&#10003;</span>
-                                    <span><strong class="text-primary-1">Sustainable Development Fee (SDF) waiver:</strong> The Royal Government of Bhutan has kindly granted all summit participants a waiver of the SDF (normally USD 100/adult/night) for the event period from 31 August to 05 September <span class="text-copy/70">(dates to be confirmed)</span></span>
-                                </li>
-                                <li class="flex gap-2">
-                                    <span class="mt-1 text-primary-2">&#10003;</span>
-                                    Local transportation between your hotel in Paro and the event venue from 01–04 September
-                                </li>
-                            </ul>
+                        <div class="mt-4 grid gap-6 md:grid-cols-2">
+                            <div v-if="yourStay.included_items && yourStay.included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
+                                <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="bg-white/20 p-2 rounded-none">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="font-title text-xl font-bold text-white">
+                                            {{ yourStay.included_title || 'What\'s included in the Price' }}
+                                        </h3>
+                                    </div>
+                                </div>
 
-                            <p class="mt-4 font-body text-sm font-semibold text-primary-1">Please note the ticket price does not include:</p>
-                            <ul class="mt-2 space-y-1.5 text-sm text-copy">
-                                <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> International travel to and from Bhutan</li>
-                                <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> Accommodation costs in Paro</li>
-                                <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> Airport transfers (transportation between Paro airport and your hotel)</li>
-                                <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> One to two dinners outside the official program <span class="text-copy/70">(to be confirmed)</span></li>
-                                <li class="flex gap-2"><span class="mt-1 text-accent-2">&#10007;</span> Any personal expenses or costs incurred outside the official event dates (before 01 Sep or after 04 Sep)</li>
-                            </ul>
+                                <div class="p-6 space-y-5">
+                                    <div v-for="(item, index) in yourStay.included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-accent-2/10 p-4 rounded-none border border-accent-2/30' : '']">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <div :class="[
+                                                'p-2 rounded-none',
+                                                item.highlighted ? 'bg-accent-2/30' : index % 5 === 0 ? 'bg-primary-2/20' : index % 5 === 1 ? 'bg-accent-2/20' : index % 5 === 2 ? 'bg-blue-100' : index % 5 === 3 ? 'bg-purple-100' : 'bg-gray-100'
+                                            ]">
+                                                <svg class="w-5 h-5" :class="[
+                                                    item.highlighted ? 'text-accent-2' : index % 5 === 0 ? 'text-primary-2' : index % 5 === 1 ? 'text-accent-2' : index % 5 === 2 ? 'text-blue-600' : index % 5 === 3 ? 'text-purple-600' : 'text-gray-500'
+                                                ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
+                                            <ul v-if="item.isList && item.description" class="font-body text-sm text-copy space-y-1">
+                                                <li v-for="(line, lineIndex) in item.description.split('\n').filter(l => l.trim())" :key="lineIndex">
+                                                    <span v-if="line.trim().startsWith('•')">{{ line.trim() }}</span>
+                                                    <span v-else>• {{ line.trim() }}</span>
+                                                </li>
+                                            </ul>
+                                            <p v-else class="font-body text-sm text-copy">{{ item.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <p class="mt-4 text-sm text-accent-2">
-                                <strong>Optional add-on:</strong> Field visits on 31 August are available at an additional cost and can be selected separately below.
-                            </p>
+                            <div v-if="yourStay.not_included_items && yourStay.not_included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
+                                <div class="bg-gradient-to-r from-gray-600 to-gray-800 p-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="bg-white/20 p-2 rounded-none">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="font-title text-xl font-bold text-white">
+                                            {{ yourStay.not_included_title || 'What\'s not included in the Price' }}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <div class="p-6 space-y-5">
+                                    <div v-for="(item, index) in yourStay.not_included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-gray-50 p-4 rounded-none border border-gray-200' : '']">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <div :class="[
+                                                'p-2 rounded-none',
+                                                item.highlighted ? 'bg-gray-200' : 'bg-gray-100'
+                                            ]">
+                                                <svg class="w-5 h-5" :class="[
+                                                    item.highlighted ? 'text-gray-600' : 'text-gray-500'
+                                                ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
+                                            <p class="font-body text-sm text-copy">{{ item.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Price Tier Selection -->
