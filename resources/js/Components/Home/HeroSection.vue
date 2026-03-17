@@ -107,6 +107,10 @@ onUnmounted(() => {
                     {{ settings.hero_title }}
                 </h1>
 
+                <p class="mt-3 w-full text-center font-body text-2xl font-semibold text-white sm:text-3xl">
+                    {{ settings.hero_tagline || 'Activating the heart' }}
+                </p>
+
                 <p class="mt-5 w-full font-body text-xl font-semibold text-white/90 sm:text-2xl text-center">
                     {{ settings.hero_date }} · {{ settings.hero_location }}
                 </p>

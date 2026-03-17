@@ -262,6 +262,7 @@ class AdminController extends Controller
         // Build dynamic validation rules for speaker images
         $validationRules = [
             'hero_title' => 'nullable|string',
+            'hero_tagline' => 'nullable|string',
             'hero_date' => 'nullable|string',
             'hero_location' => 'nullable|string',
             'hero_description' => 'nullable|string',
@@ -562,6 +563,7 @@ class AdminController extends Controller
 
         return [
             'hero_title' => 'Global Conscious Food Systems Summit',
+            'hero_tagline' => 'Activating the heart',
             'hero_date' => '31 August – 4 September 2026',
             'hero_location' => 'Bhutan',
             'hero_description' => 'Let\'s co-create a food future rooted in wisdom, nature connection, compassion, and deep collaboration.',

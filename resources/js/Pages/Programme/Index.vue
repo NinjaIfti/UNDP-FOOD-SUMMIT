@@ -87,6 +87,32 @@ const globalCards = computed(() => {
 
 const highlightsSubtitle = computed(() => props.settings?.programme_highlights_subtitle || 'Programme Highlights: Exploring the Summit Day by Day');
 
+const highlightsTitle = computed(() => {
+    const raw = highlightsSubtitle.value || '';
+    const idx = raw.indexOf(':');
+    if (idx === -1) return raw;
+    return raw.slice(0, idx).trim();
+});
+
+const highlightsDescription = computed(() => {
+    const raw = highlightsSubtitle.value || '';
+    const idx = raw.indexOf(':');
+    if (idx === -1) return '';
+    return raw.slice(idx + 1).trim();
+});
+
+function splitHighlightTitle(fullTitle) {
+    const t = (fullTitle || '').trim();
+    const idx = t.indexOf('.');
+    if (idx === -1) {
+        return { date: t, subtitle: '' };
+    }
+    return {
+        date: t.slice(0, idx).trim(),
+        subtitle: t.slice(idx + 1).trim(),
+    };
+}
+
 const defaultHighlights = [
     {
         title: 'Monday, 31 August 2026. Stepping into Bhutan through immersive experiences (optional)',
@@ -343,8 +369,14 @@ const defaultThemes = [
                     <div class="mx-auto mt-12 max-w-7xl px-4 sm:mt-14 sm:px-6 lg:px-8">
                         <div class="mx-auto max-w-4xl text-center">
                             <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-                                {{ highlightsSubtitle }}
+                                {{ highlightsTitle }}
                             </h2>
+                            <p
+                                v-if="highlightsDescription"
+                                class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg"
+                            >
+                                {{ highlightsDescription }}
+                            </p>
                         </div>
 
                         <div class="mx-auto mt-8 grid max-w-6xl gap-6 sm:mt-10 lg:grid-cols-2">
@@ -354,12 +386,39 @@ const defaultThemes = [
                                 class="rounded-none border border-primary-1/10 bg-primary-1/5 p-6 shadow-sm transition hover:shadow-md"
                                 :class="index === programmeHighlights.length - 1 ? 'lg:col-span-2' : ''"
                             >
-                                <h3 class="font-title text-lg font-bold text-primary-1 sm:text-xl">
-                                    {{ item.title }}
-                                </h3>
-                                <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
-                                    {{ item.body }}
-                                </p>
+                                <div class="flex items-start gap-4">
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-accent-2">
+                                        <svg v-if="index === 0" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
+                                        </svg>
+                                        <svg v-else-if="index === 1" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V3m0 3a9 9 0 1 0 9 9c0-2.5-1-4.8-2.6-6.4M12 6a9 9 0 0 1 9 9" />
+                                        </svg>
+                                        <svg v-else-if="index === 2" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.567-3 3.5S10.343 15 12 15s3-1.567 3-3.5S13.657 8 12 8zm0 0V4m0 11v5m-7-7h3m10 0h3" />
+                                        </svg>
+                                        <svg v-else-if="index === 3" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.5 7-11a7 7 0 0 0-14 0c0 6.5 7 11 7 11z" />
+                                        </svg>
+                                        <svg v-else class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-title text-lg font-bold text-accent-2 sm:text-xl">
+                                            {{ splitHighlightTitle(item.title).date }}
+                                        </p>
+                                        <p
+                                            v-if="splitHighlightTitle(item.title).subtitle"
+                                            class="mt-1 font-body text-sm font-semibold text-primary-1 sm:text-base"
+                                        >
+                                            {{ splitHighlightTitle(item.title).subtitle }}
+                                        </p>
+                                        <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
+                                            {{ item.body }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

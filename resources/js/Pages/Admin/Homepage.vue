@@ -17,6 +17,7 @@ watch(activeTab, (newTab) => {
 
 const form = useForm({
     hero_title: props.settings.hero_title,
+    hero_tagline: props.settings.hero_tagline,
     hero_date: props.settings.hero_date,
     hero_location: props.settings.hero_location,
     hero_description: props.settings.hero_description,
@@ -319,6 +320,10 @@ const submit = () => {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Title</label>
                             <input v-model="form.hero_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Subtitle (line under title)</label>
+                            <input v-model="form.hero_tagline" type="text" placeholder="e.g., Activating the heart" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Date Range</label>

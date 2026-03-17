@@ -216,7 +216,7 @@ const goPrev = () => {
                 <div class="mt-10 text-center">
                     <a
                         href="/speakers"
-                        class="inline-flex items-center gap-2 rounded-full bg-accent-2 px-6 py-3 font-body text-sm font-semibold text-primary-1 shadow-md transition hover:bg-accent-2/90 hover:shadow-lg"
+                        class="inline-flex items-center gap-2 rounded-full bg-accent-2 px-7 py-3.5 font-body text-base font-semibold text-white shadow-md transition hover:bg-accent-2/90 hover:shadow-lg sm:px-8 sm:text-lg"
                     >
                         View all speakers
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
