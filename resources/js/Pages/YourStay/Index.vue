@@ -29,6 +29,24 @@ const filteredHotels = computed(() => {
     return hotels.value.filter(hotel => hotel.category === accommodationFilter.value);
 });
 
+const fieldVisitsInfo = computed(() => {
+    const raw = props.settings?.field_visits_info || '';
+    return raw.replace(/^optional\s*add-?on\s*:\s*/i, '');
+});
+
+const airTravelIntro = computed(
+    () =>
+        props.settings?.air_travel_intro ||
+        'Summit participants are responsible for booking their own international flights to Bhutan.'
+);
+
+const providerUrl = (name) => {
+    const n = (name || '').toLowerCase();
+    if (n.includes('bhutan telecom') || n === 'bt') return 'https://www.bt.bt/';
+    if (n.includes('tashicell') || n.includes('tashi cell')) return 'https://www.tashicell.com/';
+    return '';
+};
+
 const heroTitle = computed(() => {
     if (props.settings?.yourstay_hero_title) {
         return props.settings.yourstay_hero_title;
@@ -107,103 +125,6 @@ onUnmounted(() => {
                                 <p class="mx-auto mt-4 text-center font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
                                     {{ heroSubtitle }}
                                 </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Participation Costs Section -->
-        <section class="bg-[#F4F1EA] py-10 px-6 sm:py-12 lg:py-14">
-            <div class="max-w-6xl mx-auto">
-                <div class="max-w-3xl mx-auto mb-8">
-                    <div class="bg-accent-2/20 border-l-4 border-primary-1 p-4 rounded-none">
-                        <p class="font-body text-gray-800">
-                            <strong>
-                                {{ settings.participation_costs_announcement || 'Announcement: The official ticket price will be announced following the formal launch of the Summit in early March. We kindly invite participants to stay tuned for further updates.' }}
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8 mb-8">
-                    <!-- What's Included Card -->
-                    <div v-if="settings.included_items && settings.included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
-                            <div class="flex items-center gap-2">
-                                <div class="bg-white/20 p-2 rounded-none">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <h3 class="font-title text-xl font-bold text-white">
-                                    {{ settings.included_title || 'What\'s Included' }}
-                                </h3>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 space-y-5">
-                            <div v-for="(item, index) in settings.included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-accent-2/10 p-4 rounded-none border border-accent-2/30' : '']">
-                                <div class="flex-shrink-0 mt-1">
-                                    <div :class="[
-                                        'p-2 rounded-none',
-                                        item.highlighted ? 'bg-accent-2/30' : index % 5 === 0 ? 'bg-primary-2/20' : index % 5 === 1 ? 'bg-accent-2/20' : index % 5 === 2 ? 'bg-blue-100' : index % 5 === 3 ? 'bg-purple-100' : 'bg-gray-100'
-                                    ]">
-                                        <svg class="w-5 h-5" :class="[
-                                            item.highlighted ? 'text-accent-2' : index % 5 === 0 ? 'text-primary-2' : index % 5 === 1 ? 'text-accent-2' : index % 5 === 2 ? 'text-blue-600' : index % 5 === 3 ? 'text-purple-600' : 'text-gray-500'
-                                        ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
-                                    <ul v-if="item.isList && item.description" class="font-body text-sm text-copy space-y-1">
-                                        <li v-for="(line, lineIndex) in item.description.split('\n').filter(l => l.trim())" :key="lineIndex">
-                                            <span v-if="line.trim().startsWith('•')">{{ line.trim() }}</span>
-                                            <span v-else>• {{ line.trim() }}</span>
-                                        </li>
-                                    </ul>
-                                    <p v-else class="font-body text-sm text-copy">{{ item.description }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- What's NOT Included Card -->
-                    <div v-if="settings.not_included_items && settings.not_included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-gray-600 to-gray-800 p-4">
-                            <div class="flex items-center gap-2">
-                                <div class="bg-white/20 p-2 rounded-none">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </div>
-                                <h3 class="font-title text-xl font-bold text-white">
-                                    {{ settings.not_included_title || 'What\'s NOT Included' }}
-                                </h3>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 space-y-5">
-                            <div v-for="(item, index) in settings.not_included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-gray-50 p-4 rounded-none border border-gray-200' : '']">
-                                <div class="flex-shrink-0 mt-1">
-                                    <div :class="[
-                                        'p-2 rounded-none',
-                                        item.highlighted ? 'bg-gray-200' : 'bg-gray-100'
-                                    ]">
-                                        <svg class="w-5 h-5" :class="[
-                                            item.highlighted ? 'text-gray-600' : 'text-gray-500'
-                                        ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
-                                    <p class="font-body text-sm text-copy">{{ item.description }}</p>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -300,7 +221,7 @@ onUnmounted(() => {
                             </div>
                             <div>
                                 <p class="font-body text-base text-gray-800">
-                                    {{ settings.field_visits_info || 'Optional add-on: Field visits on 31 August are available at an additional cost and can be selected during registration.' }}
+                                    {{ fieldVisitsInfo || 'Field visits on 31 August are available at an additional cost and can be selected during registration.' }}
                                 </p>
                                 <p v-if="settings.field_visits_pending" class="mt-2 font-body text-sm italic text-gray-500">
                                     {{ settings.field_visits_pending }}
@@ -324,6 +245,10 @@ onUnmounted(() => {
 
                 <div v-show="activeTab === 'air-travel'" class="mx-auto max-w-4xl space-y-8">
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.air_travel_title || 'Air Travel to Paro' }}</h2>
+
+                    <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                        {{ airTravelIntro }}
+                    </p>
 
                     <div v-if="settings.air_travel_guidance_points && settings.air_travel_guidance_points.length > 0" class="bg-accent-1/10 border-2 border-accent-1/30 rounded-none p-6">
                         <div class="flex gap-4">
@@ -441,6 +366,32 @@ onUnmounted(() => {
                                         <strong>{{ settings.flight_table_saarc_note }}</strong>
                                     </p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        v-if="settings.visa_support_points && settings.visa_support_points.length > 0"
+                        class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-none p-6 shadow-md"
+                    >
+                        <div class="flex items-start gap-4">
+                            <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div class="space-y-3">
+                                <h3 class="font-title text-xl font-semibold text-gray-900">
+                                    {{ settings.visa_support_title || 'Visa support' }}
+                                </h3>
+                                <ul class="space-y-2 font-body text-gray-800">
+                                    <li
+                                        v-for="(point, index) in settings.visa_support_points"
+                                        :key="index"
+                                        class="flex items-start gap-2"
+                                    >
+                                        <span class="text-accent-2 mt-1">•</span>
+                                        <span>{{ point }}</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -609,7 +560,16 @@ onUnmounted(() => {
                                     <ul class="space-y-1">
                                         <li v-for="(provider, index) in settings.mobile_providers" :key="index" class="flex items-start gap-2">
                                             <span class="text-primary-1">•</span>
-                                            <span>{{ provider }}</span>
+                                            <a
+                                                v-if="providerUrl(provider)"
+                                                :href="providerUrl(provider)"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="text-primary-1 font-semibold hover:underline"
+                                            >
+                                                {{ provider }}
+                                            </a>
+                                            <span v-else>{{ provider }}</span>
                                         </li>
                                     </ul>
                                 </div>
