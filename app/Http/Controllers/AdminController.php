@@ -1212,6 +1212,7 @@ class AdminController extends Controller
             'field_visits_info' => 'nullable|string',
             'field_visits_pending' => 'nullable|string',
             'field_visits_expectations' => 'nullable|array',
+            'air_travel_intro' => 'nullable|string',
             'air_travel_title' => 'nullable|string',
             'air_travel_guidance_title' => 'nullable|string',
             'air_travel_guidance_points' => 'nullable|array',
@@ -1379,13 +1380,14 @@ class AdminController extends Controller
                 ['title' => 'Personal Expenses', 'description' => 'Any personal expenses or additional costs incurred during your stay in Bhutan', 'highlighted' => true],
             ],
             'field_visits_title' => 'Will There Be Field Visits?',
-            'field_visits_info' => 'Optional add-on: Field visits on 31 August are available at an additional cost and can be selected during registration.',
+            'field_visits_info' => 'Field visits on 31 August are available at an additional cost and can be selected during registration.',
             'field_visits_pending' => '(Pending confirmation)',
             'field_visits_expectations' => [
                 'Experience Bhutan\'s unique development approach firsthand',
                 'Visit local communities and sustainable development projects',
                 'Engage with stakeholders on the ground'
             ],
+            'air_travel_intro' => 'Summit participants are responsible for booking their own international flights to Bhutan.',
             'air_travel_title' => 'Air Travel to Paro',
             'air_travel_guidance_title' => 'Important Booking Guidance',
             'air_travel_guidance_points' => [
@@ -1517,12 +1519,10 @@ class AdminController extends Controller
             'transit_visa_title' => 'Check Transit Visa Requirements',
             'transit_visa_description' => 'If you\'re transiting through India or Nepal, you may need a transit visa. Check requirements based on your nationality.',
             'visa_title' => 'Visa & Entry Process',
-            'visa_support_title' => 'Summit Visa Support',
+            'visa_support_title' => 'Visa support',
             'visa_support_points' => [
-                'Visa fee included: BTN 5,000 (covered in Summit registration)',
-                'Validity: 10 days to cover the Summit period',
-                'Organized by: Summit organizing team',
-                'SDF waived: Sustainable Development Fee waived during Summit dates'
+                'All international visitors to Bhutan require an official visa or entry permit prior to arrival. In line with Bhutan’s specific entry regulations, the visa process must be carefully coordinated in advance.',
+                'For Summit participants, the visa entry permission process will be fully supported by the Summit organizers to ensure a smooth and efficient experience.'
             ],
             'visa_important_title' => 'Important Notes',
             'visa_important_points' => [
