@@ -978,19 +978,32 @@ class AdminController extends Controller
         $themes = $validated['themes'] ?? $currentSettings['themes'] ?? [];
         $globalCards = $validated['global_cards'] ?? $currentSettings['global_cards'] ?? [];
 
+        $deletePublicFile = static function (?string $path): void {
+            if (!$path || !is_string($path)) return;
+            if (str_starts_with($path, '/storage/')) {
+                $rel = ltrim(substr($path, strlen('/storage/')), '/');
+                if ($rel !== '') {
+                    Storage::disk('public')->delete($rel);
+                }
+                return;
+            }
+            if (str_starts_with($path, '/') && file_exists(public_path($path))) {
+                @unlink(public_path($path));
+            }
+        };
+
+        $storePublicFile = static function ($file, string $dir, string $prefix): string {
+            $ext = $file->getClientOriginalExtension() ?: 'jpg';
+            $filename = $prefix . '_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            Storage::disk('public')->putFileAs($dir, $file, $filename);
+            return '/storage/' . trim($dir, '/') . '/' . $filename;
+        };
+
         // Section 1 header image
         $transformImage = $currentSettings['transform_image'] ?? '/brand/img34.jpg';
         if ($request->hasFile('transform_image')) {
-            if (!empty($transformImage) && str_starts_with($transformImage, '/') && file_exists(public_path($transformImage))) {
-                @unlink(public_path($transformImage));
-            }
-            $file = $request->file('transform_image');
-            $filename = 'programme_transform_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/experience'))) {
-                mkdir(public_path('brand/experience'), 0755, true);
-            }
-            $file->move(public_path('brand/experience'), $filename);
-            $transformImage = '/brand/experience/' . $filename;
+            $deletePublicFile($transformImage);
+            $transformImage = $storePublicFile($request->file('transform_image'), 'experience', 'programme_transform');
         }
 
         $existingSlides = $validated['transform_slides'] ?? $currentSettings['transform_slides'] ?? [];
@@ -1002,13 +1015,7 @@ class AdminController extends Controller
         foreach ([1, 2, 3] as $i) {
             $key = 'transform_slide_' . $i . '_file';
             if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                $filename = 'programme_transform_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
-                if (!is_dir(public_path('brand/experience'))) {
-                    mkdir(public_path('brand/experience'), 0755, true);
-                }
-                $file->move(public_path('brand/experience'), $filename);
-                $transformSlides[] = '/brand/experience/' . $filename;
+                $transformSlides[] = $storePublicFile($request->file($key), 'experience', 'programme_transform_slide_' . $i);
             }
         }
 
@@ -1017,21 +1024,11 @@ class AdminController extends Controller
                 $theme['image'] = $currentSettings['themes'][$index]['image'];
             }
             if ($request->hasFile("theme_{$index}_image")) {
-                if (!empty($theme['image']) && str_starts_with($theme['image'], '/') && file_exists(public_path($theme['image']))) {
-                    @unlink(public_path($theme['image']));
-                }
-                $file = $request->file("theme_{$index}_image");
-                $filename = 'theme_' . $index . '_' . time() . '.' . $file->getClientOriginalExtension();
-                if (!is_dir(public_path('brand/themes'))) {
-                    mkdir(public_path('brand/themes'), 0755, true);
-                }
-                $file->move(public_path('brand/themes'), $filename);
-                $theme['image'] = '/brand/themes/' . $filename;
+                $deletePublicFile($theme['image'] ?? null);
+                $theme['image'] = $storePublicFile($request->file("theme_{$index}_image"), 'themes', 'theme_' . $index);
             }
             if ($request->input("theme_{$index}_delete_image")) {
-                if (!empty($theme['image']) && str_starts_with($theme['image'], '/') && file_exists(public_path($theme['image']))) {
-                    @unlink(public_path($theme['image']));
-                }
+                $deletePublicFile($theme['image'] ?? null);
                 $theme['image'] = '';
             }
         }
@@ -1039,31 +1036,15 @@ class AdminController extends Controller
         // Section 1a image handling
         $cfsImage = $currentSettings['cfs_image'] ?? '/brand/img34.jpg';
         if ($request->hasFile('cfs_image')) {
-            if (!empty($cfsImage) && str_starts_with($cfsImage, '/') && file_exists(public_path($cfsImage))) {
-                @unlink(public_path($cfsImage));
-            }
-            $file = $request->file('cfs_image');
-            $filename = 'cfs_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/experience'))) {
-                mkdir(public_path('brand/experience'), 0755, true);
-            }
-            $file->move(public_path('brand/experience'), $filename);
-            $cfsImage = '/brand/experience/' . $filename;
+            $deletePublicFile($cfsImage);
+            $cfsImage = $storePublicFile($request->file('cfs_image'), 'experience', 'cfs');
         }
 
         // Section 3 image handling
         $globalImage = $currentSettings['global_image'] ?? '/brand/img30.jpg';
         if ($request->hasFile('global_image')) {
-            if (!empty($globalImage) && str_starts_with($globalImage, '/') && file_exists(public_path($globalImage))) {
-                @unlink(public_path($globalImage));
-            }
-            $file = $request->file('global_image');
-            $filename = 'global_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/experience'))) {
-                mkdir(public_path('brand/experience'), 0755, true);
-            }
-            $file->move(public_path('brand/experience'), $filename);
-            $globalImage = '/brand/experience/' . $filename;
+            $deletePublicFile($globalImage);
+            $globalImage = $storePublicFile($request->file('global_image'), 'experience', 'global');
         }
 
         $merged = array_merge(

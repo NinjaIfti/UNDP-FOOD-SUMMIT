@@ -428,7 +428,7 @@ const defaultThemes = [
                         <div
                             v-for="(card, index) in globalCards"
                             :key="index"
-                            class="flex flex-col items-center rounded-none bg-primary-1/5 p-8 text-center shadow-md transition sm:col-span-1"
+                            class="flex flex-col items-center rounded-none bg-white p-8 text-center shadow-md transition sm:col-span-1"
                             :class="[
                                 index === 2 ? 'sm:col-span-2 lg:col-span-1' : '',
                                 index < 3
