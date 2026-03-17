@@ -388,20 +388,8 @@ const defaultThemes = [
                             >
                                 <div class="flex items-start gap-4">
                                     <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-accent-2">
-                                        <svg v-if="index === 0" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
-                                        </svg>
-                                        <svg v-else-if="index === 1" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V3m0 3a9 9 0 1 0 9 9c0-2.5-1-4.8-2.6-6.4M12 6a9 9 0 0 1 9 9" />
-                                        </svg>
-                                        <svg v-else-if="index === 2" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.567-3 3.5S10.343 15 12 15s3-1.567 3-3.5S13.657 8 12 8zm0 0V4m0 11v5m-7-7h3m10 0h3" />
-                                        </svg>
-                                        <svg v-else-if="index === 3" class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.5 7-11a7 7 0 0 0-14 0c0 6.5 7 11 7 11z" />
-                                        </svg>
-                                        <svg v-else class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                         </svg>
                                     </div>
                                     <div class="flex-1">

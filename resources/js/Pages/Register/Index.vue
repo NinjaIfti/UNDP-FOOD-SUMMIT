@@ -556,7 +556,7 @@ const steps = [
                     <fieldset>
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
 
-                        <div class="mt-4 grid gap-6 md:grid-cols-2">
+                        <div class="mt-4 space-y-6">
                             <div v-if="yourStay.included_items && yourStay.included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
                                 <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
                                     <div class="flex items-center gap-2">
@@ -736,7 +736,7 @@ const steps = [
                         <!-- How did you hear about this event -->
                         <div class="mt-6">
                             <p class="mb-2 font-body text-sm font-medium text-primary-1">How did you hear about this event?</p>
-                            <div class="grid gap-2 sm:grid-cols-2">
+                            <div class="grid gap-2">
                                 <label
                                     v-for="source in ['Email Newsletter', 'Social Media', 'Referral', 'Partner Organization', 'Website Search']"
                                     :key="source"

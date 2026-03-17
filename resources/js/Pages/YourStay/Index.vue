@@ -799,7 +799,7 @@ onUnmounted(() => {
                         </p>
 
                         <p class="font-body text-gray-800 text-lg">
-                            After arrival in the country, participants may apply independently to extend their visa by modifying it through Bhutan’s official online visa portal (<a href="https://immi.gov.bt/home/" target="_blank" rel="noopener noreferrer" class="text-primary-1 font-semibold hover:underline">https://immi.gov.bt/home/</a>), changing the visa category from a non-tourist visa to a tourist visa.
+                            After arrival in the country, participants may apply independently to extend their visa by modifying it through Bhutan’s official online visa portal (<a href="https://immi.gov.bt/home/" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold hover:underline">https://immi.gov.bt/home/</a>), changing the visa category from a non-tourist visa to a tourist visa.
                         </p>
 
                         <div class="pt-2">
@@ -830,7 +830,7 @@ onUnmounted(() => {
                                 href="https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="text-primary-1 font-semibold hover:underline break-all"
+                                class="text-blue-600 font-semibold hover:underline break-all"
                             >
                                 https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf
                             </a>
