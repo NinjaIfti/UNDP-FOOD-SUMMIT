@@ -91,6 +91,7 @@ class HandleInertiaRequests extends Middleware
                 'social_instagram' => $s['social_instagram'] ?? '',
                 'social_linkedin' => $s['social_linkedin'] ?? '',
                 'social_youtube' => $s['social_youtube'] ?? '',
+                'footer_support_text' => $s['footer_support_text'] ?? '24/7 support provided by the Global Conscious Food Systems Summit event team.',
             ];
         }
         return [
@@ -108,6 +109,7 @@ class HandleInertiaRequests extends Middleware
             'social_instagram' => '',
             'social_linkedin' => '',
             'social_youtube' => '',
+            'footer_support_text' => '24/7 support provided by the Global Conscious Food Systems Summit event team.',
         ];
     }
 }
