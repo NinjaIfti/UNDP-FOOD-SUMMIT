@@ -99,6 +99,7 @@ const form = useForm({
     ]).map(speaker => ({
         ...speaker,
         details: speaker.details ?? '',
+        show_on_homepage: speaker.show_on_homepage ?? true,
         imageFile: null,
         deleteImage: false
     })),
@@ -788,6 +789,25 @@ const submit = () => {
                                     <label class="block font-body text-xs font-medium text-ink">Popup details</label>
                                     <p class="mt-0.5 font-body text-xs text-copy">Shown when a visitor clicks the speaker card. Use Enter for new lines.</p>
                                     <textarea v-model="speaker.details" rows="4" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Optional longer bio, links, session info…"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block font-body text-xs font-medium text-ink">Show on homepage</label>
+                                    <div class="mt-1 inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1">
+                                        <button
+                                            type="button"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition"
+                                            :class="speaker.show_on_homepage ? 'bg-accent-1' : 'bg-gray-300'"
+                                            @click="speaker.show_on_homepage = !speaker.show_on_homepage"
+                                        >
+                                            <span
+                                                class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition"
+                                                :class="speaker.show_on_homepage ? 'translate-x-5' : 'translate-x-0.5'"
+                                            />
+                                        </button>
+                                        <span class="font-body text-xs" :class="speaker.show_on_homepage ? 'text-accent-1' : 'text-gray-500'">
+                                            {{ speaker.show_on_homepage ? 'Visible on homepage' : 'Hidden from homepage' }}
+                                        </span>
+                                    </div>
                                 </div>
                                 <div>
                                     <label class="block font-body text-xs font-medium text-ink">Speaker Image</label>

@@ -11,10 +11,10 @@ const activeTab = ref('field-visits');
 const accommodationFilter = ref('all');
 
 const tabs = [
-    { id: 'field-visits', label: 'Field Visits', icon: 'map-pin' },
     { id: 'air-travel', label: 'Air Travel', icon: 'plane' },
     { id: 'visa', label: 'Visa & Entry', icon: 'document' },
     { id: 'arrival', label: 'Upon Arrival', icon: 'suitcase' },
+    { id: 'field-visits', label: 'Field Visits', icon: 'map-pin' },
     { id: 'accommodation', label: 'Accommodation', icon: 'building' },
     { id: 'extend', label: 'Extend Stay', icon: 'calendar-plus' },
     { id: 'companions', label: 'Travel With Companions', icon: 'users' },
@@ -143,7 +143,7 @@ onUnmounted(() => {
                         type="button"
                         class="inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 font-body text-sm font-semibold transition sm:px-5 sm:py-2.5 sm:text-base first:ml-2 last:mr-2 sm:first:ml-4 sm:last:mr-4"
                         :class="activeTab === tab.id
-                            ? 'bg-primary-1 text-white'
+                            ? 'bg-accent-2 text-white'
                             : 'bg-gray-100 text-ink hover:bg-gray-200'"
                         @click="activeTab = tab.id"
                     >

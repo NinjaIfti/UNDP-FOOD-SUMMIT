@@ -345,7 +345,7 @@ const defaultThemes = [
                                     <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
                                         {{ sectionTitle }}
                                     </h1>
-                                    <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white sm:text-xl">
+                                    <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white text-center sm:text-xl">
                                         {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
                                     </p>
                                 </div>
@@ -354,7 +354,7 @@ const defaultThemes = [
                     </div>
 
                     <div class="mx-auto max-w-6xl px-4 pb-10 pt-10 text-center sm:px-6 lg:px-8">
-                        <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                        <p class="mx-auto max-w-3xl font-body text-base leading-relaxed text-ink text-center sm:text-lg">
                             {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
                         </p>
                         <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
@@ -373,7 +373,7 @@ const defaultThemes = [
                             </h2>
                             <p
                                 v-if="highlightsDescription"
-                                class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg"
+                                class="mx-auto mt-3 max-w-3xl text-center font-body text-lg leading-relaxed text-copy sm:text-xl"
                             >
                                 {{ highlightsDescription }}
                             </p>
@@ -398,7 +398,7 @@ const defaultThemes = [
                                         </p>
                                         <p
                                             v-if="splitHighlightTitle(item.title).subtitle"
-                                            class="mt-1 font-body text-sm font-semibold text-primary-1 sm:text-base"
+                                            class="mt-1 mx-auto max-w-md text-center font-body text-sm font-semibold text-primary-1 sm:text-base"
                                         >
                                             {{ splitHighlightTitle(item.title).subtitle }}
                                         </p>

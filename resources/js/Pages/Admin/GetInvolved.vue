@@ -6,11 +6,6 @@ const props = defineProps({
     settings: Object,
 });
 
-const defaultCategories = [
-    { title: 'Whole Session', description: 'For applicants who propose to design and facilitate a full session during the Summit...', icon: 'presentation' },
-    { title: 'Case Study', description: 'For individuals or organizations not yet ready to propose a full interactive session...', icon: 'document' },
-];
-
 const defaultCtaCards = [
     { href: 'https://airtable.com/appRiKywRTWHpim3e/pagi2lYYhFAAhlqhE/form', title: 'Submit Your Application', subtitle: 'Complete the application form by 31st March', style: 'primary' },
     { href: 'https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf', title: 'Full Submission Guidelines', subtitle: 'View details, eligibility criteria and guidelines', style: 'secondary' },
@@ -40,13 +35,6 @@ const form = useForm({
     partner_logo_6_file: null,
     financial_title: props.settings?.financial_title ?? 'Financial support to expand Summit impact',
     financial_body: props.settings?.financial_body ?? '',
-    categories_section_title: props.settings?.categories_section_title ?? 'Submission Categories',
-    categories_section_subtitle: props.settings?.categories_section_subtitle ?? 'Applicants may submit one or more proposals under the following categories:',
-    categories: (Array.isArray(props.settings?.categories) && props.settings.categories.length > 0 ? props.settings.categories : defaultCategories).map(c => ({
-        title: c.title ?? '',
-        description: c.description ?? '',
-        icon: c.icon ?? 'presentation',
-    })),
     cta_paragraph1: props.settings?.cta_paragraph1 ?? 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.',
     cta_paragraph2: props.settings?.cta_paragraph2 ?? 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.',
     cta_paragraph3: props.settings?.cta_paragraph3 ?? 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.',
@@ -57,14 +45,6 @@ const form = useForm({
         style: c.style ?? 'secondary',
     })),
 });
-
-function addCategory() {
-    form.categories.push({ title: '', description: '', icon: 'presentation' });
-}
-
-function removeCategory(index) {
-    form.categories.splice(index, 1);
-}
 
 function addCtaCard() {
     form.cta_cards.push({ href: '', title: '', subtitle: '', style: 'secondary' });
@@ -219,45 +199,6 @@ function submit() {
                     </div>
                 </div>
 
-                <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Submission Categories</h3>
-                    <div class="mb-4 space-y-4">
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Section Title</label>
-                            <input v-model="form.categories_section_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                        </div>
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Section Subtitle</label>
-                            <input v-model="form.categories_section_subtitle" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <div v-for="(cat, index) in form.categories" :key="index" class="rounded-lg border border-gray-200 p-4">
-                            <div class="mb-3 flex items-center justify-between">
-                                <h4 class="font-title text-sm font-bold text-primary-1">Category {{ index + 1 }}</h4>
-                                <button type="button" @click="removeCategory(index)" class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200">Delete</button>
-                            </div>
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="block font-body text-xs font-medium text-ink">Title</label>
-                                    <input v-model="cat.title" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                </div>
-                                <div>
-                                    <label class="block font-body text-xs font-medium text-ink">Description</label>
-                                    <textarea v-model="cat.description" rows="3" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block font-body text-xs font-medium text-ink">Icon</label>
-                                    <select v-model="cat.icon" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20">
-                                        <option value="presentation">Presentation</option>
-                                        <option value="document">Document</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" @click="addCategory" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-body text-sm font-medium text-gray-600 transition hover:border-primary-1 hover:bg-primary-1/5 hover:text-primary-1">+ Add category</button>
-                    </div>
-                </div>
 
                 <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Call to Action Section</h3>

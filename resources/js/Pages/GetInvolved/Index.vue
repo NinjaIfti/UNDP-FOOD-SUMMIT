@@ -39,17 +39,6 @@ onUnmounted(() => {
     }
 });
 
-const categoriesSectionTitle = computed(() => props.settings?.categories_section_title ?? 'Submission Categories');
-const categoriesSectionSubtitle = computed(() => props.settings?.categories_section_subtitle ?? 'Applicants may submit one or more proposals under the following categories:');
-const submissionCategories = computed(() => {
-    const list = props.settings?.categories;
-    if (Array.isArray(list) && list.length) return list.filter(c => c && (c.title || c.description));
-    return [
-        { title: 'Whole Session', description: 'For applicants who propose to design and facilitate a full session during the Summit...', icon: 'presentation' },
-        { title: 'Case Study', description: 'For individuals or organizations not yet ready to propose a full interactive session...', icon: 'document' },
-    ];
-});
-
 const ctaParagraph1 = computed(() => props.settings?.cta_paragraph1 ?? 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.');
 const ctaParagraph2 = computed(() => props.settings?.cta_paragraph2 ?? 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.');
 const ctaParagraph3 = computed(() => props.settings?.cta_paragraph3 ?? 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.');
@@ -126,31 +115,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                 {{ heroIntro }}
                             </p>
 
-                            <div class="mt-6 border-t border-primary-1/10 pt-6">
-                                <h3 class="font-title text-lg font-bold text-primary-1">
-                                    {{ categoriesSectionTitle }}
-                                </h3>
-                                <p class="mt-2 font-body text-sm leading-relaxed text-copy sm:text-base">
-                                    {{ categoriesSectionSubtitle }}
-                                </p>
-
-                                <div class="mt-4 space-y-3">
-                                    <div
-                                        v-for="(category, index) in submissionCategories"
-                                        :key="index"
-                                        class="rounded-none border border-primary-2/20 bg-primary-1/5 p-4"
-                                    >
-                                        <h4 class="font-title text-base font-bold text-primary-1">
-                                            {{ category.title }}
-                                        </h4>
-                                        <p class="mt-1 font-body text-sm leading-relaxed text-copy">
-                                            {{ category.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-6 flex flex-col gap-3">
+                            <div class="mt-6 flex flex-col gap-3 border-t border-primary-1/10 pt-6">
                                 <a
                                     v-for="(card, index) in ctaCards"
                                     :key="index"

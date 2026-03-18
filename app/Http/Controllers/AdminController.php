@@ -292,6 +292,11 @@ class AdminController extends Controller
             'speakers_section_title' => 'nullable|string',
             'speakers_section_subtitle' => 'nullable|string',
             'speakers' => 'nullable|array',
+            'speakers.*.name' => 'nullable|string',
+            'speakers.*.role' => 'nullable|string',
+            'speakers.*.bio' => 'nullable|string',
+            'speakers.*.details' => 'nullable|string',
+            'speakers.*.show_on_homepage' => 'nullable|boolean',
             'conscious_food_title' => 'nullable|string',
             'conscious_food_description' => 'nullable|string',
             'conscious_food_cofsa_text' => 'nullable|string',
@@ -467,9 +472,18 @@ class AdminController extends Controller
         unset($validated['bhutan_image']);
         $validated['bhutan_image'] = $bhutanImage;
 
-        // Handle speaker image uploads
+        // Handle speaker image uploads and visibility flag
         if (isset($validated['speakers']) && is_array($validated['speakers'])) {
             foreach ($validated['speakers'] as $index => &$speaker) {
+                // Normalize show_on_homepage to a real boolean, default true
+                if (array_key_exists('show_on_homepage', $speaker)) {
+                    $speaker['show_on_homepage'] = filter_var($speaker['show_on_homepage'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    if ($speaker['show_on_homepage'] === null) {
+                        $speaker['show_on_homepage'] = true;
+                    }
+                } else {
+                    $speaker['show_on_homepage'] = true;
+                }
                 $fileKey = 'speaker_' . $index . '_image';
                 $deleteKey = 'speaker_' . $index . '_delete_image';
                 
@@ -630,12 +644,12 @@ class AdminController extends Controller
             'speakers_section_title' => 'Featured Speakers',
             'speakers_section_subtitle' => 'Leading voices in conscious food systems transformation',
             'speakers' => [
-                ['name' => 'Speaker One', 'role' => 'Policy & Governance', 'bio' => 'Leading expert in food policy and governance with over 20 years of experience.', 'image' => '/brand/img22.jpg'],
-                ['name' => 'Speaker Two', 'role' => 'Agroecology', 'bio' => 'Pioneer in agroecological practices and sustainable farming systems.', 'image' => '/brand/img29.jpg'],
-                ['name' => 'Speaker Three', 'role' => 'Indigenous Knowledge', 'bio' => 'Advocate for indigenous food systems and traditional agricultural wisdom.', 'image' => '/brand/img30.jpg'],
-                ['name' => 'Speaker Four', 'role' => 'Youth & Movement Building', 'bio' => 'Youth leader driving food systems transformation across communities.', 'image' => '/brand/img31.jpg'],
-                ['name' => 'Speaker Five', 'role' => 'Food Systems', 'bio' => 'Researcher focused on conscious and regenerative food systems.', 'image' => '/brand/img32.jpg'],
-                ['name' => 'Speaker Six', 'role' => 'Sustainability', 'bio' => 'Environmental strategist working on sustainable food supply chains.', 'image' => '/brand/img33.jpg'],
+                ['name' => 'Speaker One', 'role' => 'Policy & Governance', 'bio' => 'Leading expert in food policy and governance with over 20 years of experience.', 'image' => '/brand/img22.jpg', 'show_on_homepage' => true],
+                ['name' => 'Speaker Two', 'role' => 'Agroecology', 'bio' => 'Pioneer in agroecological practices and sustainable farming systems.', 'image' => '/brand/img29.jpg', 'show_on_homepage' => true],
+                ['name' => 'Speaker Three', 'role' => 'Indigenous Knowledge', 'bio' => 'Advocate for indigenous food systems and traditional agricultural wisdom.', 'image' => '/brand/img30.jpg', 'show_on_homepage' => true],
+                ['name' => 'Speaker Four', 'role' => 'Youth & Movement Building', 'bio' => 'Youth leader driving food systems transformation across communities.', 'image' => '/brand/img31.jpg', 'show_on_homepage' => true],
+                ['name' => 'Speaker Five', 'role' => 'Food Systems', 'bio' => 'Researcher focused on conscious and regenerative food systems.', 'image' => '/brand/img32.jpg', 'show_on_homepage' => true],
+                ['name' => 'Speaker Six', 'role' => 'Sustainability', 'bio' => 'Environmental strategist working on sustainable food supply chains.', 'image' => '/brand/img33.jpg', 'show_on_homepage' => true],
             ],
             'conscious_food_title' => 'Conscious Food Systems: Not just what we eat, but how we grow, share and value food.',
             'conscious_food_description' => 'Food systems are at the heart of pressing global challenges: climate change, environmental pollution, biodiversity decline, and land degradation. The need for a bold and innovative path, harnessing the power of consciousness, mindfulness, and ethical decision-making, has never been more urgent.',
@@ -753,12 +767,6 @@ class AdminController extends Controller
             'partners_logos.*' => 'nullable|string',
             'financial_title' => 'nullable|string',
             'financial_body' => 'nullable|string',
-            'categories_section_title' => 'nullable|string',
-            'categories_section_subtitle' => 'nullable|string',
-            'categories' => 'nullable|array',
-            'categories.*.title' => 'nullable|string',
-            'categories.*.description' => 'nullable|string',
-            'categories.*.icon' => 'nullable|string|in:presentation,document',
             'cta_paragraph1' => 'nullable|string',
             'cta_paragraph2' => 'nullable|string',
             'cta_paragraph3' => 'nullable|string',
@@ -861,12 +869,6 @@ class AdminController extends Controller
             'partners_logos' => [],
             'financial_title' => 'Financial support to expand Summit impact',
             'financial_body' => 'At the Global Conscious Food Systems Summxit 2026, our priority is to expand the impact and accessibility of this gathering to all sectors and stakeholders, especially grassroots champions, small-scale producers, and those working actively in the field to shape the future of food systems.\n\nWe believe that diverse participation strengthens collective learning, fosters inclusive dialogue, and amplifies transformative action.\n\nTo make this vision a reality, we are seeking financial support from institutions, partners, and donors who share our commitment to equitable access and meaningful engagement.\n\nFinancial contributions can be made through sponsorship, partnerships, or directed grant support. For more information on how your organization or institution can support this initiative—including available sponsorship tiers, recognition opportunities, and impact highlights—please contact the Summit team at Thomas.Legrand@undp.org.',
-            'categories_section_title' => 'Submission Categories',
-            'categories_section_subtitle' => 'Applicants may submit one or more proposals under the following categories:',
-            'categories' => [
-                ['title' => 'Whole Session', 'description' => 'For applicants who propose to design and facilitate a full session during the Summit, workshops should be interactive and experiential, and focus on the themes illustrated below (see "Submission Themes"). The sessions will be 1.15 hrs length.', 'icon' => 'presentation'],
-                ['title' => 'Case Study', 'description' => 'For individuals or organizations not yet ready to propose a full interactive session, there is the option to submit a case study, experience, or initiative for inclusion in a panel-style or collective session with other contributors. Case studies should illustrate practical experiences, lessons learned, or emerging insights related to conscious food systems. The CoFSA team will propose how to integrate this in a session.', 'icon' => 'document'],
-            ],
             'cta_paragraph1' => 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.',
             'cta_paragraph2' => 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.',
             'cta_paragraph3' => 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.',
