@@ -411,6 +411,87 @@ const steps = [
             </div>
         </section>
 
+        <!-- Detailed Ticket Options Section -->
+        <section class="bg-[#F4F1EA] py-16 sm:py-20">
+            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
+                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Ticket options</h2>
+                <p class="mt-4 font-body text-lg leading-relaxed text-copy">
+                    To support an inclusive and diverse gathering, the Summit offers three participation tiers. These tiers are designed to make participation accessible to a wide range of actors working across food
+                    systems while ensuring the financial sustainability of the Summit.
+                </p>
+                <p class="mt-3 font-body text-lg leading-relaxed text-copy">
+                    Participants are invited to select the tier that best reflects the nature of their organization and available resources.
+                </p>
+
+                <div class="mt-8 space-y-8">
+                    <!-- Standard Price -->
+                    <div class="rounded-xl border border-primary-2/15 bg-white px-6 py-5 shadow-sm">
+                        <h3 class="font-title text-xl font-bold text-primary-1">Standard Price</h3>
+                        <p class="mt-1 font-body text-lg font-semibold text-accent-2">USD 970</p>
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                            The Standard Price reflects the actual cost of participation.
+                        </p>
+                    </div>
+
+                    <!-- Subsidised Price -->
+                    <div class="rounded-xl border border-primary-2/15 bg-white px-6 py-5 shadow-sm">
+                        <h3 class="font-title text-xl font-bold text-primary-1">Subsidised Price</h3>
+                        <p class="mt-1 font-body text-lg font-semibold text-accent-2">USD 580</p>
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                            The Subsidised Price is designed to support participation from individuals and organizations working in contexts where financial resources for international events may be limited but whose
+                            participation would be critical.
+                        </p>
+                        <p class="mt-4 font-body text-base font-semibold text-primary-1">Typical eligible participants</p>
+                        <p class="mt-2 font-body text-base leading-relaxed text-copy">
+                            Participants selecting the Subsidised Price should be based in low- and middle-income countries, and affiliated to the following type of organizations:
+                        </p>
+                        <ul class="mt-3 space-y-1.5 font-body text-base text-copy">
+                            <li>Non-governmental organizations (NGOs) and non-profit organizations (including national NGOs)</li>
+                            <li>Social enterprises and social businesses</li>
+                            <li>Grassroots organizations and community initiatives</li>
+                            <li>Farmer organizations and cooperatives</li>
+                            <li>Small start-ups and early-stage ventures working on food systems innovation</li>
+                            <li>Independent researchers or practitioners without institutional funding</li>
+                        </ul>
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                            Eligibility does not guarantee access to the Subsidised Price, which will be subject to resource availability.
+                        </p>
+                    </div>
+
+                    <!-- Supporter Price -->
+                    <div class="rounded-xl border border-primary-2/15 bg-white px-6 py-5 shadow-sm">
+                        <h3 class="font-title text-xl font-bold text-primary-1">Supporter Price</h3>
+                        <p class="mt-1 font-body text-lg font-semibold text-accent-2">USD 1,550</p>
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                            Participants who are able to do so are warmly encouraged to select the Supporter Price. This option helps sustain the Summit and supports a more inclusive gathering by enabling lower
+                            participation fees for community organizations, social enterprises, and emerging food system innovators. Your contribution helps ensure that diverse voices can be present in the conversation.
+                        </p>
+                        <p class="mt-4 font-body text-base font-semibold text-primary-1">
+                            We particularly encourage the following types of organizations to consider the Supporter Price:
+                        </p>
+                        <ul class="mt-3 space-y-1.5 font-body text-base text-copy">
+                            <li>Philanthropic foundations</li>
+                            <li>High-net-worth individuals</li>
+                            <li>Private sector companies, consultancies and advisory firms</li>
+                            <li>Investors and investment companies</li>
+                            <li>International organizations</li>
+                            <li>Participants attending with institutional budgets for international events</li>
+                        </ul>
+                    </div>
+
+                    <!-- Flexible Supporter Price -->
+                    <div class="rounded-xl border border-primary-2/15 bg-white px-6 py-5 shadow-sm">
+                        <h3 class="font-title text-xl font-bold text-primary-1">Flexible Supporter Price</h3>
+                        <p class="mt-1 font-body text-lg font-semibold text-accent-2">Above USD 970</p>
+                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
+                            For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and commitment to
+                            supporting an inclusive Summit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Registration Form -->
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
@@ -751,27 +832,32 @@ const steps = [
                         <!-- Price Tier Selection -->
                         <p class="mb-2 mt-6 font-title text-xl font-bold text-primary-1">Choose your Ticket option</p>
                         <p class="font-body text-base leading-relaxed text-copy">
-                            Participants are invited to select the tier that best reflects their organization's resources and available budgets.
-                            Participants whose organizations have the means are warmly encouraged to select the Supporter Price to help widen participation.
+                            Participants are invited to select the tier that best reflects their organization's resources and available budgets. Participants whose organizations have the means are warmly encouraged
+                            to select the Supporter Price to help widen participation.
                         </p>
                         <div class="mt-4 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <p class="font-body text-base font-semibold text-primary-1">Ticket options</p>
                             <div class="mt-4 space-y-4 font-body text-base text-copy">
                                 <div>
-                                    <p class="font-body font-semibold text-primary-1">Standard Price — USD ~970</p>
+                                    <p class="font-body font-semibold text-primary-1">Standard Price — USD 970</p>
                                     <p class="mt-1">The regular participation fee that supports the core costs of convening the Summit.</p>
                                 </div>
                                 <div>
-                                    <p class="font-body font-semibold text-primary-1">Subsidised Price — USD ~580</p>
-                                    <p class="mt-1">For participants working with limited financial resources whose organizations may not have dedicated budgets for international events.</p>
+                                    <p class="font-body font-semibold text-primary-1">Subsidised Price — USD 580</p>
+                                    <p class="mt-1">
+                                        For participants working with limited financial resources whose organizations may not have dedicated budgets for international events but whose participation would be critical.
+                                    </p>
                                 </div>
                                 <div>
-                                    <p class="font-body font-semibold text-primary-1">Supporter Price — USD ~1,550</p>
+                                    <p class="font-body font-semibold text-primary-1">Supporter Price — USD 1,550</p>
                                     <p class="mt-1">For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.</p>
                                 </div>
                                 <div>
-                                    <p class="font-body font-semibold text-primary-1">Flexible Supporter Price — Above USD ~1,550</p>
-                                    <p class="mt-1">For participants who are willing and able to contribute beyond the Supporter Price, this option allows you to choose an amount above USD 1,550 based on your capacity and commitment to supporting an inclusive Summit.</p>
+                                    <p class="font-body font-semibold text-primary-1">Flexible Supporter Price — Above USD 970</p>
+                                    <p class="mt-1">
+                                        For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and
+                                        commitment to supporting an inclusive Summit.
+                                    </p>
                                 </div>
                             </div>
                         </div>
