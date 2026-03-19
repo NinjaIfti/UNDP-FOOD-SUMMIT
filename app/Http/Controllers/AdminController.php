@@ -756,19 +756,32 @@ class AdminController extends Controller
 
         $current = $this->getGetInvolvedSettings();
 
+        $deletePublicFile = static function (?string $path): void {
+            if (!$path || !is_string($path)) return;
+            if (str_starts_with($path, '/storage/')) {
+                $rel = ltrim(substr($path, strlen('/storage/')), '/');
+                if ($rel !== '') {
+                    Storage::disk('public')->delete($rel);
+                }
+                return;
+            }
+            if (str_starts_with($path, '/') && file_exists(public_path($path))) {
+                @unlink(public_path($path));
+            }
+        };
+
+        $storePublicFile = static function ($file, string $dir, string $prefix): string {
+            $ext = $file->getClientOriginalExtension() ?: 'jpg';
+            $filename = $prefix . '_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            Storage::disk('public')->putFileAs($dir, $file, $filename);
+            return '/storage/' . trim($dir, '/') . '/' . $filename;
+        };
+
         // Hero main image
         $heroImage = $current['hero_image'] ?? '/brand/img34.jpg';
         if ($request->hasFile('hero_image')) {
-            if (!empty($heroImage) && str_starts_with($heroImage, '/') && file_exists(public_path($heroImage))) {
-                @unlink(public_path($heroImage));
-            }
-            $file = $request->file('hero_image');
-            $filename = 'getinvolved_hero_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/getinvolved'))) {
-                mkdir(public_path('brand/getinvolved'), 0755, true);
-            }
-            $file->move(public_path('brand/getinvolved'), $filename);
-            $heroImage = '/brand/getinvolved/' . $filename;
+            $deletePublicFile($heroImage);
+            $heroImage = $storePublicFile($request->file('hero_image'), 'getinvolved', 'getinvolved_hero');
         }
 
         // Hero slides
@@ -781,13 +794,7 @@ class AdminController extends Controller
         foreach ([1, 2, 3] as $i) {
             $key = 'hero_slide_' . $i . '_file';
             if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                $filename = 'getinvolved_hero_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
-                if (!is_dir(public_path('brand/getinvolved'))) {
-                    mkdir(public_path('brand/getinvolved'), 0755, true);
-                }
-                $file->move(public_path('brand/getinvolved'), $filename);
-                $heroSlides[] = '/brand/getinvolved/' . $filename;
+                $heroSlides[] = $storePublicFile($request->file($key), 'getinvolved', 'getinvolved_hero_slide_' . $i);
             }
         }
 
@@ -801,13 +808,7 @@ class AdminController extends Controller
         foreach ([1, 2, 3, 4, 5, 6] as $i) {
             $key = 'partner_logo_' . $i . '_file';
             if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                $filename = 'getinvolved_partner_logo_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
-                if (!is_dir(public_path('brand/getinvolved/partners'))) {
-                    mkdir(public_path('brand/getinvolved/partners'), 0755, true);
-                }
-                $file->move(public_path('brand/getinvolved/partners'), $filename);
-                $partnerLogos[] = '/brand/getinvolved/partners/' . $filename;
+                $partnerLogos[] = $storePublicFile($request->file($key), 'getinvolved/partners', 'getinvolved_partner_logo_' . $i);
             }
         }
 
