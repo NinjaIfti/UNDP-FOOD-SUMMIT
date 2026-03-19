@@ -10,6 +10,11 @@ const form = useForm({
     phone: '',
     country: '',
     organization: '',
+    organization_type: '',
+    organization_type_other: '',
+    legal_country_registration: '',
+    organization_size: '',
+    participation_budget_support: '',
     job_title: '',
     website: '',
     passport_number: '',
@@ -18,6 +23,7 @@ const form = useForm({
     departure_date: '',
     price_tier: '',
     confirm_tier: false,
+    subsidized_price_justification: '',
     field_visit: false,
     accessibility_needed: '',
     accessibility_details: '',
@@ -46,6 +52,13 @@ const props = defineProps({
 });
 
 const yourStay = props.yourStaySettings || {};
+
+const selectedPackage = () => props.packages?.find?.((p) => String(p?.id) === String(form.price_tier)) || null;
+const isSubsidizedSelected = () => {
+    const pkg = selectedPackage();
+    const name = (pkg?.name || '').toString().toLowerCase();
+    return name.includes('subsid');
+};
 
 const photoPreview = ref(null);
 
@@ -411,8 +424,24 @@ const steps = [
         <!-- Registration Form -->
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
+                <div class="mb-8 rounded-xl border border-primary-2/15 bg-white px-6 py-5">
+                    <h3 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Applying from Bhutan</h3>
+                    <p class="mt-3 font-body text-lg leading-relaxed text-copy">
+                        Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form here.
+                    </p>
+                    <div class="mt-4 flex justify-center">
+                        <a
+                            href="#"
+                            target="_blank"
+                            class="inline-flex items-center justify-center rounded-lg bg-primary-2 px-5 py-3 font-body text-base font-semibold text-white transition hover:bg-primary-2/90"
+                        >
+                            Open Bhutan form
+                        </a>
+                    </div>
+                </div>
+
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
-                <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">Fill out the form below to begin your registration process</p>
+                <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">If you are an international participant, please fill out the form below to begin your registration process</p>
 
                 <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">
                     <!-- Section 1: Personal Information -->
@@ -494,7 +523,7 @@ const steps = [
                             </div>
                             <div>
                                 <label for="organization" class="mb-1 block text-base font-medium text-primary-1">Organization / Affiliation</label>
-                                <p class="mb-2 font-body text-base text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
+                                <p class="mb-2 font-body text-base text-copy">Organization / Affiliation - Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
                                 <input
                                     id="organization"
                                     v-model="form.organization"
@@ -503,6 +532,72 @@ const steps = [
                                     placeholder='e.g. Independent'
                                 />
                                 <p v-if="form.errors.organization" class="mt-1 text-base text-red-400">{{ form.errors.organization }}</p>
+                            </div>
+                            <div>
+                                <label for="organization_type" class="mb-1 block text-base font-medium text-primary-1">Organization type</label>
+                                <p class="mb-2 font-body text-base text-copy">Please select the type of organization you are affiliated with.</p>
+                                <select
+                                    id="organization_type"
+                                    v-model="form.organization_type"
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                >
+                                    <option value="" class="text-gray-800">Select an option</option>
+                                    <option value="Government institution or public agency" class="text-gray-800">Government institution or public agency</option>
+                                    <option value="University or research institution" class="text-gray-800">University or research institution</option>
+                                    <option value="Non-governmental organization (NGO) or non-profit organization" class="text-gray-800">Non-governmental organization (NGO) or non-profit organization</option>
+                                    <option value="International organization or development agency" class="text-gray-800">International organization or development agency</option>
+                                    <option value="Philanthropic foundation" class="text-gray-800">Philanthropic foundation</option>
+                                    <option value="Private sector company or corporate organization" class="text-gray-800">Private sector company or corporate organization</option>
+                                    <option value="Social enterprise or social business" class="text-gray-800">Social enterprise or social business</option>
+                                    <option value="Start-up or early-stage venture" class="text-gray-800">Start-up or early-stage venture</option>
+                                    <option value="Grassroots organization or community initiative" class="text-gray-800">Grassroots organization or community initiative</option>
+                                    <option value="Farmer organization or cooperative" class="text-gray-800">Farmer organization or cooperative</option>
+                                    <option value="Consultancy or advisory firm" class="text-gray-800">Consultancy or advisory firm</option>
+                                    <option value="Impact investor or investment organization" class="text-gray-800">Impact investor or investment organization</option>
+                                    <option value="Independent researcher or practitioner" class="text-gray-800">Independent researcher or practitioner</option>
+                                    <option value="Other" class="text-gray-800">Other (please specify)</option>
+                                </select>
+                                <p v-if="form.errors.organization_type" class="mt-1 text-base text-red-400">{{ form.errors.organization_type }}</p>
+                            </div>
+                            <div v-if="form.organization_type === 'Other'">
+                                <label for="organization_type_other" class="mb-1 block text-base font-medium text-primary-1">Other (please specify)</label>
+                                <input
+                                    id="organization_type_other"
+                                    v-model="form.organization_type_other"
+                                    type="text"
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                    placeholder="Please specify"
+                                />
+                                <p v-if="form.errors.organization_type_other" class="mt-1 text-base text-red-400">{{ form.errors.organization_type_other }}</p>
+                            </div>
+                            <div>
+                                <label for="legal_country_registration" class="mb-1 block text-base font-medium text-primary-1">Legal country of registration</label>
+                                <p class="mb-2 font-body text-base text-copy">Country where your organization is legally registered.</p>
+                                <select
+                                    id="legal_country_registration"
+                                    v-model="form.legal_country_registration"
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                >
+                                    <option value="" class="text-gray-800">Select country</option>
+                                    <option v-for="c in countries" :key="c" :value="c" class="text-gray-800">{{ c }}</option>
+                                </select>
+                                <p v-if="form.errors.legal_country_registration" class="mt-1 text-base text-red-400">{{ form.errors.legal_country_registration }}</p>
+                            </div>
+                            <div>
+                                <label for="organization_size" class="mb-1 block text-base font-medium text-primary-1">Organization Size</label>
+                                <p class="mb-2 font-body text-base text-copy">Please indicate the approximate size of your organization.</p>
+                                <select
+                                    id="organization_size"
+                                    v-model="form.organization_size"
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                >
+                                    <option value="" class="text-gray-800">Select size</option>
+                                    <option value="1–5 people" class="text-gray-800">1–5 people</option>
+                                    <option value="6–20 people" class="text-gray-800">6–20 people</option>
+                                    <option value="21–100 people" class="text-gray-800">21–100 people</option>
+                                    <option value="100+ people" class="text-gray-800">100+ people</option>
+                                </select>
+                                <p v-if="form.errors.organization_size" class="mt-1 text-base text-red-400">{{ form.errors.organization_size }}</p>
                             </div>
                             <div>
                                 <label for="job_title" class="mb-1 block text-base font-medium text-primary-1">Job Title / Role *</label>
@@ -596,6 +691,25 @@ const steps = [
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
 
                         <div class="mt-4 space-y-6">
+                            <div class="mt-2 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                                <p class="mb-2 font-body text-base font-semibold text-primary-1">Will your participation be supported by an organizational or project budget?</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.participation_budget_support === 'Yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
+                                        <input type="radio" v-model="form.participation_budget_support" value="Yes" class="h-4 w-4 accent-[#F59C0E]" />
+                                        <span class="text-base text-primary-1">Yes</span>
+                                    </label>
+                                    <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.participation_budget_support === 'No' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
+                                        <input type="radio" v-model="form.participation_budget_support" value="No" class="h-4 w-4 accent-[#F59C0E]" />
+                                        <span class="text-base text-primary-1">No</span>
+                                    </label>
+                                    <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.participation_budget_support === 'Partially' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
+                                        <input type="radio" v-model="form.participation_budget_support" value="Partially" class="h-4 w-4 accent-[#F59C0E]" />
+                                        <span class="text-base text-primary-1">Partially</span>
+                                    </label>
+                                </div>
+                                <p v-if="form.errors.participation_budget_support" class="mt-2 text-base text-red-400">{{ form.errors.participation_budget_support }}</p>
+                            </div>
+
                             <div class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
                                 <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
                                     <div class="flex items-center gap-2">
