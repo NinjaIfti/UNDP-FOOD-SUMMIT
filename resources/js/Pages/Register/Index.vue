@@ -411,24 +411,14 @@ const steps = [
             </div>
         </section>
 
-        <!-- Contact -->
-        <section class="bg-[#F4F1EA] py-12 sm:py-16">
-            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <p class="text-center font-body text-base text-copy sm:text-lg">
-                    For any questions or additional clarifications, please contact the organizers at
-                    <a href="mailto:cofsa@undp.org" class="font-semibold text-accent-1 hover:underline">cofsa@undp.org</a>
-                </p>
-            </div>
-        </section>
-
         <!-- Registration Form -->
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <div class="mb-8 rounded-xl border border-primary-2/15 bg-white px-6 py-5">
                     <h3 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Applying from Bhutan</h3>
                     <p class="mt-3 font-body text-lg leading-relaxed text-copy">
-                        Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form{' '}
-                        <a href="#" target="_blank" class="inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
+                        Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form
+                        <a href="#" target="_blank" class="ml-1 inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
                             here
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0l-1.414-1.414a4 4 0 010-5.656m7.07-7.07a4 4 0 015.656 0l1.414 1.414a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0m-1.414-1.414a4 4 0 010-5.656l1.414-1.414" />
