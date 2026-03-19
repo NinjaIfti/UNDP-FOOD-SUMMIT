@@ -427,17 +427,15 @@ const steps = [
                 <div class="mb-8 rounded-xl border border-primary-2/15 bg-white px-6 py-5">
                     <h3 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Applying from Bhutan</h3>
                     <p class="mt-3 font-body text-lg leading-relaxed text-copy">
-                        Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form here.
-                    </p>
-                    <div class="mt-4 flex justify-center">
-                        <a
-                            href="#"
-                            target="_blank"
-                            class="inline-flex items-center justify-center rounded-lg bg-primary-2 px-5 py-3 font-body text-base font-semibold text-white transition hover:bg-primary-2/90"
-                        >
-                            Open Bhutan form
+                        Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form{' '}
+                        <a href="#" target="_blank" class="inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
+                            here
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0l-1.414-1.414a4 4 0 010-5.656m7.07-7.07a4 4 0 015.656 0l1.414 1.414a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0m-1.414-1.414a4 4 0 010-5.656l1.414-1.414" />
+                            </svg>
                         </a>
-                    </div>
+                        .
+                    </p>
                 </div>
 
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
@@ -860,7 +858,7 @@ const steps = [
                             <div class="flex gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.accessibility_needed === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.accessibility_needed" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-base text-white">Yes</span>
+                                    <span class="text-base text-primary-1">Yes</span>
                                 </label>
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.accessibility_needed === 'no' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.accessibility_needed" value="no" class="h-4 w-4 accent-[#F59C0E]" />
