@@ -17,6 +17,7 @@ const form = useForm({
     arrival_date: '',
     departure_date: '',
     price_tier: '',
+    confirm_tier: false,
     field_visit: false,
     accessibility_needed: '',
     accessibility_details: '',
@@ -24,10 +25,6 @@ const form = useForm({
     dietary_other: '',
     heard_from: [],
     heard_from_other: '',
-    additional_members: [
-        { first_name: '', last_name: '', passport_number: '' },
-        { first_name: '', last_name: '', passport_number: '' },
-    ],
     cofsa_member: '',
     cofsa_newsletter: '',
     emergency_name: '',
@@ -188,16 +185,6 @@ function removePhoto() {
     photoPreview.value = null;
 }
 
-function addMember() {
-    form.additional_members.push({ first_name: '', last_name: '', passport_number: '' });
-}
-
-function removeMember(index) {
-    if (form.additional_members.length > 1) {
-        form.additional_members.splice(index, 1);
-    }
-}
-
 const countries = [
     'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
     'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium',
@@ -249,27 +236,27 @@ const steps = [
     {
         number: 1,
         title: 'Submit Your Registration Application',
-        desc: 'Complete the form with your personal details, selected participation package, and any optional preferences.',
+        desc: 'Complete the registration form with your personal details, selected participation package, and any optional preferences.',
     },
     {
         number: 2,
         title: 'Review and Confirmation by Organizers',
-        desc: 'All applications will be reviewed by the organizing team. Submission does not automatically confirm participation.',
+        desc: 'All applications will be reviewed by the organizing team. Submission of the form does not automatically confirm participation.',
     },
     {
         number: 3,
         title: 'Approval Notification and Payment Instructions',
-        desc: 'Once your registration is approved, you will receive an email confirming your participation and providing instructions to proceed with payment.',
+        desc: 'If your application is approved, you will receive an email confirming your participation and providing instructions to proceed with payment.',
     },
     {
         number: 4,
         title: 'Visa Coordination After Payment',
-        desc: 'After payment is completed, the organizers will begin the full visa entry permission process and prepare the necessary documentation for your travel to Bhutan.',
+        desc: 'Once payment is completed, the organizers will initiate the visa process and prepare the required documentation for travel to Bhutan. Participants are therefore encouraged to begin checking flight schedules, as travel details will be required to process the visa. If all documents are submitted on time, the visa process takes around 2 weeks.',
     },
     {
         number: 5,
         title: 'Visa Approval and Travel Planning',
-        desc: 'Once your visa clearance is confirmed, you will be informed immediately and may then proceed with booking your flights, accommodation, and final travel arrangements.',
+        desc: 'When your visa is approved, you will be notified immediately. At this stage, you may proceed with booking your flights, accommodation, and final travel arrangements.',
     },
 ];
 </script>
@@ -306,41 +293,103 @@ const steps = [
         </div>
         <!-- Hero Banner -->
         <section class="relative bg-[#F4F1EA] py-20 sm:py-28">
-            <div class="absolute inset-0 opacity-20">
-                <img src="/brand/img34.jpg" alt="" class="h-full w-full object-cover" aria-hidden="true" />
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-b from-primary-1/70 via-primary-1/30 to-primary-2/60" />
-            <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-                <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Register Now!</h1>
-                <p class="mx-auto mt-4 max-w-2xl text-center font-body text-lg font-medium text-accent-2 sm:text-xl">Global Conscious Food Systems Summit · 31 Aug – 4 Sep 2026 · Bhutan</p>
+            <div
+                class="absolute inset-0"
+                :style="{
+                    backgroundImage: `
+                        radial-gradient(1200px 600px at 20% 20%, rgba(245, 156, 14, 0.22), transparent 60%),
+                        radial-gradient(900px 500px at 80% 35%, rgba(114, 148, 48, 0.18), transparent 60%),
+                        radial-gradient(900px 600px at 50% 90%, rgba(13, 56, 90, 0.12), transparent 65%),
+                        linear-gradient(to bottom, rgba(13, 56, 90, 0.06), rgba(245, 156, 14, 0.06))
+                    `,
+                }"
+            />
+            <div class="relative mx-auto w-full max-w-[70rem] px-4 text-center sm:px-6 lg:px-8">
+                <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Join the Global Conscious Food Systems Summit 2026!</h1>
+                <p class="mx-auto mt-4 max-w-2xl text-center font-body text-lg font-medium text-accent-2 sm:text-xl">31st August – 4 September 2026 · Paro, Bhutan</p>
             </div>
         </section>
 
         <!-- Intro -->
         <section class="bg-[#F4F1EA] py-16 sm:py-20">
-            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <p class="font-body text-lg leading-relaxed text-ink">
                     We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit in Bhutan. Please note that space is limited, and we encourage timely submission of registration applications to support an efficient review and coordination process.
                 </p>
                 <p class="mt-4 font-body text-lg leading-relaxed text-ink">
                     Participation in an event of this nature requires a carefully coordinated registration and travel process, particularly due to the specific entry regulations and visa procedures for visiting Bhutan.
                 </p>
-                <div class="mt-6 rounded-xl border-l-4 border-accent-2 bg-accent-2/10 px-6 py-4">
-                    <p class="font-body text-sm font-semibold uppercase tracking-wide text-accent-2">Important Note</p>
-                    <p class="mt-1 font-body text-base text-ink">
-                        We strongly recommend that participants do not book international travel or accommodation arrangements until their visa entry permission has been officially approved.
-                    </p>
+                <p class="font-body text-lg leading-relaxed text-ink">
+                    We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit, to be held from 31st August to 4 September, in Paro, Bhutan.
+                </p>
+
+                <div class="mt-6 rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm">
+                    <h3 class="font-title text-xl font-bold text-primary-1">Good to know before registering</h3>
+
+                    <div class="mt-5 space-y-6">
+                        <div>
+                            <p class="font-title text-lg font-bold text-primary-1">1. Participation requires a Summit entrance ticket</p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                Participation in the Summit requires the purchase of an entrance ticket. Ticket revenues are used exclusively to cover the essential costs of delivering the event, including the venue, meals during the Summit, local logistics, and coordination.. They do not cover any human resources costs related to the preparation and execution of the Summit.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="font-title text-lg font-bold text-primary-1">2. Limited space — Early Registration Highly Recommended</p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                The Summit can accommodate a limited number of participants. We therefore encourage interested guests to submit their registration applications as early as possible, as applications will be reviewed on a rolling basis and early submissions may increase the likelihood of securing a place at the Summit.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="font-title text-lg font-bold text-primary-1">3. Applications will be approved by the organizers</p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                Submitting a registration form does not automatically confirm participation. All applications will be reviewed by the organizing team to ensure alignment with the Summit’s objectives and to maintain a diverse and balanced group of participants.
+                            </p>
+
+                            <p class="mt-4 font-body text-lg font-semibold text-primary-1">Selection will consider factors such as:</p>
+                            <ul class="mt-2 space-y-2 font-body text-lg text-copy">
+                                <li class="flex items-start gap-2"><span class="mt-1 text-accent-2">•</span><span>Relevance to the core themes of the Summit</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-accent-2">•</span><span>Geographical diversity</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-accent-2">•</span><span>Representation from different sectors (policy, research, private sector, civil society, philanthropy, Indigenous and community leadership)</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-accent-2">•</span><span>Gender balance and inclusive representation</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-accent-2">•</span><span>Potential to contribute to meaningful cross-sector dialogue and collaboration</span></li>
+                            </ul>
+
+                            <p class="mt-4 font-body text-lg leading-relaxed text-copy">
+                                Our intention is to make this inaugural summit as inclusive as possible, while recognizing the practical constraints of organizing an international gathering in the current context.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="font-title text-lg font-bold text-primary-1">4. Participation Costs</p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                All participants — including speakers and session contributors — are expected to cover the full costs of participation, including the Summit ticket, travel, accommodation, and related expenses.
+                            </p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                More details can be found in Section: Participation Costs
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="font-title text-lg font-bold text-primary-1">5. Important Travel Advisory</p>
+                            <p class="mt-2 font-body text-lg leading-relaxed text-copy">
+                                Entry to Bhutan requires a visa coordinated with the organizers. We strongly recommend that participants do not book flights or accommodation until their visa entry permission has been officially approved.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+
                 <p class="mt-6 font-body text-lg leading-relaxed text-ink">
-                    To ensure a smooth experience for all participants, registration will follow the steps outlined below:
+                    Step-by-step registration Process
                 </p>
             </div>
         </section>
 
         <!-- Steps -->
         <section class="border-y border-primary-1/10 bg-[#F4F1EA] py-16 sm:py-20">
-            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Registration Process</h2>
+            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
+                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Step-by-step registration Process</h2>
                 <div class="mt-12 space-y-6">
                     <div v-for="step in steps" :key="step.number" class="flex gap-5">
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-sm font-bold text-primary-1">
@@ -357,13 +406,10 @@ const steps = [
             </div>
         </section>
 
-        <!-- Closing Note -->
+        <!-- Contact -->
         <section class="bg-[#F4F1EA] py-12 sm:py-16">
-            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
-                    We appreciate your understanding and cooperation as we coordinate these steps with care. Please rest assured that our team will be spearheading the process closely to ensure timely approvals and a smooth, efficient experience. We look forward to accompanying you every step of the way toward an inspiring gathering in Bhutan.
-                </p>
-                <p class="mt-4 font-body text-base text-copy sm:text-lg">
+            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
+                <p class="text-center font-body text-base text-copy sm:text-lg">
                     For any questions or additional clarifications, please contact the organizers at
                     <a href="mailto:cofsa@undp.org" class="font-semibold text-accent-1 hover:underline">cofsa@undp.org</a>
                 </p>
@@ -372,7 +418,7 @@ const steps = [
 
         <!-- Registration Form -->
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
-            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-copy">Fill out the form below to begin your registration process</p>
 
@@ -382,7 +428,7 @@ const steps = [
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 1 — Personal Information</legend>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
                             <div>
-                                <label for="first_name" class="mb-1 block text-sm font-medium text-primary-1">First Name (as in Passport/ID) *</label>
+                                <label for="first_name" class="mb-1 block text-base font-medium text-primary-1">First Name (as in Passport/ID) *</label>
                                 <input
                                     id="first_name"
                                     v-model="form.first_name"
@@ -391,10 +437,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="First name as in passport"
                                 />
-                                <p v-if="form.errors.first_name" class="mt-1 text-sm text-red-400">{{ form.errors.first_name }}</p>
+                                <p v-if="form.errors.first_name" class="mt-1 text-base text-red-400">{{ form.errors.first_name }}</p>
                             </div>
                             <div>
-                                <label for="last_name" class="mb-1 block text-sm font-medium text-primary-1">Last Name (as in Passport/ID) *</label>
+                                <label for="last_name" class="mb-1 block text-base font-medium text-primary-1">Last Name (as in Passport/ID) *</label>
                                 <input
                                     id="last_name"
                                     v-model="form.last_name"
@@ -403,10 +449,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="Last name as in passport"
                                 />
-                                <p v-if="form.errors.last_name" class="mt-1 text-sm text-red-400">{{ form.errors.last_name }}</p>
+                                <p v-if="form.errors.last_name" class="mt-1 text-base text-red-400">{{ form.errors.last_name }}</p>
                             </div>
                             <div>
-                                <label for="reg-email" class="mb-1 block text-sm font-medium text-primary-1">Email Address *</label>
+                                <label for="reg-email" class="mb-1 block text-base font-medium text-primary-1">Email Address *</label>
                                 <input
                                     id="reg-email"
                                     v-model="form.email"
@@ -415,11 +461,11 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="you@example.com"
                                 />
-                                <p v-if="form.errors.email" class="mt-1 text-sm text-red-400">{{ form.errors.email }}</p>
+                                <p v-if="form.errors.email" class="mt-1 text-base text-red-400">{{ form.errors.email }}</p>
                             </div>
                             <div>
-                                <label class="mb-1 block text-sm font-medium text-primary-1">Phone Number *</label>
-                                <p class="mb-2 font-body text-xs text-copy">Choose your country code, then enter your number (no need to type the code again).</p>
+                                <label class="mb-1 block text-base font-medium text-primary-1">Phone Number *</label>
+                                <p class="mb-2 font-body text-sm text-copy">Choose your country code, then enter your number (no need to type the code again).</p>
                                 <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
                                     <select
                                         v-model="phoneCountryCode"
@@ -438,7 +484,7 @@ const steps = [
                                         placeholder="e.g. 234 567 8900"
                                     />
                                 </div>
-                                <p v-if="phoneClientError || form.errors.phone" class="mt-1 text-sm text-red-400">
+                                <p v-if="phoneClientError || form.errors.phone" class="mt-1 text-base text-red-400">
                                     {{ phoneClientError || form.errors.phone }}
                                 </p>
                             </div>
@@ -455,14 +501,14 @@ const steps = [
                                 <p v-if="form.errors.country" class="mt-1 text-sm text-red-400">{{ form.errors.country }}</p>
                             </div>
                             <div>
-                                <label for="organization" class="mb-1 block text-sm font-medium text-primary-1">Organization / Affiliation *</label>
+                                <label for="organization" class="mb-1 block text-sm font-medium text-primary-1">Organization / Affiliation</label>
+                                <p class="mb-2 font-body text-xs text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
                                 <input
                                     id="organization"
                                     v-model="form.organization"
                                     type="text"
-                                    required
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                    placeholder="Your organization"
+                                    placeholder='e.g. Independent'
                                 />
                                 <p v-if="form.errors.organization" class="mt-1 text-sm text-red-400">{{ form.errors.organization }}</p>
                             </div>
@@ -479,7 +525,8 @@ const steps = [
                                 <p v-if="form.errors.job_title" class="mt-1 text-sm text-red-400">{{ form.errors.job_title }}</p>
                             </div>
                             <div>
-                                <label for="website" class="mb-1 block text-sm font-medium text-primary-1">Website / Links</label>
+                                <label for="website" class="mb-1 block text-sm font-medium text-primary-1">Website/ Link</label>
+                                <p class="mb-2 font-body text-xs text-copy">Please provide your organization’s website or relevant links. If unaffiliated, you may include a personal link</p>
                                 <input
                                     id="website"
                                     v-model="form.website"
@@ -500,7 +547,7 @@ const steps = [
                                 Visa arrangements for this event will be fully coordinated by the organizing team. Upon approval of your registration, the organizers will guide you through the visa process and provide the necessary official documentation required for your application. Please ensure that the passport details submitted below are accurate and match your travel documents.
                             </p>
                             <p class="mt-2 font-body text-sm leading-relaxed text-copy">
-                                The Summit's official dates are <span class="font-semibold text-primary-1">31 August – 4 September 2026</span>. Participants covered under the Sustainable Development Service (SDS) fee may stay for a limited number of days around the event period. If you wish to extend your stay beyond the covered dates, additional arrangements and fees may apply — the organizing team will advise you on the process after registration approval.
+                                Please ensure your passport is valid for at least 6 months from your travel date.
                             </p>
                         </div>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
@@ -557,7 +604,7 @@ const steps = [
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 3 — Select Your Price</legend>
 
                         <div class="mt-4 space-y-6">
-                            <div v-if="yourStay.included_items && yourStay.included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
+                            <div class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
                                 <div class="bg-gradient-to-r from-primary-2 to-primary-2/80 p-4">
                                     <div class="flex items-center gap-2">
                                         <div class="bg-white/20 p-2 rounded-none">
@@ -565,41 +612,25 @@ const steps = [
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <h3 class="font-title text-xl font-bold text-white">
-                                            {{ yourStay.included_title || 'What\'s included in the Price' }}
-                                        </h3>
+                                        <h3 class="font-title text-xl font-bold text-white">What’s included in the Price</h3>
                                     </div>
                                 </div>
-
-                                <div class="p-6 space-y-5">
-                                    <div v-for="(item, index) in yourStay.included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-accent-2/10 p-4 rounded-none border border-accent-2/30' : '']">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <div :class="[
-                                                'p-2 rounded-none',
-                                                item.highlighted ? 'bg-accent-2/30' : index % 5 === 0 ? 'bg-primary-2/20' : index % 5 === 1 ? 'bg-accent-2/20' : index % 5 === 2 ? 'bg-blue-100' : index % 5 === 3 ? 'bg-purple-100' : 'bg-gray-100'
-                                            ]">
-                                                <svg class="w-5 h-5" :class="[
-                                                    item.highlighted ? 'text-accent-2' : index % 5 === 0 ? 'text-primary-2' : index % 5 === 1 ? 'text-accent-2' : index % 5 === 2 ? 'text-blue-600' : index % 5 === 3 ? 'text-purple-600' : 'text-gray-500'
-                                                ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
-                                            <ul v-if="item.isList && item.description" class="font-body text-sm text-copy space-y-1">
-                                                <li v-for="(line, lineIndex) in item.description.split('\n').filter(l => l.trim())" :key="lineIndex">
-                                                    <span v-if="line.trim().startsWith('•')">{{ line.trim() }}</span>
-                                                    <span v-else>• {{ line.trim() }}</span>
-                                                </li>
-                                            </ul>
-                                            <p v-else class="font-body text-sm text-copy">{{ item.description }}</p>
-                                        </div>
-                                    </div>
+                                <div class="p-6 space-y-3 font-body text-sm text-copy">
+                                    <p class="font-body text-sm font-semibold text-primary-1">The Summit ticket price INCLUDES:</p>
+                                    <ul class="mt-2 space-y-1.5 text-sm text-copy">
+                                        <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span>Entrance and participation in the event from 1-4 September</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span><span>Daily meals provided at the venue, including:</span></li>
+                                        <li class="ml-6 flex gap-2"><span class="mt-1 text-primary-2">•</span>Daily lunch for summit participants</li>
+                                        <li class="ml-6 flex gap-2"><span class="mt-1 text-primary-2">•</span>Two tea/coffee breaks per day</li>
+                                        <li class="ml-6 flex gap-2"><span class="mt-1 text-primary-2">•</span>Two dinners</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span><span>Visa application: Visa application fee of BTN 5,000 (approx. USD 55), as well as full coordination of the visa entry permission process. Please note that participants who choose to arrange their visa independently will be required to pay the standard visa fee of USD 65 per person. Indian nationals are exempt from visa fees.</span></li>
+                                        <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span><span><strong class="text-primary-1">Sustainable Development Fee (SDF):</strong> As part of their contribution to the Summit, the Royal Government of Bhutan is granting all Summit participants a waiver of the Sustainable Development Fee (SDF), normally USD 100 per adult per night, for the Summit period and associated days.</span></li>
+                                        <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span>Local transportation between the list of selected  hotels in Paro and the event venue from 1-4 September.</li>
+                                    </ul>
                                 </div>
                             </div>
 
-                            <div v-if="yourStay.not_included_items && yourStay.not_included_items.length > 0" class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
+                            <div class="bg-white rounded-none shadow-xl overflow-hidden border border-primary-2/15">
                                 <div class="bg-gradient-to-r from-gray-600 to-gray-800 p-4">
                                     <div class="flex items-center gap-2">
                                         <div class="bg-white/20 p-2 rounded-none">
@@ -607,37 +638,36 @@ const steps = [
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </div>
-                                        <h3 class="font-title text-xl font-bold text-white">
-                                            {{ yourStay.not_included_title || 'What\'s not included in the Price' }}
-                                        </h3>
+                                        <h3 class="font-title text-xl font-bold text-white">What’s not included in the Price</h3>
                                     </div>
                                 </div>
-
-                                <div class="p-6 space-y-5">
-                                    <div v-for="(item, index) in yourStay.not_included_items" :key="index" :class="['flex gap-4', item.highlighted ? 'bg-gray-50 p-4 rounded-none border border-gray-200' : '']">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <div :class="[
-                                                'p-2 rounded-none',
-                                                item.highlighted ? 'bg-gray-200' : 'bg-gray-100'
-                                            ]">
-                                                <svg class="w-5 h-5" :class="[
-                                                    item.highlighted ? 'text-gray-600' : 'text-gray-500'
-                                                ]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-title font-semibold text-ink mb-1">{{ item.title }}</h4>
-                                            <p class="font-body text-sm text-copy">{{ item.description }}</p>
-                                        </div>
-                                    </div>
+                                <div class="p-6 space-y-3 font-body text-sm text-copy">
+                                    <p class="font-body text-sm font-semibold text-primary-1">Please note that the Summit ticket price DOES NOT INCLUDE:</p>
+                                    <ul class="mt-2 space-y-1.5 text-sm text-copy">
+                                        <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>International travel to and from Bhutan (Paro Airport).</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Accommodation costs in Paro</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Airport transfers (transportation between Paro Airport and hotels in Paro)</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Two dinners outside the official Summit programme</li>
+                                        <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Any personal expenses or additional costs incurred during your stay in Bhutan.</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Price Tier Selection -->
-                        <p class="mb-2 mt-6 font-body text-sm font-medium text-primary-1">Select your price tier *</p>
+                        <p class="mb-2 mt-6 font-title text-xl font-bold text-primary-1">Choose your Ticket option</p>
+                        <p class="font-body text-base leading-relaxed text-copy">
+                            Participants are invited to select the tier that best reflects their organization's resources and available budgets.
+                            Participants whose organizations have the means are warmly encouraged to select the Supporter Price to help widen participation.
+                        </p>
+                        <div class="mt-4 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                            <p class="font-body text-sm font-semibold text-primary-1">Ticket options</p>
+                            <div class="mt-3 space-y-2 font-body text-sm text-copy">
+                                <p>Standard Price — USD ~970</p>
+                                <p>Social/subsidized Price — USD ~580</p>
+                                <p>Supporter Price — USD ~1,550</p>
+                            </div>
+                        </div>
                         <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-sm text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                         <div v-else class="space-y-3">
                             <label
@@ -662,6 +692,17 @@ const steps = [
                             </label>
                         </div>
                         <p v-if="form.errors.price_tier" class="mt-1 text-sm text-red-400">{{ form.errors.price_tier }}</p>
+
+                        <div class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                            <label class="flex items-start gap-3">
+                                <input type="checkbox" v-model="form.confirm_tier" class="mt-1 h-4 w-4 accent-[#F59C0E]" />
+                                <span class="font-body text-sm text-ink">
+                                    I confirm that the ticket tier selected reflects the financial capacity of my organization.
+                                    <span class="mt-1 block text-copy">The organizing team may review ticket selections and contact applicants if a different tier appears more appropriate.</span>
+                                </span>
+                            </label>
+                            <p v-if="form.errors.confirm_tier" class="mt-2 text-sm text-red-400">{{ form.errors.confirm_tier }}</p>
+                        </div>
 
                         <!-- Field Visit Add-on -->
                         <div class="mt-6">
@@ -765,81 +806,9 @@ const steps = [
                         </div>
                     </fieldset>
 
-                    <!-- Section 4: Additional Participants -->
+                    <!-- Section 4: Others -->
                     <fieldset>
-                        <legend class="font-body text-lg font-semibold text-accent-2">Section 4 — Additional Participants</legend>
-                        <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-body text-sm leading-relaxed text-copy">
-                                If you are traveling with a family member, companion, or guest, please provide their information below. Passport details are collected solely to allow the organizing team to fully coordinate the visa entry permission process for accompanying persons.
-                            </p>
-                        </div>
-
-                        <div class="mt-4 space-y-6">
-                            <div v-for="(member, i) in form.additional_members" :key="i" class="rounded-xl border border-primary-2/20 bg-white px-5 py-5">
-                                <div class="flex items-center justify-between">
-                                    <h4 class="font-body text-sm font-semibold text-primary-1">Additional Member {{ i + 1 }}</h4>
-                                    <button
-                                        v-if="form.additional_members.length > 1"
-                                        type="button"
-                                        @click="removeMember(i)"
-                                        class="flex h-7 w-7 items-center justify-center rounded-full text-copy transition hover:bg-accent-2/20 hover:text-accent-2"
-                                        title="Remove member"
-                                    >
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="mt-3 grid gap-4 sm:grid-cols-3">
-                                    <div>
-                                        <label :for="'member_first_' + i" class="mb-1 block text-sm font-medium text-primary-1">First Name (as in Passport/ID)</label>
-                                        <input
-                                            :id="'member_first_' + i"
-                                            v-model="member.first_name"
-                                            type="text"
-                                            class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                            placeholder="First name"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label :for="'member_last_' + i" class="mb-1 block text-sm font-medium text-primary-1">Last Name (as in Passport/ID)</label>
-                                        <input
-                                            :id="'member_last_' + i"
-                                            v-model="member.last_name"
-                                            type="text"
-                                            class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                            placeholder="Last name"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label :for="'member_passport_' + i" class="mb-1 block text-sm font-medium text-primary-1">Passport Number</label>
-                                        <input
-                                            :id="'member_passport_' + i"
-                                            v-model="member.passport_number"
-                                            type="text"
-                                            class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                            placeholder="e.g. AB1234567"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button
-                            type="button"
-                            @click="addMember"
-                            class="mt-4 inline-flex items-center gap-2 rounded-lg border border-dashed border-primary-2/40 px-4 py-2.5 text-sm text-primary-1 transition hover:border-accent-2 hover:text-accent-2"
-                        >
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Add Another Member
-                        </button>
-                    </fieldset>
-
-                    <!-- Section 5: Others -->
-                    <fieldset>
-                        <legend class="font-body text-lg font-semibold text-accent-2">Section 5 — Others</legend>
+                        <legend class="font-body text-lg font-semibold text-accent-2">Section 4 — Others</legend>
 
                         <!-- Engage with CoFSA -->
                         <h4 class="mt-4 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Engage with CoFSA</h4>

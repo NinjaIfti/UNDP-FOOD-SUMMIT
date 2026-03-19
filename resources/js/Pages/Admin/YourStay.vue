@@ -45,7 +45,11 @@ const form = useForm({
     air_travel_guidance_title: props.settings.air_travel_guidance_title || '',
     air_travel_guidance_points: props.settings.air_travel_guidance_points || [],
     airlines_title: props.settings.airlines_title || '',
-    airlines: props.settings.airlines || [],
+    airlines: (props.settings.airlines || []).map(a => ({
+        ...a,
+        imageFile: null,
+        deleteImage: false,
+    })),
     flight_table_title: props.settings.flight_table_title || '',
     flight_table_note: props.settings.flight_table_note || '',
     flight_table_saarc_note: props.settings.flight_table_saarc_note || '',
@@ -120,6 +124,8 @@ const form = useForm({
 const submit = () => {
     const data = { ...form.data() };
 
+    data.airlines = (form.airlines || []).map(({ imageFile, deleteImage, ...a }) => ({ ...a }));
+
     if (form.yourstayHeroImageFile) {
         data.yourstay_hero_image = form.yourstayHeroImageFile;
     }
@@ -132,6 +138,15 @@ const submit = () => {
     if (form.yourstayHeroSlide3File) {
         data.yourstay_hero_slide_3_file = form.yourstayHeroSlide3File;
     }
+
+    (form.airlines || []).forEach((airline, index) => {
+        if (airline?.imageFile) {
+            data[`airline_${index}_image`] = airline.imageFile;
+        }
+        if (airline?.deleteImage) {
+            data[`airline_${index}_delete_image`] = true;
+        }
+    });
 
     form.transform(() => data).post(route('admin.your-stay.update'), {
         preserveScroll: true,
@@ -166,6 +181,16 @@ const removeObjectItem = (arrayName, index) => {
     <Head title="Edit Your Stay in Bhutan" />
     <AdminLayout>
         <div class="mx-auto max-w-4xl">
+            <!-- Sticky Save button (always visible while scrolling) -->
+            <button
+                type="button"
+                @click="submit"
+                :disabled="form.processing"
+                class="fixed right-4 top-1/2 z-50 -translate-y-1/2 rounded-lg bg-primary-1 px-4 py-3 font-body text-sm font-semibold text-white shadow-lg transition hover:bg-primary-1/90 disabled:opacity-50"
+            >
+                {{ form.processing ? 'Saving...' : 'Save' }}
+            </button>
+
             <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
                 <h2 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">Edit Your Stay in Bhutan</h2>
                 <a
@@ -482,8 +507,38 @@ const removeObjectItem = (arrayName, index) => {
                                             <input v-model="form.airlines[index].description" type="text" placeholder="e.g., Royal Bhutan Airlines" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                         </div>
                                         <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Image Path</label>
-                                            <input v-model="form.airlines[index].image" type="text" placeholder="/brand/plane1.jpg" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                            <label class="block font-body text-xs font-medium text-ink">Logo / Image</label>
+                                            <div class="mt-2 space-y-2">
+                                                <div v-if="airline.image && !airline.deleteImage" class="flex items-center gap-3">
+                                                    <img :src="airline.image" alt="" class="h-10 w-16 rounded border border-gray-200 bg-white object-contain" />
+                                                    <button
+                                                        type="button"
+                                                        class="rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                                        @click="airline.deleteImage = true; airline.imageFile = null;"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                                <div v-if="airline.deleteImage" class="rounded-lg bg-red-50 p-3">
+                                                    <p class="text-xs font-medium text-red-700">Image will be removed on save</p>
+                                                    <button type="button" class="mt-1 text-xs font-medium text-red-600 underline hover:no-underline" @click="airline.deleteImage = false">
+                                                        Undo
+                                                    </button>
+                                                </div>
+                                                <div v-if="airline.imageFile" class="rounded-lg bg-green-50 p-3">
+                                                    <p class="text-xs font-medium text-green-700">New image: {{ airline.imageFile.name }}</p>
+                                                    <button type="button" class="mt-1 text-xs font-medium text-green-700 underline hover:no-underline" @click="airline.imageFile = null">
+                                                        Clear
+                                                    </button>
+                                                </div>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                                    @change="(e) => { const f = e.target?.files?.[0]; airline.imageFile = f || null; if (f) airline.deleteImage = false; }"
+                                                />
+                                                <p class="text-xs text-gray-500">PNG recommended for logos. Max 2MB.</p>
+                                            </div>
                                         </div>
                                         <div>
                                             <label class="block font-body text-xs font-medium text-ink">Website URL</label>
@@ -491,7 +546,7 @@ const removeObjectItem = (arrayName, index) => {
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" @click="addObjectItem('airlines', { name: '', description: '', image: '', website: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Airline</button>
+                                <button type="button" @click="addObjectItem('airlines', { name: '', description: '', image: '', website: '', imageFile: null, deleteImage: false })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Airline</button>
                             </div>
                         </div>
                         
@@ -1011,17 +1066,6 @@ const removeObjectItem = (arrayName, index) => {
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="sticky bottom-0 rounded-xl bg-white p-4 shadow-lg sm:p-6">
-                    <button
-                        type="submit"
-                        :disabled="form.processing"
-                        class="w-full rounded-lg bg-accent-1 px-6 py-3 font-title text-base font-semibold text-white transition hover:bg-accent-1/90 disabled:opacity-50 sm:w-auto"
-                    >
-                        <span v-if="form.processing">Saving...</span>
-                        <span v-else>Save Changes</span>
-                    </button>
-                </div>
             </form>
         </div>
     </AdminLayout>

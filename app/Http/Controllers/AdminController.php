@@ -308,9 +308,7 @@ class AdminController extends Controller
             'bhutan_text1' => 'nullable|string',
             'bhutan_text2' => 'nullable|string',
             'bhutan_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'events_title' => 'nullable|string',
-            'events_subtitle' => 'nullable|string',
-            'events_days' => 'nullable|array',
+            // events_* moved to Programme admin
         ];
         
         // Add validation for dynamic speaker image fields
@@ -668,28 +666,7 @@ class AdminController extends Controller
             'bhutan_text1' => 'Bhutan offers a uniquely inspiring setting for this summit. Guided by the holistic philosophy of Gross National Happiness, and through forward-looking initiatives, such as the Gelephu Mindfulness City and its 100% organic agriculture goal, Bhutan exemplifies how consciousness and sustainability can shape national development.',
             'bhutan_text2' => 'The Summit will advance Bhutan\'s National Food Systems Transformation Pathways by cultivating a conscious inner mindset, while also highlighting Bhutan\'s leadership in driving conscious food systems transformation globally.',
             'bhutan_image' => '/brand/img41.jpg',
-            'events_title' => 'Events Plan',
-            'events_subtitle' => '31 August – 4 September 2026 · Thimphu, Bhutan',
-            'events_days' => [
-                [
-                    'date' => '31 Aug',
-                    'label' => 'Day 1',
-                    'title' => 'Opening & Welcome',
-                    'schedule' => [
-                        ['time' => '08:00 – 09:00', 'title' => 'Registration & Welcome Coffee', 'type' => 'break', 'speaker' => ''],
-                        ['time' => '09:00 – 09:30', 'title' => 'Opening Ceremony', 'type' => 'event', 'speaker' => 'H.E. Prime Minister of Bhutan'],
-                        ['time' => '09:30 – 10:30', 'title' => 'Keynote: Rethinking Global Food Systems', 'type' => 'speaker', 'speaker' => 'Dr. Agnes Kalibata'],
-                    ],
-                ],
-                [
-                    'date' => '1 Sep',
-                    'label' => 'Day 2',
-                    'title' => 'Plenary Sessions',
-                    'schedule' => [
-                        ['time' => '09:00 – 10:30', 'title' => 'Keynote: Gross National Happiness & Food Sovereignty', 'type' => 'speaker', 'speaker' => 'Dasho Karma Ura'],
-                    ],
-                ],
-            ],
+            // events_* moved to Programme admin
         ];
     }
 
@@ -900,9 +877,7 @@ class AdminController extends Controller
         $homepageSettings = $this->getHomepageSettings();
 
         $settings = array_merge($programmeSettings, [
-            'events_title' => $homepageSettings['events_title'] ?? 'Events Plan',
-            'events_subtitle' => $homepageSettings['events_subtitle'] ?? '31 August – 4 September 2026 · Thimphu, Bhutan',
-            'events_days' => $homepageSettings['events_days'] ?? [],
+            // events_* moved to Programme admin
         ]);
 
         return Inertia::render('Programme/Index', ['settings' => $settings]);
@@ -965,6 +940,11 @@ class AdminController extends Controller
             'themes.*.description' => 'nullable|string',
             'themes.*.contact' => 'nullable|string',
             'themes.*.lead' => 'nullable|string',
+
+            // Events plan (moved from Homepage admin)
+            'events_title' => 'nullable|string',
+            'events_subtitle' => 'nullable|string',
+            'events_days' => 'nullable|array',
         ];
         foreach (array_keys($request->all()) as $key) {
             if (preg_match('/^theme_\d+_image$/', $key)) {
@@ -1186,6 +1166,29 @@ class AdminController extends Controller
                 ['number' => 14, 'title' => "Planetary health / One health", 'description' => "This workstream focuses on the interconnected health of humans, animals, and the planet, exploring how regenerative, equitable and sustainable food systems can support ecological balance, biodiversity, and livelihoods.", 'image' => '/brand/themes/14.jpg', 'contact' => 'charlotte.dufour@undp.org', 'lead' => 'Charlotte Dufour'],
                 ['number' => 15, 'title' => "Consciousness practices for food systems transformation", 'description' => "This workstream focuses on inner and collective practices that deepen awareness, connection, and transformation in relation to food systems and the living planet. Examples of practices include: rituals and ceremonies, art (music, theater, painting…), contemplative and embodied practices, non violent communication, conscious facilitation and space holding, community healing, and approaches that foster meaningful relationships between humans and nature.", 'image' => '/brand/themes/15.jpg', 'contact' => 'noemi.altobelli@undp.org', 'lead' => 'Noemi Altobelli'],
             ],
+
+            // Events Plan (moved from Homepage admin)
+            'events_title' => 'Events Plan',
+            'events_subtitle' => '31 August – 4 September 2026 · Paro, Bhutan',
+            'events_days' => [
+                [
+                    'date' => '31 Aug',
+                    'label' => 'Day 1',
+                    'title' => 'Opening & Welcome',
+                    'schedule' => [
+                        ['time' => '08:00 – 09:00', 'title' => 'Registration & Welcome Coffee', 'type' => 'break', 'speaker' => ''],
+                        ['time' => '09:00 – 09:30', 'title' => 'Opening Ceremony', 'type' => 'event', 'speaker' => ''],
+                    ],
+                ],
+                [
+                    'date' => '1 Sep',
+                    'label' => 'Day 2',
+                    'title' => 'Plenary Sessions',
+                    'schedule' => [
+                        ['time' => '09:00 – 10:30', 'title' => 'Keynote', 'type' => 'speaker', 'speaker' => ''],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1291,22 +1294,44 @@ class AdminController extends Controller
             'not_included_items' => 'nullable|array',
         ];
 
+        foreach (array_keys($allData) as $key) {
+            if (preg_match('/^airline_\d+_image$/', $key)) {
+                $validationRules[$key] = 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048';
+            }
+            if (preg_match('/^airline_\d+_delete_image$/', $key)) {
+                $validationRules[$key] = 'nullable|boolean';
+            }
+        }
+
         $validated = $request->validate($validationRules);
         $currentSettings = $this->getYourStaySettings();
+
+        $deletePublicFile = static function (?string $path): void {
+            if (!$path || !is_string($path)) return;
+            if (str_starts_with($path, '/storage/')) {
+                $rel = ltrim(substr($path, strlen('/storage/')), '/');
+                if ($rel !== '') {
+                    Storage::disk('public')->delete($rel);
+                }
+                return;
+            }
+            if (str_starts_with($path, '/') && file_exists(public_path($path))) {
+                @unlink(public_path($path));
+            }
+        };
+
+        $storePublicFile = static function ($file, string $dir, string $prefix): string {
+            $ext = $file->getClientOriginalExtension() ?: 'jpg';
+            $filename = $prefix . '_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            Storage::disk('public')->putFileAs($dir, $file, $filename);
+            return '/storage/' . trim($dir, '/') . '/' . $filename;
+        };
 
         // Hero image handling
         $heroImage = $currentSettings['yourstay_hero_image'] ?? '/brand/img34.jpg';
         if ($request->hasFile('yourstay_hero_image')) {
-            if (!empty($heroImage) && str_starts_with($heroImage, '/') && file_exists(public_path($heroImage))) {
-                @unlink(public_path($heroImage));
-            }
-            $file = $request->file('yourstay_hero_image');
-            $filename = 'yourstay_hero_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!is_dir(public_path('brand/yourstay'))) {
-                mkdir(public_path('brand/yourstay'), 0755, true);
-            }
-            $file->move(public_path('brand/yourstay'), $filename);
-            $heroImage = '/brand/yourstay/' . $filename;
+            $deletePublicFile($heroImage);
+            $heroImage = $storePublicFile($request->file('yourstay_hero_image'), 'yourstay', 'yourstay_hero');
         }
 
         // Hero slides handling: existing string paths + any new uploads
@@ -1319,15 +1344,32 @@ class AdminController extends Controller
         foreach ([1, 2, 3] as $i) {
             $key = 'yourstay_hero_slide_' . $i . '_file';
             if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                $filename = 'yourstay_hero_slide_' . $i . '_' . time() . '.' . $file->getClientOriginalExtension();
-                if (!is_dir(public_path('brand/yourstay'))) {
-                    mkdir(public_path('brand/yourstay'), 0755, true);
-                }
-                $file->move(public_path('brand/yourstay'), $filename);
-                $heroSlides[] = '/brand/yourstay/' . $filename;
+                $heroSlides[] = $storePublicFile($request->file($key), 'yourstay', 'yourstay_hero_slide_' . $i);
             }
         }
+
+        $airlines = $validated['airlines'] ?? ($currentSettings['airlines'] ?? []);
+        if (!is_array($airlines)) {
+            $airlines = [];
+        }
+        foreach ($airlines as $index => &$airline) {
+            if (!is_array($airline)) {
+                $airline = [];
+            }
+            if (!isset($airline['image']) && isset($currentSettings['airlines'][$index]['image'])) {
+                $airline['image'] = $currentSettings['airlines'][$index]['image'];
+            }
+
+            if ($request->hasFile("airline_{$index}_image")) {
+                $deletePublicFile($airline['image'] ?? null);
+                $airline['image'] = $storePublicFile($request->file("airline_{$index}_image"), 'yourstay', 'airline_' . $index);
+            }
+            if ($request->input("airline_{$index}_delete_image")) {
+                $deletePublicFile($airline['image'] ?? null);
+                $airline['image'] = '';
+            }
+        }
+        unset($airline);
 
         $merged = array_merge(
             $currentSettings,
@@ -1337,6 +1379,7 @@ class AdminController extends Controller
                 'yourstay_hero_subtitle' => $validated['yourstay_hero_subtitle'] ?? ($currentSettings['yourstay_hero_subtitle'] ?? null),
                 'yourstay_hero_image' => $heroImage,
                 'yourstay_hero_slides' => array_values($heroSlides),
+                'airlines' => array_values($airlines),
             ]
         );
 

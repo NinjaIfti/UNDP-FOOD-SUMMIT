@@ -80,6 +80,16 @@ function submit() {
     <Head title="Edit FAQs" />
     <AdminLayout>
         <div class="mx-auto max-w-4xl">
+            <!-- Sticky Save button (always visible while scrolling) -->
+            <button
+                type="button"
+                @click="submit"
+                :disabled="form.processing"
+                class="fixed right-4 top-1/2 z-50 -translate-y-1/2 rounded-lg bg-primary-1 px-4 py-3 font-body text-sm font-semibold text-white shadow-lg transition hover:bg-primary-1/90 disabled:opacity-50"
+            >
+                {{ form.processing ? 'Saving...' : 'Save' }}
+            </button>
+
             <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
                 <h2 class="font-title text-xl font-bold text-primary-1 sm:text-2xl">Edit FAQs</h2>
                 <a
@@ -171,11 +181,6 @@ function submit() {
                     </div>
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="submit" :disabled="form.processing" class="rounded-lg bg-primary-1 px-6 py-3 font-body text-sm font-semibold text-white transition hover:bg-primary-1/90 disabled:opacity-50">
-                        Save changes
-                    </button>
-                </div>
             </form>
         </div>
     </AdminLayout>

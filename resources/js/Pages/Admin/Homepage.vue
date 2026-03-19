@@ -120,68 +120,7 @@ const form = useForm({
     bhutan_text1: props.settings.bhutan_text1,
     bhutan_text2: props.settings.bhutan_text2,
     bhutanImageFile: null,
-    events_title: props.settings.events_title,
-    events_subtitle: props.settings.events_subtitle,
-    events_days: props.settings.events_days || [
-        {
-            date: '31 Aug',
-            label: 'Day 1',
-            title: 'Opening & Welcome',
-            schedule: [
-                { time: '08:00 – 09:00', title: 'Registration & Welcome Coffee', type: 'break', speaker: '' },
-                { time: '09:00 – 09:30', title: 'Opening Ceremony', type: 'event', speaker: 'H.E. Prime Minister of Bhutan' },
-            ],
-        },
-    ],
 });
-
-function parseTimeRange(timeStr) {
-    const match = (timeStr || '').match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
-    if (!match) return { startHour: 9, startMin: '00', startAmPm: 'AM', endHour: 10, endMin: '00', endAmPm: 'AM' };
-    const to12 = (h) => {
-        const n = parseInt(h, 10);
-        if (n === 0) return { hour: 12, amPm: 'AM' };
-        if (n === 12) return { hour: 12, amPm: 'PM' };
-        return n < 12 ? { hour: n, amPm: 'AM' } : { hour: n - 12, amPm: 'PM' };
-    };
-    const pad = (m) => String(m).padStart(2, '0');
-    const s = to12(match[1]);
-    const e = to12(match[3]);
-    return {
-        startHour: s.hour,
-        startMin: pad(match[2]),
-        startAmPm: s.amPm,
-        endHour: e.hour,
-        endMin: pad(match[4]),
-        endAmPm: e.amPm,
-    };
-}
-
-function buildTimeRange({ startHour, startMin, startAmPm, endHour, endMin, endAmPm }) {
-    const to24 = (h, amPm) => {
-        const n = parseInt(h, 10);
-        if (amPm === 'AM') return n === 12 ? 0 : n;
-        return n === 12 ? 12 : n + 12;
-    };
-    const pad = (x) => String(x).padStart(2, '0');
-    const s24 = to24(startHour, startAmPm);
-    const e24 = to24(endHour, endAmPm);
-    return `${pad(s24)}:${startMin} – ${pad(e24)}:${endMin}`;
-}
-
-function setTimePart(item, part, value) {
-    const p = parseTimeRange(item.time);
-    if (part === 'startHour') p.startHour = parseInt(value, 10);
-    if (part === 'startMin') p.startMin = value;
-    if (part === 'startAmPm') p.startAmPm = value;
-    if (part === 'endHour') p.endHour = parseInt(value, 10);
-    if (part === 'endMin') p.endMin = value;
-    if (part === 'endAmPm') p.endAmPm = value;
-    item.time = buildTimeRange(p);
-}
-
-const hourOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const minuteOptions = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
 
 const tabs = [
     { id: 'hero', name: 'Hero', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -193,7 +132,7 @@ const tabs = [
     { id: 'conscious', name: 'Conscious Food', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
     { id: 'outcomes', name: 'Outcomes', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
     { id: 'bhutan', name: 'Bhutan', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z' },
-    { id: 'events', name: 'Events', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    // Events tab moved to Programme/Experience admin
 ];
 
 function addSlide() {
@@ -903,125 +842,6 @@ const submit = () => {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Second Paragraph</label>
                             <textarea v-model="form.bhutan_text2" rows="4" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Events Section -->
-                <div v-show="activeTab === 'events'" class="rounded-xl bg-white p-6 shadow-sm">
-                    <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Events Plan</h3>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Section Title</label>
-                            <input v-model="form.events_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                        </div>
-                        <div>
-                            <label class="block font-body text-sm font-medium text-ink">Subtitle</label>
-                            <input v-model="form.events_subtitle" type="text" placeholder="e.g., 31 August – 4 September 2026 · Thimphu, Bhutan" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                        </div>
-
-                        <!-- Days -->
-                        <div>
-                            <label class="mb-3 block font-body text-sm font-medium text-ink">Event Days</label>
-                            <div class="space-y-4">
-                                <div v-for="(day, dayIndex) in form.events_days" :key="dayIndex" class="rounded-lg border-2 border-gray-200 p-4">
-                                    <div class="mb-3 flex items-center justify-between">
-                                        <h4 class="font-title text-sm font-bold text-primary-1">{{ day.label || `Day ${dayIndex + 1}` }}</h4>
-                                        <button
-                                            type="button"
-                                            @click="form.events_days.splice(dayIndex, 1)"
-                                            class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
-                                        >
-                                            Delete Day
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="mb-4 grid grid-cols-3 gap-3">
-                                        <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Date</label>
-                                            <input v-model="day.date" type="text" placeholder="31 Aug" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                        </div>
-                                        <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Label</label>
-                                            <input v-model="day.label" type="text" placeholder="Day 1" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                        </div>
-                                        <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Title</label>
-                                            <input v-model="day.title" type="text" placeholder="Opening & Welcome" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
-                                        </div>
-                                    </div>
-
-                                    <!-- Schedule Items -->
-                                    <div class="space-y-2">
-                                        <label class="block font-body text-xs font-medium text-ink">Schedule</label>
-                                        <div v-for="(item, itemIndex) in day.schedule" :key="itemIndex" class="flex gap-2 rounded border border-gray-200 bg-gray-50 p-3">
-                                            <div class="flex-1 space-y-2">
-                                                <div class="grid grid-cols-2 gap-2 sm:grid-cols-6">
-                                                    <div class="col-span-2 flex flex-wrap items-center gap-1 sm:col-span-3">
-                                                        <span class="w-full text-xs font-medium text-ink">Start</span>
-                                                        <select :value="parseTimeRange(item.time).startHour" @change="setTimePart(item, 'startHour', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option v-for="h in hourOptions" :key="h" :value="h">{{ h }}</option>
-                                                        </select>
-                                                        <span class="text-xs text-ink">:</span>
-                                                        <select :value="parseTimeRange(item.time).startMin" @change="setTimePart(item, 'startMin', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option v-for="m in minuteOptions" :key="m" :value="m">{{ m }}</option>
-                                                        </select>
-                                                        <select :value="parseTimeRange(item.time).startAmPm" @change="setTimePart(item, 'startAmPm', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option value="AM">AM</option>
-                                                            <option value="PM">PM</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-span-2 flex flex-wrap items-center gap-1 sm:col-span-3">
-                                                        <span class="w-full text-xs font-medium text-ink">End</span>
-                                                        <select :value="parseTimeRange(item.time).endHour" @change="setTimePart(item, 'endHour', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option v-for="h in hourOptions" :key="'e'+h" :value="h">{{ h }}</option>
-                                                        </select>
-                                                        <span class="text-xs text-ink">:</span>
-                                                        <select :value="parseTimeRange(item.time).endMin" @change="setTimePart(item, 'endMin', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option v-for="m in minuteOptions" :key="'e'+m" :value="m">{{ m }}</option>
-                                                        </select>
-                                                        <select :value="parseTimeRange(item.time).endAmPm" @change="setTimePart(item, 'endAmPm', $event.target.value)" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                            <option value="AM">AM</option>
-                                                            <option value="PM">PM</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="grid grid-cols-2 gap-2">
-                                                    <input v-model="item.title" type="text" placeholder="Event title" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
-                                                    <select v-model="item.type" class="rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20">
-                                                        <option value="speaker">Speaker</option>
-                                                        <option value="event">Event</option>
-                                                        <option value="break">Break</option>
-                                                    </select>
-                                                    <input v-model="item.speaker" type="text" placeholder="Speaker name (optional)" class="col-span-2 rounded border border-gray-300 px-2 py-1 text-xs font-body focus:border-accent-1 focus:outline-none focus:ring-1 focus:ring-accent-1/20" />
-                                                </div>
-                                            </div>
-                                            <button
-                                                type="button"
-                                                @click="day.schedule.splice(itemIndex, 1)"
-                                                class="rounded bg-red-100 px-2 text-xs font-medium text-red-700 hover:bg-red-200"
-                                            >
-                                                ✕
-                                            </button>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            @click="day.schedule.push({ time: '09:00 – 10:00', title: '', type: 'event', speaker: '' })"
-                                            class="w-full rounded border-2 border-dashed border-gray-300 bg-gray-50 py-2 text-xs font-semibold text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
-                                        >
-                                            + Add Schedule Item
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <button
-                                type="button"
-                                @click="form.events_days.push({ date: '', label: '', title: '', schedule: [] })"
-                                class="mt-3 w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-title text-sm font-semibold text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
-                            >
-                                + Add New Day
-                            </button>
                         </div>
                     </div>
                 </div>

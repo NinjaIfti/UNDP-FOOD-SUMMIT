@@ -35,6 +35,8 @@ const templateForm = useForm({
     type: 'custom',
     subject: '',
     body: '',
+    attachmentPdfFiles: [],
+    deleteAttachmentPdfPaths: [],
 });
 
 const handleEditTemplate = (template) => {
@@ -43,12 +45,26 @@ const handleEditTemplate = (template) => {
     templateForm.type = template.type;
     templateForm.subject = template.subject;
     templateForm.body = template.body;
+    templateForm.attachmentPdfFiles = [];
+    templateForm.deleteAttachmentPdfPaths = [];
     isEditing.value = true;
 };
 
 const handleSaveTemplate = () => {
     if (isCreating.value) {
-        templateForm.post(route('admin.communications.store'), {
+        templateForm.transform((data) => {
+            const payload = {
+                name: data.name,
+                type: data.type,
+                subject: data.subject,
+                body: data.body,
+            };
+            (data.attachmentPdfFiles || []).forEach((f, i) => {
+                payload[`attachment_pdf_${i}`] = f;
+            });
+            return payload;
+        }).post(route('admin.communications.store'), {
+            forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {
                 templateForm.reset();
@@ -57,7 +73,21 @@ const handleSaveTemplate = () => {
             },
         });
     } else if (isEditing.value && selectedTemplate.value?.id) {
-        templateForm.put(route('admin.communications.update', selectedTemplate.value.id), {
+        templateForm.transform((data) => {
+            const payload = {
+                name: data.name,
+                type: data.type,
+                subject: data.subject,
+                body: data.body,
+                delete_attachment_pdf_paths: data.deleteAttachmentPdfPaths?.length ? data.deleteAttachmentPdfPaths : undefined,
+            };
+            (data.attachmentPdfFiles || []).forEach((f, i) => {
+                payload[`attachment_pdf_${i}`] = f;
+            });
+            return payload;
+        }).post(route('admin.communications.update', selectedTemplate.value.id), {
+            method: 'put',
+            forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {
                 isEditing.value = false;
@@ -92,12 +122,15 @@ const handleCreateTemplate = () => {
     templateForm.type = 'custom';
     templateForm.subject = 'New Email Subject';
     templateForm.body = 'New Email Body';
+    templateForm.attachmentPdfFiles = [];
+    templateForm.deleteAttachmentPdfPaths = [];
     selectedTemplate.value = {
         id: null,
         name: templateForm.name,
         type: templateForm.type,
         subject: templateForm.subject,
         body: templateForm.body,
+        attachment_pdfs: [],
     };
     isCreating.value = true;
 };
@@ -412,6 +445,62 @@ const replacePlaceholders = (text) => {
                                 <div v-if="templateForm.errors.body" class="mt-1 text-xs text-red-600">
                                     {{ templateForm.errors.body }}
                                 </div>
+                            </div>
+
+                            <div>
+                                <label class="mb-2 block font-body text-sm font-medium text-primary-1">
+                                    PDF Attachments (optional)
+                                </label>
+
+                                <div
+                                    v-if="(selectedTemplate?.attachment_pdfs?.length || selectedTemplate?.attachment_pdf)"
+                                    class="mb-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
+                                >
+                                    <p class="mb-2 font-body text-xs font-medium text-primary-1">Current PDFs</p>
+                                    <div class="space-y-2">
+                                        <div
+                                            v-for="(pdf, idx) in (selectedTemplate?.attachment_pdfs?.length ? selectedTemplate.attachment_pdfs : (selectedTemplate?.attachment_pdf ? [selectedTemplate.attachment_pdf] : []))"
+                                            :key="pdf + idx"
+                                            class="flex items-center justify-between gap-3 rounded border border-gray-200 bg-white p-2"
+                                        >
+                                            <a :href="pdf" target="_blank" class="truncate font-body text-sm font-medium text-primary-2 underline hover:no-underline">
+                                                View PDF {{ idx + 1 }}
+                                            </a>
+                                            <button
+                                                type="button"
+                                                class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-200"
+                                                @click="templateForm.deleteAttachmentPdfPaths = [...(templateForm.deleteAttachmentPdfPaths || []), pdf]"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div v-if="templateForm.deleteAttachmentPdfPaths?.length" class="mt-3 rounded-lg bg-red-50 p-3">
+                                        <p class="font-body text-xs font-medium text-red-700">Some PDFs will be removed on save</p>
+                                        <button type="button" class="mt-1 font-body text-xs font-medium text-red-600 underline hover:no-underline" @click="templateForm.deleteAttachmentPdfPaths = []">
+                                            Undo all removals
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div v-if="templateForm.attachmentPdfFiles?.length" class="mb-3 rounded-lg bg-green-50 p-3">
+                                    <p class="mb-1 font-body text-xs font-medium text-green-800">New PDFs to upload:</p>
+                                    <ul class="list-disc pl-5 font-body text-xs text-green-800">
+                                        <li v-for="(f, i) in templateForm.attachmentPdfFiles" :key="f.name + i">{{ f.name }}</li>
+                                    </ul>
+                                    <button type="button" class="mt-2 font-body text-xs font-medium text-green-700 underline hover:no-underline" @click="templateForm.attachmentPdfFiles = []">
+                                        Clear
+                                    </button>
+                                </div>
+
+                                <input
+                                    type="file"
+                                    accept="application/pdf"
+                                    multiple
+                                    class="block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-2 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-2/90"
+                                    @change="(e) => { const files = Array.from(e.target?.files || []); templateForm.attachmentPdfFiles = files; }"
+                                />
+                                <p class="mt-1 font-body text-xs text-copy">PDF only. Max 10MB each.</p>
                             </div>
                         </div>
 

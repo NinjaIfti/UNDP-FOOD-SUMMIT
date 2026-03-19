@@ -113,6 +113,51 @@ function splitHighlightTitle(fullTitle) {
     };
 }
 
+function cleanDateLine(value) {
+    return String(value || '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s+,/g, ',')
+        .replace(/,\s+/g, ', ')
+        .trim();
+}
+
+function ordinalSuffix(n) {
+    const v = n % 100;
+    if (v >= 11 && v <= 13) return 'th';
+    switch (n % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+}
+
+function formatProgrammeHighlightDate(value) {
+    const raw = cleanDateLine(value);
+    if (!raw) return { line1: '', line2: '' };
+
+    const parts = raw.split(',');
+    const day = (parts[0] || '').trim();
+    const rest = (parts.slice(1).join(' ') || '').trim();
+
+    // Ensure: "31st August 2026" style (remove leading zeros, add suffix)
+    let formattedRest = rest;
+    const m = rest.match(/^(\d{1,2})(st|nd|rd|th)?\s+(.*)$/i);
+    if (m) {
+        const dayNum = parseInt(m[1], 10);
+        const tail = String(m[3] || '')
+            .replace(/,/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        formattedRest = `${dayNum}${m[2] ? m[2] : ordinalSuffix(dayNum)} ${tail}`.trim();
+    }
+
+    return {
+        line1: day ? `${day},` : '',
+        line2: cleanDateLine(formattedRest).replace(/,/g, '').replace(/\s+/g, ' ').trim(),
+    };
+}
+
 const defaultHighlights = [
     {
         title: 'Monday, 31 August 2026. Stepping into Bhutan through immersive experiences (optional)',
@@ -353,8 +398,8 @@ const defaultThemes = [
                         </div>
                     </div>
 
-                    <div class="mx-auto max-w-6xl px-4 pb-10 pt-10 text-center sm:px-6 lg:px-8">
-                        <p class="mx-auto max-w-3xl font-body text-base leading-relaxed text-ink text-center sm:text-lg">
+                    <div class="mx-auto max-w-6xl px-4 pb-10 pt-10 sm:px-6 lg:px-8">
+                        <p class="font-body text-base leading-relaxed text-ink sm:text-lg text-left">
                             {{ settings.transform_p2 || 'Together, we will explore how food systems can become sources of regeneration, justice, and wellbeing—for people, communities, and the planet.' }}
                         </p>
                         <p class="mt-4 font-body text-base leading-relaxed text-ink sm:text-lg">
@@ -379,33 +424,37 @@ const defaultThemes = [
                             </p>
                         </div>
 
-                        <div class="mx-auto mt-8 grid max-w-6xl gap-6 sm:mt-10 lg:grid-cols-2">
+                        <div class="mx-auto mt-8 max-w-6xl space-y-6 sm:mt-10">
                             <div
                                 v-for="(item, index) in programmeHighlights"
                                 :key="index"
-                                class="rounded-none border border-primary-1/10 bg-primary-1/5 p-6 shadow-sm transition hover:shadow-md"
-                                :class="index === programmeHighlights.length - 1 ? 'lg:col-span-2' : ''"
+                                class="grid gap-4 sm:grid-cols-[220px,1fr] sm:items-stretch"
                             >
-                                <div class="flex items-start gap-4">
-                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-accent-2">
-                                        <svg class="h-6 w-6 text-primary-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="font-title text-lg font-bold text-accent-2 sm:text-xl">
-                                            {{ splitHighlightTitle(item.title).date }}
+                                <!-- Left date box -->
+                                <div class="flex items-center justify-center rounded-none border border-accent-2/50 bg-primary-1/5 p-6">
+                                    <div class="flex w-full flex-col items-center justify-center text-center">
+                                        <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-accent-2">
+                                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
+                                            </svg>
+                                        </div>
+                                        <p class="font-title text-base font-bold text-accent-2 sm:text-lg">
+                                            {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line1 }}
                                         </p>
-                                        <p
-                                            v-if="splitHighlightTitle(item.title).subtitle"
-                                            class="mt-1 mx-auto max-w-md text-center font-body text-sm font-semibold text-primary-1 sm:text-base"
-                                        >
-                                            {{ splitHighlightTitle(item.title).subtitle }}
-                                        </p>
-                                        <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
-                                            {{ item.body }}
+                                        <p class="mt-1 font-title text-base font-bold text-accent-2 sm:text-lg">
+                                            {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line2 }}
                                         </p>
                                     </div>
+                                </div>
+
+                                <!-- Right content box -->
+                                <div class="rounded-none border border-accent-2/50 bg-[#fafafa] p-6 shadow-sm transition hover:shadow-md">
+                                    <h3 class="font-title text-base font-bold text-primary-1 sm:text-lg">
+                                        {{ splitHighlightTitle(item.title).subtitle || '' }}
+                                    </h3>
+                                    <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
+                                        {{ item.body }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
