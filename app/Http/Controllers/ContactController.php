@@ -45,7 +45,6 @@ class ContactController extends Controller
             'organization' => 'nullable|string|max:255',
             'organization_type' => 'nullable|string|max:255',
             'organization_type_other' => 'nullable|string|max:255',
-            'legal_country_registration' => 'nullable|string|max:255',
             'organization_size' => 'nullable|string|max:255',
             'participation_budget_support' => 'nullable|string|in:Yes,No,Partially',
             'job_title' => 'required|string|max:255',

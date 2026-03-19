@@ -12,7 +12,6 @@ const form = useForm({
     organization: '',
     organization_type: '',
     organization_type_other: '',
-    legal_country_registration: '',
     organization_size: '',
     participation_budget_support: '',
     job_title: '',
@@ -640,19 +639,6 @@ const steps = [
                                 <p v-if="form.errors.organization_type_other" class="mt-1 text-base text-red-400">{{ form.errors.organization_type_other }}</p>
                             </div>
                             <div>
-                                <label for="legal_country_registration" class="mb-1 block text-base font-medium text-primary-1">Legal country of registration</label>
-                                <p class="mb-2 font-body text-base text-copy">Country where your organization is legally registered.</p>
-                                <select
-                                    id="legal_country_registration"
-                                    v-model="form.legal_country_registration"
-                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                >
-                                    <option value="" class="text-gray-800">Select country</option>
-                                    <option v-for="c in countries" :key="c" :value="c" class="text-gray-800">{{ c }}</option>
-                                </select>
-                                <p v-if="form.errors.legal_country_registration" class="mt-1 text-base text-red-400">{{ form.errors.legal_country_registration }}</p>
-                            </div>
-                            <div>
                                 <label for="organization_size" class="mb-1 block text-base font-medium text-primary-1">Organization Size</label>
                                 <p class="mb-2 font-body text-base text-copy">Please indicate the approximate size of your organization.</p>
                                 <select
@@ -886,12 +872,12 @@ const steps = [
                         </div>
                         <p v-if="form.errors.price_tier" class="mt-1 text-base text-red-400">{{ form.errors.price_tier }}</p>
 
-                        <div class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                        <div v-if="isSubsidizedSelected()" class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                            <p class="mb-3 font-body text-base font-semibold text-primary-1">Confirmation</p>
                             <label class="flex items-start gap-3">
                                 <input type="checkbox" v-model="form.confirm_tier" class="mt-1 h-4 w-4 accent-[#F59C0E]" />
                                 <span class="font-body text-base text-ink">
                                     I confirm that the ticket tier selected reflects the financial capacity of my organization.
-                                    <span class="mt-1 block text-copy">The organizing team may review ticket selections and contact applicants if a different tier appears more appropriate.</span>
                                 </span>
                             </label>
                             <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
