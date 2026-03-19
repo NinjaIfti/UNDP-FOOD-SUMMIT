@@ -412,9 +412,9 @@ const steps = [
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
-                <p class="mt-2 text-center font-body text-copy">Fill out the form below to begin your registration process</p>
+                <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">Fill out the form below to begin your registration process</p>
 
-                <form @submit.prevent="submit" class="mt-10 space-y-6 text-base">
+                <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">
                     <!-- Section 1: Personal Information -->
                     <fieldset>
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 1 — Personal Information</legend>
@@ -494,7 +494,7 @@ const steps = [
                             </div>
                             <div>
                                 <label for="organization" class="mb-1 block text-base font-medium text-primary-1">Organization / Affiliation</label>
-                                <p class="mb-2 font-body text-sm text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
+                                <p class="mb-2 font-body text-base text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
                                 <input
                                     id="organization"
                                     v-model="form.organization"
@@ -518,7 +518,7 @@ const steps = [
                             </div>
                             <div>
                                 <label for="website" class="mb-1 block text-base font-medium text-primary-1">Website/ Link</label>
-                                <p class="mb-2 font-body text-sm text-copy">Please provide your organization’s website or relevant links. If unaffiliated, you may include a personal link</p>
+                                <p class="mb-2 font-body text-base text-copy">Please provide your organization’s website or relevant links. If unaffiliated, you may include a personal link</p>
                                 <input
                                     id="website"
                                     v-model="form.website"
@@ -563,7 +563,7 @@ const steps = [
                                     type="date"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                 />
-                                <p class="mt-1 text-sm text-copy">Must be valid for at least 6 months from travel date</p>
+                                <p class="mt-1 text-base text-copy">Must be valid for at least 6 months from travel date</p>
                                 <p v-if="form.errors.passport_expiry" class="mt-1 text-base text-red-400">{{ form.errors.passport_expiry }}</p>
                             </div>
                             <div>
@@ -679,7 +679,7 @@ const steps = [
                                         <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
                                         <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
                                     </div>
-                                    <p class="mt-0.5 text-sm text-ink">{{ pkg.description }}</p>
+                                    <p class="mt-0.5 text-base text-ink">{{ pkg.description }}</p>
                                 </div>
                             </label>
                         </div>
@@ -693,7 +693,7 @@ const steps = [
                                     <span class="mt-1 block text-copy">The organizing team may review ticket selections and contact applicants if a different tier appears more appropriate.</span>
                                 </span>
                             </label>
-                            <p v-if="form.errors.confirm_tier" class="mt-2 text-sm text-red-400">{{ form.errors.confirm_tier }}</p>
+                            <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
                         </div>
 
                         <!-- Field Visit Add-on -->
@@ -905,15 +905,15 @@ const steps = [
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span class="font-body text-base font-medium text-primary-1">Click to upload photo</span>
-                                    <span class="mt-1 text-sm text-copy">JPG, PNG — max 5MB</span>
+                                    <span class="mt-1 text-base text-copy">JPG, PNG — max 5MB</span>
                                     <input type="file" accept="image/jpeg,image/png" class="hidden" @change="handlePhoto" />
                                 </label>
                             </div>
                             <div v-else class="flex items-center gap-4">
                                 <img :src="photoPreview" alt="Photo preview" class="h-24 w-20 rounded-lg border border-primary-2/20 object-cover" />
                                 <div>
-                                    <p class="text-sm text-primary-1">Photo uploaded</p>
-                                    <button type="button" @click="removePhoto" class="mt-1 text-sm text-accent-2 hover:underline">Remove</button>
+                                    <p class="text-base text-primary-1">Photo uploaded</p>
+                                    <button type="button" @click="removePhoto" class="mt-1 text-base text-accent-2 hover:underline">Remove</button>
                                 </div>
                             </div>
                             <p v-if="form.errors.photo" class="mt-1 text-base text-red-400">{{ form.errors.photo }}</p>
