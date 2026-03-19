@@ -654,10 +654,23 @@ const steps = [
                         </p>
                         <div class="mt-4 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <p class="font-body text-base font-semibold text-primary-1">Ticket options</p>
-                            <div class="mt-3 space-y-2 font-body text-base text-copy">
-                                <p>Standard Price — USD ~970</p>
-                                <p>Social/subsidized Price — USD ~580</p>
-                                <p>Supporter Price — USD ~1,550</p>
+                            <div class="mt-4 space-y-4 font-body text-base text-copy">
+                                <div>
+                                    <p class="font-body font-semibold text-primary-1">Standard Price — USD ~970</p>
+                                    <p class="mt-1">The regular participation fee that supports the core costs of convening the Summit.</p>
+                                </div>
+                                <div>
+                                    <p class="font-body font-semibold text-primary-1">Subsidised Price — USD ~580</p>
+                                    <p class="mt-1">For participants working with limited financial resources whose organizations may not have dedicated budgets for international events.</p>
+                                </div>
+                                <div>
+                                    <p class="font-body font-semibold text-primary-1">Supporter Price — USD ~1,550</p>
+                                    <p class="mt-1">For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.</p>
+                                </div>
+                                <div>
+                                    <p class="font-body font-semibold text-primary-1">Flexible Supporter Price — Above USD ~1,550</p>
+                                    <p class="mt-1">For participants who are willing and able to contribute beyond the Supporter Price, this option allows you to choose an amount above USD 1,550 based on your capacity and commitment to supporting an inclusive Summit.</p>
+                                </div>
                             </div>
                         </div>
                         <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
