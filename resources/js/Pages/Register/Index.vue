@@ -313,18 +313,12 @@ const steps = [
         <!-- Intro -->
         <section class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <p class="font-body text-lg leading-relaxed text-ink">
-                    We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit in Bhutan. Please note that space is limited, and we encourage timely submission of registration applications to support an efficient review and coordination process.
-                </p>
-                <p class="mt-4 font-body text-lg leading-relaxed text-ink">
-                    Participation in an event of this nature requires a carefully coordinated registration and travel process, particularly due to the specific entry regulations and visa procedures for visiting Bhutan.
-                </p>
-                <p class="font-body text-lg leading-relaxed text-ink">
+                <p class="font-body text-xl leading-relaxed text-ink">
                     We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit, to be held from 31st August to 4 September, in Paro, Bhutan.
                 </p>
 
                 <div class="mt-6 rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm">
-                    <h3 class="font-title text-xl font-bold text-primary-1">Good to know before registering</h3>
+                    <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Good to know before registering</h2>
 
                     <div class="mt-5 space-y-6">
                         <div>
@@ -380,7 +374,7 @@ const steps = [
                     </div>
                 </div>
 
-                <p class="mt-6 font-body text-lg leading-relaxed text-ink">
+                <p class="mt-6 font-body text-xl leading-relaxed text-ink">
                     Step-by-step registration Process
                 </p>
             </div>
