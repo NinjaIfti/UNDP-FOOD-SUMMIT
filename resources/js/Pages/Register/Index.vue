@@ -823,6 +823,21 @@ const steps = [
                             <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
                         </div>
 
+                        <div v-if="isSubsidizedSelected()" class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                            <label for="subsidized_price_justification" class="mb-2 block font-body text-base font-semibold text-primary-1">Subsidised Price Justification</label>
+                            <p class="mb-3 font-body text-base text-copy">
+                                If requesting the Subsidised Price, please briefly explain why this tier is most appropriate for your participation, in line with the eligibility criteria provided in the Ticket Options section (maximum 120 words).
+                            </p>
+                            <textarea
+                                id="subsidized_price_justification"
+                                v-model="form.subsidized_price_justification"
+                                rows="4"
+                                class="w-full resize-y rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                placeholder="Write up to 120 words"
+                            />
+                            <p v-if="form.errors.subsidized_price_justification" class="mt-2 text-base text-red-400">{{ form.errors.subsidized_price_justification }}</p>
+                        </div>
+
                         <!-- Field Visit Add-on -->
                         <div class="mt-6">
                             <label class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition" :class="form.field_visit ? 'border-primary-2 bg-primary-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
