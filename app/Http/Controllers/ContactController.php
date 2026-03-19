@@ -43,6 +43,11 @@ class ContactController extends Controller
             'phone' => 'required|string|max:50',
             'country' => 'nullable|string|max:255',
             'organization' => 'nullable|string|max:255',
+            'organization_type' => 'nullable|string|max:255',
+            'organization_type_other' => 'nullable|string|max:255',
+            'legal_country_registration' => 'nullable|string|max:255',
+            'organization_size' => 'nullable|string|max:255',
+            'participation_budget_support' => 'nullable|string|in:Yes,No,Partially',
             'job_title' => 'required|string|max:255',
             'website' => 'nullable|max:500',
             'passport_number' => 'required|string|max:50',
@@ -51,6 +56,7 @@ class ContactController extends Controller
             'departure_date' => 'required|date|after_or_equal:arrival_date',
             'price_tier' => ['required', 'string', 'in:' . implode(',', $activePackageIds)],
             'confirm_tier' => 'accepted',
+            'subsidized_price_justification' => 'nullable|string|max:2000',
             'field_visit' => 'boolean',
             'accessibility_needed' => 'required|string|in:yes,no',
             'accessibility_details' => 'nullable|string|max:1000',
@@ -67,6 +73,12 @@ class ContactController extends Controller
             'emergency_relation' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
         ]);
+
+        if (!empty($validated['subsidized_price_justification']) && str_word_count(strip_tags((string) $validated['subsidized_price_justification'])) > 120) {
+            return back()->withErrors([
+                'subsidized_price_justification' => 'Please keep the Subsidised Price justification to a maximum of 120 words.',
+            ])->withInput();
+        }
 
         $data = collect($validated)->except(['photo'])->toArray();
         $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
