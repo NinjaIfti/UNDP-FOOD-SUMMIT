@@ -373,17 +373,15 @@ const steps = [
                         </div>
                     </div>
                 </div>
-
-                <p class="mt-6 font-body text-xl leading-relaxed text-ink">
-                    Step-by-step registration Process
-                </p>
             </div>
         </section>
 
         <!-- Steps -->
         <section class="border-y border-primary-1/10 bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Step-by-step registration Process</h2>
+                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">
+                    Step-by-step registration <span style="font-variant: all-small-caps;">Process</span>
+                </h2>
                 <div class="mt-12 space-y-6">
                     <div v-for="step in steps" :key="step.number" class="flex gap-5">
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-sm font-bold text-primary-1">
@@ -416,7 +414,7 @@ const steps = [
                 <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-copy">Fill out the form below to begin your registration process</p>
 
-                <form @submit.prevent="submit" class="mt-10 space-y-6">
+                <form @submit.prevent="submit" class="mt-10 space-y-6 text-base">
                     <!-- Section 1: Personal Information -->
                     <fieldset>
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 1 — Personal Information</legend>
@@ -459,7 +457,7 @@ const steps = [
                             </div>
                             <div>
                                 <label class="mb-1 block text-base font-medium text-primary-1">Phone Number *</label>
-                                <p class="mb-2 font-body text-sm text-copy">Choose your country code, then enter your number (no need to type the code again).</p>
+                                <p class="mb-2 font-body text-base text-copy">Choose your country code, then enter your number (no need to type the code again).</p>
                                 <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
                                     <select
                                         v-model="phoneCountryCode"
@@ -483,7 +481,7 @@ const steps = [
                                 </p>
                             </div>
                             <div>
-                                <label for="country" class="mb-1 block text-sm font-medium text-primary-1">Country of Residence</label>
+                                <label for="country" class="mb-1 block text-base font-medium text-primary-1">Country of Residence</label>
                                 <select
                                     id="country"
                                     v-model="form.country"
@@ -492,11 +490,11 @@ const steps = [
                                     <option value="" class="text-gray-800">Select country</option>
                                     <option v-for="c in countries" :key="c" :value="c" class="text-gray-800">{{ c }}</option>
                                 </select>
-                                <p v-if="form.errors.country" class="mt-1 text-sm text-red-400">{{ form.errors.country }}</p>
+                                <p v-if="form.errors.country" class="mt-1 text-base text-red-400">{{ form.errors.country }}</p>
                             </div>
                             <div>
-                                <label for="organization" class="mb-1 block text-sm font-medium text-primary-1">Organization / Affiliation</label>
-                                <p class="mb-2 font-body text-xs text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
+                                <label for="organization" class="mb-1 block text-base font-medium text-primary-1">Organization / Affiliation</label>
+                                <p class="mb-2 font-body text-sm text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
                                 <input
                                     id="organization"
                                     v-model="form.organization"
@@ -504,10 +502,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder='e.g. Independent'
                                 />
-                                <p v-if="form.errors.organization" class="mt-1 text-sm text-red-400">{{ form.errors.organization }}</p>
+                                <p v-if="form.errors.organization" class="mt-1 text-base text-red-400">{{ form.errors.organization }}</p>
                             </div>
                             <div>
-                                <label for="job_title" class="mb-1 block text-sm font-medium text-primary-1">Job Title / Role *</label>
+                                <label for="job_title" class="mb-1 block text-base font-medium text-primary-1">Job Title / Role *</label>
                                 <input
                                     id="job_title"
                                     v-model="form.job_title"
@@ -516,11 +514,11 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="Your role or title"
                                 />
-                                <p v-if="form.errors.job_title" class="mt-1 text-sm text-red-400">{{ form.errors.job_title }}</p>
+                                <p v-if="form.errors.job_title" class="mt-1 text-base text-red-400">{{ form.errors.job_title }}</p>
                             </div>
                             <div>
-                                <label for="website" class="mb-1 block text-sm font-medium text-primary-1">Website/ Link</label>
-                                <p class="mb-2 font-body text-xs text-copy">Please provide your organization’s website or relevant links. If unaffiliated, you may include a personal link</p>
+                                <label for="website" class="mb-1 block text-base font-medium text-primary-1">Website/ Link</label>
+                                <p class="mb-2 font-body text-sm text-copy">Please provide your organization’s website or relevant links. If unaffiliated, you may include a personal link</p>
                                 <input
                                     id="website"
                                     v-model="form.website"
@@ -528,7 +526,7 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="https://yourwebsite.com"
                                 />
-                                <p v-if="form.errors.website" class="mt-1 text-sm text-red-400">{{ form.errors.website }}</p>
+                                <p v-if="form.errors.website" class="mt-1 text-base text-red-400">{{ form.errors.website }}</p>
                             </div>
                         </div>
                     </fieldset>
@@ -536,17 +534,17 @@ const steps = [
                     <!-- Section 2: Visa Information -->
                     <fieldset>
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 2 — Visa Information</legend>
-                        <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-body text-sm leading-relaxed text-copy">
+                        <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4 text-base">
+                            <p class="font-body text-base leading-relaxed text-copy">
                                 Visa arrangements for this event will be fully coordinated by the organizing team. Upon approval of your registration, the organizers will guide you through the visa process and provide the necessary official documentation required for your application. Please ensure that the passport details submitted below are accurate and match your travel documents.
                             </p>
-                            <p class="mt-2 font-body text-sm leading-relaxed text-copy">
+                            <p class="mt-2 font-body text-base leading-relaxed text-copy">
                                 Please ensure your passport is valid for at least 6 months from your travel date.
                             </p>
                         </div>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
                             <div>
-                                <label for="passport_number" class="mb-1 block text-sm font-medium text-primary-1">Passport Number *</label>
+                                <label for="passport_number" class="mb-1 block text-base font-medium text-primary-1">Passport Number *</label>
                                 <input
                                     id="passport_number"
                                     v-model="form.passport_number"
@@ -555,21 +553,21 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="e.g. AB1234567"
                                 />
-                                <p v-if="form.errors.passport_number" class="mt-1 text-sm text-red-400">{{ form.errors.passport_number }}</p>
+                                <p v-if="form.errors.passport_number" class="mt-1 text-base text-red-400">{{ form.errors.passport_number }}</p>
                             </div>
                             <div>
-                                <label for="passport_expiry" class="mb-1 block text-sm font-medium text-primary-1">Passport Expiration Date</label>
+                                <label for="passport_expiry" class="mb-1 block text-base font-medium text-primary-1">Passport Expiration Date</label>
                                 <input
                                     id="passport_expiry"
                                     v-model="form.passport_expiry"
                                     type="date"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                 />
-                                <p class="mt-1 text-xs text-copy">Must be valid for at least 6 months from travel date</p>
-                                <p v-if="form.errors.passport_expiry" class="mt-1 text-sm text-red-400">{{ form.errors.passport_expiry }}</p>
+                                <p class="mt-1 text-sm text-copy">Must be valid for at least 6 months from travel date</p>
+                                <p v-if="form.errors.passport_expiry" class="mt-1 text-base text-red-400">{{ form.errors.passport_expiry }}</p>
                             </div>
                             <div>
-                                <label for="arrival_date" class="mb-1 block text-sm font-medium text-primary-1">Preferred Arrival Date *</label>
+                                <label for="arrival_date" class="mb-1 block text-base font-medium text-primary-1">Preferred Arrival Date *</label>
                                 <input
                                     id="arrival_date"
                                     v-model="form.arrival_date"
@@ -577,10 +575,10 @@ const steps = [
                                     required
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                 />
-                                <p v-if="form.errors.arrival_date" class="mt-1 text-sm text-red-400">{{ form.errors.arrival_date }}</p>
+                                <p v-if="form.errors.arrival_date" class="mt-1 text-base text-red-400">{{ form.errors.arrival_date }}</p>
                             </div>
                             <div>
-                                <label for="departure_date" class="mb-1 block text-sm font-medium text-primary-1">Preferred Departure Date *</label>
+                                <label for="departure_date" class="mb-1 block text-base font-medium text-primary-1">Preferred Departure Date *</label>
                                 <input
                                     id="departure_date"
                                     v-model="form.departure_date"
@@ -588,7 +586,7 @@ const steps = [
                                     required
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                 />
-                                <p v-if="form.errors.departure_date" class="mt-1 text-sm text-red-400">{{ form.errors.departure_date }}</p>
+                                <p v-if="form.errors.departure_date" class="mt-1 text-base text-red-400">{{ form.errors.departure_date }}</p>
                             </div>
                         </div>
                     </fieldset>
@@ -609,9 +607,9 @@ const steps = [
                                         <h3 class="font-title text-xl font-bold text-white">What’s included in the Price</h3>
                                     </div>
                                 </div>
-                                <div class="p-6 space-y-3 font-body text-sm text-copy">
-                                    <p class="font-body text-sm font-semibold text-primary-1">The Summit ticket price INCLUDES:</p>
-                                    <ul class="mt-2 space-y-1.5 text-sm text-copy">
+                                <div class="p-6 space-y-3 font-body text-base text-copy">
+                                    <p class="font-body text-base font-semibold text-primary-1">The Summit ticket price INCLUDES:</p>
+                                    <ul class="mt-2 space-y-1.5 text-base text-copy">
                                         <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span>Entrance and participation in the event from 1-4 September</li>
                                         <li class="flex gap-2"><span class="mt-1 text-primary-2">•</span><span>Daily meals provided at the venue, including:</span></li>
                                         <li class="ml-6 flex gap-2"><span class="mt-1 text-primary-2">•</span>Daily lunch for summit participants</li>
@@ -635,9 +633,9 @@ const steps = [
                                         <h3 class="font-title text-xl font-bold text-white">What’s not included in the Price</h3>
                                     </div>
                                 </div>
-                                <div class="p-6 space-y-3 font-body text-sm text-copy">
-                                    <p class="font-body text-sm font-semibold text-primary-1">Please note that the Summit ticket price DOES NOT INCLUDE:</p>
-                                    <ul class="mt-2 space-y-1.5 text-sm text-copy">
+                                <div class="p-6 space-y-3 font-body text-base text-copy">
+                                    <p class="font-body text-base font-semibold text-primary-1">Please note that the Summit ticket price DOES NOT INCLUDE:</p>
+                                    <ul class="mt-2 space-y-1.5 text-base text-copy">
                                         <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>International travel to and from Bhutan (Paro Airport).</li>
                                         <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Accommodation costs in Paro</li>
                                         <li class="flex gap-2"><span class="mt-1 text-accent-2">•</span>Airport transfers (transportation between Paro Airport and hotels in Paro)</li>
@@ -655,14 +653,14 @@ const steps = [
                             Participants whose organizations have the means are warmly encouraged to select the Supporter Price to help widen participation.
                         </p>
                         <div class="mt-4 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-body text-sm font-semibold text-primary-1">Ticket options</p>
-                            <div class="mt-3 space-y-2 font-body text-sm text-copy">
+                            <p class="font-body text-base font-semibold text-primary-1">Ticket options</p>
+                            <div class="mt-3 space-y-2 font-body text-base text-copy">
                                 <p>Standard Price — USD ~970</p>
                                 <p>Social/subsidized Price — USD ~580</p>
                                 <p>Supporter Price — USD ~1,550</p>
                             </div>
                         </div>
-                        <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-sm text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
+                        <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                         <div v-else class="space-y-3">
                             <label
                                 v-for="pkg in packages"
@@ -685,12 +683,12 @@ const steps = [
                                 </div>
                             </label>
                         </div>
-                        <p v-if="form.errors.price_tier" class="mt-1 text-sm text-red-400">{{ form.errors.price_tier }}</p>
+                        <p v-if="form.errors.price_tier" class="mt-1 text-base text-red-400">{{ form.errors.price_tier }}</p>
 
                         <div class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <label class="flex items-start gap-3">
                                 <input type="checkbox" v-model="form.confirm_tier" class="mt-1 h-4 w-4 accent-[#F59C0E]" />
-                                <span class="font-body text-sm text-ink">
+                                <span class="font-body text-base text-ink">
                                     I confirm that the ticket tier selected reflects the financial capacity of my organization.
                                     <span class="mt-1 block text-copy">The organizing team may review ticket selections and contact applicants if a different tier appears more appropriate.</span>
                                 </span>
@@ -708,27 +706,27 @@ const steps = [
                                 />
                                 <div>
                                     <span class="font-body font-semibold text-primary-1">Field Visits on 31 August</span>
-                                    <span class="ml-2 font-body text-sm font-bold text-primary-2">(+ additional cost)</span>
-                                    <p class="mt-0.5 text-sm text-copy">Guided visits to organic farms in the Paro Valley, including farm-to-table lunch experience and hands-on workshops with local farmers. Exact pricing to be confirmed.</p>
+                                    <span class="ml-2 font-body text-base font-bold text-primary-2">(+ additional cost)</span>
+                                    <p class="mt-0.5 text-base text-copy">Guided visits to organic farms in the Paro Valley, including farm-to-table lunch experience and hands-on workshops with local farmers. Exact pricing to be confirmed.</p>
                                 </div>
                             </label>
                         </div>
 
                         <!-- Accessibility -->
                         <div class="mt-6">
-                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Do you require any accessibility support? *</p>
+                            <p class="mb-2 font-body text-base font-medium text-primary-1">Do you require any accessibility support? *</p>
                             <div class="flex gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.accessibility_needed === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.accessibility_needed" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-white">Yes</span>
+                                    <span class="text-base text-white">Yes</span>
                                 </label>
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.accessibility_needed === 'no' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.accessibility_needed" value="no" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">No</span>
+                                    <span class="text-base text-primary-1">No</span>
                                 </label>
                             </div>
                             <div v-if="form.accessibility_needed === 'yes'" class="mt-3">
-                                <label for="accessibility_details" class="mb-1 block text-sm font-medium text-primary-1">Please describe your needs</label>
+                                <label for="accessibility_details" class="mb-1 block text-base font-medium text-primary-1">Please describe your needs</label>
                                 <textarea
                                     id="accessibility_details"
                                     v-model="form.accessibility_details"
@@ -737,12 +735,12 @@ const steps = [
                                     placeholder="Wheelchair access, sign language interpretation, etc."
                                 />
                             </div>
-                            <p v-if="form.errors.accessibility_needed" class="mt-1 text-sm text-red-400">{{ form.errors.accessibility_needed }}</p>
+                            <p v-if="form.errors.accessibility_needed" class="mt-1 text-base text-red-400">{{ form.errors.accessibility_needed }}</p>
                         </div>
 
                         <!-- Dietary Preferences -->
                         <div class="mt-6">
-                            <label for="dietary" class="mb-2 block font-body text-sm font-medium text-primary-1">Dietary Preferences *</label>
+                            <label for="dietary" class="mb-2 block font-body text-base font-medium text-primary-1">Dietary Preferences *</label>
                             <select
                                 id="dietary"
                                 v-model="form.dietary"
@@ -765,12 +763,12 @@ const steps = [
                                     placeholder="Please specify your dietary requirements"
                                 />
                             </div>
-                            <p v-if="form.errors.dietary" class="mt-1 text-sm text-red-400">{{ form.errors.dietary }}</p>
+                            <p v-if="form.errors.dietary" class="mt-1 text-base text-red-400">{{ form.errors.dietary }}</p>
                         </div>
 
                         <!-- How did you hear about this event -->
                         <div class="mt-6">
-                            <p class="mb-2 font-body text-sm font-medium text-primary-1">How did you hear about this event?</p>
+                            <p class="mb-2 font-body text-base font-medium text-primary-1">How did you hear about this event?</p>
                             <div class="grid gap-2">
                                 <label
                                     v-for="source in ['Email Newsletter', 'Social Media', 'Referral', 'Partner Organization', 'Website Search']"
@@ -779,14 +777,14 @@ const steps = [
                                     :class="form.heard_from.includes(source) ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'"
                                 >
                                     <input type="checkbox" :value="source" v-model="form.heard_from" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">{{ source }}</span>
+                                    <span class="text-base text-primary-1">{{ source }}</span>
                                 </label>
                                 <label
                                     class="flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-2.5 transition"
                                     :class="form.heard_from.includes('Other') ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'"
                                 >
                                     <input type="checkbox" value="Other" v-model="form.heard_from" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">Other</span>
+                                    <span class="text-base text-primary-1">Other</span>
                                 </label>
                             </div>
                             <div v-if="form.heard_from.includes('Other')" class="mt-3">
@@ -805,50 +803,50 @@ const steps = [
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 4 — Others</legend>
 
                         <!-- Engage with CoFSA -->
-                        <h4 class="mt-4 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Engage with CoFSA</h4>
+                        <h4 class="mt-4 font-body text-base font-semibold uppercase tracking-wide text-primary-1">Engage with CoFSA</h4>
 
                         <!-- CoFSA Membership -->
                         <div class="mt-4">
-                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Would you like to become a Member of CoFSA? *</p>
+                            <p class="mb-2 font-body text-base font-medium text-primary-1">Would you like to become a Member of CoFSA? *</p>
                             <div class="rounded-xl border border-primary-2/15 bg-white px-5 py-3 mb-3">
-                                <p class="font-body text-sm leading-relaxed text-copy">
+                                <p class="font-body text-base leading-relaxed text-copy">
                                     The <a href="https://consciousfoodsystems.org/" target="_blank" rel="noopener noreferrer" class="font-semibold text-accent-2 hover:underline">Conscious Food Systems Alliance (CoFSA)</a> is a growing community of practitioners united to integrate consciousness into food systems transformation. As a member, you gain access to resources, events, and a network of changemakers working toward regenerative food futures.
                                 </p>
                             </div>
                             <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.cofsa_member === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.cofsa_member" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">Yes, I'd like to join</span>
+                                    <span class="text-base text-primary-1">Yes, I'd like to join</span>
                                 </label>
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.cofsa_member === 'no' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.cofsa_member" value="no" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">No thanks</span>
+                                    <span class="text-base text-primary-1">No thanks</span>
                                 </label>
                             </div>
-                            <p v-if="form.errors.cofsa_member" class="mt-1 text-sm text-red-400">{{ form.errors.cofsa_member }}</p>
+                            <p v-if="form.errors.cofsa_member" class="mt-1 text-base text-red-400">{{ form.errors.cofsa_member }}</p>
                         </div>
 
                         <!-- CoFSA Newsletter -->
                         <div class="mt-6">
-                            <p class="mb-2 font-body text-sm font-medium text-primary-1">Would you like to subscribe to CoFSA's Newsletter to receive resources and connect with the community? *</p>
+                            <p class="mb-2 font-body text-base font-medium text-primary-1">Would you like to subscribe to CoFSA's Newsletter to receive resources and connect with the community? *</p>
                             <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.cofsa_newsletter === 'yes' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.cofsa_newsletter" value="yes" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">Yes, please subscribe me to the Newsletter</span>
+                                    <span class="text-base text-primary-1">Yes, please subscribe me to the Newsletter</span>
                                 </label>
                                 <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 transition" :class="form.cofsa_newsletter === 'no' ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                     <input type="radio" v-model="form.cofsa_newsletter" value="no" class="h-4 w-4 accent-[#F59C0E]" />
-                                    <span class="text-sm text-primary-1">No thanks</span>
+                                    <span class="text-base text-primary-1">No thanks</span>
                                 </label>
                             </div>
-                            <p v-if="form.errors.cofsa_newsletter" class="mt-1 text-sm text-red-400">{{ form.errors.cofsa_newsletter }}</p>
+                            <p v-if="form.errors.cofsa_newsletter" class="mt-1 text-base text-red-400">{{ form.errors.cofsa_newsletter }}</p>
                         </div>
 
                         <!-- Emergency Contact -->
-                        <h4 class="mt-8 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Emergency Contact *</h4>
+                        <h4 class="mt-8 font-body text-base font-semibold uppercase tracking-wide text-primary-1">Emergency Contact *</h4>
                         <div class="mt-3 grid gap-4 sm:grid-cols-2">
                             <div>
-                                <label for="emergency_name" class="mb-1 block text-sm font-medium text-primary-1">Full Name *</label>
+                                <label for="emergency_name" class="mb-1 block text-base font-medium text-primary-1">Full Name *</label>
                                 <input
                                     id="emergency_name"
                                     v-model="form.emergency_name"
@@ -857,10 +855,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="Contact person's full name"
                                 />
-                                <p v-if="form.errors.emergency_name" class="mt-1 text-sm text-red-400">{{ form.errors.emergency_name }}</p>
+                                <p v-if="form.errors.emergency_name" class="mt-1 text-base text-red-400">{{ form.errors.emergency_name }}</p>
                             </div>
                             <div>
-                                <label for="emergency_phone" class="mb-1 block text-sm font-medium text-primary-1">Phone Number *</label>
+                                <label for="emergency_phone" class="mb-1 block text-base font-medium text-primary-1">Phone Number *</label>
                                 <input
                                     id="emergency_phone"
                                     v-model="form.emergency_phone"
@@ -869,10 +867,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="+1 234 567 8900"
                                 />
-                                <p v-if="form.errors.emergency_phone" class="mt-1 text-sm text-red-400">{{ form.errors.emergency_phone }}</p>
+                                <p v-if="form.errors.emergency_phone" class="mt-1 text-base text-red-400">{{ form.errors.emergency_phone }}</p>
                             </div>
                             <div>
-                                <label for="emergency_email" class="mb-1 block text-sm font-medium text-primary-1">Email *</label>
+                                <label for="emergency_email" class="mb-1 block text-base font-medium text-primary-1">Email *</label>
                                 <input
                                     id="emergency_email"
                                     v-model="form.emergency_email"
@@ -881,10 +879,10 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="contact@example.com"
                                 />
-                                <p v-if="form.errors.emergency_email" class="mt-1 text-sm text-red-400">{{ form.errors.emergency_email }}</p>
+                                <p v-if="form.errors.emergency_email" class="mt-1 text-base text-red-400">{{ form.errors.emergency_email }}</p>
                             </div>
                             <div>
-                                <label for="emergency_relation" class="mb-1 block text-sm font-medium text-primary-1">Relation *</label>
+                                <label for="emergency_relation" class="mb-1 block text-base font-medium text-primary-1">Relation *</label>
                                 <input
                                     id="emergency_relation"
                                     v-model="form.emergency_relation"
@@ -893,21 +891,21 @@ const steps = [
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="e.g. Spouse, Parent, Sibling"
                                 />
-                                <p v-if="form.errors.emergency_relation" class="mt-1 text-sm text-red-400">{{ form.errors.emergency_relation }}</p>
+                                <p v-if="form.errors.emergency_relation" class="mt-1 text-base text-red-400">{{ form.errors.emergency_relation }}</p>
                             </div>
                         </div>
 
                         <!-- Document Uploads -->
-                        <h4 class="mt-8 font-body text-sm font-semibold uppercase tracking-wide text-primary-1">Document Uploads</h4>
+                        <h4 class="mt-8 font-body text-base font-semibold uppercase tracking-wide text-primary-1">Document Uploads</h4>
                         <div class="mt-3">
-                            <p class="mb-3 font-body text-sm text-copy">Please upload a personal photo of yourself for visa purposes. The photo should be a recent passport-style photograph with a plain background.</p>
+                            <p class="mb-3 font-body text-base text-copy">Please upload a personal photo of yourself for visa purposes. The photo should be a recent passport-style photograph with a plain background.</p>
                             <div v-if="!photoPreview" class="flex items-center justify-center">
                                 <label class="flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-primary-2/30 bg-white py-10 transition hover:border-accent-2 hover:bg-accent-2/5">
                                     <svg class="mb-3 h-10 w-10 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    <span class="font-body text-sm font-medium text-primary-1">Click to upload photo</span>
-                                    <span class="mt-1 text-xs text-copy">JPG, PNG — max 5MB</span>
+                                    <span class="font-body text-base font-medium text-primary-1">Click to upload photo</span>
+                                    <span class="mt-1 text-sm text-copy">JPG, PNG — max 5MB</span>
                                     <input type="file" accept="image/jpeg,image/png" class="hidden" @change="handlePhoto" />
                                 </label>
                             </div>
@@ -918,12 +916,12 @@ const steps = [
                                     <button type="button" @click="removePhoto" class="mt-1 text-sm text-accent-2 hover:underline">Remove</button>
                                 </div>
                             </div>
-                            <p v-if="form.errors.photo" class="mt-1 text-sm text-red-400">{{ form.errors.photo }}</p>
+                            <p v-if="form.errors.photo" class="mt-1 text-base text-red-400">{{ form.errors.photo }}</p>
                         </div>
 
                         <!-- Contact note -->
                         <div class="mt-8 rounded-xl border border-primary-2/15 bg-white px-5 py-4 text-center">
-                            <p class="font-body text-sm text-copy">
+                            <p class="font-body text-base text-copy">
                                 For any questions or additional clarifications, please contact the organizers at
                                 <a href="mailto:cofsa@undp.org" class="font-semibold text-accent-2 hover:underline">cofsa@undp.org</a>
                             </p>
@@ -935,11 +933,11 @@ const steps = [
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="inline-flex items-center justify-center rounded-xl bg-accent-2 px-8 py-2.5 font-body text-sm font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
+                            class="inline-flex items-center justify-center rounded-xl bg-accent-2 px-8 py-2.5 font-body text-base font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
                         >
                             {{ form.processing ? 'Submitting...' : 'Submit Registration Application' }}
                         </button>
-                        <p class="mt-3 text-center text-sm text-copy">
+                        <p class="mt-3 text-center text-base text-copy">
                             By submitting, you agree that your information will be processed by the organizing team for event coordination purposes.
                         </p>
                     </div>
