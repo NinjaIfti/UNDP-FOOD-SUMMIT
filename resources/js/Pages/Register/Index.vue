@@ -521,7 +521,7 @@ const steps = [
                             </div>
                             <div>
                                 <label for="organization" class="mb-1 block text-base font-medium text-primary-1">Organization / Affiliation</label>
-                                <p class="mb-2 font-body text-base text-copy">Organization / Affiliation - Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
+                                <p class="mb-2 font-body text-base text-copy">Please provide the full legal name of your organization. If you are not affiliated with an organization, please write "Independent".</p>
                                 <input
                                     id="organization"
                                     v-model="form.organization"

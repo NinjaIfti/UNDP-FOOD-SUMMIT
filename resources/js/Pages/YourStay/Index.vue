@@ -93,8 +93,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-        <Head title="Your Stay in Bhutan" />
-        <EventLayout>
+    <Head title="Your Stay in Bhutan" />
+    <EventLayout>
 
         <!-- Hero header -->
         <section class="relative bg-[#F4F1EA] py-0">
@@ -115,7 +115,7 @@ onUnmounted(() => {
                                 class="h-full w-full object-cover"
                                 loading="lazy"
                             />
-                        </div>
+                                </div>
                         <div class="absolute inset-0 bg-black/45" />
                         <div class="absolute inset-0 flex items-center justify-center px-4 sm:px-8">
                             <div class="max-w-4xl text-center">
@@ -805,31 +805,31 @@ onUnmounted(() => {
                         <div class="pt-2">
                             <p class="font-body font-semibold text-gray-900">Please note:</p>
                             <ul class="mt-3 space-y-2 font-body text-gray-800">
-                                <li class="flex items-start gap-2">
+                                    <li class="flex items-start gap-2">
                                     <span class="text-primary-1 mt-1">•</span>
                                     <span>Visa extensions must be arranged directly by the participant</span>
-                                </li>
-                                <li class="flex items-start gap-2">
+                                    </li>
+                                    <li class="flex items-start gap-2">
                                     <span class="text-primary-1 mt-1">•</span>
                                     <span>The total duration of stay in Bhutan may be extended up to 90 days, including the initial Summit visa period.</span>
-                                </li>
-                                <li class="flex items-start gap-2">
+                                    </li>
+                                    <li class="flex items-start gap-2">
                                     <span class="text-primary-1 mt-1">•</span>
                                     <span>In the case of an extended stay, participants will be required to pay the Sustainable Development Fee (SDF), which is normally USD 100 per adult per night, for all additional nights beyond the Summit dates.</span>
-                                </li>
-                                <li class="flex items-start gap-2">
+                                    </li>
+                                    <li class="flex items-start gap-2">
                                     <span class="text-primary-1 mt-1">•</span>
                                     <span>Please also be aware that, to travel around Bhutan as a tourist, visitors are required to book an official licensed travel guide. Independent travel to touristic sites and movement around the country is not permitted without a guide.</span>
-                                </li>
-                            </ul>
-                        </div>
+                                    </li>
+                                </ul>
+                    </div>
 
                         <p class="font-body text-gray-800 text-lg">
                             Please find the list of licensed tourist guides provided by the Department of Tourism here:
                             <a
                                 href="https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            target="_blank"
+                            rel="noopener noreferrer"
                                 class="text-blue-600 font-semibold hover:underline break-all"
                             >
                                 https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf

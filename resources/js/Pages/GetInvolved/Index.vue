@@ -109,7 +109,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                         <!-- Call for submissions card -->
                         <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                                {{ heroTitle }}
+                            {{ heroTitle }}
                             </h2>
                             <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
                                 {{ heroIntro }}
@@ -143,7 +143,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                     </svg>
                                 </a>
                             </div>
-                        </div>
+                    </div>
 
                         <!-- Communication toolkit card -->
                         <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
@@ -204,12 +204,12 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                         <div class="mt-4 space-y-4">
                             <p
                                 v-for="(para, index) in (financialBody || '').split('\\n').map(p => p.trim()).filter(Boolean)"
-                                :key="index"
+                            :key="index"
                                 class="mx-auto text-center font-body text-base leading-relaxed text-copy sm:text-lg"
                             >
                                 {{ para }}
                             </p>
-                        </div>
+                            </div>
                     </div>
                 </SectionReveal>
             </div>

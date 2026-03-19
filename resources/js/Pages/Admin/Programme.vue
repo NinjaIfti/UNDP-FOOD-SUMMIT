@@ -741,7 +741,7 @@ function submit() {
                                 class="mt-3 w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-title text-sm font-semibold text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
                             >
                                 + Add New Day
-                            </button>
+                    </button>
                         </div>
                     </div>
                 </div>
