@@ -23,6 +23,7 @@ const form = useForm({
     price_tier: '',
     confirm_tier: false,
     subsidized_price_justification: '',
+    flexible_support_amount: '',
     field_visit: false,
     accessibility_needed: '',
     accessibility_details: '',
@@ -60,6 +61,19 @@ const isSubsidizedSelected = () => {
 };
 
 const photoPreview = ref(null);
+const showFlexibleAmountInput = ref(false);
+
+const flexibleTierIds = ['flexible', 'flexible_any'];
+const isFlexibleTier = (tierId) => flexibleTierIds.includes(String(tierId));
+
+const hardcodedFlexibleId = 'flexible_hardcoded';
+
+watch(() => form.price_tier, (newVal) => {
+    // Keep the UI aligned with the screenshot: only hide when switching away from flexible tiers.
+    if (!isFlexibleTier(newVal)) {
+        showFlexibleAmountInput.value = false;
+    }
+});
 
 const phoneCountryCodes = [
     { code: '+93', label: 'Afghanistan (+93)' },
@@ -276,6 +290,7 @@ const steps = [
 <template>
     <Head title="Register — Global Conscious Food Systems Summit" />
     <EventLayout>
+        <div class="register-page">
         <!-- Success Modal -->
         <div
             v-if="showSuccessModal"
@@ -819,76 +834,83 @@ const steps = [
                             Participants are invited to select the tier that best reflects their organization's resources and available budgets. Participants whose organizations have the means are warmly encouraged
                             to select the Supporter Price to help widen participation.
                         </p>
-                        <div class="mt-4 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="font-body text-base font-semibold text-primary-1">Ticket options</p>
-                            <div class="mt-4 space-y-4 font-body text-base text-copy">
-                                <div>
-                                    <p class="font-body font-semibold text-primary-1">Standard Price — USD 970</p>
-                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
-                                    The regular participation fee that supports the core costs of convening the Summit.
-                                </p>
-                                </div>
-                                <div>
-                                    <p class="font-body font-semibold text-primary-1">Subsidised Price — USD 580</p>
-                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
-                                    For participants working with limited financial resources whose organizations may not have dedicated budgets for international events but whose participation would be critical.
-                                </p>
-                                <p class="mt-3 font-body text-base font-semibold text-primary-1">Typical eligible participants</p>
-                                <ul class="mt-2 list-disc list-inside space-y-1.5 font-body text-base text-copy">
-                                    <li>Non-governmental organizations (NGOs) and non-profit organizations (including national NGOs)</li>
-                                    <li>Social enterprises and social businesses</li>
-                                    <li>Grassroots organizations and community initiatives</li>
-                                    <li>Farmer organizations and cooperatives</li>
-                                    <li>Small start-ups and early-stage ventures working on food systems innovation</li>
-                                    <li>Independent researchers or practitioners without institutional funding</li>
-                                    <li>Eligibility does not guarantee access to the Subsidised Price, which will be subject to resource availability.</li>
-                                </ul>
-                                </div>
-                                <div>
-                                    <p class="font-body font-semibold text-primary-1">Supporter Price — USD 1,550</p>
-                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
-                                    For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.
-                                </p>
-                                <p class="mt-3 font-body text-base font-semibold text-primary-1">
-                                    We particularly encourage the following types of organizations to consider the Supporter Price:
-                                </p>
-                                <ul class="mt-2 list-disc list-inside space-y-1.5 font-body text-base text-copy">
-                                    <li>Philanthropic foundations</li>
-                                    <li>High-net-worth individuals</li>
-                                    <li>Private sector companies, consultancies and advisory firms</li>
-                                    <li>Investors and investment companies</li>
-                                    <li>International organizations</li>
-                                    <li>Participants attending with institutional budgets for international events</li>
-                                </ul>
-                                </div>
-                                <div>
-                                    <p class="font-body font-semibold text-primary-1">Flexible Supporter Price — Above USD 970</p>
-                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
-                                    For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and
-                                    commitment to supporting an inclusive Summit.
-                                </p>
-                                </div>
-                            </div>
-                        </div>
-                        <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
-                        <div v-else class="space-y-3">
+                        <div class="space-y-4">
+                            <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                             <template v-for="pkg in packages" :key="pkg.id">
                                 <label
-                                    class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition"
-                                    :class="String(form.price_tier) === String(pkg.id) ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'"
+                                    class="block cursor-pointer w-full rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm transition hover:border-primary-1/20"
+                                    :class="String(form.price_tier) === String(pkg.id) ? 'border-accent-2 bg-accent-2/5' : ''"
                                 >
-                                    <input
-                                        type="radio"
-                                        v-model="form.price_tier"
-                                        :value="pkg.id"
-                                        class="mt-1 h-4 w-4 accent-[#F59C0E]"
-                                    />
-                                    <div class="flex-1">
-                                        <div class="flex items-baseline justify-between gap-3">
-                                            <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
-                                            <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
+                                    <div class="flex items-start gap-5">
+                                        <div class="pt-1">
+                                            <input
+                                                type="radio"
+                                                v-model="form.price_tier"
+                                                :value="pkg.id"
+                                                class="sr-only"
+                                            />
+                                            <div
+                                                class="flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#D21F1F] bg-[#D21F1F]"
+                                            >
+                                                <div class="h-2.5 w-2.5 rounded-full bg-white"></div>
+                                            </div>
                                         </div>
-                                        <p class="mt-0.5 text-base text-ink">{{ pkg.description }}</p>
+
+                                        <div class="flex-1 pt-0.5">
+                                            <div class="flex items-start justify-between gap-4">
+                                                <h3 class="font-title text-base font-bold text-primary-1">
+                                                    {{ pkg.name }}
+                                                </h3>
+
+                                                <p
+                                                    v-if="!isFlexibleTier(pkg.id)"
+                                                    class="font-body text-base font-semibold text-accent-2"
+                                                >
+                                                    USD {{ Number(pkg.price).toLocaleString() }}
+                                                </p>
+
+                                                <button
+                                                    v-if="isFlexibleTier(pkg.id) && !(String(form.price_tier) === String(pkg.id) && showFlexibleAmountInput)"
+                                                    type="button"
+                                                    class="inline-flex items-center justify-center rounded-full border border-black/50 bg-white px-4 py-2 font-body text-sm font-semibold text-accent-2 transition hover:bg-accent-2/10"
+                                                    @click.stop="showFlexibleAmountInput = true; form.price_tier = pkg.id"
+                                                >
+                                                    Enter Amount
+                                                </button>
+                                            </div>
+
+                                            <p class="mt-2 font-body text-base leading-relaxed text-copy">
+                                                {{ pkg.description }}
+                                            </p>
+
+                                            <div
+                                                v-if="
+                                                    showFlexibleAmountInput
+                                                    && String(form.price_tier) === String(pkg.id)
+                                                        && isFlexibleTier(pkg.id)
+                                                "
+                                                class="mt-4"
+                                            >
+                                                <label for="flexible_support_amount" class="mb-1 block font-body text-base font-semibold text-primary-1">
+                                                    Enter amount (minimum USD 970.01)
+                                                </label>
+                                                <div class="flex items-center gap-3">
+                                                    <span class="font-body text-base font-semibold text-primary-1">USD</span>
+                                                    <input
+                                                        id="flexible_support_amount"
+                                                        v-model.number="form.flexible_support_amount"
+                                                        type="number"
+                                                        min="970.01"
+                                                        step="1"
+                                                        class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                                        placeholder="Enter amount above 970"
+                                                    />
+                                                </div>
+                                                <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
+                                                    {{ form.errors.flexible_support_amount }}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </label>
 
@@ -904,6 +926,71 @@ const steps = [
                                     <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
                                 </div>
                             </template>
+                            <!-- Hardcoded flexible option -->
+                            <label
+                                class="block cursor-pointer w-full rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm transition hover:border-primary-1/20"
+                                :class="String(form.price_tier) === String(hardcodedFlexibleId) ? 'border-accent-2 bg-accent-2/5' : ''"
+                            >
+                                <div class="flex items-start gap-5">
+                                    <div class="pt-1">
+                                        <input
+                                            type="radio"
+                                            v-model="form.price_tier"
+                                            :value="hardcodedFlexibleId"
+                                            class="sr-only"
+                                        />
+                                        <div
+                                            class="flex h-5 w-5 items-center justify-center rounded-full border-2"
+                                            :class="String(form.price_tier) === String(hardcodedFlexibleId) ? 'border-[#D21F1F] bg-[#D21F1F]' : 'border-[#D21F1F] bg-transparent'"
+                                        >
+                                            <div
+                                                v-if="String(form.price_tier) === String(hardcodedFlexibleId)"
+                                                class="h-2.5 w-2.5 rounded-full bg-white"
+                                            ></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 pt-0.5">
+                                        <div class="flex items-start justify-between gap-4">
+                                            <h3 class="font-title text-base font-bold text-primary-1">
+                                                Flexible Supporter Price — Choose any amount above USD 970
+                                            </h3>
+
+                                            <p
+                                                v-if="String(form.price_tier) !== String(hardcodedFlexibleId)"
+                                                class="font-body text-base font-semibold text-accent-2"
+                                            >
+                                                Enter Amount
+                                            </p>
+                                        </div>
+
+                                        <p class="mt-2 font-body text-base leading-relaxed text-copy">
+                                            For participants who are willing and able to contribute beyond the Standard Price.
+                                        </p>
+
+                                        <div v-if="String(form.price_tier) === String(hardcodedFlexibleId)" class="mt-4">
+                                            <label for="flexible_support_amount_hardcoded" class="mb-1 block font-body text-base font-semibold text-primary-1">
+                                                Enter amount (minimum USD 970.01)
+                                            </label>
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-body text-base font-semibold text-primary-1">USD</span>
+                                                <input
+                                                    id="flexible_support_amount_hardcoded"
+                                                    v-model.number="form.flexible_support_amount"
+                                                    type="number"
+                                                    min="970.01"
+                                                    step="1"
+                                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                                    placeholder="Enter amount above 970"
+                                                />
+                                            </div>
+                                            <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
+                                                {{ form.errors.flexible_support_amount }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
                         </div>
                         <p v-if="form.errors.price_tier" class="mt-1 text-base text-red-400">{{ form.errors.price_tier }}</p>
 
@@ -1170,5 +1257,19 @@ const steps = [
                 </form>
             </div>
         </section>
+        </div>
     </EventLayout>
 </template>
+
+<style scoped>
+/* Increase body text size on the Register page without affecting title headings */
+.register-page :deep(.font-body.text-sm) {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.register-page :deep(.font-body.text-base) {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+</style>

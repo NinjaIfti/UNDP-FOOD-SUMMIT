@@ -38,6 +38,15 @@ class DashTicketService
         }
 
         $price = PackageService::getPriceForTier($registration['price_tier'] ?? null);
+        $customFlexibleAmount = $registration['flexible_support_amount'] ?? null;
+        $flexibleTierIds = ['flexible', 'flexible_any', 'flexible_hardcoded'];
+        $isFlexibleTier = in_array((string) ($registration['price_tier'] ?? ''), $flexibleTierIds, true);
+        if ($isFlexibleTier && $customFlexibleAmount !== null && $customFlexibleAmount !== '') {
+            $custom = (float) $customFlexibleAmount;
+            if ($custom > 970) {
+                $price = $custom;
+            }
+        }
         if ($price === null) {
             Log::warning('DashTicket: Could not resolve price for tier', ['price_tier' => $registration['price_tier'] ?? null]);
 

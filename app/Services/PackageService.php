@@ -52,8 +52,15 @@ class PackageService
             ],
             [
                 'id' => 'flexible',
-                'name' => 'Flexible Supporter Price',
-                'description' => 'For participants who are willing and able to contribute beyond the Standard Price.',
+                'name' => 'Flexible Supporter Price — Above USD 970',
+                'description' => 'For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and commitment to supporting an inclusive Summit.',
+                'price' => 970,
+                'active' => true,
+            ],
+            [
+                'id' => 'flexible_any',
+                'name' => 'Flexible Supporter Price — Choose any amount above USD 970',
+                'description' => 'For participants who are willing and able to contribute beyond the Standard Price. Select any amount above USD 970 based on your capacity and commitment to supporting an inclusive Summit.',
                 'price' => 970,
                 'active' => true,
             ],

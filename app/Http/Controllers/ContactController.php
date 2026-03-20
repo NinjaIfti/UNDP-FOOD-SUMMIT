@@ -35,6 +35,10 @@ class ContactController extends Controller
     public function registration(Request $request)
     {
         $activePackageIds = array_map(fn ($p) => (string) $p['id'], PackageService::getActiveTiers());
+        $allowedPackageIds = array_values(array_unique(array_merge($activePackageIds, [
+            // Hardcoded flexible ticket option shown in the UI.
+            'flexible_hardcoded',
+        ])));
 
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -53,9 +57,10 @@ class ContactController extends Controller
             'passport_expiry' => 'nullable|date',
             'arrival_date' => 'required|date',
             'departure_date' => 'required|date|after_or_equal:arrival_date',
-            'price_tier' => ['required', 'string', 'in:' . implode(',', $activePackageIds)],
+            'price_tier' => ['required', 'string', 'in:' . implode(',', $allowedPackageIds)],
             'confirm_tier' => 'accepted',
             'subsidized_price_justification' => 'nullable|string|max:2000',
+            'flexible_support_amount' => 'nullable|required_if:price_tier,flexible|required_if:price_tier,flexible_any|required_if:price_tier,flexible_hardcoded|numeric|gt:970',
             'field_visit' => 'boolean',
             'accessibility_needed' => 'required|string|in:yes,no',
             'accessibility_details' => 'nullable|string|max:1000',
