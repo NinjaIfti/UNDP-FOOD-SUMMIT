@@ -60,7 +60,7 @@ class ContactController extends Controller
             'price_tier' => ['required', 'string', 'in:' . implode(',', $allowedPackageIds)],
             'confirm_tier' => 'accepted',
             'subsidized_price_justification' => 'nullable|string|max:2000',
-            'flexible_support_amount' => 'nullable|required_if:price_tier,flexible|required_if:price_tier,flexible_any|required_if:price_tier,flexible_hardcoded|numeric|gt:970',
+            'flexible_support_amount' => 'nullable|required_if:price_tier,flexible|required_if:price_tier,flexible_any|required_if:price_tier,flexible_hardcoded|numeric|gte:970',
             'field_visit' => 'boolean',
             'accessibility_needed' => 'required|string|in:yes,no',
             'accessibility_details' => 'nullable|string|max:1000',

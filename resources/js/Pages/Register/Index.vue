@@ -70,7 +70,7 @@ const isFlexibleTier = (tierId) => flexibleTierIds.includes(String(tierId));
 const isFlexibleAmountInvalid = () => {
     const v = Number(form.flexible_support_amount);
     if (!form.flexible_support_amount || Number.isNaN(v)) return false;
-    return v <= 970;
+    return v < 970;
 };
 
 watch(() => form.price_tier, (newVal) => {
@@ -856,7 +856,8 @@ const steps = [
                                                 class="sr-only"
                                             />
                                             <div
-                                                class="flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#D21F1F] bg-[#D21F1F]"
+                                                class="flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#D21F1F]"
+                                                :class="String(form.price_tier) === String(pkg.id) ? 'bg-[#D21F1F]' : 'bg-transparent'"
                                             >
                                                 <div class="h-2.5 w-2.5 rounded-full bg-white"></div>
                                             </div>
@@ -914,7 +915,7 @@ const steps = [
                                                     />
                                                 </div>
                                                 <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
-                                                    Amount must be above USD 970.
+                                                    Amount must be at least USD 970.
                                                 </p>
                                                 <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                     {{ form.errors.flexible_support_amount }}
@@ -1011,7 +1012,7 @@ const steps = [
                                                 />
                                             </div>
                                             <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
-                                                Amount must be above USD 970.
+                                                Amount must be at least USD 970.
                                             </p>
                                             <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                 {{ form.errors.flexible_support_amount }}

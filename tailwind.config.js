@@ -9,6 +9,11 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
+    safelist: [
+        'border-2',
+        'border-accent-2',
+        'bg-accent-2/15',
+    ],
 
     theme: {
         extend: {

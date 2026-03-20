@@ -43,7 +43,7 @@ class DashTicketService
         $isFlexibleTier = in_array((string) ($registration['price_tier'] ?? ''), $flexibleTierIds, true);
         if ($isFlexibleTier && $customFlexibleAmount !== null && $customFlexibleAmount !== '') {
             $custom = (float) $customFlexibleAmount;
-            if ($custom > 970) {
+            if ($custom >= 970) {
                 $price = $custom;
             }
         }
