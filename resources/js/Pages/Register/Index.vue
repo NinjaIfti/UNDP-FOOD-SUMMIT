@@ -501,11 +501,9 @@ const steps = [
 
                     <!-- Flexible Supporter Price -->
                     <div class="rounded-xl border border-primary-2/15 bg-white px-6 py-5 shadow-sm">
-                        <h3 class="font-title text-xl font-bold text-primary-1">Flexible Supporter Price</h3>
-                        <p class="mt-1 font-body text-lg font-semibold text-accent-2">Above USD 970</p>
+                        <h3 class="font-title text-xl font-bold text-primary-1">Flexible Supporter Price — Above USD 970</h3>
                         <p class="mt-3 font-body text-base leading-relaxed text-copy">
-                            For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and commitment to
-                            supporting an inclusive Summit.
+                            For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and commitment to supporting an inclusive Summit
                         </p>
                     </div>
                 </div>
@@ -908,7 +906,7 @@ const steps = [
                                                         id="flexible_support_amount"
                                                         v-model.number="form.flexible_support_amount"
                                                         type="number"
-                                                            min="971"
+                                                            min="970"
                                                         step="1"
                                                         class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:outline-none focus:ring-1"
                                                         :class="isFlexibleAmountInvalid() ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : 'focus:border-accent-2 focus:ring-accent-2'"
@@ -980,7 +978,7 @@ const steps = [
                                     <div class="flex-1 pt-0.5">
                                         <div class="flex items-start justify-between gap-4">
                                             <h3 class="font-title text-base font-bold text-primary-1">
-                                                Flexible Supporter Price
+                                            Flexible Supporter Price — Above USD 970
                                             </h3>
 
                                             <p
@@ -992,7 +990,7 @@ const steps = [
                                         </div>
 
                                         <p class="mt-2 font-body text-base leading-relaxed text-copy">
-                                            For participants who are willing and able to contribute beyond the Standard Price.
+                                            For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and commitment to supporting an inclusive Summit
                                         </p>
 
                                         <div v-if="String(form.price_tier) === String(hardcodedFlexibleId)" class="mt-4">
@@ -1005,7 +1003,7 @@ const steps = [
                                                     id="flexible_support_amount_hardcoded"
                                                     v-model.number="form.flexible_support_amount"
                                                     type="number"
-                                                    min="971"
+                                                    min="970"
                                                     step="1"
                                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:outline-none focus:ring-1"
                                                     :class="isFlexibleAmountInvalid() ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : 'focus:border-accent-2 focus:ring-accent-2'"
