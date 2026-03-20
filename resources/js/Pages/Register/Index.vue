@@ -919,7 +919,7 @@ const steps = [
                                                     />
                                                 </div>
                                                 <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
-                                                    Amount must be at least USD 970.
+                                                    Amount must be at least USD 970
                                                 </p>
                                                 <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                     {{ form.errors.flexible_support_amount }}
@@ -1020,7 +1020,7 @@ const steps = [
                                                 />
                                             </div>
                                             <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
-                                                Amount must be at least USD 970.
+                                                Amount must be at least USD 970
                                             </p>
                                             <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                 {{ form.errors.flexible_support_amount }}

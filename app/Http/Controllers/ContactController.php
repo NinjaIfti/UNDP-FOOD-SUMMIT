@@ -76,6 +76,9 @@ class ContactController extends Controller
             'emergency_email' => 'required|email',
             'emergency_relation' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+        ], [
+            'flexible_support_amount.gte' => 'Amount must be at least USD 970',
+            'flexible_support_amount.gt' => 'Amount must be greater than USD 970',
         ]);
 
         if (!empty($validated['subsidized_price_justification']) && str_word_count(strip_tags((string) $validated['subsidized_price_justification'])) > 120) {
