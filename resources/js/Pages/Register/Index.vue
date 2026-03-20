@@ -63,10 +63,15 @@ const isSubsidizedSelected = () => {
 const photoPreview = ref(null);
 const showFlexibleAmountInput = ref(false);
 
-const flexibleTierIds = ['flexible', 'flexible_any'];
+const hardcodedFlexibleId = 'flexible_hardcoded';
+const flexibleTierIds = ['flexible', 'flexible_any', hardcodedFlexibleId];
 const isFlexibleTier = (tierId) => flexibleTierIds.includes(String(tierId));
 
-const hardcodedFlexibleId = 'flexible_hardcoded';
+const isFlexibleAmountInvalid = () => {
+    const v = Number(form.flexible_support_amount);
+    if (!form.flexible_support_amount || Number.isNaN(v)) return false;
+    return v <= 970;
+};
 
 watch(() => form.price_tier, (newVal) => {
     // Keep the UI aligned with the screenshot: only hide when switching away from flexible tiers.
@@ -243,6 +248,9 @@ function submit() {
     form.phone = buildFullPhone();
     if (!form.phone.trim()) {
         phoneClientError.value = 'Please choose a country code and enter your phone number.';
+        return;
+    }
+    if (isFlexibleTier(form.price_tier) && isFlexibleAmountInvalid()) {
         return;
     }
     form.post('/register-summit', {
@@ -902,10 +910,14 @@ const steps = [
                                                         type="number"
                                                         min="970.01"
                                                         step="1"
-                                                        class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                                        class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:outline-none focus:ring-1"
+                                                        :class="isFlexibleAmountInvalid() ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : 'focus:border-accent-2 focus:ring-accent-2'"
                                                         placeholder="Enter amount above 970"
                                                     />
                                                 </div>
+                                                <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
+                                                    Amount must be above USD 970.
+                                                </p>
                                                 <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                     {{ form.errors.flexible_support_amount }}
                                                 </p>
@@ -980,10 +992,14 @@ const steps = [
                                                     type="number"
                                                     min="970.01"
                                                     step="1"
-                                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:outline-none focus:ring-1"
+                                                    :class="isFlexibleAmountInvalid() ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : 'focus:border-accent-2 focus:ring-accent-2'"
                                                     placeholder="Enter amount above 970"
                                                 />
                                             </div>
+                                            <p v-if="isFlexibleAmountInvalid() && !form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
+                                                Amount must be above USD 970.
+                                            </p>
                                             <p v-if="form.errors.flexible_support_amount" class="mt-2 text-base text-red-400">
                                                 {{ form.errors.flexible_support_amount }}
                                             </p>
