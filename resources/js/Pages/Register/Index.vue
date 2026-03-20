@@ -847,7 +847,7 @@ const steps = [
                             <template v-for="pkg in packages" :key="pkg.id">
                                 <label
                                     class="block cursor-pointer w-full rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm transition hover:border-primary-1/20"
-                                    :class="String(form.price_tier) === String(pkg.id) ? 'border-accent-2 bg-accent-2/5' : ''"
+                                    :class="String(form.price_tier) === String(pkg.id) ? 'border-2 border-accent-2 bg-accent-2/15' : ''"
                                 >
                                     <div class="flex items-start gap-5">
                                         <div class="pt-1">
@@ -956,7 +956,7 @@ const steps = [
                             <!-- Hardcoded flexible option -->
                             <label
                                 class="block cursor-pointer w-full rounded-xl border border-primary-1/10 bg-white px-6 py-5 shadow-sm transition hover:border-primary-1/20"
-                                :class="String(form.price_tier) === String(hardcodedFlexibleId) ? 'border-accent-2 bg-accent-2/5' : ''"
+                                :class="String(form.price_tier) === String(hardcodedFlexibleId) ? 'border-2 border-accent-2 bg-accent-2/15' : ''"
                             >
                                 <div class="flex items-start gap-5">
                                     <div class="pt-1">
