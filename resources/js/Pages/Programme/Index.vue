@@ -438,10 +438,10 @@ const defaultThemes = [
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
                                             </svg>
                                         </div>
-                                        <p class="font-title text-base font-bold text-accent-2 sm:text-lg">
+                                        <p class="font-title w-full text-base font-bold text-accent-2 text-center sm:text-lg leading-tight">
                                             {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line1 }}
                                         </p>
-                                        <p class="mt-1 font-title text-base font-bold text-accent-2 sm:text-lg">
+                                        <p class="mt-1 font-title w-full text-base font-bold text-accent-2 text-center sm:text-lg leading-tight">
                                             {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line2 }}
                                         </p>
                                     </div>
@@ -536,8 +536,9 @@ const defaultThemes = [
                         <!-- Photo -->
                         <div class="overflow-hidden rounded-none shadow-xl">
                             <img
-                                :src="settings.cfs_image || '/brand/img34.jpg'"
+                                :src="settings.cfs_image || '/brand/img30.jpg'"
                                 alt="Call for Submissions"
+                                @error="($event) => { $event.target.src = '/brand/img30.jpg' }"
                                 class="h-72 w-full object-cover sm:h-96"
                                 loading="lazy"
                             />
@@ -627,10 +628,10 @@ const defaultThemes = [
                                             <h3 class="font-title text-lg font-bold text-primary-1">{{ theme.title }}</h3>
                                             <p class="mt-3 flex-1 font-body text-base leading-relaxed text-copy line-clamp-4 sm:text-lg">{{ theme.description }}</p>
                                             <div class="mt-4 pt-4">
-                                                <p class="font-body text-sm text-copy">
+                                                <p class="font-body text-base text-copy">
                                                     <span class="font-semibold">Team Lead:</span> {{ theme.lead }}
                                                 </p>
-                                                <a :href="`mailto:${theme.contact}`" class="mt-1 inline-block font-body text-sm text-accent-1 hover:underline">
+                                                <a :href="`mailto:${theme.contact}`" class="mt-1 inline-block font-body text-base text-accent-1 hover:underline">
                                                     {{ theme.contact }}
                                                 </a>
                                             </div>
@@ -653,7 +654,7 @@ const defaultThemes = [
                         </button>
 
                         <div class="mt-6 flex justify-center gap-2">
-                            <span class="font-body text-sm text-copy">
+                            <span class="font-body text-base text-copy">
                                 {{ themeIndex + 1 }} / {{ totalPages }}
                             </span>
                         </div>

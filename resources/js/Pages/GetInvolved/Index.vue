@@ -55,6 +55,14 @@ const spreadTitle = computed(() => props.settings?.spread_title || 'Spread the w
 const spreadBody = computed(() => props.settings?.spread_body || 'PENDING: Communication Toolkit will be provided by COFSA soon.');
 const spreadPending = computed(() => props.settings?.spread_pending || '');
 
+const spreadBodyParagraphs = computed(() => {
+    const raw = spreadBody.value || '';
+    return String(raw)
+        .split(/\r?\n|\\n/)
+        .map(p => p.trim())
+        .filter(Boolean);
+});
+
 const partnersTitle = computed(() => props.settings?.partners_title || 'Together with our partners');
 const partnersBody = computed(() => props.settings?.partners_body || 'This Summit is made possible through strong partnerships');
 const partnersPending = computed(() => props.settings?.partners_pending || 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS');
@@ -132,7 +140,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                             {{ card.title }}
                                         </p>
                                         <p
-                                            class="mt-1 font-body text-sm"
+                                            class="mt-1 font-body text-base"
                                             :class="card.style === 'primary' ? 'text-white/90' : 'text-copy'"
                                         >
                                             {{ card.subtitle }}
@@ -150,10 +158,16 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
                                 {{ spreadTitle }}
                             </h2>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
-                                {{ spreadBody }}
-                            </p>
-                            <p v-if="spreadPending" class="mt-3 font-body text-sm font-semibold text-primary-1">
+                            <div class="mt-3 space-y-3">
+                                <p
+                                    v-for="(para, index) in spreadBodyParagraphs"
+                                    :key="index"
+                                    class="font-body text-base leading-relaxed text-copy sm:text-lg"
+                                >
+                                    {{ para }}
+                                </p>
+                            </div>
+                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
                                 {{ spreadPending }}
                             </p>
                         </div>
@@ -173,7 +187,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                         <p class="mx-auto mt-3 max-w-3xl text-center font-body text-base leading-relaxed text-copy sm:text-lg">
                             {{ partnersBody }}
                         </p>
-                        <p v-if="partnersPending" class="mx-auto mt-3 max-w-3xl text-center font-body text-sm font-semibold text-primary-1">
+                        <p v-if="partnersPending" class="mx-auto mt-3 max-w-3xl text-center font-body text-base font-semibold text-primary-1">
                             {{ partnersPending }}
                         </p>
                     </div>
@@ -197,15 +211,15 @@ const financialBody = computed(() => props.settings?.financial_body || '');
         <section class="bg-[#F4F1EA] py-8 sm:py-10 lg:py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
-                    <div class="mx-auto max-w-4xl rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8 text-center">
-                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl text-center">
+                    <div class="mx-auto max-w-4xl rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8 text-left">
+                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
                             {{ financialTitle }}
                         </h2>
                         <div class="mt-4 space-y-4">
                             <p
                                 v-for="(para, index) in (financialBody || '').split('\\n').map(p => p.trim()).filter(Boolean)"
                             :key="index"
-                                class="mx-auto text-center font-body text-base leading-relaxed text-copy sm:text-lg"
+                                class="text-left font-body text-base leading-relaxed text-copy sm:text-lg"
                             >
                                 {{ para }}
                             </p>

@@ -6,32 +6,55 @@ use Illuminate\Support\Facades\Storage;
 
 class PackageService
 {
+    private static function isRemovedLegacyTier(array $tier): bool
+    {
+        $name = strtolower(trim((string) ($tier['name'] ?? '')));
+        if ($name === '') return false;
+
+        // Legacy tiers that should no longer appear in registration:
+        // "Standard Package", "Premium Package", "VIP Package +"
+        return str_starts_with($name, 'standard package')
+            || str_starts_with($name, 'premium package')
+            || str_starts_with($name, 'vip package');
+    }
+
     public static function getTiers(): array
     {
         if (Storage::exists('admin/packages.json')) {
-            return json_decode(Storage::get('admin/packages.json'), true) ?? [];
+            $tiers = json_decode(Storage::get('admin/packages.json'), true) ?? [];
+            return array_values(array_filter(
+                is_array($tiers) ? $tiers : [],
+                static fn ($tier) => is_array($tier) && ! self::isRemovedLegacyTier($tier)
+            ));
         }
 
         return [
             [
-                'id' => '1',
-                'name' => 'Standard Package',
-                'description' => 'Full summit access with meals and materials',
-                'price' => 1500,
+                'id' => 'standard',
+                'name' => 'Standard Price',
+                'description' => 'The regular participation fee that supports the core costs of convening the Summit.',
+                'price' => 970,
                 'active' => true,
             ],
             [
-                'id' => '2',
-                'name' => 'Premium Package',
-                'description' => 'Includes networking events and exclusive sessions',
-                'price' => 2500,
+                'id' => 'subsidised',
+                'name' => 'Subsidised Price',
+                'description' => 'For participants working with limited financial resources whose organizations may not have dedicated budgets for international events but whose participation would be critical.',
+                'price' => 580,
                 'active' => true,
             ],
             [
-                'id' => '3',
-                'name' => 'VIP Package',
-                'description' => 'Complete experience with private meetings and luxury accommodation',
-                'price' => 4500,
+                'id' => 'supporter',
+                'name' => 'Supporter Price',
+                'description' => 'For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.',
+                'price' => 1550,
+                'active' => true,
+            ],
+            [
+                'id' => 'flexible',
+                'name' => 'Flexible Supporter Price',
+                'description' => 'For participants who are willing and able to contribute beyond the Standard Price.',
+                'price' => 970,
                 'active' => true,
             ],
         ];

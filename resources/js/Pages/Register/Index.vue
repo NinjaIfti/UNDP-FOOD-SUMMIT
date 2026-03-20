@@ -296,7 +296,7 @@ const steps = [
                     <button
                         type="button"
                         @click="closeSuccessModal"
-                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-body text-sm font-semibold text-white transition hover:bg-primary-2/90"
+                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-body text-base font-semibold text-white transition hover:bg-primary-2/90"
                     >
                         OK
                     </button>
@@ -396,7 +396,7 @@ const steps = [
                 </h2>
                 <div class="mt-12 space-y-6">
                     <div v-for="step in steps" :key="step.number" class="flex gap-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-sm font-bold text-primary-1">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-base font-bold text-primary-1">
                             {{ step.number }}
                         </div>
                         <div class="flex-1 pt-1">
@@ -444,17 +444,15 @@ const steps = [
                         <p class="mt-2 font-body text-base leading-relaxed text-copy">
                             Participants selecting the Subsidised Price should be based in low- and middle-income countries, and affiliated to the following type of organizations:
                         </p>
-                        <ul class="mt-3 space-y-1.5 font-body text-base text-copy">
+                        <ul class="mt-3 list-disc list-inside space-y-1.5 font-body text-base text-copy">
                             <li>Non-governmental organizations (NGOs) and non-profit organizations (including national NGOs)</li>
                             <li>Social enterprises and social businesses</li>
                             <li>Grassroots organizations and community initiatives</li>
                             <li>Farmer organizations and cooperatives</li>
                             <li>Small start-ups and early-stage ventures working on food systems innovation</li>
                             <li>Independent researchers or practitioners without institutional funding</li>
+                            <li>Eligibility does not guarantee access to the Subsidised Price, which will be subject to resource availability.</li>
                         </ul>
-                        <p class="mt-3 font-body text-base leading-relaxed text-copy">
-                            Eligibility does not guarantee access to the Subsidised Price, which will be subject to resource availability.
-                        </p>
                     </div>
 
                     <!-- Supporter Price -->
@@ -468,7 +466,7 @@ const steps = [
                         <p class="mt-4 font-body text-base font-semibold text-primary-1">
                             We particularly encourage the following types of organizations to consider the Supporter Price:
                         </p>
-                        <ul class="mt-3 space-y-1.5 font-body text-base text-copy">
+                        <ul class="mt-3 list-disc list-inside space-y-1.5 font-body text-base text-copy">
                             <li>Philanthropic foundations</li>
                             <li>High-net-worth individuals</li>
                             <li>Private sector companies, consultancies and advisory firms</li>
@@ -826,62 +824,88 @@ const steps = [
                             <div class="mt-4 space-y-4 font-body text-base text-copy">
                                 <div>
                                     <p class="font-body font-semibold text-primary-1">Standard Price — USD 970</p>
-                                    <p class="mt-1">The regular participation fee that supports the core costs of convening the Summit.</p>
+                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
+                                    The regular participation fee that supports the core costs of convening the Summit.
+                                </p>
                                 </div>
                                 <div>
                                     <p class="font-body font-semibold text-primary-1">Subsidised Price — USD 580</p>
-                                    <p class="mt-1">
-                                        For participants working with limited financial resources whose organizations may not have dedicated budgets for international events but whose participation would be critical.
-                                    </p>
+                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
+                                    For participants working with limited financial resources whose organizations may not have dedicated budgets for international events but whose participation would be critical.
+                                </p>
+                                <p class="mt-3 font-body text-base font-semibold text-primary-1">Typical eligible participants</p>
+                                <ul class="mt-2 list-disc list-inside space-y-1.5 font-body text-base text-copy">
+                                    <li>Non-governmental organizations (NGOs) and non-profit organizations (including national NGOs)</li>
+                                    <li>Social enterprises and social businesses</li>
+                                    <li>Grassroots organizations and community initiatives</li>
+                                    <li>Farmer organizations and cooperatives</li>
+                                    <li>Small start-ups and early-stage ventures working on food systems innovation</li>
+                                    <li>Independent researchers or practitioners without institutional funding</li>
+                                    <li>Eligibility does not guarantee access to the Subsidised Price, which will be subject to resource availability.</li>
+                                </ul>
                                 </div>
                                 <div>
                                     <p class="font-body font-semibold text-primary-1">Supporter Price — USD 1,550</p>
-                                    <p class="mt-1">For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.</p>
+                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
+                                    For participants who are able to contribute more and help make the Summit accessible to a wider diversity of voices.
+                                </p>
+                                <p class="mt-3 font-body text-base font-semibold text-primary-1">
+                                    We particularly encourage the following types of organizations to consider the Supporter Price:
+                                </p>
+                                <ul class="mt-2 list-disc list-inside space-y-1.5 font-body text-base text-copy">
+                                    <li>Philanthropic foundations</li>
+                                    <li>High-net-worth individuals</li>
+                                    <li>Private sector companies, consultancies and advisory firms</li>
+                                    <li>Investors and investment companies</li>
+                                    <li>International organizations</li>
+                                    <li>Participants attending with institutional budgets for international events</li>
+                                </ul>
                                 </div>
                                 <div>
                                     <p class="font-body font-semibold text-primary-1">Flexible Supporter Price — Above USD 970</p>
-                                    <p class="mt-1">
-                                        For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and
-                                        commitment to supporting an inclusive Summit.
-                                    </p>
+                                <p class="mt-1 font-body text-base leading-relaxed text-copy">
+                                    For participants who are willing and able to contribute beyond the Standard Price, this option allows you to choose an amount above USD 970 based on your capacity and
+                                    commitment to supporting an inclusive Summit.
+                                </p>
                                 </div>
                             </div>
                         </div>
                         <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                         <div v-else class="space-y-3">
-                            <label
-                                v-for="pkg in packages"
-                                :key="pkg.id"
-                                class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition"
-                                :class="form.price_tier === pkg.id ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'"
-                            >
-                                <input
-                                    type="radio"
-                                    v-model="form.price_tier"
-                                    :value="pkg.id"
-                                    class="mt-1 h-4 w-4 accent-[#F59C0E]"
-                                />
-                                <div class="flex-1">
-                                    <div class="flex items-baseline justify-between gap-3">
-                                        <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
-                                        <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
+                            <template v-for="pkg in packages" :key="pkg.id">
+                                <label
+                                    class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition"
+                                    :class="String(form.price_tier) === String(pkg.id) ? 'border-accent-2 bg-accent-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'"
+                                >
+                                    <input
+                                        type="radio"
+                                        v-model="form.price_tier"
+                                        :value="pkg.id"
+                                        class="mt-1 h-4 w-4 accent-[#F59C0E]"
+                                    />
+                                    <div class="flex-1">
+                                        <div class="flex items-baseline justify-between gap-3">
+                                            <span class="font-body font-semibold text-primary-1">{{ pkg.name }}</span>
+                                            <span class="shrink-0 font-body text-lg font-bold text-accent-2">USD {{ Number(pkg.price).toLocaleString() }}</span>
+                                        </div>
+                                        <p class="mt-0.5 text-base text-ink">{{ pkg.description }}</p>
                                     </div>
-                                    <p class="mt-0.5 text-base text-ink">{{ pkg.description }}</p>
+                                </label>
+
+                                <!-- Only show confirmation directly under the selected Subsidised Price -->
+                                <div v-if="isSubsidizedSelected() && String(form.price_tier) === String(pkg.id)" class="rounded-xl border border-primary-2/15 bg-white px-5 py-4">
+                                    <p class="mb-3 font-body text-base font-semibold text-primary-1">Confirmation</p>
+                                    <label class="flex items-start gap-3">
+                                        <input type="checkbox" v-model="form.confirm_tier" class="mt-1 h-4 w-4 accent-[#F59C0E]" />
+                                        <span class="font-body text-base text-ink">
+                                            I confirm that the ticket tier selected reflects the financial capacity of my organization.
+                                        </span>
+                                    </label>
+                                    <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
                                 </div>
-                            </label>
+                            </template>
                         </div>
                         <p v-if="form.errors.price_tier" class="mt-1 text-base text-red-400">{{ form.errors.price_tier }}</p>
-
-                        <div v-if="isSubsidizedSelected()" class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
-                            <p class="mb-3 font-body text-base font-semibold text-primary-1">Confirmation</p>
-                            <label class="flex items-start gap-3">
-                                <input type="checkbox" v-model="form.confirm_tier" class="mt-1 h-4 w-4 accent-[#F59C0E]" />
-                                <span class="font-body text-base text-ink">
-                                    I confirm that the ticket tier selected reflects the financial capacity of my organization.
-                                </span>
-                            </label>
-                            <p v-if="form.errors.confirm_tier" class="mt-2 text-base text-red-400">{{ form.errors.confirm_tier }}</p>
-                        </div>
 
                         <div v-if="isSubsidizedSelected()" class="mt-6 rounded-xl border border-primary-2/15 bg-white px-5 py-4">
                             <label for="subsidized_price_justification" class="mb-2 block font-body text-base font-semibold text-primary-1">Subsidised Price Justification</label>
