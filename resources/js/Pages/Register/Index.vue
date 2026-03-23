@@ -60,7 +60,6 @@ const isSubsidizedSelected = () => {
     return name.includes('subsid');
 };
 
-const photoPreview = ref(null);
 const showFlexibleAmountInput = ref(false);
 
 const hardcodedFlexibleId = 'flexible_hardcoded';
@@ -223,21 +222,6 @@ function closeSuccessModal() {
     showSuccessModal.value = false;
 }
 
-function handlePhoto(e) {
-    const file = e.target.files[0];
-    if (file) {
-        form.photo = file;
-        const reader = new FileReader();
-        reader.onload = (ev) => { photoPreview.value = ev.target.result; };
-        reader.readAsDataURL(file);
-    }
-}
-
-function removePhoto() {
-    form.photo = null;
-    photoPreview.value = null;
-}
-
 const countries = [
     'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
     'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium',
@@ -280,7 +264,6 @@ function submit() {
         forceFormData: true,
         onSuccess: () => {
             form.reset();
-            photoPreview.value = null;
             phoneCountryCode.value = '+975';
             phoneLocal.value = '';
             phoneClientError.value = '';

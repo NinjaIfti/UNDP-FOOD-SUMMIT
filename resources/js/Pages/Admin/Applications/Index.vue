@@ -119,7 +119,7 @@ function exportApplicationsPdf() {
         head: [[
             'Name',
             'Email',
-            'Country',
+            'Nationality',
             'Organization',
             'Price tier',
             'Status',
@@ -140,7 +140,7 @@ function exportApplicationsExcel() {
     const data = props.applications?.data || [];
 
     const worksheetData = [
-        ['First name', 'Last name', 'Email', 'Country', 'Organization', 'Price tier', 'Status', 'Submitted'],
+        ['First name', 'Last name', 'Email', 'Nationality', 'Organization', 'Price tier', 'Status', 'Submitted'],
         ...data.map((app) => [
             app.first_name,
             app.last_name,
@@ -377,7 +377,7 @@ function exportApplicationsExcel() {
                                     Email
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
-                                    Country
+                                    Nationality
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Organization

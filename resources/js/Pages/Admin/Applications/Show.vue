@@ -100,7 +100,7 @@ const statusBadgeClass = (status) => {
                         <div><dt class="font-body text-xs text-gray-500">Name</dt><dd class="font-body text-ink">{{ application.first_name }} {{ application.last_name }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Email</dt><dd class="font-body text-ink">{{ application.email }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Phone</dt><dd class="font-body text-ink">{{ application.phone }}</dd></div>
-                        <div><dt class="font-body text-xs text-gray-500">Country</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Organization</dt><dd class="font-body text-ink">{{ application.organization }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Job Title</dt><dd class="font-body text-ink">{{ application.job_title }}</dd></div>
                         <div v-if="application.website" class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">Website</dt><dd class="font-body text-ink"><a :href="application.website" target="_blank" class="text-accent-1 hover:underline">{{ application.website }}</a></dd></div>
@@ -110,7 +110,8 @@ const statusBadgeClass = (status) => {
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h2 class="font-title text-lg font-semibold text-primary-1">Visa and Travel</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-                        <div><dt class="font-body text-xs text-gray-500">Passport Number</dt><dd class="font-body text-ink">{{ application.passport_number }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Passport Number</dt><dd class="font-body text-ink">{{ application.passport_number || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Passport Expiry</dt><dd class="font-body text-ink">{{ formatDate(application.passport_expiry) || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Arrival Date</dt><dd class="font-body text-ink">{{ formatDate(application.arrival_date) }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Departure Date</dt><dd class="font-body text-ink">{{ formatDate(application.departure_date) }}</dd></div>
