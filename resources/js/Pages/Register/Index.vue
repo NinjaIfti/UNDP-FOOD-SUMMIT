@@ -612,13 +612,14 @@ const steps = [
                                 </p>
                             </div>
                             <div>
-                                <label for="country" class="mb-1 block text-base font-medium text-primary-1">Country of Residence</label>
+                                <label for="country" class="mb-1 block text-base font-medium text-primary-1">Nationality *</label>
                                 <select
                                     id="country"
                                     v-model="form.country"
+                                    required
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                 >
-                                    <option value="" class="text-gray-800">Select country</option>
+                                    <option value="" class="text-gray-800">Select nationality</option>
                                     <option v-for="c in countries" :key="c" :value="c" class="text-gray-800">{{ c }}</option>
                                 </select>
                                 <p v-if="form.errors.country" class="mt-1 text-base text-red-400">{{ form.errors.country }}</p>
@@ -720,36 +721,14 @@ const steps = [
                         <legend class="font-body text-lg font-semibold text-accent-2">Section 2 — Visa Information</legend>
                         <div class="mt-3 rounded-xl border border-primary-2/15 bg-white px-5 py-4 text-base">
                             <p class="font-body text-base leading-relaxed text-copy">
-                                Visa arrangements for this event will be fully coordinated by the organizing team. Upon approval of your registration, the organizers will guide you through the visa process and provide the necessary official documentation required for your application. Please ensure that the passport details submitted below are accurate and match your travel documents.
+                                Visa arrangements for this event will be fully coordinated by the organizing team. Upon approval of your registration, the organizers will guide you through the visa process and provide the necessary official documentation required for your application.
                             </p>
                             <p class="mt-2 font-body text-base leading-relaxed text-copy">
                                 Please ensure your passport is valid for at least 6 months from your travel date.
                             </p>
                         </div>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                            <div>
-                                <label for="passport_number" class="mb-1 block text-base font-medium text-primary-1">Passport Number *</label>
-                                <input
-                                    id="passport_number"
-                                    v-model="form.passport_number"
-                                    type="text"
-                                    required
-                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                    placeholder="e.g. AB1234567"
-                                />
-                                <p v-if="form.errors.passport_number" class="mt-1 text-base text-red-400">{{ form.errors.passport_number }}</p>
-                            </div>
-                            <div>
-                                <label for="passport_expiry" class="mb-1 block text-base font-medium text-primary-1">Passport Expiration Date</label>
-                                <input
-                                    id="passport_expiry"
-                                    v-model="form.passport_expiry"
-                                    type="date"
-                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
-                                />
-                                <p class="mt-1 text-base text-copy">Must be valid for at least 6 months from travel date</p>
-                                <p v-if="form.errors.passport_expiry" class="mt-1 text-base text-red-400">{{ form.errors.passport_expiry }}</p>
-                            </div>
+                            <!-- Passport Number and Passport Expiration Date are hidden for now -->
                             <div>
                                 <label for="arrival_date" class="mb-1 block text-base font-medium text-primary-1">Preferred Arrival Date *</label>
                                 <input
@@ -1248,29 +1227,7 @@ const steps = [
                             </div>
                         </div>
 
-                        <!-- Document Uploads -->
-                        <h4 class="mt-8 font-body text-base font-semibold uppercase tracking-wide text-primary-1">Document Uploads</h4>
-                        <div class="mt-3">
-                            <p class="mb-3 font-body text-base text-copy">Please upload a personal photo of yourself for visa purposes. The photo should be a recent passport-style photograph with a plain background.</p>
-                            <div v-if="!photoPreview" class="flex items-center justify-center">
-                                <label class="flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-primary-2/30 bg-white py-10 transition hover:border-accent-2 hover:bg-accent-2/5">
-                                    <svg class="mb-3 h-10 w-10 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <span class="font-body text-base font-medium text-primary-1">Click to upload photo</span>
-                                    <span class="mt-1 text-base text-copy">JPG, PNG — max 5MB</span>
-                                    <input type="file" accept="image/jpeg,image/png" class="hidden" @change="handlePhoto" />
-                                </label>
-                            </div>
-                            <div v-else class="flex items-center gap-4">
-                                <img :src="photoPreview" alt="Photo preview" class="h-24 w-20 rounded-lg border border-primary-2/20 object-cover" />
-                                <div>
-                                    <p class="text-base text-primary-1">Photo uploaded</p>
-                                    <button type="button" @click="removePhoto" class="mt-1 text-base text-accent-2 hover:underline">Remove</button>
-                                </div>
-                            </div>
-                            <p v-if="form.errors.photo" class="mt-1 text-base text-red-400">{{ form.errors.photo }}</p>
-                        </div>
+                        <!-- Photo upload is hidden for now -->
 
                         <!-- Contact note -->
                         <div class="mt-8 rounded-xl border border-primary-2/15 bg-white px-5 py-4 text-center">
