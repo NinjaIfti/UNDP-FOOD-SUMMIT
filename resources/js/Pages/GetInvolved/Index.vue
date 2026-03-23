@@ -9,6 +9,7 @@ const props = defineProps({
 });
 
 const heroTitle = computed(() => props.settings?.hero_title ?? 'Call for Submissions');
+const callSubmissionsTitle = computed(() => props.settings?.call_submissions_title ?? 'Call for Submissions');
 const heroSubtitle = computed(() => props.settings?.hero_subtitle ?? 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.');
 const heroIntro = computed(() => props.settings?.hero_intro ?? 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.');
 
@@ -42,6 +43,10 @@ onUnmounted(() => {
 const ctaParagraph1 = computed(() => props.settings?.cta_paragraph1 ?? 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.');
 const ctaParagraph2 = computed(() => props.settings?.cta_paragraph2 ?? 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.');
 const ctaParagraph3 = computed(() => props.settings?.cta_paragraph3 ?? 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.');
+const engagementTitle = computed(() => props.settings?.engagement_title ?? 'Activating the Heart');
+const engagementBody = computed(() => props.settings?.engagement_body ?? '');
+const visioningTitle = computed(() => props.settings?.visioning_title ?? 'Deep Visioning');
+const visioningBody = computed(() => props.settings?.visioning_body ?? '');
 const ctaCards = computed(() => {
     const list = props.settings?.cta_cards;
     if (Array.isArray(list) && list.length) return list.filter(c => c && c.href);
@@ -109,17 +114,22 @@ const financialBody = computed(() => props.settings?.financial_body || '');
             </div>
         </section>
 
-        <!-- Two-up cards: Call for submissions + Communication toolkit -->
+        <!-- Four cards section -->
         <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto mb-6 max-w-5xl text-left sm:mb-8">
+                    <p class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
+                        {{ ctaParagraph1 }}
+                    </p>
+                </div>
                 <SectionReveal>
                     <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
                         <!-- Call for submissions card -->
                         <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                            {{ heroTitle }}
+                            {{ callSubmissionsTitle }}
                             </h2>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy sm:text-lg">
+                            <p class="mt-3 font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
                                 {{ heroIntro }}
                             </p>
 
@@ -151,7 +161,25 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                     </svg>
                                 </a>
                             </div>
-                    </div>
+                        </div>
+
+                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
+                                {{ engagementTitle }}
+                            </h2>
+                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
+                                {{ engagementBody || ctaParagraph2 }}
+                            </p>
+                        </div>
+
+                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
+                                {{ visioningTitle }}
+                            </h2>
+                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
+                                {{ visioningBody || ctaParagraph3 }}
+                            </p>
+                        </div>
 
                         <!-- Communication toolkit card -->
                         <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
@@ -162,7 +190,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                 <p
                                     v-for="(para, index) in spreadBodyParagraphs"
                                     :key="index"
-                                    class="font-body text-base leading-relaxed text-copy sm:text-lg"
+                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
                                 >
                                     {{ para }}
                                 </p>

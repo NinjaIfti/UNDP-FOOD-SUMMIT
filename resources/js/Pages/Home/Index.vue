@@ -21,7 +21,7 @@ defineProps({
     <EventLayout>
         <HeroSection :settings="settings" />
         <SummitIntroSection :settings="settings" />
-        <CallToActionsSection :settings="settings" />
+        <CallToActionsSection :settings="settings" class="-mt-24 sm:-mt-26" />
         <VideosSection :settings="settings" />
         <FeaturedSpeakersSection :settings="settings" />
         <ConsciousFoodSection :settings="settings" />

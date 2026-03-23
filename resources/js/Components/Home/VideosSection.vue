@@ -24,7 +24,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
 </script>
 
 <template>
-    <section class="bg-[#F4F1EA] py-16 sm:py-24">
+    <section class="bg-[#F4F1EA] pt-8 pb-8 sm:pt-10 sm:pb-10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">Videos</h2>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
@@ -7,7 +7,7 @@ const props = defineProps({
     settings: { type: Object, default: () => ({}) },
 });
 
-const activeTab = ref('field-visits');
+const activeTab = ref('air-travel');
 const accommodationFilter = ref('all');
 
 const tabs = [
@@ -83,6 +83,14 @@ onMounted(() => {
             activeHeroSlide.value = (activeHeroSlide.value + 1) % heroSlides.value.length;
         }
     }, 7000);
+
+    // Always land users on the Air Travel tab/navigation area when this page opens.
+    nextTick(() => {
+        const tabsSection = document.getElementById('yourstay-tabs');
+        if (tabsSection) {
+            tabsSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+    });
 });
 
 onUnmounted(() => {
@@ -132,7 +140,7 @@ onUnmounted(() => {
             </div>
         </section>
 
-        <section class="border-b border-gray-200 bg-[#F4F1EA]">
+        <section id="yourstay-tabs" class="border-b border-gray-200 bg-[#F4F1EA]">
             <div class="mx-auto px-4 py-3 sm:py-4 sm:px-6 lg:px-8">
                 <div
                     class="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1 pl-2 pr-8 sm:px-0 lg:justify-center tab-scroll-container"
@@ -234,8 +242,8 @@ onUnmounted(() => {
                         <h3 class="font-title text-lg font-bold text-gray-900 sm:text-xl">
                             What to Expect
                         </h3>
-                        <ul class="mt-4 list-none space-y-3 font-body text-gray-800">
-                            <li v-for="(expectation, index) in settings.field_visits_expectations" :key="index" class="flex items-center justify-center gap-3">
+                        <ul class="mt-4 list-none space-y-3 font-body text-gray-800 text-left">
+                            <li v-for="(expectation, index) in settings.field_visits_expectations" :key="index" class="flex items-start justify-start gap-3">
                                 <span class="h-2 w-2 shrink-0 rounded-full bg-primary-2" />
                                 <span>{{ expectation }}</span>
                             </li>
@@ -849,7 +857,7 @@ onUnmounted(() => {
                                 href="https://immi.gov.bt/home/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="text-primary-1 font-semibold hover:underline"
+                                class="text-blue-600 font-semibold hover:underline"
                             >
                                 https://immi.gov.bt/home/
                             </a>
@@ -947,13 +955,13 @@ onUnmounted(() => {
                                 :href="resource.url"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="flex items-center justify-between p-4 bg-gray-50 rounded-none hover:bg-gray-100 transition-colors"
+                                class="flex items-center justify-between rounded-none border border-blue-200 bg-blue-50/40 p-4 transition-colors hover:border-blue-300 hover:bg-blue-50"
                             >
                                 <div>
-                                    <p class="font-body font-medium text-gray-900">{{ resource.title }}</p>
-                                    <p class="font-body text-sm text-gray-600">{{ resource.description }}</p>
+                                    <p class="font-body font-medium text-blue-700">{{ resource.title }}</p>
+                                    <p class="font-body text-sm text-gray-700">{{ resource.description }}</p>
                                 </div>
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>

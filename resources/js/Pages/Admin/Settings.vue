@@ -35,10 +35,16 @@ const faviconForm = useForm({
     delete_favicon: false,
 });
 
+const registerHeroForm = useForm({
+    register_hero_image: null,
+    delete_register_hero_image: false,
+});
+
 const footerForm = useForm({
     newsletter_text: props.settings.newsletter_text || '',
     contact_email: props.settings.contact_email || '',
     contact_phone: props.settings.contact_phone || '',
+    show_contact_phone: props.settings.show_contact_phone !== undefined ? !!props.settings.show_contact_phone : true,
     contact_location: props.settings.contact_location || '',
     social_facebook: props.settings.social_facebook || '',
     social_twitter: props.settings.social_twitter || '',
@@ -53,6 +59,7 @@ const logoSecondaryPreview = ref(props.settings.logo_secondary || '');
 const logoThirdPreview = ref(props.settings.logo_third || '');
 const logoFourthPreview = ref(props.settings.logo_fourth || '');
 const faviconPreview = ref(props.settings.favicon || '');
+const registerHeroPreview = ref(props.settings.register_hero_image || '');
 
 watch(() => props.settings.logo, (newLogo) => {
     if (newLogo) logoPreview.value = newLogo;
@@ -73,6 +80,10 @@ watch(() => props.settings.logo_fourth, (v) => {
 watch(() => props.settings.favicon, (newFavicon) => {
     if (newFavicon) faviconPreview.value = newFavicon;
     else if (!faviconForm.favicon) faviconPreview.value = '';
+});
+watch(() => props.settings.register_hero_image, (newImage) => {
+    if (newImage) registerHeroPreview.value = newImage;
+    else if (!registerHeroForm.register_hero_image) registerHeroPreview.value = '';
 });
 
 const handleLogoUpload = (e) => {
@@ -120,6 +131,15 @@ const handleFaviconUpload = (e) => {
         reader.readAsDataURL(file);
     }
 };
+const handleRegisterHeroUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        registerHeroForm.register_hero_image = file;
+        const reader = new FileReader();
+        reader.onloadend = () => { registerHeroPreview.value = reader.result; };
+        reader.readAsDataURL(file);
+    }
+};
 
 const removeLogo = () => {
     logoForm.logo = null;
@@ -145,6 +165,11 @@ const removeFavicon = () => {
     faviconForm.favicon = null;
     faviconForm.delete_favicon = true;
     faviconPreview.value = '';
+};
+const removeRegisterHero = () => {
+    registerHeroForm.register_hero_image = null;
+    registerHeroForm.delete_register_hero_image = true;
+    registerHeroPreview.value = '';
 };
 
 const saveLogo = () => {
@@ -235,6 +260,23 @@ const saveFavicon = () => {
         },
     });
 };
+const saveRegisterHero = () => {
+    if (!registerHeroForm.register_hero_image && !registerHeroForm.delete_register_hero_image) return;
+
+    registerHeroForm.post(route('admin.settings.update-general'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onSuccess: (page) => {
+            if (page.props.settings?.register_hero_image) {
+                registerHeroPreview.value = page.props.settings.register_hero_image;
+            } else {
+                registerHeroPreview.value = '';
+            }
+            registerHeroForm.reset();
+            registerHeroForm.delete_register_hero_image = false;
+        },
+    });
+};
 
 const saveFooter = (fields) => {
     router.post(route('admin.settings.update-footer'), fields, { preserveScroll: true });
@@ -260,6 +302,9 @@ const saveFooter = (fields) => {
             </div>
             <div v-if="faviconForm.errors.favicon" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
                 Favicon error: {{ faviconForm.errors.favicon }}
+            </div>
+            <div v-if="registerHeroForm.errors.register_hero_image" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                Register hero image error: {{ registerHeroForm.errors.register_hero_image }}
             </div>
             <div v-if="logoForm.errors.logo" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
                 Logo error: {{ logoForm.errors.logo }}
@@ -501,6 +546,57 @@ const saveFooter = (fields) => {
                             </div>
                         </div>
                     </div>
+
+                    <!-- Register Page Hero Banner Image -->
+                    <div class="border border-border rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-[#4a7c59]/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-[#4a7c59]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-medium text-foreground mb-1">Register Page Hero Banner</h3>
+                                <p class="text-sm text-muted-foreground mb-3">
+                                    Upload an image for the Register page hero banner (recommended wide image, e.g. 1920x700)
+                                </p>
+
+                                <div v-if="registerHeroPreview" class="mb-3 p-3 border border-border rounded-lg bg-white inline-block">
+                                    <img :src="registerHeroPreview" alt="Register hero preview" class="h-20 w-auto max-w-[22rem] object-cover rounded" />
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <label class="px-4 py-2 text-sm border border-border rounded-lg hover:bg-muted transition-colors cursor-pointer flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        Upload Hero Image
+                                        <input
+                                            type="file"
+                                            accept="image/png,image/jpeg,image/webp"
+                                            @change="handleRegisterHeroUpload"
+                                            class="hidden"
+                                        />
+                                    </label>
+                                    <button
+                                        v-if="registerHeroPreview"
+                                        @click="removeRegisterHero"
+                                        class="px-4 py-2 text-sm border border-border rounded-lg hover:bg-muted transition-colors"
+                                    >
+                                        Remove
+                                    </button>
+                                    <button
+                                        v-if="registerHeroForm.register_hero_image || registerHeroForm.delete_register_hero_image"
+                                        @click="saveRegisterHero"
+                                        :disabled="registerHeroForm.processing"
+                                        class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
+                                    >
+                                        {{ registerHeroForm.processing ? 'Saving...' : 'Save Register Hero Image' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -617,11 +713,26 @@ const saveFooter = (fields) => {
                                 
                                 <div class="mt-3">
                                     <button
-                                        @click="saveFooter({ contact_phone: footerForm.contact_phone })"
+                                        @click="saveFooter({ contact_phone: footerForm.contact_phone, show_contact_phone: footerForm.show_contact_phone })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
                                         {{ footerForm.processing ? 'Saving...' : 'Save Contact Phone' }}
+                                    </button>
+                                </div>
+
+                                <div class="mt-4 flex items-center justify-between rounded-lg border border-border bg-white px-3 py-2">
+                                    <span class="text-sm text-muted-foreground">Show phone number in footer</span>
+                                    <button
+                                        type="button"
+                                        @click="footerForm.show_contact_phone = !footerForm.show_contact_phone"
+                                        :class="footerForm.show_contact_phone ? 'bg-[#2d5f3f]' : 'bg-gray-300'"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                                    >
+                                        <span
+                                            :class="footerForm.show_contact_phone ? 'translate-x-6' : 'translate-x-1'"
+                                            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                                        />
                                     </button>
                                 </div>
                             </div>

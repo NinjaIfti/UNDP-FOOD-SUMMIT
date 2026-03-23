@@ -44,7 +44,7 @@ const actions = computed(() => props.settings?.cta_actions || [
 </script>
 
 <template>
-    <section id="cta" class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-16 sm:pt-10 sm:pb-20">
+    <section id="cta" class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-12">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">

@@ -13,6 +13,7 @@ const defaultCtaCards = [
 
 const form = useForm({
     hero_title: props.settings?.hero_title ?? 'Call for Submissions',
+    call_submissions_title: props.settings?.call_submissions_title ?? 'Call for Submissions',
     hero_subtitle: props.settings?.hero_subtitle ?? 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.',
     hero_intro: props.settings?.hero_intro ?? 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
     hero_image_file: null,
@@ -38,6 +39,10 @@ const form = useForm({
     cta_paragraph1: props.settings?.cta_paragraph1 ?? 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.',
     cta_paragraph2: props.settings?.cta_paragraph2 ?? 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.',
     cta_paragraph3: props.settings?.cta_paragraph3 ?? 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.',
+    engagement_title: props.settings?.engagement_title ?? 'Activating the Heart',
+    engagement_body: props.settings?.engagement_body ?? '',
+    visioning_title: props.settings?.visioning_title ?? 'Deep Visioning',
+    visioning_body: props.settings?.visioning_body ?? '',
     cta_cards: (Array.isArray(props.settings?.cta_cards) && props.settings.cta_cards.length > 0 ? props.settings.cta_cards : defaultCtaCards).map(c => ({
         href: c.href ?? '',
         title: c.title ?? '',
@@ -195,7 +200,7 @@ function submit() {
                         </div>
 
                         <div>
-                            <label class="block font-body text-sm font-medium text-ink">Title</label>
+                            <label class="block font-body text-sm font-medium text-ink">Hero Title</label>
                             <input v-model="form.hero_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
                         <div>
@@ -214,6 +219,11 @@ function submit() {
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Call to Action Section</h3>
                     <div class="mb-4 space-y-4">
                         <div>
+                            <label class="block font-body text-sm font-medium text-ink">Call for Submissions Card Title</label>
+                            <input v-model="form.call_submissions_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                            <p class="mt-1 text-xs text-gray-500">This title is used in the first white card below the hero section.</p>
+                        </div>
+                        <div>
                             <label class="block font-body text-sm font-medium text-ink">Paragraph 1</label>
                             <textarea v-model="form.cta_paragraph1" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
@@ -224,6 +234,22 @@ function submit() {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Paragraph 3</label>
                             <textarea v-model="form.cta_paragraph3" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Card 2 Title (right top)</label>
+                            <input v-model="form.engagement_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Card 2 Text (right top)</label>
+                            <textarea v-model="form.engagement_body" rows="5" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Card 3 Title (left bottom)</label>
+                            <input v-model="form.visioning_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Card 3 Text (left bottom)</label>
+                            <textarea v-model="form.visioning_body" rows="5" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
                     </div>
                     <div class="space-y-4">

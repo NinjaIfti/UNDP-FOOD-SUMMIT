@@ -130,7 +130,7 @@ const goPrev = () => {
 </script>
 
 <template>
-    <section id="speakers" class="scroll-mt-24 bg-[#F4F1EA] py-16 sm:py-24">
+    <section id="speakers" class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-16 sm:pt-10 sm:pb-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <SectionReveal>
                 <!-- Title -->
@@ -193,7 +193,7 @@ const goPrev = () => {
                                 <h3 class="mx-auto max-w-xs font-title text-lg font-bold text-primary-1">
                                     {{ speaker.name }}
                                 </h3>
-                                <p class="mt-1 mx-auto max-w-xs text-center font-body text-sm font-semibold text-primary-2">
+                                <p class="mt-1 mx-auto w-full max-w-xs text-center font-body text-sm font-semibold text-primary-2">
                                     {{ speaker.role }}
                                 </p>
                                 <p class="mt-2 mx-auto max-w-xs text-center font-body text-sm leading-snug text-copy sm:text-base">

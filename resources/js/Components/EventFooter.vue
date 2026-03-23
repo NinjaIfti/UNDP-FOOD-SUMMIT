@@ -10,6 +10,13 @@ const siteSettings = computed(() => page.props.site_settings ?? {});
 const newsletterText = computed(() => siteSettings.value.newsletter_text || 'Subscribe to our newsletter');
 const contactEmail = computed(() => siteSettings.value.contact_email || 'info@foodsummit2026.org');
 const contactPhone = computed(() => siteSettings.value.contact_phone || '+975 1234 5678');
+const showContactPhone = computed(() => {
+    const raw = siteSettings.value.show_contact_phone;
+    if (raw === undefined || raw === null) return true;
+    if (typeof raw === 'boolean') return raw;
+    if (typeof raw === 'number') return raw === 1;
+    return String(raw).toLowerCase() !== 'false' && String(raw) !== '0';
+});
 const contactLocation = computed(() => siteSettings.value.contact_location || "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan");
 
 const footerSupportDefault = '24/7 support provided by the Global Conscious Food Systems Summit event team.';
@@ -89,7 +96,7 @@ function submit() {
                                 <a :href="'mailto:' + contactEmail" class="font-body text-white hover:text-accent-2">{{ contactEmail }}</a>
                             </div>
                         </div>
-                        <div class="flex gap-4">
+                        <div v-if="showContactPhone" class="flex gap-4">
                             <div class="flex h-10 w-10 shrink-0 items-center justify-center">
                                 <svg class="h-5 w-5 text-accent-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -204,7 +211,7 @@ function submit() {
             </div>
             <div class="mt-12 flex flex-wrap justify-center gap-6 border-t border-white/10 pt-8">
                 <Link href="/" class="text-sm text-white/80 transition hover:text-white">Home</Link>
-                <Link href="/#agenda" class="text-sm text-white/80 transition hover:text-white">Agenda</Link>
+                <Link href="/programme" class="text-sm text-white/80 transition hover:text-white">Agenda</Link>
                 <Link href="/#speakers" class="text-sm text-white/80 transition hover:text-white">Speakers</Link>
                 <Link href="/register-summit" class="text-sm text-white/80 transition hover:text-white">Register</Link>
             </div>

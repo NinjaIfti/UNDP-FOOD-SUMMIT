@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
@@ -192,6 +192,28 @@ function buildFullPhone() {
 }
 const page = usePage();
 const showSuccessModal = ref(!!page.props.flash?.success);
+const registerHeroImage = computed(() => page.props?.site_settings?.register_hero_image || '');
+const registerHeroStyle = computed(() => {
+    const overlays = [
+        'radial-gradient(1200px 600px at 20% 20%, rgba(245, 156, 14, 0.22), transparent 60%)',
+        'radial-gradient(900px 500px at 80% 35%, rgba(114, 148, 48, 0.18), transparent 60%)',
+        'radial-gradient(900px 600px at 50% 90%, rgba(13, 56, 90, 0.12), transparent 65%)',
+        'linear-gradient(to bottom, rgba(13, 56, 90, 0.06), rgba(245, 156, 14, 0.06))',
+    ];
+
+    if (registerHeroImage.value) {
+        return {
+            backgroundImage: `${overlays.join(', ')}, url('${registerHeroImage.value}')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+        };
+    }
+
+    return {
+        backgroundImage: overlays.join(', '),
+    };
+});
 
 watch(() => page.props.flash?.success, (val) => {
     if (val) showSuccessModal.value = true;
@@ -330,14 +352,7 @@ const steps = [
         <section class="relative bg-[#F4F1EA] py-20 sm:py-28">
             <div
                 class="absolute inset-0"
-                :style="{
-                    backgroundImage: `
-                        radial-gradient(1200px 600px at 20% 20%, rgba(245, 156, 14, 0.22), transparent 60%),
-                        radial-gradient(900px 500px at 80% 35%, rgba(114, 148, 48, 0.18), transparent 60%),
-                        radial-gradient(900px 600px at 50% 90%, rgba(13, 56, 90, 0.12), transparent 65%),
-                        linear-gradient(to bottom, rgba(13, 56, 90, 0.06), rgba(245, 156, 14, 0.06))
-                    `,
-                }"
+                :style="registerHeroStyle"
             />
             <div class="relative mx-auto w-full max-w-[70rem] px-4 text-center sm:px-6 lg:px-8">
                 <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Join the Global Conscious Food Systems Summit 2026!</h1>
@@ -414,7 +429,7 @@ const steps = [
         <!-- Steps -->
         <section class="border-y border-primary-1/10 bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">
+                <h2 class="font-title text-center text-3xl font-bold text-primary-1 sm:text-4xl">
                     Step-by-step registration <span style="font-variant: all-small-caps;">Process</span>
                 </h2>
                 <div class="mt-12 space-y-6">
@@ -436,7 +451,7 @@ const steps = [
         <!-- Detailed Ticket Options Section -->
         <section class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <h2 class="font-title text-center text-2xl font-bold text-primary-1 sm:text-3xl">Ticket options</h2>
+                <h2 class="font-title text-center text-3xl font-bold text-primary-1 sm:text-4xl">Ticket options</h2>
                 <p class="mt-4 font-body text-lg leading-relaxed text-copy">
                     To support an inclusive and diverse gathering, the Summit offers three participation tiers. These tiers are designed to make participation accessible to a wide range of actors working across food
                     systems while ensuring the financial sustainability of the Summit.
@@ -514,7 +529,7 @@ const steps = [
         <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <div class="mb-8 rounded-xl border border-primary-2/15 bg-white px-6 py-5">
-                    <h3 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Applying from Bhutan</h3>
+                    <h3 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Applying from Bhutan</h3>
                     <p class="mt-3 font-body text-lg leading-relaxed text-copy">
                         Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form
                         <a href="#" target="_blank" class="ml-1 inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
@@ -527,7 +542,7 @@ const steps = [
                     </p>
                 </div>
 
-                <h2 class="text-center font-title text-2xl font-bold text-primary-1 sm:text-3xl">Registration Application</h2>
+                <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">If you are an international participant, please fill out the form below to begin your registration process</p>
 
                 <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">

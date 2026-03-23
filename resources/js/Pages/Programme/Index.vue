@@ -572,7 +572,7 @@ const defaultThemes = [
         </section>
 
         <!-- ② Core Themes -->
-        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-18">
+        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-18">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -664,7 +664,7 @@ const defaultThemes = [
         </section>
 
         <!-- ③ Building a Global Movement -->
-        <section id="global-movement" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-18">
+        <section id="global-movement" class="scroll-mt-24 bg-[#F4F1EA] pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-18">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <!-- Title -->

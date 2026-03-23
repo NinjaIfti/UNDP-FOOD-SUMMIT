@@ -87,7 +87,7 @@ onUnmounted(() => {
                         <h2 class="mx-auto max-w-xs font-title text-lg font-bold text-primary-1">
                             {{ speaker.name }}
                         </h2>
-                        <p v-if="speaker.role" class="mt-1 mx-auto max-w-xs font-body text-sm font-semibold text-primary-2">
+                        <p v-if="speaker.role" class="mt-1 mx-auto w-full max-w-xs text-center font-body text-sm font-semibold text-primary-2">
                             {{ speaker.role }}
                         </p>
                         <p v-if="speaker.bio" class="mt-2 mx-auto max-w-xs font-body text-sm leading-snug text-copy sm:text-base">

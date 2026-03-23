@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-    <section class="bg-[#F4F1EA] py-16 sm:py-24">
+    <section class="bg-[#F4F1EA] pt-16 pb-8 sm:pt-24 sm:pb-10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
                 <SectionReveal>

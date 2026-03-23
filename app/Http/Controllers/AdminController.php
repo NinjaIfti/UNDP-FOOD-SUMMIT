@@ -729,6 +729,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'hero_title' => 'nullable|string',
+            'call_submissions_title' => 'nullable|string',
             'hero_subtitle' => 'nullable|string',
             'hero_intro' => 'nullable|string',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
@@ -747,6 +748,10 @@ class AdminController extends Controller
             'cta_paragraph1' => 'nullable|string',
             'cta_paragraph2' => 'nullable|string',
             'cta_paragraph3' => 'nullable|string',
+            'engagement_title' => 'nullable|string',
+            'engagement_body' => 'nullable|string',
+            'visioning_title' => 'nullable|string',
+            'visioning_body' => 'nullable|string',
             'cta_cards' => 'nullable|array',
             'cta_cards.*.href' => 'nullable|string',
             'cta_cards.*.title' => 'nullable|string',
@@ -834,6 +839,7 @@ class AdminController extends Controller
 
         return [
             'hero_title' => 'Call for Submissions',
+            'call_submissions_title' => 'Call for Submissions',
             'hero_subtitle' => 'We warmly invite you to co-create the agenda of the first-ever Global Conscious Food Systems Summit, taking place in Bhutan from 31 August – 4 September 2026.',
             'hero_intro' => 'CoFSA invites submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.',
             'hero_image' => '/brand/img34.jpg',
@@ -850,6 +856,10 @@ class AdminController extends Controller
             'cta_paragraph1' => 'If you feel inspired to contribute to the Bhutan Summit 2026 and share your experiences, practices, or ideas for conscious food systems, we warmly invite you to submit a proposal.',
             'cta_paragraph2' => 'All submissions should be experiential and participatory, integrating consciousness-based practices, storytelling, dialogue, or creative methods. You can apply as an individual or organization, and you are welcome to submit multiple proposals on distinct topics.',
             'cta_paragraph3' => 'Submit your proposal now to be part of this global conversation and help shape a new paradigm for food systems transformation.',
+            'engagement_title' => 'Activating the Heart',
+            'engagement_body' => '',
+            'visioning_title' => 'Deep Visioning',
+            'visioning_body' => '',
             'cta_cards' => [
                 ['href' => 'https://airtable.com/appRiKywRTWHpim3e/pagi2lYYhFAAhlqhE/form', 'title' => 'Submit Your Application', 'subtitle' => 'Complete the application form by 31st March', 'style' => 'primary'],
                 ['href' => 'https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf', 'title' => 'Full Submission Guidelines', 'subtitle' => 'View details, eligibility criteria and guidelines', 'style' => 'secondary'],

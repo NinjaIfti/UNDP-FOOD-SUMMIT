@@ -847,6 +847,15 @@ const submit = () => {
                 </div>
 
                 <!-- Save Button -->
+                <div class="fixed bottom-6 right-6 z-40">
+                    <button
+                        type="submit"
+                        :disabled="form.processing"
+                        class="rounded-full bg-accent-1 px-6 py-3 font-title text-sm font-semibold text-white shadow-lg transition hover:bg-accent-1/90 disabled:opacity-50"
+                    >
+                        {{ form.processing ? 'Saving...' : 'Save Changes' }}
+                    </button>
+                </div>
                 <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end sm:gap-4">
                     <a
                         :href="route('admin.dashboard')"

@@ -26,9 +26,11 @@ class SettingsController extends Controller
             'logo_third' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'logo_fourth' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'favicon' => 'nullable|file|mimes:png,jpg,jpeg,ico,svg|max:2048',
+            'register_hero_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:4096',
             'newsletter_text' => 'nullable|string',
             'contact_email' => 'nullable|string',
             'contact_phone' => 'nullable|string',
+            'show_contact_phone' => 'nullable|boolean',
             'contact_location' => 'nullable|string',
             'social_facebook' => 'nullable|string',
             'social_twitter' => 'nullable|string',
@@ -41,6 +43,7 @@ class SettingsController extends Controller
             'delete_logo_third' => 'nullable|boolean',
             'delete_logo_fourth' => 'nullable|boolean',
             'delete_favicon' => 'nullable|boolean',
+            'delete_register_hero_image' => 'nullable|boolean',
         ]);
 
         $currentSettings = $this->getSettings();
@@ -145,12 +148,33 @@ class SettingsController extends Controller
             unset($validated['favicon']);
         }
 
+        if ($request->hasFile('register_hero_image')) {
+            if (!empty($currentSettings['register_hero_image']) && str_starts_with($currentSettings['register_hero_image'], '/') && file_exists(public_path($currentSettings['register_hero_image']))) {
+                @unlink(public_path($currentSettings['register_hero_image']));
+            }
+            $file = $request->file('register_hero_image');
+            $filename = 'register_hero_' . time() . '.' . $file->getClientOriginalExtension();
+            if (!is_dir(public_path('brand'))) {
+                mkdir(public_path('brand'), 0755, true);
+            }
+            $file->move(public_path('brand'), $filename);
+            $validated['register_hero_image'] = '/brand/' . $filename;
+        } elseif ($request->input('delete_register_hero_image')) {
+            if (!empty($currentSettings['register_hero_image']) && str_starts_with($currentSettings['register_hero_image'], '/') && file_exists(public_path($currentSettings['register_hero_image']))) {
+                @unlink(public_path($currentSettings['register_hero_image']));
+            }
+            $validated['register_hero_image'] = '';
+        } else {
+            unset($validated['register_hero_image']);
+        }
+
         unset(
             $validated['delete_logo'],
             $validated['delete_logo_secondary'],
             $validated['delete_logo_third'],
             $validated['delete_logo_fourth'],
             $validated['delete_favicon'],
+            $validated['delete_register_hero_image'],
         );
 
         $merged = array_merge($currentSettings, $validated);
@@ -183,9 +207,11 @@ class SettingsController extends Controller
             'logo_third' => '',
             'logo_fourth' => '',
             'favicon' => '',
+            'register_hero_image' => '',
             'newsletter_text' => 'Subscribe to our newsletter',
             'contact_email' => 'info@foodsummit2026.org',
             'contact_phone' => '+975 1234 5678',
+            'show_contact_phone' => true,
             'contact_location' => "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan",
             'social_facebook' => 'https://facebook.com/gcfss2026',
             'social_twitter' => 'https://twitter.com/gcfss2026',
