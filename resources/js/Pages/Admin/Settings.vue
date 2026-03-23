@@ -45,6 +45,7 @@ const footerForm = useForm({
     contact_email: props.settings.contact_email || '',
     contact_phone: props.settings.contact_phone || '',
     show_contact_phone: props.settings.show_contact_phone !== undefined ? !!props.settings.show_contact_phone : true,
+    show_footer_support: props.settings.show_footer_support !== undefined ? !!props.settings.show_footer_support : true,
     contact_location: props.settings.contact_location || '',
     social_facebook: props.settings.social_facebook || '',
     social_twitter: props.settings.social_twitter || '',
@@ -798,11 +799,25 @@ const saveFooter = (fields) => {
                                 <div class="mt-3">
                                     <button
                                         type="button"
-                                        @click="saveFooter({ footer_support_text: footerForm.footer_support_text })"
+                                        @click="saveFooter({ footer_support_text: footerForm.footer_support_text, show_footer_support: footerForm.show_footer_support })"
                                         :disabled="footerForm.processing"
                                         class="px-4 py-2 text-sm bg-[#2d5f3f] text-white rounded-lg hover:bg-[#4a7c59] transition-colors disabled:opacity-50"
                                     >
                                         {{ footerForm.processing ? 'Saving...' : 'Save Support Line' }}
+                                    </button>
+                                </div>
+                                <div class="mt-4 flex items-center justify-between rounded-lg border border-border bg-white px-3 py-2">
+                                    <span class="text-sm text-muted-foreground">Show 24/7 support line in footer</span>
+                                    <button
+                                        type="button"
+                                        @click="footerForm.show_footer_support = !footerForm.show_footer_support"
+                                        :class="footerForm.show_footer_support ? 'bg-[#2d5f3f]' : 'bg-gray-300'"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                                    >
+                                        <span
+                                            :class="footerForm.show_footer_support ? 'translate-x-6' : 'translate-x-1'"
+                                            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                                        />
                                     </button>
                                 </div>
                             </div>

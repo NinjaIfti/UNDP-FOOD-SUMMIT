@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, nextTick } from 'vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
 
@@ -180,6 +180,7 @@ const phoneCountryCodes = [
 const phoneCountryCode = ref('+975');
 const phoneLocal = ref('');
 const phoneClientError = ref('');
+const submitErrorSummary = ref('');
 
 function buildFullPhone() {
     const code = (phoneCountryCode.value || '').trim();
@@ -250,6 +251,7 @@ const countries = [
 ];
 
 function submit() {
+    submitErrorSummary.value = '';
     phoneClientError.value = '';
     form.phone = buildFullPhone();
     if (!form.phone.trim()) {
@@ -267,6 +269,45 @@ function submit() {
             phoneCountryCode.value = '+975';
             phoneLocal.value = '';
             phoneClientError.value = '';
+            submitErrorSummary.value = '';
+        },
+        onError: (errors) => {
+            const labels = {
+                first_name: 'First Name',
+                last_name: 'Last Name',
+                email: 'Email Address',
+                phone: 'Phone Number',
+                country: 'Nationality',
+                job_title: 'Job Title / Role',
+                arrival_date: 'Preferred Arrival Date',
+                departure_date: 'Preferred Departure Date',
+                price_tier: 'Ticket Type',
+                confirm_tier: 'Ticket Confirmation',
+                accessibility_needed: 'Accessibility Support',
+                dietary: 'Dietary Preference',
+                cofsa_member: 'CoFSA Membership',
+                cofsa_newsletter: 'Newsletter Preference',
+                emergency_name: 'Emergency Contact Name',
+                emergency_phone: 'Emergency Contact Phone',
+                emergency_email: 'Emergency Contact Email',
+                emergency_relation: 'Emergency Contact Relation',
+            };
+            const missing = Object.keys(errors || {})
+                .filter((key) => labels[key])
+                .map((key) => labels[key]);
+            if (missing.length) {
+                submitErrorSummary.value = `Please complete required fields: ${missing.join(', ')}`;
+            } else if (errors?.form) {
+                submitErrorSummary.value = errors.form;
+            } else {
+                submitErrorSummary.value = 'Please review the form and fix the highlighted fields.';
+            }
+            nextTick(() => {
+                const firstErrorElement = document.querySelector('.text-red-400, .border-red-400');
+                if (firstErrorElement && typeof firstErrorElement.scrollIntoView === 'function') {
+                    firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
         },
     });
 }
@@ -324,7 +365,7 @@ const steps = [
                     <button
                         type="button"
                         @click="closeSuccessModal"
-                        class="mt-6 w-full rounded-lg bg-primary-2 px-4 py-3 font-body text-base font-semibold text-white transition hover:bg-primary-2/90"
+                        class="mt-6 inline-flex rounded-lg bg-primary-2 px-6 py-3 font-body text-base font-semibold text-white transition hover:bg-primary-2/90"
                     >
                         OK
                     </button>
@@ -346,7 +387,7 @@ const steps = [
         <!-- Intro -->
         <section class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <p class="font-body text-xl leading-relaxed text-ink">
+                <p class="font-body text-xl leading-relaxed text-white">
                     We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit, to be held from 31st August to 4 September, in Paro, Bhutan.
                 </p>
 
@@ -527,6 +568,9 @@ const steps = [
 
                 <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">If you are an international participant, please fill out the form below to begin your registration process</p>
+                <div v-if="submitErrorSummary || form.errors.form" class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+                    <p class="font-body text-base text-red-700">{{ submitErrorSummary || form.errors.form }}</p>
+                </div>
 
                 <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">
                     <!-- Section 1: Personal Information -->

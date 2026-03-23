@@ -24,6 +24,9 @@ const form = useForm({
     spread_title: props.settings?.spread_title ?? 'Spread the word!',
     spread_body: props.settings?.spread_body ?? 'PENDING: Communication Toolkit will be provided by COFSA soon.',
     spread_pending: props.settings?.spread_pending ?? '',
+    spread_pdf_url: props.settings?.spread_pdf_url ?? '',
+    spread_pdf_file: null,
+    spread_trello_url: props.settings?.spread_trello_url ?? '',
     partners_title: props.settings?.partners_title ?? 'Together with our partners',
     partners_body: props.settings?.partners_body ?? 'This Summit is made possible through strong partnerships.',
     partners_pending: props.settings?.partners_pending ?? 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS',
@@ -80,6 +83,7 @@ function submit() {
     if (form.partner_logo_4_file) data.partner_logo_4_file = form.partner_logo_4_file;
     if (form.partner_logo_5_file) data.partner_logo_5_file = form.partner_logo_5_file;
     if (form.partner_logo_6_file) data.partner_logo_6_file = form.partner_logo_6_file;
+    if (form.spread_pdf_file) data.spread_pdf_file = form.spread_pdf_file;
 
     form.transform(() => data).post(route('admin.get-involved.update'), {
         preserveScroll: true,
@@ -298,6 +302,23 @@ function submit() {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Pending note (optional)</label>
                             <input v-model="form.spread_pending" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                        </div>
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                            <label class="block font-body text-sm font-medium text-ink">Upload PDF button file</label>
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                class="mt-2 block w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-primary-1 file:px-4 file:py-2 file:font-medium file:text-white file:hover:bg-primary-1/90"
+                                @change="(e) => { const f = e.target?.files?.[0]; form.spread_pdf_file = f || null; }"
+                            />
+                            <p class="mt-1 text-xs text-gray-500">PDF only, max 10MB.</p>
+                            <p v-if="form.spread_pdf_url" class="mt-2 text-xs text-gray-600 break-all">
+                                Current PDF: <a :href="form.spread_pdf_url" target="_blank" class="text-blue-600 hover:underline">{{ form.spread_pdf_url }}</a>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Trello button URL</label>
+                            <input v-model="form.spread_trello_url" type="url" placeholder="https://trello.com/..." class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
                     </div>
                 </div>

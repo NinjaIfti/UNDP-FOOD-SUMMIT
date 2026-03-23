@@ -20,6 +20,13 @@ const showContactPhone = computed(() => {
 const contactLocation = computed(() => siteSettings.value.contact_location || "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan");
 
 const footerSupportDefault = '24/7 support provided by the Global Conscious Food Systems Summit event team.';
+const showFooterSupport = computed(() => {
+    const raw = siteSettings.value.show_footer_support;
+    if (raw === undefined || raw === null) return true;
+    if (typeof raw === 'boolean') return raw;
+    if (typeof raw === 'number') return raw === 1;
+    return String(raw).toLowerCase() !== 'false' && String(raw) !== '0';
+});
 const footerSupportText = computed(() => {
     const raw = siteSettings.value.footer_support_text;
     if (raw === '') return null;
@@ -141,7 +148,7 @@ function submit() {
                         </a>
                     </div>
                     <p
-                        v-if="footerSupportText"
+                        v-if="showFooterSupport && footerSupportText"
                         class="mt-4 max-w-sm whitespace-pre-line font-body text-sm leading-relaxed text-white/65"
                     >
                         {{ footerSupportText }}

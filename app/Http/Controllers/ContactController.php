@@ -7,6 +7,7 @@ use App\Models\SummitRegistration;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -89,17 +90,35 @@ class ContactController extends Controller
 
         $data = collect($validated)->except(['photo'])->toArray();
         $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
+        if (!isset($data['organization']) || $data['organization'] === null) {
+            $data['organization'] = 'Independent';
+        }
+        // Keep compatibility with current DB schema where passport_number is still NOT NULL.
+        if (!isset($data['passport_number']) || $data['passport_number'] === null) {
+            $data['passport_number'] = '';
+        }
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('registrations', 'public');
             $data['photo'] = '/storage/' . $path;
         }
 
-        SummitRegistration::create($data);
+        try {
+            SummitRegistration::create($data);
 
-        $dashTicket = app(DashTicketService::class);
-        if ($dashTicket->isConfigured()) {
-            $dashTicket->registerUser($data);
+            $dashTicket = app(DashTicketService::class);
+            if ($dashTicket->isConfigured()) {
+                $dashTicket->registerUser($data);
+            }
+        } catch (\Throwable $e) {
+            Log::error('Registration submit failed', [
+                'email' => $data['email'] ?? null,
+                'message' => $e->getMessage(),
+            ]);
+
+            return back()->withErrors([
+                'form' => 'Submission failed. Please check the required fields and try again.',
+            ])->withInput();
         }
 
         return back()->with('success', 'Thank you for registering with the GCFSS, our team will get back to you soon!');

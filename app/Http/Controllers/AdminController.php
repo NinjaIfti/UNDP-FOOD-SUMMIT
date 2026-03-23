@@ -738,6 +738,9 @@ class AdminController extends Controller
             'spread_title' => 'nullable|string',
             'spread_body' => 'nullable|string',
             'spread_pending' => 'nullable|string',
+            'spread_pdf_url' => 'nullable|string',
+            'spread_pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+            'spread_trello_url' => 'nullable|string',
             'partners_title' => 'nullable|string',
             'partners_body' => 'nullable|string',
             'partners_pending' => 'nullable|string',
@@ -817,6 +820,14 @@ class AdminController extends Controller
             }
         }
 
+        // Spread the word PDF resource
+        $spreadPdfUrl = $validated['spread_pdf_url'] ?? ($current['spread_pdf_url'] ?? '');
+        if ($request->hasFile('spread_pdf_file')) {
+            $deletePublicFile($spreadPdfUrl);
+            $spreadPdfUrl = $storePublicFile($request->file('spread_pdf_file'), 'getinvolved/resources', 'getinvolved_spread_pdf');
+        }
+        unset($validated['spread_pdf_file']);
+
         $merged = array_merge(
             $current,
             $validated,
@@ -824,6 +835,7 @@ class AdminController extends Controller
                 'hero_image' => $heroImage,
                 'hero_slides' => array_values($heroSlides),
                 'partners_logos' => array_values($partnerLogos),
+                'spread_pdf_url' => $spreadPdfUrl,
             ]
         );
         Storage::put('admin/get-involved-settings.json', json_encode($merged, JSON_PRETTY_PRINT));
@@ -847,6 +859,8 @@ class AdminController extends Controller
             'spread_title' => 'Spread the word!',
             'spread_body' => 'PENDING: Communication Toolkit will be provided by COFSA soon.',
             'spread_pending' => '',
+            'spread_pdf_url' => '',
+            'spread_trello_url' => '',
             'partners_title' => 'Together with our partners',
             'partners_body' => 'This Summit is made possible through strong partnerships.',
             'partners_pending' => 'PENDING: COFSA WILL GIVE YOU ALL THE PARTNER LOGOS',

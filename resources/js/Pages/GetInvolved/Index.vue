@@ -59,6 +59,8 @@ const ctaCards = computed(() => {
 const spreadTitle = computed(() => props.settings?.spread_title || 'Spread the word!');
 const spreadBody = computed(() => props.settings?.spread_body || 'PENDING: Communication Toolkit will be provided by COFSA soon.');
 const spreadPending = computed(() => props.settings?.spread_pending || '');
+const spreadPdfUrl = computed(() => props.settings?.spread_pdf_url || '');
+const spreadTrelloUrl = computed(() => props.settings?.spread_trello_url || '');
 
 const spreadBodyParagraphs = computed(() => {
     const raw = spreadBody.value || '';
@@ -198,6 +200,26 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                             <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
                                 {{ spreadPending }}
                             </p>
+                            <div v-if="spreadPdfUrl || spreadTrelloUrl" class="mt-5 flex flex-wrap gap-3">
+                                <a
+                                    v-if="spreadPdfUrl"
+                                    :href="spreadPdfUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    PDF
+                                </a>
+                                <a
+                                    v-if="spreadTrelloUrl"
+                                    :href="spreadTrelloUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Trello
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </SectionReveal>
