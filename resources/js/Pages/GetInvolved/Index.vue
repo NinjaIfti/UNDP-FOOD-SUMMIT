@@ -169,9 +169,10 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
                                 {{ engagementTitle }}
                             </h2>
-                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
-                                {{ engagementBody || ctaParagraph2 }}
-                            </p>
+                            <div
+                                class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-bold"
+                                v-html="engagementBody || ctaParagraph2"
+                            />
                         </div>
 
                         <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">

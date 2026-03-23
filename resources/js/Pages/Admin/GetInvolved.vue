@@ -246,6 +246,7 @@ function submit() {
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Card 2 Text (right top)</label>
                             <textarea v-model="form.engagement_body" rows="5" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                            <p class="mt-1 text-xs text-gray-500">Supports HTML tags like &lt;strong&gt;, &lt;br&gt;, &lt;ul&gt;, &lt;li&gt;.</p>
                         </div>
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Card 3 Title (left bottom)</label>
