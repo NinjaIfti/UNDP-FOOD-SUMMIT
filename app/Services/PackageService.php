@@ -64,6 +64,13 @@ class PackageService
                 'price' => 970,
                 'active' => true,
             ],
+            [
+                'id' => 'flexible_hardcoded',
+                'name' => 'Flexible Supporter Price — Above USD 970',
+                'description' => 'Hardcoded flexible tier on the registration form.',
+                'price' => 970,
+                'active' => true,
+            ],
         ];
     }
 

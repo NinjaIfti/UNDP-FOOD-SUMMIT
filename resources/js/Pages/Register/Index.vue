@@ -9,6 +9,7 @@ const form = useForm({
     email: '',
     phone: '',
     country: '',
+    country_of_residence: '',
     organization: '',
     organization_type: '',
     organization_type_other: '',
@@ -286,6 +287,7 @@ function submit() {
                 email: 'Email Address',
                 phone: 'Phone Number',
                 country: 'Nationality',
+                country_of_residence: 'Country of residence',
                 job_title: 'Job Title / Role',
                 arrival_date: 'Preferred Arrival Date',
                 departure_date: 'Preferred Departure Date',
@@ -466,12 +468,12 @@ const steps = [
                 </h2>
                 <div class="mt-12 space-y-6">
                     <div v-for="step in steps" :key="step.number" class="flex gap-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-2 font-body text-base font-bold text-primary-1">
+                        <div class="step-number-circle flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-2 font-bold text-primary-1 sm:h-14 sm:w-14">
                             {{ step.number }}
                         </div>
-                        <div class="flex-1 pt-1">
-                            <h3 class="font-title text-lg font-bold text-primary-1">
-                                Step <span class="font-body">{{ step.number }}</span> — {{ step.title }}
+                        <div class="flex-1 pt-0.5 sm:pt-1">
+                            <h3 class="step-row-heading font-bold text-primary-1">
+                                Step {{ step.number }} — {{ step.title }}
                             </h3>
                             <p class="mt-1 font-body text-base leading-relaxed text-copy">{{ step.desc }}</p>
                         </div>
@@ -481,7 +483,7 @@ const steps = [
         </section>
 
         <!-- Detailed Ticket Options Section -->
-        <section class="bg-[#F4F1EA] py-16 sm:py-20">
+        <section class="bg-[#F4F1EA] pt-16 pb-5 sm:pt-20 sm:pb-6">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
                 <h2 class="font-title text-center text-3xl font-bold text-primary-1 sm:text-4xl">Ticket options</h2>
                 <p class="mt-4 font-body text-lg leading-relaxed text-copy">
@@ -558,16 +560,21 @@ const steps = [
         </section>
 
         <!-- Registration Form -->
-        <section id="form" class="bg-[#F4F1EA] pt-4 pb-16 sm:pt-6 sm:pb-20">
+        <section id="form" class="bg-[#F4F1EA] pt-2 pb-16 sm:pt-3 sm:pb-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <div class="mb-3 rounded-2xl border-2 border-accent-2/40 bg-gradient-to-r from-accent-2/15 via-white to-primary-2/10 px-6 py-6 shadow-md">
+                <div class="mb-9 rounded-2xl border-2 border-accent-2/40 bg-gradient-to-r from-accent-2/15 via-white to-primary-2/10 px-6 py-6 shadow-md sm:mb-10">
                     <div class="mx-auto mb-3 inline-flex items-center rounded-full bg-accent-2 px-3 py-1">
                         <span class="font-body text-sm font-bold uppercase tracking-wide text-primary-1">Special Note</span>
                     </div>
                     <h3 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Applying from Bhutan</h3>
                     <p class="mt-3 text-center font-body text-lg leading-relaxed text-copy">
                         Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form
-                        <a href="#" target="_blank" class="ml-1 inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
+                        <a
+                            href="https://forms.office.com/Pages/ResponsePage.aspx?id=Xtvls0QpN0iZ9XSIrOVDGafTbyXTmiZBtTV-dGiKculUQzdIWlBZQTlNQ0VEWDk0Wkg3U0tQQTBOQi4u"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="ml-1 inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline"
+                        >
                             here
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0l-1.414-1.414a4 4 0 010-5.656m7.07-7.07a4 4 0 015.656 0l1.414 1.414a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0m-1.414-1.414a4 4 0 010-5.656l1.414-1.414" />
@@ -577,8 +584,10 @@ const steps = [
                     </p>
                 </div>
 
-                <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Application</h2>
-                <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">If you are an international participant, please fill out the form below to begin your registration process</p>
+                <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Applying from outside Bhutan - Register here</h2>
+                <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">
+                    <strong class="font-bold text-copy">If you are an international participant, please fill out the form below to begin your registration process</strong>
+                </p>
 
                 <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">
                     <!-- Section 1: Personal Information -->
@@ -658,6 +667,19 @@ const steps = [
                                     <option v-for="c in countries" :key="c" :value="c" class="text-gray-800">{{ c }}</option>
                                 </select>
                                 <p v-if="form.errors.country" class="mt-1 text-base text-red-400">{{ form.errors.country }}</p>
+                            </div>
+                            <div>
+                                <label for="country_of_residence" class="mb-1 block text-base font-medium text-primary-1">Country of residence *</label>
+                                <select
+                                    id="country_of_residence"
+                                    v-model="form.country_of_residence"
+                                    required
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                >
+                                    <option value="" class="text-gray-800">Select country of residence</option>
+                                    <option v-for="c in countries" :key="'res-' + c" :value="c" class="text-gray-800">{{ c }}</option>
+                                </select>
+                                <p v-if="form.errors.country_of_residence" class="mt-1 text-base text-red-400">{{ form.errors.country_of_residence }}</p>
                             </div>
                             <div>
                                 <label for="organization" class="mb-1 block text-base font-medium text-primary-1">Organization / Affiliation</label>
@@ -1306,5 +1328,23 @@ const steps = [
 .register-page :deep(.font-body) {
     font-size: 1.125rem !important;
     line-height: 1.75rem !important;
+}
+
+.register-page :deep(.step-row-heading) {
+    font-family: var(--font-title), ui-sans-serif, system-ui, sans-serif !important;
+    font-size: 1.125rem !important;
+    line-height: 1.5rem !important;
+}
+
+.register-page :deep(.step-number-circle) {
+    font-family: var(--font-title), ui-sans-serif, system-ui, sans-serif !important;
+    font-size: 1.25rem !important;
+    line-height: 1 !important;
+}
+
+@media (min-width: 640px) {
+    .register-page :deep(.step-number-circle) {
+        font-size: 1.375rem !important;
+    }
 }
 </style>

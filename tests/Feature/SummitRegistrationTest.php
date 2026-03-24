@@ -5,11 +5,19 @@ namespace Tests\Feature;
 use App\Models\SummitRegistration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class SummitRegistrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Avoid storage/app/admin/packages.json on disk hiding built-in tiers (needed for DashTicket price lookup).
+        Storage::fake('local');
+    }
 
     protected function validRegistrationData(): array
     {
@@ -19,6 +27,7 @@ class SummitRegistrationTest extends TestCase
             'email' => 'john.doe@example.com',
             'phone' => '+97517123456',
             'country' => 'Bhutan',
+            'country_of_residence' => 'Bhutan',
             'organization' => 'Test Org',
             'job_title' => 'Developer',
             'website' => '',
@@ -26,7 +35,7 @@ class SummitRegistrationTest extends TestCase
             'passport_expiry' => '2030-12-31',
             'arrival_date' => '2026-03-15',
             'departure_date' => '2026-03-18',
-            'price_tier' => '1',
+            'price_tier' => 'standard',
             'field_visit' => false,
             'accessibility_needed' => 'no',
             'accessibility_details' => '',
@@ -40,6 +49,9 @@ class SummitRegistrationTest extends TestCase
             'emergency_phone' => '+97517123457',
             'emergency_email' => 'jane@example.com',
             'emergency_relation' => 'Spouse',
+            'confirm_tier' => false,
+            'subsidized_price_justification' => '',
+            'flexible_support_amount' => '',
         ];
     }
 
@@ -52,13 +64,15 @@ class SummitRegistrationTest extends TestCase
 
     public function test_summit_registration_creates_record_and_calls_dashticket_api(): void
     {
-        Http::fake([
-            '*/api/v1/integrations/register-user' => Http::response([
+        config(['services.dashticket.api_key' => 'test-dashticket-key']);
+
+        Http::fake(function () {
+            return Http::response([
                 'status' => 'success',
                 'message' => 'User registered',
                 'user_uid' => 'test-uid-123',
-            ], 201),
-        ]);
+            ], 201);
+        });
 
         $data = $this->validRegistrationData();
 
@@ -79,7 +93,7 @@ class SummitRegistrationTest extends TestCase
                 && $body['email'] === 'john.doe@example.com'
                 && $body['name'] === 'John Doe'
                 && $body['tag'] === 'from_UNDP'
-                && $body['price'] === 1500.0
+                && (float) $body['price'] === 970.0
                 && isset($body['password'])
                 && strlen($body['password']) >= 8
                 && $body['nationality'] === 'BT'

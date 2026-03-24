@@ -82,6 +82,7 @@ const form = useForm({
     arrival_tips_points: props.settings.arrival_tips_points || [],
     accommodation_title: props.settings.accommodation_title || '',
     accommodation_important: props.settings.accommodation_important || '',
+    accommodation_main_hotel_note: props.settings.accommodation_main_hotel_note || '',
     accommodation_booking_tips_title: props.settings.accommodation_booking_tips_title || '',
     accommodation_booking_tips: props.settings.accommodation_booking_tips || [],
     hotels: props.settings.hotels || [],
@@ -814,6 +815,10 @@ const removeObjectItem = (arrayName, index) => {
                             <textarea v-model="form.accommodation_important" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
                         </div>
                         <div>
+                            <label class="block font-body text-sm font-medium text-ink">Main hotel note (shown on first hotel card only)</label>
+                            <textarea v-model="form.accommodation_main_hotel_note" rows="2" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"></textarea>
+                        </div>
+                        <div>
                             <label class="block font-body text-sm font-medium text-ink">Booking Tips Title</label>
                             <input v-model="form.accommodation_booking_tips_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                         </div>
@@ -844,11 +849,11 @@ const removeObjectItem = (arrayName, index) => {
                                             <input v-model="form.hotels[index].name" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                         </div>
                                         <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Email</label>
-                                            <input v-model="form.hotels[index].email" type="email" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
+                                            <label class="block font-body text-xs font-medium text-ink">Website</label>
+                                            <input v-model="form.hotels[index].website" type="url" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                         </div>
                                         <div>
-                                            <label class="block font-body text-xs font-medium text-ink">Price Range</label>
+                                            <label class="block font-body text-xs font-medium text-ink">Price (fixed)</label>
                                             <input v-model="form.hotels[index].priceRange" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
                                         </div>
                                         <div>
@@ -858,9 +863,9 @@ const removeObjectItem = (arrayName, index) => {
                                         <div>
                                             <label class="block font-body text-xs font-medium text-ink">Category</label>
                                             <select v-model="form.hotels[index].category" class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20">
-                                                <option value="budget">Budget</option>
-                                                <option value="mid-range">Mid-Range</option>
-                                                <option value="premium">Premium</option>
+                                                <option value="3-star">3 Star</option>
+                                                <option value="4-star">4 Star</option>
+                                                <option value="5-star">5 Star</option>
                                             </select>
                                         </div>
                                         <div class="flex items-center">
@@ -872,7 +877,7 @@ const removeObjectItem = (arrayName, index) => {
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" @click="addObjectItem('hotels', { name: '', email: '', priceRange: '', distance: '', category: 'mid-range', nearAirport: false, image: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Hotel</button>
+                            <button type="button" @click="addObjectItem('hotels', { name: '', website: '', priceRange: '$600', distance: '', category: '4-star', nearAirport: false, image: '' })" class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1">Add Hotel</button>
                         </div>
                     </div>
                 </div>

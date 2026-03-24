@@ -47,6 +47,7 @@ class DashTicketService
                 $flexibleTierIds[] = $id;
             }
         }
+
         $flexibleTierIds = array_values(array_unique($flexibleTierIds));
         $isFlexibleTier = in_array((string) ($registration['price_tier'] ?? ''), $flexibleTierIds, true);
         if ($isFlexibleTier && $customFlexibleAmount !== null && $customFlexibleAmount !== '') {
@@ -55,6 +56,7 @@ class DashTicketService
                 $price = $custom;
             }
         }
+
         if ($price === null) {
             Log::warning('DashTicket: Could not resolve price for tier', ['price_tier' => $registration['price_tier'] ?? null]);
 
@@ -85,7 +87,7 @@ class DashTicketService
 
             if ($response->successful()) {
                 Log::info('DashTicket: User registered', [
-                    'email' => $payload['email'],
+                    'email' => $payload['email'] ?? null,
                     'status' => $response->status(),
                 ]);
 
@@ -93,7 +95,7 @@ class DashTicketService
             }
 
             Log::warning('DashTicket: Registration failed', [
-                'email' => $payload['email'],
+                'email' => $payload['email'] ?? null,
                 'status' => $response->status(),
                 'body' => $response->json(),
             ]);
@@ -265,3 +267,4 @@ class DashTicketService
         return $map[$country] ?? null;
     }
 }
+

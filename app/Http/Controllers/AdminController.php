@@ -1280,6 +1280,7 @@ class AdminController extends Controller
             'arrival_tips_points' => 'nullable|array',
             'accommodation_title' => 'nullable|string',
             'accommodation_important' => 'nullable|string',
+            'accommodation_main_hotel_note' => 'nullable|string',
             'accommodation_booking_tips_title' => 'nullable|string',
             'accommodation_booking_tips' => 'nullable|array',
             'hotels' => 'nullable|array',
@@ -1635,6 +1636,7 @@ class AdminController extends Controller
             ],
             'accommodation_title' => 'Accommodation in Paro',
             'accommodation_important' => 'Important: All Summit participants must stay in Paro near the venue (Dungkar Dzong). Book early as August is peak season.',
+            'accommodation_main_hotel_note' => 'This is the main hotel for the event.',
             'accommodation_booking_tips_title' => 'Booking Tips',
             'accommodation_booking_tips' => [
                 'Contact hotels directly for Summit group rates',
@@ -1643,14 +1645,14 @@ class AdminController extends Controller
                 'Confirm cancellation policies before booking'
             ],
             'hotels' => [
-                ['name' => 'Hotel Olathang', 'email' => 'olathang@druknet.bt', 'priceRange' => '$80-120', 'distance' => '2.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range', 'image' => ''],
-                ['name' => 'Tashi Namgay Resort', 'email' => 'reservation@tashihotels.bt', 'priceRange' => '$120-180', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'premium', 'image' => ''],
-                ['name' => 'Mandala Resort & Spa', 'email' => 'info@mandalaresorts.com', 'priceRange' => '$150-250', 'distance' => '4 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'premium', 'image' => ''],
-                ['name' => 'Khangkhu Resort', 'email' => 'khangkhu@druknet.bt', 'priceRange' => '$60-90', 'distance' => '3.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'budget', 'image' => ''],
-                ['name' => 'Rema Resort', 'email' => 'remaresort@druknet.bt', 'priceRange' => '$100-140', 'distance' => '2 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range', 'image' => ''],
-                ['name' => 'Hotel Jomolhari', 'email' => 'jomolhari@druknet.bt', 'priceRange' => '$50-80', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'budget', 'image' => ''],
-                ['name' => 'Le Méridien Paro', 'email' => 'reservations.paro@lemeridien.com', 'priceRange' => '$200-350', 'distance' => '5 km to Dungkar Dzong', 'nearAirport' => false, 'category' => 'premium', 'image' => ''],
-                ['name' => 'Tenzinling Resort', 'email' => 'info@tenzinling.com', 'priceRange' => '$90-130', 'distance' => '2.8 km to Dungkar Dzong', 'nearAirport' => true, 'category' => 'mid-range', 'image' => '']
+                ['name' => 'Hotel Olathang', 'website' => 'https://www.olathanghotel.com/', 'priceRange' => '$600', 'distance' => '2.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => '4-star', 'image' => ''],
+                ['name' => 'Tashi Namgay Resort', 'website' => 'https://www.tashinamgayresort.com/', 'priceRange' => '$600', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => true, 'category' => '5-star', 'image' => ''],
+                ['name' => 'Mandala Resort & Spa', 'website' => 'https://www.mandalabhutan.com/', 'priceRange' => '$600', 'distance' => '4 km to Dungkar Dzong', 'nearAirport' => false, 'category' => '5-star', 'image' => ''],
+                ['name' => 'Khangkhu Resort', 'website' => 'https://www.khangkhuresort.com/', 'priceRange' => '$600', 'distance' => '3.5 km to Dungkar Dzong', 'nearAirport' => true, 'category' => '3-star', 'image' => ''],
+                ['name' => 'Rema Resort', 'website' => 'https://www.remaresort.com/', 'priceRange' => '$600', 'distance' => '2 km to Dungkar Dzong', 'nearAirport' => true, 'category' => '4-star', 'image' => ''],
+                ['name' => 'Hotel Jomolhari', 'website' => 'https://www.jomolhari.com/', 'priceRange' => '$600', 'distance' => '3 km to Dungkar Dzong', 'nearAirport' => false, 'category' => '3-star', 'image' => ''],
+                ['name' => 'Le Méridien Paro', 'website' => 'https://www.marriott.com/en-us/hotels/pbumd-le-meridien-paro-riverfront/overview/', 'priceRange' => '$600', 'distance' => '5 km to Dungkar Dzong', 'nearAirport' => false, 'category' => '5-star', 'image' => ''],
+                ['name' => 'Tenzinling Resort', 'website' => 'https://www.tenzinlingresort.com/', 'priceRange' => '$600', 'distance' => '2.8 km to Dungkar Dzong', 'nearAirport' => true, 'category' => '4-star', 'image' => '']
             ],
             'extend_title' => 'Extend Your Stay in Bhutan',
             'extend_intro' => 'Want to explore more of Bhutan? Extend your visa to experience the Land of the Thunder Dragon beyond the Summit.',

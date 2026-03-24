@@ -21,12 +21,21 @@ const tabs = [
 ];
 
 const hotels = computed(() => props.settings?.hotels || []);
+const accommodationMainHotelNote = computed(() => props.settings?.accommodation_main_hotel_note || '');
+
+const normalizeHotelCategory = (category) => {
+    const c = String(category || '').toLowerCase();
+    if (c === '3-star' || c === 'budget') return '3-star';
+    if (c === '4-star' || c === 'mid-range') return '4-star';
+    if (c === '5-star' || c === 'premium') return '5-star';
+    return '4-star';
+};
 
 const filteredHotels = computed(() => {
     if (accommodationFilter.value === 'all') {
         return hotels.value;
     }
-    return hotels.value.filter(hotel => hotel.category === accommodationFilter.value);
+    return hotels.value.filter(hotel => normalizeHotelCategory(hotel.category) === accommodationFilter.value);
 });
 
 const fieldVisitsInfo = computed(() => {
@@ -673,37 +682,37 @@ onUnmounted(() => {
                             All Hotels
                         </button>
                         <button
-                            @click="accommodationFilter = 'budget'"
-                            :class="accommodationFilter === 'budget'
+                            @click="accommodationFilter = '3-star'"
+                            :class="accommodationFilter === '3-star'
                                 ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
-                            Budget ($50-90)
+                            3 Star
                         </button>
                         <button
-                            @click="accommodationFilter = 'mid-range'"
-                            :class="accommodationFilter === 'mid-range'
+                            @click="accommodationFilter = '4-star'"
+                            :class="accommodationFilter === '4-star'
                                 ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
-                            Mid-Range ($90-150)
+                            4 Star
                         </button>
                         <button
-                            @click="accommodationFilter = 'premium'"
-                            :class="accommodationFilter === 'premium'
+                            @click="accommodationFilter = '5-star'"
+                            :class="accommodationFilter === '5-star'
                                 ? 'bg-primary-2 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                             class="px-4 py-2 rounded-lg font-medium transition-colors"
                         >
-                            Premium ($150+)
+                            5 Star
                         </button>
                     </div>
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div
-                            v-for="hotel in filteredHotels"
+                            v-for="(hotel, hotelIndex) in filteredHotels"
                             :key="hotel.name"
                             class="bg-white rounded-none border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all"
                         >
@@ -745,21 +754,26 @@ onUnmounted(() => {
                                 <div class="space-y-3 font-body text-sm">
                                     <div class="flex items-start gap-2 text-gray-700">
                                         <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18M12 3a15 15 0 000 18" />
                                         </svg>
                                         <a
-                                            :href="`mailto:${hotel.email}`"
+                                            v-if="hotel.website"
+                                            :href="hotel.website"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             class="hover:text-primary-1 break-all"
                                         >
-                                            {{ hotel.email }}
+                                            {{ hotel.website }}
                                         </a>
+                                        <span v-else>-</span>
                                     </div>
 
                                     <div class="flex items-start gap-2 text-gray-700">
                                         <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
                                         </svg>
-                                        <span class="font-medium">{{ hotel.priceRange }} per night</span>
+                                        <span class="font-medium">$600 per night</span>
                                     </div>
 
                                     <div class="flex items-start gap-2 text-gray-700">
@@ -771,13 +785,17 @@ onUnmounted(() => {
                                     </div>
                                 </div>
 
+                                <div v-if="hotelIndex === 0 && accommodationMainHotelNote" class="mt-4 rounded-none border border-accent-2/40 bg-accent-2/10 p-3">
+                                    <p class="font-body text-sm text-ink">{{ accommodationMainHotelNote }}</p>
+                                </div>
+
                                 <div class="mt-4 pt-4 border-t border-gray-100">
                                     <span :class="{
-                                        'bg-primary-2/20 text-primary-2': hotel.category === 'budget',
-                                        'bg-accent-1/20 text-accent-1': hotel.category === 'mid-range',
-                                        'bg-primary-2/10 text-primary-1': hotel.category === 'premium'
+                                        'bg-primary-2/20 text-primary-2': normalizeHotelCategory(hotel.category) === '3-star',
+                                        'bg-accent-1/20 text-accent-1': normalizeHotelCategory(hotel.category) === '4-star',
+                                        'bg-primary-2/10 text-primary-1': normalizeHotelCategory(hotel.category) === '5-star'
                                     }" class="inline-block px-3 py-1 rounded-full text-xs font-medium">
-                                        {{ hotel.category.charAt(0).toUpperCase() + hotel.category.slice(1).replace('-', ' ') }}
+                                        {{ normalizeHotelCategory(hotel.category).replace('-', ' ').toUpperCase() }}
                                     </span>
                                 </div>
                             </div>

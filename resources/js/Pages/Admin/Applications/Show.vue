@@ -101,6 +101,7 @@ const statusBadgeClass = (status) => {
                         <div><dt class="font-body text-xs text-gray-500">Email</dt><dd class="font-body text-ink">{{ application.email }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Phone</dt><dd class="font-body text-ink">{{ application.phone }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Country of residence</dt><dd class="font-body text-ink">{{ application.country_of_residence || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Organization</dt><dd class="font-body text-ink">{{ application.organization }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Organization Type</dt><dd class="font-body text-ink">{{ application.organization_type || '-' }}</dd></div>
                         <div v-if="application.organization_type === 'Other' || application.organization_type_other"><dt class="font-body text-xs text-gray-500">Organization Type (Other)</dt><dd class="font-body text-ink">{{ application.organization_type_other || '-' }}</dd></div>
@@ -114,7 +115,6 @@ const statusBadgeClass = (status) => {
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h2 class="font-title text-lg font-semibold text-primary-1">Visa and Travel</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-                        <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Passport Number</dt><dd class="font-body text-ink">{{ application.passport_number || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Passport Expiry</dt><dd class="font-body text-ink">{{ formatDate(application.passport_expiry) || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Arrival Date</dt><dd class="font-body text-ink">{{ formatDate(application.arrival_date) }}</dd></div>

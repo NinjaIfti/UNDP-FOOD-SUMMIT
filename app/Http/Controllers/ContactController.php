@@ -57,6 +57,7 @@ class ContactController extends Controller
             'email' => 'required|email',
             'phone' => 'required|string|max:50',
             'country' => 'required|string|max:255',
+            'country_of_residence' => 'required|string|max:255',
             'organization' => 'nullable|string|max:255',
             'organization_type' => 'nullable|string|max:255',
             'organization_type_other' => 'nullable|string|max:255',

@@ -101,6 +101,7 @@ function exportApplicationsPdf() {
         `${app.first_name} ${app.last_name}`,
         app.email,
         app.country,
+        app.country_of_residence || '',
         app.organization,
         app.price_tier,
         app.status,
@@ -120,6 +121,7 @@ function exportApplicationsPdf() {
             'Name',
             'Email',
             'Nationality',
+            'Country of residence',
             'Organization',
             'Price tier',
             'Status',
@@ -140,12 +142,13 @@ function exportApplicationsExcel() {
     const data = props.applications?.data || [];
 
     const worksheetData = [
-        ['First name', 'Last name', 'Email', 'Nationality', 'Organization', 'Price tier', 'Status', 'Submitted'],
+        ['First name', 'Last name', 'Email', 'Nationality', 'Country of residence', 'Organization', 'Price tier', 'Status', 'Submitted'],
         ...data.map((app) => [
             app.first_name,
             app.last_name,
             app.email,
             app.country,
+            app.country_of_residence || '',
             app.organization,
             app.price_tier,
             app.status,
@@ -378,6 +381,9 @@ function exportApplicationsExcel() {
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Nationality
+                                </th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
+                                    Country of residence
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Organization
