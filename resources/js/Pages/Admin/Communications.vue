@@ -85,8 +85,7 @@ const handleSaveTemplate = () => {
                 payload[`attachment_pdf_${i}`] = f;
             });
             return payload;
-        }).post(route('admin.communications.update', selectedTemplate.value.id), {
-            method: 'put',
+        }).put(route('admin.communications.update', selectedTemplate.value.id), {
             forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {

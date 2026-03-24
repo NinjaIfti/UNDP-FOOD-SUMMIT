@@ -40,6 +40,14 @@ class DashTicketService
         $price = PackageService::getPriceForTier($registration['price_tier'] ?? null);
         $customFlexibleAmount = $registration['flexible_support_amount'] ?? null;
         $flexibleTierIds = ['flexible', 'flexible_any', 'flexible_hardcoded'];
+        foreach (PackageService::getActiveTiers() as $tier) {
+            $id = (string) ($tier['id'] ?? '');
+            $name = strtolower((string) ($tier['name'] ?? ''));
+            if ($id !== '' && str_contains($name, 'flexible')) {
+                $flexibleTierIds[] = $id;
+            }
+        }
+        $flexibleTierIds = array_values(array_unique($flexibleTierIds));
         $isFlexibleTier = in_array((string) ($registration['price_tier'] ?? ''), $flexibleTierIds, true);
         if ($isFlexibleTier && $customFlexibleAmount !== null && $customFlexibleAmount !== '') {
             $custom = (float) $customFlexibleAmount;

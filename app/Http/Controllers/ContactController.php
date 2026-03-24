@@ -8,6 +8,7 @@ use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -35,11 +36,20 @@ class ContactController extends Controller
 
     public function registration(Request $request)
     {
-        $activePackageIds = array_map(fn ($p) => (string) $p['id'], PackageService::getActiveTiers());
-        $allowedPackageIds = array_values(array_unique(array_merge($activePackageIds, [
-            // Hardcoded flexible ticket option shown in the UI.
-            'flexible_hardcoded',
-        ])));
+        $activeTiers = PackageService::getActiveTiers();
+        $flexibleTierIds = [];
+        foreach ($activeTiers as $tier) {
+            $id = (string) ($tier['id'] ?? '');
+            $name = strtolower((string) ($tier['name'] ?? ''));
+            if ($id !== '' && str_contains($name, 'flexible')) {
+                $flexibleTierIds[] = $id;
+            }
+        }
+        $flexibleTierIds = array_values(array_unique(array_merge($flexibleTierIds, ['flexible', 'flexible_any', 'flexible_hardcoded'])));
+        $flexibleAmountRule = 'nullable|numeric|gte:970';
+        if (!empty($flexibleTierIds)) {
+            $flexibleAmountRule = 'nullable|required_if:price_tier,' . implode(',', $flexibleTierIds) . '|numeric|gte:970';
+        }
 
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -58,10 +68,10 @@ class ContactController extends Controller
             'passport_expiry' => 'nullable|date',
             'arrival_date' => 'required|date',
             'departure_date' => 'required|date|after_or_equal:arrival_date',
-            'price_tier' => ['required', 'string', 'in:' . implode(',', $allowedPackageIds)],
-            'confirm_tier' => 'accepted',
+            'price_tier' => 'required|string|max:100',
+            'confirm_tier' => 'nullable|boolean',
             'subsidized_price_justification' => 'nullable|string|max:2000',
-            'flexible_support_amount' => 'nullable|required_if:price_tier,flexible|required_if:price_tier,flexible_any|required_if:price_tier,flexible_hardcoded|numeric|gte:970',
+            'flexible_support_amount' => $flexibleAmountRule,
             'field_visit' => 'boolean',
             'accessibility_needed' => 'required|string|in:yes,no',
             'accessibility_details' => 'nullable|string|max:1000',
@@ -89,6 +99,11 @@ class ContactController extends Controller
         }
 
         $data = collect($validated)->except(['photo'])->toArray();
+        $submittedPriceTier = (string) ($validated['price_tier'] ?? '');
+        $matchedTier = collect(PackageService::getTiers())->first(
+            fn ($t) => (string) ($t['id'] ?? '') === $submittedPriceTier
+        );
+        $submittedTierName = (string) ($matchedTier['name'] ?? $submittedPriceTier);
         $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
         if (!isset($data['organization']) || $data['organization'] === null) {
             $data['organization'] = 'Independent';
@@ -97,6 +112,13 @@ class ContactController extends Controller
         if (!isset($data['passport_number']) || $data['passport_number'] === null) {
             $data['passport_number'] = '';
         }
+        // DB column length is 20; keep admin-created IDs safe for insert.
+        if (isset($data['price_tier'])) {
+            $data['price_tier'] = substr((string) $data['price_tier'], 0, 20);
+        }
+        $data['price_tier_raw'] = $submittedPriceTier;
+        $data['price_tier_name'] = $submittedTierName;
+        $data['confirm_tier'] = (bool) ($data['confirm_tier'] ?? false);
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('registrations', 'public');
@@ -108,7 +130,33 @@ class ContactController extends Controller
 
             $dashTicket = app(DashTicketService::class);
             if ($dashTicket->isConfigured()) {
-                $dashTicket->registerUser($data);
+                $dashPayload = $data;
+                $dashPayload['price_tier'] = $submittedPriceTier;
+                $dashTicket->registerUser($dashPayload);
+            }
+
+            $tierName = $submittedTierName;
+
+            $customAmount = $validated['flexible_support_amount'] ?? null;
+            $customAmount = $customAmount !== null && $customAmount !== '' ? (string) $customAmount : '';
+
+            $message = "Thank you, {$data['first_name']} {$data['last_name']}, for registering for the Conscious Food Systems Summit.\n\n";
+            $message .= "Your selected ticket option: {$tierName}\n";
+            if ($customAmount !== '') {
+                $message .= "Custom flexible amount (USD): {$customAmount}\n";
+            }
+            $message .= "\nOur team will review your submission and get back to you soon.\n";
+
+            try {
+                Mail::raw($message, function ($mail) use ($data) {
+                    $mail->to($data['email'])
+                        ->subject('Registration received - Conscious Food Systems Summit');
+                });
+            } catch (\Throwable $mailException) {
+                Log::warning('Registration confirmation email failed', [
+                    'email' => $data['email'] ?? null,
+                    'message' => $mailException->getMessage(),
+                ]);
             }
         } catch (\Throwable $e) {
             Log::error('Registration submit failed', [

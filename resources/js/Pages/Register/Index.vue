@@ -54,6 +54,7 @@ const props = defineProps({
 const yourStay = props.yourStaySettings || {};
 
 const selectedPackage = () => props.packages?.find?.((p) => String(p?.id) === String(form.price_tier)) || null;
+const packageById = (tierId) => props.packages?.find?.((p) => String(p?.id) === String(tierId)) || null;
 const isSubsidizedSelected = () => {
     const pkg = selectedPackage();
     const name = (pkg?.name || '').toString().toLowerCase();
@@ -64,7 +65,13 @@ const showFlexibleAmountInput = ref(false);
 
 const hardcodedFlexibleId = 'flexible_hardcoded';
 const flexibleTierIds = ['flexible', 'flexible_any', hardcodedFlexibleId];
-const isFlexibleTier = (tierId) => flexibleTierIds.includes(String(tierId));
+const isFlexibleTier = (tierId) => {
+    const id = String(tierId);
+    if (flexibleTierIds.includes(id)) return true;
+    const pkg = packageById(id);
+    const name = (pkg?.name || '').toString().toLowerCase();
+    return name.includes('flexible');
+};
 
 const isFlexibleAmountInvalid = () => {
     const v = Number(form.flexible_support_amount);
@@ -265,6 +272,7 @@ function submit() {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
+            showSuccessModal.value = true;
             form.reset();
             phoneCountryCode.value = '+975';
             phoneLocal.value = '';
@@ -379,7 +387,7 @@ const steps = [
                 :style="registerHeroStyle"
             />
             <div class="relative mx-auto w-full max-w-[70rem] px-4 text-center sm:px-6 lg:px-8">
-                <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl lg:text-5xl">Join the Global Conscious Food Systems Summit 2026!</h1>
+                <h1 class="font-title text-3xl font-bold text-white sm:text-4xl lg:text-5xl">Join the Global Conscious Food Systems Summit 2026!</h1>
                 <p class="mx-auto mt-4 max-w-2xl text-center font-body text-lg font-medium text-accent-2 sm:text-xl">31st August – 4 September 2026 · Paro, Bhutan</p>
             </div>
         </section>
@@ -387,7 +395,7 @@ const steps = [
         <!-- Intro -->
         <section class="bg-[#F4F1EA] py-16 sm:py-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <p class="font-body text-xl leading-relaxed text-white">
+                <p class="font-body text-xl leading-relaxed text-ink">
                     We are delighted to hear about your interest in joining the first-ever Conscious Food Systems Summit, to be held from 31st August to 4 September, in Paro, Bhutan.
                 </p>
 
@@ -550,11 +558,14 @@ const steps = [
         </section>
 
         <!-- Registration Form -->
-        <section id="form" class="bg-[#F4F1EA] py-16 sm:py-20">
+        <section id="form" class="bg-[#F4F1EA] pt-4 pb-16 sm:pt-6 sm:pb-20">
             <div class="mx-auto w-full max-w-[70rem] px-4 sm:px-6 lg:px-8">
-                <div class="mb-8 rounded-xl border border-primary-2/15 bg-white px-6 py-5">
+                <div class="mb-3 rounded-2xl border-2 border-accent-2/40 bg-gradient-to-r from-accent-2/15 via-white to-primary-2/10 px-6 py-6 shadow-md">
+                    <div class="mx-auto mb-3 inline-flex items-center rounded-full bg-accent-2 px-3 py-1">
+                        <span class="font-body text-sm font-bold uppercase tracking-wide text-primary-1">Special Note</span>
+                    </div>
                     <h3 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Applying from Bhutan</h3>
-                    <p class="mt-3 font-body text-lg leading-relaxed text-copy">
+                    <p class="mt-3 text-center font-body text-lg leading-relaxed text-copy">
                         Participation for Bhutan-based applicants is coordinated through a separate Expression of Interest process. We kindly invite you to complete the Bhutan-specific form
                         <a href="#" target="_blank" class="ml-1 inline-flex items-center gap-1 font-semibold text-primary-2 underline hover:no-underline">
                             here
@@ -568,9 +579,6 @@ const steps = [
 
                 <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Application</h2>
                 <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">If you are an international participant, please fill out the form below to begin your registration process</p>
-                <div v-if="submitErrorSummary || form.errors.form" class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
-                    <p class="font-body text-base text-red-700">{{ submitErrorSummary || form.errors.form }}</p>
-                </div>
 
                 <form @submit.prevent="submit" class="mt-10 space-y-6 text-lg">
                     <!-- Section 1: Personal Information -->
@@ -1266,6 +1274,9 @@ const steps = [
                     </fieldset>
 
                     <!-- Submit -->
+                    <div v-if="submitErrorSummary || form.errors.form" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+                        <p class="font-body text-base text-red-700">{{ submitErrorSummary || form.errors.form }}</p>
+                    </div>
                     <div class="flex flex-col items-center pt-2">
                         <button
                             type="submit"
@@ -1286,14 +1297,14 @@ const steps = [
 </template>
 
 <style scoped>
-/* Increase body text size on the Register page without affecting title headings */
-.register-page :deep(.font-body.text-sm) {
-    font-size: 1rem;
-    line-height: 1.5rem;
+/* Keep register page typography consistent and readable */
+.register-page :deep(.font-title) {
+    font-size: 2rem !important;
+    line-height: 2.5rem !important;
 }
 
-.register-page :deep(.font-body.text-base) {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+.register-page :deep(.font-body) {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
 }
 </style>

@@ -418,7 +418,7 @@ function exportApplicationsExcel() {
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
                                     <span class="inline-flex items-center rounded-full border border-primary-2/30 bg-primary-2/10 px-2.5 py-0.5 text-xs font-medium text-primary-2">
-                                        {{ app.price_tier }}
+                                        {{ app.price_tier_display || app.price_tier }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm font-body text-copy">

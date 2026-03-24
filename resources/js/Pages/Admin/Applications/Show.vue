@@ -102,6 +102,10 @@ const statusBadgeClass = (status) => {
                         <div><dt class="font-body text-xs text-gray-500">Phone</dt><dd class="font-body text-ink">{{ application.phone }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Organization</dt><dd class="font-body text-ink">{{ application.organization }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Organization Type</dt><dd class="font-body text-ink">{{ application.organization_type || '-' }}</dd></div>
+                        <div v-if="application.organization_type === 'Other' || application.organization_type_other"><dt class="font-body text-xs text-gray-500">Organization Type (Other)</dt><dd class="font-body text-ink">{{ application.organization_type_other || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Organization Size</dt><dd class="font-body text-ink">{{ application.organization_size || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Participation supported by budget</dt><dd class="font-body text-ink">{{ application.participation_budget_support || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Job Title</dt><dd class="font-body text-ink">{{ application.job_title }}</dd></div>
                         <div v-if="application.website" class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">Website</dt><dd class="font-body text-ink"><a :href="application.website" target="_blank" class="text-accent-1 hover:underline">{{ application.website }}</a></dd></div>
                     </dl>
@@ -121,7 +125,14 @@ const statusBadgeClass = (status) => {
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h2 class="font-title text-lg font-semibold text-primary-1">Participation</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-                        <div><dt class="font-body text-xs text-gray-500">Price Tier</dt><dd class="font-body text-ink">{{ application.price_tier }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Price Tier</dt><dd class="font-body text-ink">{{ application.price_tier_display || application.price_tier_name || application.price_tier }}<span v-if="application.price_tier_amount !== null"> — USD {{ Number(application.price_tier_amount).toLocaleString() }}</span></dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Selected Ticket ID</dt><dd class="font-body text-ink">{{ application.price_tier_raw || application.price_tier || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Ticket Confirmation</dt><dd class="font-body text-ink">{{ application.confirm_tier ? 'Agreed' : 'Not agreed' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Flexible Amount (USD)</dt><dd class="font-body text-ink">{{ application.flexible_support_amount || '-' }}</dd></div>
+                        <div class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">Subsidised Justification</dt><dd class="font-body text-ink whitespace-pre-line">{{ application.subsidized_price_justification || '-' }}</dd></div>
+                        <div class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">How did you hear about this event?</dt><dd class="font-body text-ink">{{ Array.isArray(application.heard_from) && application.heard_from.length ? application.heard_from.join(', ') : '-' }}<span v-if="application.heard_from_other"> (Other: {{ application.heard_from_other }})</span></dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">CoFSA Member</dt><dd class="font-body text-ink">{{ application.cofsa_member || '-' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">CoFSA Newsletter</dt><dd class="font-body text-ink">{{ application.cofsa_newsletter || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Field Visit</dt><dd class="font-body text-ink">{{ application.field_visit ? 'Yes' : 'No' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Accessibility</dt><dd class="font-body text-ink">{{ application.accessibility_needed }} <span v-if="application.accessibility_details">- {{ application.accessibility_details }}</span></dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Dietary</dt><dd class="font-body text-ink">{{ application.dietary }} <span v-if="application.dietary_other">({{ application.dietary_other }})</span></dd></div>

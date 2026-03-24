@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SummitRegistration;
+use App\Services\PackageService;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,13 @@ class ApplicationsController extends Controller
         $query = $this->buildFilteredQuery($request);
 
         $applications = $query->paginate(15)->withQueryString();
+        $tierMap = collect(PackageService::getTiers())
+            ->mapWithKeys(fn ($t) => [(string) ($t['id'] ?? '') => (string) ($t['name'] ?? '')]);
+        $applications->getCollection()->transform(function ($app) use ($tierMap) {
+            $raw = (string) ($app->price_tier_raw ?? $app->price_tier ?? '');
+            $app->price_tier_display = (string) ($app->price_tier_name ?: ($tierMap[$raw] ?? $raw));
+            return $app;
+        });
 
         $stats = [
             'pending' => SummitRegistration::where('status', SummitRegistration::STATUS_PENDING)->count(),
@@ -142,6 +150,16 @@ class ApplicationsController extends Controller
     public function show(SummitRegistration $summit_registration)
     {
         $application = $summit_registration->toArray();
+        $rawTier = (string) ($application['price_tier_raw'] ?? $application['price_tier'] ?? '');
+        $tierMap = collect(PackageService::getTiers())
+            ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
+        $tier = $tierMap->get($rawTier);
+        $application['price_tier_display'] = (string) (($application['price_tier_name'] ?? '') ?: (string) ($tier['name'] ?? $rawTier));
+        $tierPrice = $tier['price'] ?? null;
+        if (!empty($application['flexible_support_amount'])) {
+            $tierPrice = $application['flexible_support_amount'];
+        }
+        $application['price_tier_amount'] = $tierPrice !== null && $tierPrice !== '' ? (float) $tierPrice : null;
         if (!empty($application['photo'])) {
             $application['photo_url'] = asset($application['photo']);
         }
