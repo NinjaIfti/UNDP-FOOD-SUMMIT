@@ -412,19 +412,19 @@ const defaultThemes = [
 
                     <!-- Two venues feature -->
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div class="mb-6 text-center">
-                            <p class="font-body text-sm font-bold uppercase tracking-wide text-primary-1 sm:text-base">
-                                TAKING PLACE ACROSS TWO VENUES
-                            </p>
-                        </div>
+			<div class="text-center">
+				<h2 class="mb-8 mt-5 font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">TAKING PLACE ACROSS TWO VENUES	</h2>
+			</div>
                         <div class="grid gap-6 md:grid-cols-2">
                             <div class="rounded-none border border-accent-2/40 bg-white p-4 shadow-sm">
+				
+				
                                 <div class="mb-4 flex items-center gap-3">
                                     <span class="inline-flex items-center justify-center rounded-full bg-accent-2 px-4 py-2 font-body text-sm font-bold text-white">
                                         Day 1
                                     </span>
                                     <h3 class="font-title text-base font-bold text-gray-900">
-                                        Dungkar Dzong in Paro, Bhutan
+                                       <a href="https://www.dungkar.bt/" >Dungkar Dzong in Paro, Bhutan </a>
                                     </h3>
                                 </div>
                                 <div class="overflow-hidden">
@@ -443,7 +443,7 @@ const defaultThemes = [
                                         Days 2 to 4
                                     </span>
                                     <h3 class="font-title text-base font-bold text-gray-900">
-                                        Rustic Roots, Paro
+                                      <a href="https://rusticrootsresort.com/" >  TUI BLUE Paro Taktsang </a>
                                     </h3>
                                 </div>
                                 <div class="overflow-hidden">

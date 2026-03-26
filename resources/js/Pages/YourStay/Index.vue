@@ -666,9 +666,36 @@ onUnmounted(() => {
                     <h2 class="font-title text-3xl font-bold text-gray-900">{{ settings.accommodation_title || 'Accommodation in Paro' }}</h2>
 
                     <div v-if="settings.accommodation_important" class="bg-blue-50 border border-blue-200 rounded-none p-6">
-                        <p class="font-body text-gray-800">
+                       <!-- <p class="font-body text-gray-800">
                             <strong>{{ settings.accommodation_important }}</strong>
-                        </p>
+                        </p> -->
+			<ul class="space-y-2 font-body text-gray-700">
+                            <li class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span>
+				While not mandatory, all Summit participants are strongly encouraged to stay in the accommodation options listed below, located in Paro and in close proximity to the event venue and official Summit logistics. Staying in these hotels will ensure access to organized transportation between hotels and Summit venues. Participants choosing to stay in alternative accommodations may not be able to access these transportation services.
+				</span>
+                            </li>
+			    <li class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span>
+				Participants are responsible for selecting and booking their preferred accommodation directly with the hotel.
+				</span>
+                            </li>
+			 <li class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span>
+				We strongly encourage participants to enquire early, as availability in Paro is limited during this period. However, bookings should only be confirmed after receiving official visa entry approval, to avoid any inconvenience or non-refundable costs.
+				</span>
+                            </li>
+			 <li class="flex items-start gap-3">
+                                <span class="text-accent-2 mt-1">•</span>
+                                <span>
+				The official Summit hotel options are provided below.
+				</span>
+                            </li>
+                        </ul>
+
                     </div>
 
                     <div class="flex flex-wrap gap-3">

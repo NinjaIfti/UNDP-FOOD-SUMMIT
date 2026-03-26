@@ -583,6 +583,7 @@ const steps = [
                         .
                     </p>
                 </div>
+		<br><br><br>
 
                 <h2 class="text-center font-title text-3xl font-bold text-primary-1 sm:text-4xl">Applying from outside Bhutan - Register here</h2>
                 <p class="mt-2 text-center font-body text-lg text-copy sm:text-xl">
@@ -1086,7 +1087,7 @@ const steps = [
                         <!-- (Moved into the selected Subsidised tier card above) -->
 
                         <!-- Field Visit Add-on -->
-                        <div class="mt-6">
+                       <!-- <div class="mt-6">
                             <label class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition" :class="form.field_visit ? 'border-primary-2 bg-primary-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                 <input
                                     type="checkbox"
@@ -1099,7 +1100,7 @@ const steps = [
                                     <p class="mt-0.5 text-base text-copy">Guided visits to organic farms in the Paro Valley, including farm-to-table lunch experience and hands-on workshops with local farmers. Exact pricing to be confirmed.</p>
                                 </div>
                             </label>
-                        </div>
+                        </div> -->
 
                         <!-- Accessibility -->
                         <div class="mt-6">

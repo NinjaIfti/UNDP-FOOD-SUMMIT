@@ -201,26 +201,44 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                             <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
                                 {{ spreadPending }}
                             </p>
-                            <div v-if="spreadPdfUrl || spreadTrelloUrl" class="mt-5 flex flex-wrap gap-3">
-                                <a
-                                    v-if="spreadPdfUrl"
-                                    :href="spreadPdfUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-accent-1/90"
+			    <div class="mt-5 flex flex-wrap gap-3">
+                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
                                 >
-                                    PDF
+                                    Toolkit
                                 </a>
                                 <a
                                     v-if="spreadTrelloUrl"
                                     :href="spreadTrelloUrl"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-accent-1/90"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
                                 >
-                                    Trello
+                                    Promo video
                                 </a>
+				
                             </div>
+                           <!-- <div v-if="spreadPdfUrl || spreadTrelloUrl" class="mt-5 flex flex-wrap gap-3">
+                                <a
+                                    v-if="spreadPdfUrl"
+                                    :href="spreadPdfUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Toolkit
+                                </a>
+                                <a
+                                    v-if="spreadTrelloUrl"
+                                    :href="spreadTrelloUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Video
+                                </a>
+				
+                            </div> -->
+
                         </div>
                     </div>
                 </SectionReveal>
@@ -228,7 +246,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
         </section>
 
         <!-- 3) Together with our partners -->
-        <section class="bg-[#F4F1EA] py-8 sm:py-10">
+      <!--  <section class="bg-[#F4F1EA] py-8 sm:py-10">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">
@@ -256,7 +274,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                     </div>
                 </SectionReveal>
             </div>
-        </section>
+        </section> -->
 
         <!-- 4) Financial support -->
         <section class="bg-[#F4F1EA] py-8 sm:py-10 lg:py-12">
