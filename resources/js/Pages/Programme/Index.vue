@@ -412,6 +412,11 @@ const defaultThemes = [
 
                     <!-- Two venues feature -->
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div class="mb-6 text-center">
+                            <p class="font-body text-sm font-bold uppercase tracking-wide text-primary-1 sm:text-base">
+                                TAKING PLACE ACROSS TWO VENUES
+                            </p>
+                        </div>
                         <div class="grid gap-6 md:grid-cols-2">
                             <div class="rounded-none border border-accent-2/40 bg-white p-4 shadow-sm">
                                 <div class="mb-4 flex items-center gap-3">
