@@ -115,11 +115,13 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::middleware('admin.permission:applications')->group(function () {
         Route::get('/applications', [ApplicationsController::class, 'index'])->name('applications.index');
         Route::get('/applications/export', [ApplicationsController::class, 'export'])->name('applications.export');
+        Route::get('/applications/export-data', [ApplicationsController::class, 'exportData'])->name('applications.export-data');
         Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
         Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
         Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');
         Route::post('/applications/{summit_registration}/waitlist', [ApplicationsController::class, 'waitlist'])->name('applications.waitlist');
         Route::post('/applications/{summit_registration}/revert', [ApplicationsController::class, 'revert'])->name('applications.revert');
+        Route::delete('/applications/{summit_registration}', [ApplicationsController::class, 'destroy'])->name('applications.destroy');
     });
 
     Route::middleware('admin.permission:packages')->group(function () {

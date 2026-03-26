@@ -42,6 +42,32 @@ function revert(id) {
     router.post(route('admin.applications.revert', id));
 }
 
+function destroyApplication(id) {
+    if (confirm('Delete this application permanently? This will also permanently delete the linked user account from the database. This action cannot be undone.')) {
+        router.delete(route('admin.applications.destroy', id));
+    }
+}
+
+async function fetchAllApplicationsForExport() {
+    const url = route('admin.applications.export-data', {
+        search: search.value || undefined,
+        status: statusFilter.value !== 'all' ? statusFilter.value : undefined,
+    });
+
+    const response = await fetch(url, {
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch applications export data.');
+    }
+
+    const payload = await response.json();
+    return payload?.data || [];
+}
+
 const statusBadgeClass = (status) => {
     switch (status) {
         case 'approved': return 'bg-green-100 text-green-800';
@@ -96,8 +122,9 @@ const formatSubmittedDate = (dateString) => {
     };
 };
 
-function exportApplicationsPdf() {
-    const rows = (props.applications?.data || []).map((app) => [
+async function exportApplicationsPdf() {
+    const data = await fetchAllApplicationsForExport();
+    const rows = data.map((app) => [
         `${app.first_name} ${app.last_name}`,
         app.email,
         app.country,
@@ -138,8 +165,8 @@ function exportApplicationsPdf() {
     doc.save(`applications_${date}.pdf`);
 }
 
-function exportApplicationsExcel() {
-    const data = props.applications?.data || [];
+async function exportApplicationsExcel() {
+    const data = await fetchAllApplicationsForExport();
 
     const worksheetData = [
         ['First name', 'Last name', 'Email', 'Nationality', 'Country of residence', 'Organization', 'Price tier', 'Status', 'Submitted'],
@@ -419,6 +446,9 @@ function exportApplicationsExcel() {
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
                                     {{ app.country }}
                                 </td>
+                                <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
+                                    {{ app.country_of_residence || '—' }}
+                                </td>
                                 <td class="max-w-xs truncate px-4 py-3 text-sm font-body text-copy">
                                     {{ app.organization }}
                                 </td>
@@ -442,7 +472,7 @@ function exportApplicationsExcel() {
                                     </span>
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3">
-                                    <div class="flex flex-wrap items-center gap-2">
+                                    <div class="flex items-center gap-2 whitespace-nowrap">
                                         <Link
                                             :href="route('admin.applications.show', app.id)"
                                             class="rounded-lg bg-primary-2 px-3 py-2 font-body text-xs font-medium text-white transition hover:bg-primary-2/90"
@@ -483,11 +513,17 @@ function exportApplicationsExcel() {
                                                 Reject
                                             </button>
                                         </template>
+                                        <button
+                                            @click="destroyApplication(app.id)"
+                                            class="rounded-lg border border-red-300 px-3 py-2 font-body text-xs font-medium text-red-700 transition hover:bg-red-50"
+                                        >
+                                            Delete
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
                             <tr v-if="!applications?.data?.length">
-                                <td colspan="8" class="px-4 py-8 text-center">
+                                <td colspan="9" class="px-4 py-8 text-center">
                                     <p class="font-body text-copy">No applications yet.</p>
                                 </td>
                             </tr>

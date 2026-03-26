@@ -149,6 +149,32 @@ class ApplicationsController extends Controller
         return response()->streamDownload($callback, $filename, $headers);
     }
 
+    public function exportData(Request $request)
+    {
+        $query = $this->buildFilteredQuery($request);
+        $tierMap = collect(PackageService::getTiers())
+            ->mapWithKeys(fn ($t) => [(string) ($t['id'] ?? '') => (string) ($t['name'] ?? '')]);
+
+        $rows = $query->get()->map(function ($app) use ($tierMap) {
+            $raw = (string) ($app->price_tier_raw ?? $app->price_tier ?? '');
+            $priceTierDisplay = (string) ($app->price_tier_name ?: ($tierMap[$raw] ?? $raw));
+
+            return [
+                'first_name' => $app->first_name,
+                'last_name' => $app->last_name,
+                'email' => $app->email,
+                'country' => $app->country,
+                'country_of_residence' => $app->country_of_residence,
+                'organization' => $app->organization,
+                'price_tier' => $priceTierDisplay,
+                'status' => $app->status,
+                'created_at' => $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
+            ];
+        })->values();
+
+        return response()->json(['data' => $rows]);
+    }
+
     public function show(SummitRegistration $summit_registration)
     {
         $application = $summit_registration->toArray();
@@ -227,5 +253,20 @@ class ApplicationsController extends Controller
 
         $application->update(['status' => SummitRegistration::STATUS_PENDING]);
         return back()->with('success', 'Application reverted to pending.');
+    }
+
+    public function destroy(SummitRegistration $summit_registration)
+    {
+        $application = $summit_registration;
+
+        DB::transaction(function () use ($application) {
+            if ($application->user_id) {
+                User::where('id', $application->user_id)->delete();
+            }
+
+            $application->delete();
+        });
+
+        return back()->with('success', 'Application and linked user deleted permanently.');
     }
 }
