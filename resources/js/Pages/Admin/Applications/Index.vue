@@ -179,7 +179,7 @@ function exportApplicationsExcel() {
 <template>
     <Head title="Application Review" />
     <AdminLayout>
-        <div class="mx-auto max-w-6xl">
+        <div class="mx-auto max-w-7xl">
             <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 class="font-title text-2xl font-bold text-primary-1 sm:text-3xl">Application Review</h1>
