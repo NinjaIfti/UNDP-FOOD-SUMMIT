@@ -75,6 +75,7 @@ const handleSaveTemplate = () => {
     } else if (isEditing.value && selectedTemplate.value?.id) {
         templateForm.transform((data) => {
             const payload = {
+                _method: 'put',
                 name: data.name,
                 type: data.type,
                 subject: data.subject,
@@ -85,7 +86,7 @@ const handleSaveTemplate = () => {
                 payload[`attachment_pdf_${i}`] = f;
             });
             return payload;
-        }).put(route('admin.communications.update', selectedTemplate.value.id), {
+        }).post(route('admin.communications.update', selectedTemplate.value.id), {
             forceFormData: true,
             preserveScroll: true,
             onSuccess: () => {

@@ -27,6 +27,11 @@ class PackagesController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
+        $validated['description'] = strip_tags(
+            (string) $validated['description'],
+            '<strong><b><em><i><u><ul><ol><li><br><p>'
+        );
+
         $tiers = PackageService::getTiers();
 
         $newTier = [
@@ -51,6 +56,11 @@ class PackagesController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
         ]);
+
+        $validated['description'] = strip_tags(
+            (string) $validated['description'],
+            '<strong><b><em><i><u><ul><ol><li><br><p>'
+        );
 
         $tiers = PackageService::getTiers();
         $tiers = array_map(function ($tier) use ($id, $validated) {

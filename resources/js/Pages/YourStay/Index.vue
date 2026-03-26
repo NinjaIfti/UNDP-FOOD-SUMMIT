@@ -800,7 +800,7 @@ onUnmounted(() => {
                                         <svg class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm2-2V9a2 2 0 012-2h2a2 2 0 012 2v.01" />
                                         </svg>
-                                        <span class="font-medium">$600 per night</span>
+                                        <span class="font-medium">{{ (hotel.priceRange || '$600') }} per night</span>
                                     </div>
 
                                     <div class="flex items-start gap-2 text-gray-700">

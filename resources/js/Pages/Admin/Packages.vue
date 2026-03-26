@@ -223,9 +223,10 @@ const cancelTierEdit = () => {
                         <h3 class="mb-2 font-title text-lg font-bold text-primary-1">
                             {{ tier.name }}
                         </h3>
-                        <p class="mb-4 font-body text-sm text-copy">
-                            {{ tier.description }}
-                        </p>
+                        <div
+                            class="mb-4 font-body text-sm text-copy [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-2 [&_p]:last:mb-0 [&_strong]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline"
+                            v-html="tier.description"
+                        />
                         <div class="mb-4 flex items-baseline gap-1">
                             <span class="font-title text-3xl font-bold text-accent-2">
                                 ${{ tier.price }}

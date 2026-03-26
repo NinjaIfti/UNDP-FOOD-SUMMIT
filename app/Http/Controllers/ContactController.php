@@ -136,22 +136,98 @@ class ContactController extends Controller
                 $dashTicket->registerUser($dashPayload);
             }
 
-            $tierName = $submittedTierName;
+            $subject = 'Thank You for Your Registration - Global Conscious Food Systems Summit Bhutan 2026';
 
-            $customAmount = $validated['flexible_support_amount'] ?? null;
-            $customAmount = $customAmount !== null && $customAmount !== '' ? (string) $customAmount : '';
+            $html = <<<HTML
+<div style="font-family: Arial, Helvetica, sans-serif; color: #111827; background: #ffffff; padding: 24px;">
+    <div style="max-width: 760px; margin: 0 auto;">
+        <p style="margin: 0 0 12px 0;">Dear Participant,</p>
 
-            $message = "Thank you, {$data['first_name']} {$data['last_name']}, for registering for the Conscious Food Systems Summit.\n\n";
-            $message .= "Your selected ticket option: {$tierName}\n";
-            if ($customAmount !== '') {
-                $message .= "Custom flexible amount (USD): {$customAmount}\n";
-            }
-            $message .= "\nOur team will review your submission and get back to you soon.\n";
+        <p style="margin: 0 0 12px 0;">Warm greetings from the Conscious Food Systems Alliance,</p>
+
+        <p style="margin: 0 0 12px 0;">
+            Thank you for your registration - we are truly delighted that you have expressed interest in joining the inaugural Conscious Food Systems Summit, taking place from 31 August to 4 September in Paro, Bhutan.
+        </p>
+
+        <div style="margin: 16px 0; padding: 16px; border: 2px solid #f59e0b; background: #fffbeb;">
+            <p style="margin: 0; font-weight: 700;">
+                We are pleased to confirm that your registration application has been successfully received.
+            </p>
+        </div>
+
+        <p style="margin: 0 0 10px 0;">
+            To support you through the process, we would like to outline the next steps:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+            <div style="border: 1px solid #e5e7eb; background: #ffffff; padding: 14px; border-left: 6px solid #d21f1f;">
+                <p style="margin: 0; font-weight: 700;">Step 1 — Submit Your Registration Application (Completed)</p>
+                <p style="margin: 8px 0 0 0; line-height: 1.55;">
+                    You have completed this step by submitting the registration form with your personal details, selected participation package, and any optional preferences.
+                </p>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; background: #ffffff; padding: 14px; border-left: 6px solid #d21f1f;">
+                <p style="margin: 0; font-weight: 700;">Step 2 — Review and Confirmation by Organizers</p>
+                <p style="margin: 8px 0 0 0; line-height: 1.55;">
+                    All applications are carefully reviewed by the organizing team. Please note that submission of the form does not automatically confirm participation.
+                </p>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; background: #ffffff; padding: 14px; border-left: 6px solid #d21f1f;">
+                <p style="margin: 0; font-weight: 700;">Step 3 — Approval Notification and Payment Instructions</p>
+                <p style="margin: 8px 0 0 0; line-height: 1.55;">
+                    If your application is approved, you will receive a follow-up email confirming your participation along with instructions to proceed with payment.
+                </p>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; background: #ffffff; padding: 14px; border-left: 6px solid #d21f1f;">
+                <p style="margin: 0; font-weight: 700;">Step 4 — Visa Coordination After Payment</p>
+                <p style="margin: 8px 0 0 0; line-height: 1.55;">
+                    Once your payment is completed, the organizers will initiate the visa process and prepare the required documentation for your travel to Bhutan. We encourage you to begin checking flight schedules, as your travel details will be required to process your visa. If all documents are submitted on time, the visa process typically takes around two weeks.
+                </p>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; background: #ffffff; padding: 14px; border-left: 6px solid #d21f1f;">
+                <p style="margin: 0; font-weight: 700;">Step 5 — Visa Approval and Travel Planning</p>
+                <p style="margin: 8px 0 0 0; line-height: 1.55;">
+                    As soon as your visa is approved, you will be notified. At that stage, you may proceed with booking your flights, accommodation, and final travel arrangements.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 16px; padding: 14px; border: 1px solid #e5e7eb; background: #f9fafb;">
+            <p style="margin: 0 0 8px 0; font-weight: 700;">
+                We kindly invite you to regularly check the event website for updates and additional information:
+            </p>
+            <p style="margin: 0;">
+                <a href="https://consciousfoodsummit.com/" target="_blank" style="color: #2563eb; text-decoration: none;">
+                    https://consciousfoodsummit.com/
+                </a>
+            </p>
+        </div>
+
+        <div style="margin-top: 12px;">
+            <p style="margin: 0 0 6px 0;">
+                If you have any questions or require assistance at any stage, please feel free to contact us at:
+            </p>
+            <p style="margin: 0; font-weight: 700;">cofsalliance@gmail.com</p>
+        </div>
+
+        <p style="margin: 16px 0 0 0;">
+            We look forward to the possibility of welcoming you to Bhutan for this meaningful and transformative gathering.
+        </p>
+
+        <p style="margin: 12px 0 0 0;">With warm regards,</p>
+        <p style="margin: 4px 0 0 0; font-weight: 700;">The Global Conscious Food Systems Summit Organizing Team</p>
+    </div>
+</div>
+HTML;
 
             try {
-                Mail::raw($message, function ($mail) use ($data) {
+                Mail::html($html, function ($mail) use ($data, $subject) {
                     $mail->to($data['email'])
-                        ->subject('Registration received - Conscious Food Systems Summit');
+                        ->subject($subject);
                 });
             } catch (\Throwable $mailException) {
                 Log::warning('Registration confirmation email failed', [
