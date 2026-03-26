@@ -224,7 +224,7 @@ const cancelTierEdit = () => {
                             {{ tier.name }}
                         </h3>
                         <div
-                            class="mb-4 font-body text-sm text-copy [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-2 [&_p]:last:mb-0 [&_strong]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline"
+                            class="mb-4 font-body text-sm text-copy [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-2 [&_p]:last:mb-0 [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline"
                             v-html="tier.description"
                         />
                         <div class="mb-4 flex items-baseline gap-1">

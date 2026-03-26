@@ -943,7 +943,7 @@ const steps = [
                                             </div>
 
                                             <div
-                                                class="mt-2 font-body text-base leading-relaxed text-copy [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-2 [&_p]:last:mb-0 [&_strong]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline"
+                                                class="mt-2 font-body text-base leading-relaxed text-copy [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-2 [&_p]:last:mb-0 [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_u]:underline"
                                                 v-html="pkg.description"
                                             />
 
