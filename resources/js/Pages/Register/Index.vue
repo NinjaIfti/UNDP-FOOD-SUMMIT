@@ -190,6 +190,11 @@ const phoneLocal = ref('');
 const phoneClientError = ref('');
 const submitErrorSummary = ref('');
 
+function sanitizePhoneLocal(value) {
+    // Keep phone local part digits only (no letters, symbols).
+    return String(value ?? '').replace(/\D/g, '');
+}
+
 function buildFullPhone() {
     const code = (phoneCountryCode.value || '').trim();
     const local = (phoneLocal.value || '').trim().replace(/\s+/g, ' ');
@@ -647,9 +652,12 @@ const steps = [
                                         id="phone"
                                         v-model="phoneLocal"
                                         type="tel"
+                                        inputmode="numeric"
+                                        pattern="[0-9]*"
                                         autocomplete="tel-national"
                                         class="min-w-0 flex-1 rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                         placeholder="e.g. 234 567 8900"
+                                        @input="phoneLocal = sanitizePhoneLocal($event.target.value)"
                                     />
                                 </div>
                                 <p v-if="phoneClientError || form.errors.phone" class="mt-1 text-base text-red-400">
@@ -1255,6 +1263,9 @@ const steps = [
                                     v-model="form.emergency_phone"
                                     type="tel"
                                     required
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    @input="form.emergency_phone = sanitizePhoneLocal($event.target.value)"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="+1 234 567 8900"
                                 />

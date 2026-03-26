@@ -55,7 +55,8 @@ class ContactController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email',
-            'phone' => 'required|string|max:50',
+            // Phone is saved as: "<country code> <local number>", so allow '+' and spaces.
+            'phone' => ['required', 'regex:/^\\+?[0-9 ]+$/', 'max:50'],
             'country' => 'required|string|max:255',
             'country_of_residence' => 'required|string|max:255',
             'organization' => 'nullable|string|max:255',
@@ -84,7 +85,7 @@ class ContactController extends Controller
             'cofsa_member' => 'required|string|in:yes,no',
             'cofsa_newsletter' => 'required|string|in:yes,no',
             'emergency_name' => 'required|string|max:255',
-            'emergency_phone' => 'required|string|max:50',
+            'emergency_phone' => ['required', 'regex:/^\\+?[0-9 ]+$/', 'max:50'],
             'emergency_email' => 'required|email',
             'emergency_relation' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
