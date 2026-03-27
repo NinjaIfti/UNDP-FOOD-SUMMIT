@@ -114,6 +114,7 @@ class ApplicationsController extends Controller
                 'Organization',
                 'Job title',
                 'Price tier',
+                'Optional immersive experience (add-on)',
                 'Status',
                 'Arrival date',
                 'Departure date',
@@ -135,6 +136,7 @@ class ApplicationsController extends Controller
                         $app->organization,
                         $app->job_title,
                         $app->price_tier,
+                        $app->field_visit ? 'Yes' : 'No',
                         $app->status,
                         optional($app->arrival_date)->format('Y-m-d'),
                         optional($app->departure_date)->format('Y-m-d'),
@@ -169,6 +171,7 @@ class ApplicationsController extends Controller
                 'country_of_residence' => $app->country_of_residence,
                 'organization' => $app->organization,
                 'price_tier' => $priceTierDisplay,
+                'field_visit' => (bool) $app->field_visit,
                 'status' => $app->status,
                 'created_at' => $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
             ];

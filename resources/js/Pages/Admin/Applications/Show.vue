@@ -133,7 +133,7 @@ const statusBadgeClass = (status) => {
                         <div class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">How did you hear about this event?</dt><dd class="font-body text-ink">{{ Array.isArray(application.heard_from) && application.heard_from.length ? application.heard_from.join(', ') : '-' }}<span v-if="application.heard_from_other"> (Other: {{ application.heard_from_other }})</span></dd></div>
                         <div><dt class="font-body text-xs text-gray-500">CoFSA Member</dt><dd class="font-body text-ink">{{ application.cofsa_member || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">CoFSA Newsletter</dt><dd class="font-body text-ink">{{ application.cofsa_newsletter || '-' }}</dd></div>
-                        <div><dt class="font-body text-xs text-gray-500">Field Visit</dt><dd class="font-body text-ink">{{ application.field_visit ? 'Yes' : 'No' }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Optional Immersive Experience (Add-on)</dt><dd class="font-body text-ink">{{ application.field_visit ? 'Yes' : 'No' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Accessibility</dt><dd class="font-body text-ink">{{ application.accessibility_needed }} <span v-if="application.accessibility_details">- {{ application.accessibility_details }}</span></dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Dietary</dt><dd class="font-body text-ink">{{ application.dietary }} <span v-if="application.dietary_other">({{ application.dietary_other }})</span></dd></div>
                     </dl>

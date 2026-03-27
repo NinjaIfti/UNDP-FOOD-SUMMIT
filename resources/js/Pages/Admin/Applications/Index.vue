@@ -131,6 +131,7 @@ async function exportApplicationsPdf() {
         app.country_of_residence || '',
         app.organization,
         app.price_tier,
+        app.field_visit ? 'Yes' : 'No',
         app.status,
         app.created_at,
     ]);
@@ -151,6 +152,7 @@ async function exportApplicationsPdf() {
             'Country of residence',
             'Organization',
             'Price tier',
+            'Add-on',
             'Status',
             'Submitted',
         ]],
@@ -169,7 +171,7 @@ async function exportApplicationsExcel() {
     const data = await fetchAllApplicationsForExport();
 
     const worksheetData = [
-        ['First name', 'Last name', 'Email', 'Nationality', 'Country of residence', 'Organization', 'Price tier', 'Status', 'Submitted'],
+        ['First name', 'Last name', 'Email', 'Nationality', 'Country of residence', 'Organization', 'Price tier', 'Add-on', 'Status', 'Submitted'],
         ...data.map((app) => [
             app.first_name,
             app.last_name,
@@ -178,6 +180,7 @@ async function exportApplicationsExcel() {
             app.country_of_residence || '',
             app.organization,
             app.price_tier,
+            app.field_visit ? 'Yes' : 'No',
             app.status,
             app.created_at,
         ]),
@@ -194,6 +197,7 @@ async function exportApplicationsExcel() {
         { wch: 18 },
         { wch: 26 },
         { wch: 12 },
+        { wch: 10 },
         { wch: 12 },
         { wch: 20 },
     ];
@@ -419,6 +423,9 @@ async function exportApplicationsExcel() {
                                     Price Tier
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
+                                    Add-on
+                                </th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Submitted
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
@@ -455,6 +462,14 @@ async function exportApplicationsExcel() {
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
                                     <span class="inline-flex items-center rounded-full border border-primary-2/30 bg-primary-2/10 px-2.5 py-0.5 text-xs font-medium text-primary-2">
                                         {{ app.price_tier_display || app.price_tier }}
+                                    </span>
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
+                                    <span
+                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium"
+                                        :class="app.field_visit ? 'border-green-200 bg-green-50 text-green-800' : 'border-gray-200 bg-gray-50 text-gray-700'"
+                                    >
+                                        {{ app.field_visit ? 'Yes' : 'No' }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm font-body text-copy">
@@ -523,7 +538,7 @@ async function exportApplicationsExcel() {
                                 </td>
                             </tr>
                             <tr v-if="!applications?.data?.length">
-                                <td colspan="9" class="px-4 py-8 text-center">
+                                <td colspan="10" class="px-4 py-8 text-center">
                                     <p class="font-body text-copy">No applications yet.</p>
                                 </td>
                             </tr>
