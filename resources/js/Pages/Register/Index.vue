@@ -189,6 +189,7 @@ const phoneCountryCode = ref('+975');
 const phoneLocal = ref('');
 const phoneClientError = ref('');
 const submitErrorSummary = ref('');
+const registrationOpenSoon = true;
 
 function sanitizePhoneLocal(value) {
     // Keep phone local part digits only (no letters, symbols).
@@ -387,6 +388,15 @@ const steps = [
                 </div>
             </div>
         </div>
+        <section v-if="registrationOpenSoon" class="bg-[#F4F1EA] py-24 sm:py-32">
+            <div class="mx-auto w-full max-w-[70rem] px-4 text-center sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-3xl rounded-2xl border border-primary-2/20 bg-white px-6 py-12 shadow-sm sm:px-10">
+                    <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Will Open Soon</h1>
+                    <p class="mt-4 font-body text-lg text-copy">Thank you for your interest. Please check back soon for the registration opening date.</p>
+                </div>
+            </div>
+        </section>
+        <template v-else>
         <!-- Hero Banner -->
         <section class="relative bg-[#F4F1EA] py-20 sm:py-28">
             <div
@@ -1330,6 +1340,7 @@ const steps = [
                 </form>
             </div>
         </section>
+        </template>
         </div>
     </EventLayout>
 </template>
