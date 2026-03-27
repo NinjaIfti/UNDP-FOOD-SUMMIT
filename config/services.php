@@ -38,6 +38,7 @@ return [
     'dashticket' => [
         'url' => env('DASHTICKET_API_URL', 'https://api.dashbhutan.com'),
         'api_key' => env('DASHTICKET_API_KEY'),
+        'payment_link' => env('DASHTICKET_PAYMENT_LINK'),
     ],
 
 ];

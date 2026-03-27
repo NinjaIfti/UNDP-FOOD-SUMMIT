@@ -75,6 +75,7 @@ class DashTicketService
             'password' => $this->generateSecurePassword(),
             'tag' => $this->tag,
             'price' => (float) $price,
+            'add_on' => (bool) $selectedImmersiveExperience,
             'phone' => trim($registration['phone'] ?? '') ?: null,
             'nationality' => $this->countryToIso($registration['country'] ?? null),
         ];
@@ -87,6 +88,7 @@ class DashTicketService
             $response = Http::timeout(15)
                 ->withHeaders([
                     'X-API-Key' => $this->apiKey,
+                    'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json',
                 ])
                 ->post($url, $payload);
@@ -150,6 +152,7 @@ class DashTicketService
             $response = Http::timeout(10)
                 ->withHeaders([
                     'X-API-Key' => $this->apiKey,
+                    'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json',
                 ])
                 ->get($url, ['email' => $normalizedEmail]);
@@ -158,7 +161,7 @@ class DashTicketService
                 $data = $response->json() ?? [];
 
                 return [
-                    'email' => $data['email'] ?? $normalizedEmail,
+                    'email' => (string) ($data['email'] ?? $normalizedEmail),
                     'ticket_purchased' => (bool) ($data['ticket_purchased'] ?? false),
                     'found' => true,
                 ];

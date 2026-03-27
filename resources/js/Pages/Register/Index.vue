@@ -189,7 +189,6 @@ const phoneCountryCode = ref('+975');
 const phoneLocal = ref('');
 const phoneClientError = ref('');
 const submitErrorSummary = ref('');
-const registrationOpenSoon = true;
 
 function sanitizePhoneLocal(value) {
     // Keep phone local part digits only (no letters, symbols).
@@ -388,15 +387,7 @@ const steps = [
                 </div>
             </div>
         </div>
-        <section v-if="registrationOpenSoon" class="bg-[#F4F1EA] py-24 sm:py-32">
-            <div class="mx-auto w-full max-w-[70rem] px-4 text-center sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-3xl rounded-2xl border border-primary-2/20 bg-white px-6 py-12 shadow-sm sm:px-10">
-                    <h1 class="font-title text-3xl font-bold text-primary-1 sm:text-4xl">Registration Will Open Soon</h1>
-                    <p class="mt-4 font-body text-lg text-copy">Thank you for your interest. Please check back soon for the registration opening date.</p>
-                </div>
-            </div>
-        </section>
-        <template v-else>
+        
         <!-- Hero Banner -->
         <section class="relative bg-[#F4F1EA] py-20 sm:py-28">
             <div
@@ -1114,8 +1105,10 @@ const steps = [
                                     class="mt-1 h-4 w-4 accent-[#729430]"
                                 />
                                 <div>
-                                    <span class="font-body font-semibold text-primary-1">Optional Immersive Experience - 31 August, 2026</span>
-                                    <span class="ml-2 font-body text-base font-bold text-primary-2">(+ USD 95)</span>
+                                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                        <span class="font-title text-xl font-bold text-primary-1">Optional Immersive Experience - 31 August, 2026</span>
+                                        <span class="font-body text-lg font-semibold text-accent-2">USD 95</span>
+                                    </div>
                                     <p class="mt-1 text-base text-copy">
                                         On 31st August, step into Bhutan's living landscapes to connect with Bhutanese nature, people, spirituality and the philosophy of Gross National Happiness through immersive experiences exploring conscious food systems. Visit pioneering initiatives - from organic farms and traditional paddy fields to regenerative mountain hazelnut orchards and circular local markets - where agroecology, biodiversity, and community stewardship shape resilient food futures. Meet farmers, learn how food, culture, and ecology are deeply interwoven in everyday life, or visit the iconic Tiger's Nest Monastery along with other cultural heritage sites and places of significance that offer a window into Bhutan's rich history, traditions, and ways of life. Each experience integrates guided conscious practices - mindful walks, meditation in the fields, mindful eating and cooking, and reflections on farming rituals, water, and spiritual traditions - alongside gratitude circles and personal journey prompts to deepen connection and insight. The cost includes transportation, lunch, guided activities, and all on-site experience costs.
                                     </p>
@@ -1340,7 +1333,7 @@ const steps = [
                 </form>
             </div>
         </section>
-        </template>
+        
         </div>
     </EventLayout>
 </template>
