@@ -271,6 +271,16 @@ function submit() {
         phoneClientError.value = 'Please choose a country code and enter your phone number.';
         return;
     }
+    if (form.field_visit && !String(form.price_tier || '').trim()) {
+        submitErrorSummary.value = 'Please select a ticket option. The optional immersive experience add-on must be selected together with a ticket.';
+        nextTick(() => {
+            const ticketSection = document.querySelector('[data-ticket-options]');
+            if (ticketSection && typeof ticketSection.scrollIntoView === 'function') {
+                ticketSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+        return;
+    }
     if (isFlexibleTier(form.price_tier) && isFlexibleAmountInvalid()) {
         return;
     }
@@ -896,6 +906,7 @@ const steps = [
                         </div>
 
                         <!-- Price Tier Selection -->
+                        <div data-ticket-options>
                         <p class="mb-2 mt-6 font-title text-xl font-bold text-primary-1">Choose your Ticket option</p>
                         <p class="font-body text-base leading-relaxed text-copy">
                             Participants are invited to select the tier that best reflects their organization's resources and available budgets. Participants whose organizations have the means are warmly encouraged
@@ -1093,6 +1104,7 @@ const steps = [
                             </label>
                         </div>
                         <p v-if="form.errors.price_tier" class="mt-1 text-base text-red-400">{{ form.errors.price_tier }}</p>
+                        </div>
 
                         <!-- (Moved into the selected Subsidised tier card above) -->
 
