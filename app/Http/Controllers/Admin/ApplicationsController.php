@@ -430,7 +430,7 @@ HTML;
         }
 
         if ($rawTier === 'flexible_hardcoded') {
-            return 'Flexible Supporter Price — Above USD 970';
+            return 'Flexible';
         }
 
         return (string) ($tierMap[$rawTier] ?? $rawTier);
