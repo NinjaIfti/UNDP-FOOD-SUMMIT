@@ -86,10 +86,11 @@ class DashTicketService
 
         try {
             $response = Http::timeout(15)
+                ->asJson()
                 ->withHeaders([
                     'X-API-Key' => $this->apiKey,
                     'Authorization' => 'Bearer ' . $this->apiKey,
-                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
                 ])
                 ->post($url, $payload);
 
@@ -150,10 +151,11 @@ class DashTicketService
 
         try {
             $response = Http::timeout(10)
+                ->asJson()
                 ->withHeaders([
                     'X-API-Key' => $this->apiKey,
                     'Authorization' => 'Bearer ' . $this->apiKey,
-                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
                 ])
                 ->get($url, ['email' => $normalizedEmail]);
 
@@ -201,7 +203,9 @@ class DashTicketService
         $uppercase = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         $lowercase = 'abcdefghjkmnpqrstuvwxyz';
         $digits = '23456789';
-        $special = '!@#$%&*';
+        // Use URL-safe special characters to avoid any accidental decoding issues
+        // in downstream systems while still meeting "special character" rules.
+        $special = '!@-_';
 
         $password = $uppercase[random_int(0, strlen($uppercase) - 1)]
             . $lowercase[random_int(0, strlen($lowercase) - 1)]
