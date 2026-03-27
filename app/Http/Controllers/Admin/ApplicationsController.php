@@ -425,6 +425,11 @@ HTML;
 
     protected function resolvePriceTierDisplay(string $storedName, string $rawTier, $tierMap): string
     {
+        $normalizedStoredName = strtolower(trim($storedName));
+        if ($normalizedStoredName === 'flexible_hardcoded') {
+            return 'Flexible';
+        }
+
         if ($storedName !== '') {
             return $storedName;
         }
