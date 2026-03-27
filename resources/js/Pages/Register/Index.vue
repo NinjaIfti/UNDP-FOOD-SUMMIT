@@ -1315,7 +1315,7 @@ const steps = [
                     <div v-if="submitErrorSummary || form.errors.form" class="rounded-lg border border-red-200 bg-red-50 px-4 py-3">
                         <p class="font-body text-base text-red-700">{{ submitErrorSummary || form.errors.form }}</p>
                     </div>
-                    <div class="flex flex-col items-center pt-2">
+                    <!-- <div class="flex flex-col items-center pt-2">
                         <button
                             type="submit"
                             :disabled="form.processing"
@@ -1326,7 +1326,7 @@ const steps = [
                         <p class="mt-3 text-center text-base text-copy">
                             By submitting, you agree that your information will be processed by the organizing team for event coordination purposes.
                         </p>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </section>
