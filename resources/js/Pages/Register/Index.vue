@@ -1095,8 +1095,8 @@ const steps = [
 
                         <!-- (Moved into the selected Subsidised tier card above) -->
 
-                        <!-- Field Visit Add-on -->
-                       <!-- <div class="mt-6">
+                        <!-- Optional Immersive Experience Add-on -->
+                        <div class="mt-6">
                             <label class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition" :class="form.field_visit ? 'border-primary-2 bg-primary-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                 <input
                                     type="checkbox"
@@ -1104,12 +1104,15 @@ const steps = [
                                     class="mt-1 h-4 w-4 accent-[#729430]"
                                 />
                                 <div>
-                                    <span class="font-body font-semibold text-primary-1">Field Visits on 31 August</span>
-                                    <span class="ml-2 font-body text-base font-bold text-primary-2">(+ additional cost)</span>
-                                    <p class="mt-0.5 text-base text-copy">Guided visits to organic farms in the Paro Valley, including farm-to-table lunch experience and hands-on workshops with local farmers. Exact pricing to be confirmed.</p>
+                                    <span class="font-body font-semibold text-primary-1">Optional Immersive Experience - 31 August, 2026</span>
+                                    <span class="ml-2 font-body text-base font-bold text-primary-2">(+ USD 95)</span>
+                                    <p class="mt-1 text-base text-copy">
+                                        On 31st August, step into Bhutan's living landscapes to connect with Bhutanese nature, people, spirituality and the philosophy of Gross National Happiness through immersive experiences exploring conscious food systems. Visit pioneering initiatives - from organic farms and traditional paddy fields to regenerative mountain hazelnut orchards and circular local markets - where agroecology, biodiversity, and community stewardship shape resilient food futures. Meet farmers, learn how food, culture, and ecology are deeply interwoven in everyday life, or visit the iconic Tiger's Nest Monastery along with other cultural heritage sites and places of significance that offer a window into Bhutan's rich history, traditions, and ways of life. Each experience integrates guided conscious practices - mindful walks, meditation in the fields, mindful eating and cooking, and reflections on farming rituals, water, and spiritual traditions - alongside gratitude circles and personal journey prompts to deepen connection and insight. The cost includes transportation, lunch, guided activities, and all on-site experience costs.
+                                    </p>
+                                    <p class="mt-2 font-body text-base font-semibold text-primary-1">Full-day immersive journey</p>
                                 </div>
                             </label>
-                        </div> -->
+                        </div>
 
                         <!-- Accessibility -->
                         <div class="mt-6">
