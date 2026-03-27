@@ -130,13 +130,6 @@ class ContactController extends Controller
         try {
             SummitRegistration::create($data);
 
-            $dashTicket = app(DashTicketService::class);
-            if ($dashTicket->isConfigured()) {
-                $dashPayload = $data;
-                $dashPayload['price_tier'] = $submittedPriceTier;
-                $dashTicket->registerUser($dashPayload);
-            }
-
             $subject = 'Thank You for Your Registration - Global Conscious Food Systems Summit Bhutan 2026';
             // Escape user input before injecting into email HTML.
             $username = htmlspecialchars((string) ($data['first_name'] ?? ''), ENT_QUOTES, 'UTF-8');

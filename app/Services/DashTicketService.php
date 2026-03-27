@@ -72,7 +72,7 @@ class DashTicketService
         $payload = [
             'email' => strtolower(trim($registration['email'] ?? '')),
             'name' => trim(($registration['first_name'] ?? '') . ' ' . ($registration['last_name'] ?? '')),
-            'password' => $this->generateSecurePassword(),
+            'password' => (string) ($registration['dashticket_password'] ?? $this->generateSecurePassword()),
             'tag' => $this->tag,
             'price' => (float) $price,
             'add_on' => (bool) $selectedImmersiveExperience,

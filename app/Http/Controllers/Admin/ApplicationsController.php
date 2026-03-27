@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SummitRegistration;
+use App\Services\DashTicketService;
 use App\Services\PackageService;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -226,6 +227,18 @@ class ApplicationsController extends Controller
                 'user_id' => $user->id,
             ]);
         });
+
+        $dashTicket = app(DashTicketService::class);
+        if ($dashTicket->isConfigured()) {
+            $dashPayload = $application->toArray();
+            $dashPayload['price_tier'] = (string) ($application->price_tier_raw ?? $application->price_tier ?? '');
+            $dashPayload['dashticket_password'] = $plainPassword;
+            $dashTicket->registerUser($dashPayload);
+        } else {
+            Log::warning('DashTicket: Not configured; skipping DashTicket registration on approval', [
+                'email' => $application->email ?? null,
+            ]);
+        }
 
         $safeName = htmlspecialchars(trim($application->first_name . ' ' . $application->last_name), ENT_QUOTES, 'UTF-8');
         if ($safeName === '') {
