@@ -26,7 +26,7 @@ class ApplicationsController extends Controller
             ->mapWithKeys(fn ($t) => [(string) ($t['id'] ?? '') => (string) ($t['name'] ?? '')]);
         $applications->getCollection()->transform(function ($app) use ($tierMap) {
             $raw = (string) ($app->price_tier_raw ?? $app->price_tier ?? '');
-            $app->price_tier_display = (string) ($app->price_tier_name ?: ($tierMap[$raw] ?? $raw));
+            $app->price_tier_display = $this->resolvePriceTierDisplay((string) ($app->price_tier_name ?? ''), $raw, $tierMap);
             return $app;
         });
 
@@ -161,7 +161,7 @@ class ApplicationsController extends Controller
 
         $rows = $query->get()->map(function ($app) use ($tierMap) {
             $raw = (string) ($app->price_tier_raw ?? $app->price_tier ?? '');
-            $priceTierDisplay = (string) ($app->price_tier_name ?: ($tierMap[$raw] ?? $raw));
+            $priceTierDisplay = $this->resolvePriceTierDisplay((string) ($app->price_tier_name ?? ''), $raw, $tierMap);
 
             return [
                 'first_name' => $app->first_name,
@@ -187,7 +187,7 @@ class ApplicationsController extends Controller
         $tierMap = collect(PackageService::getTiers())
             ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
         $tier = $tierMap->get($rawTier);
-        $application['price_tier_display'] = (string) (($application['price_tier_name'] ?? '') ?: (string) ($tier['name'] ?? $rawTier));
+        $application['price_tier_display'] = $this->resolvePriceTierDisplay((string) ($application['price_tier_name'] ?? ''), $rawTier, $tierMap);
         $tierPrice = $tier['price'] ?? null;
         if (!empty($application['flexible_support_amount'])) {
             $tierPrice = $application['flexible_support_amount'];
@@ -421,5 +421,18 @@ HTML;
         }
 
         return str_shuffle($password);
+    }
+
+    protected function resolvePriceTierDisplay(string $storedName, string $rawTier, $tierMap): string
+    {
+        if ($storedName !== '') {
+            return $storedName;
+        }
+
+        if ($rawTier === 'flexible_hardcoded') {
+            return 'Flexible Supporter Price — Above USD 970';
+        }
+
+        return (string) ($tierMap[$rawTier] ?? $rawTier);
     }
 }

@@ -38,7 +38,6 @@ class DashTicketService
         }
 
         $price = PackageService::getPriceForTier($registration['price_tier'] ?? null);
-        $immersiveExperienceAddonAmount = 95.0;
         $customFlexibleAmount = $registration['flexible_support_amount'] ?? null;
         $flexibleTierIds = ['flexible', 'flexible_any', 'flexible_hardcoded'];
         foreach (PackageService::getActiveTiers() as $tier) {
@@ -65,9 +64,6 @@ class DashTicketService
         }
 
         $selectedImmersiveExperience = filter_var($registration['field_visit'] ?? false, FILTER_VALIDATE_BOOLEAN);
-        if ($selectedImmersiveExperience) {
-            $price += $immersiveExperienceAddonAmount;
-        }
 
         $payload = [
             'email' => strtolower(trim($registration['email'] ?? '')),
