@@ -291,7 +291,7 @@ const iconMap = {
                         </div>
                         <div>
                             <h2 class="text-lg font-bold text-gray-900">Email Activity</h2>
-                            <p class="text-xs text-gray-500">Today's summary</p>
+                            <p class="text-xs text-gray-500">All time totals</p>
                         </div>
                     </div>
                     <div class="space-y-4">
@@ -300,16 +300,16 @@ const iconMap = {
                             <span class="text-lg font-bold text-[#2d5f3f]">{{ emailActivity.approval_sent ?? 0 }}</span>
                         </div>
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm text-gray-700">Emails opened</span>
-                            <span class="text-lg font-bold text-[#4a7c59]">{{ emailActivity.opened ?? 0 }}</span>
-                </div>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm text-gray-700">Payment links clicked</span>
-                            <span class="text-lg font-bold text-[#d4af37]">{{ emailActivity.payment_clicked ?? 0 }}</span>
+                            <span class="text-sm text-gray-700">Registration confirmations sent</span>
+                            <span class="text-lg font-bold text-[#4a7c59]">{{ emailActivity.confirmation_sent ?? 0 }}</span>
                         </div>
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm text-gray-700">Reminder emails sent</span>
-                            <span class="text-lg font-bold text-[#8b7355]">{{ emailActivity.reminder_sent ?? 0 }}</span>
+                            <span class="text-sm text-gray-700">Payment reminder emails sent</span>
+                            <span class="text-lg font-bold text-[#d4af37]">{{ emailActivity.reminder_sent ?? 0 }}</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="text-sm text-gray-700">Total emails sent</span>
+                            <span class="text-lg font-bold text-[#8b7355]">{{ emailActivity.total_sent ?? 0 }}</span>
                         </div>
                     </div>
                 </div>

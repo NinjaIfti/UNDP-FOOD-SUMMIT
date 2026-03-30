@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmailLog;
 use App\Models\SummitRegistration;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
@@ -350,6 +351,11 @@ HTML;
             Mail::html($html, function ($mail) use ($application, $subject) {
                 $mail->to($application->email)->subject($subject);
             });
+            EmailLog::create([
+                'type' => 'approval',
+                'recipient_email' => $application->email,
+                'summit_registration_id' => $application->id,
+            ]);
         } catch (\Throwable $mailException) {
             Log::warning('Application approval email failed', [
                 'email' => $application->email ?? null,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailLog;
 use App\Models\SummitRegistration;
 use App\Models\User;
 use App\Notifications\AdminResetPasswordNotification;
@@ -185,11 +186,15 @@ class AdminController extends Controller
         ];
 
         $registrationData = $this->buildRegistrationChartData();
+        $emailCounts = EmailLog::selectRaw('type, count(*) as total')
+            ->groupBy('type')
+            ->pluck('total', 'type');
+
         $emailActivity = [
-            'approval_sent' => 0,
-            'opened' => 0,
-            'payment_clicked' => 0,
-            'reminder_sent' => 0,
+            'approval_sent'      => (int) ($emailCounts['approval'] ?? 0),
+            'confirmation_sent'  => (int) ($emailCounts['registration'] ?? 0),
+            'reminder_sent'      => (int) ($emailCounts['reminder'] ?? 0),
+            'total_sent'         => (int) $emailCounts->sum(),
         ];
 
         $paidParticipants = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmailLog;
 use App\Models\SummitRegistration;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -141,8 +144,51 @@ class PaymentsController extends Controller
 
     public function resendEmail(SummitRegistration $summit_registration)
     {
-        return redirect()->route('admin.payments.index')
-            ->with('success', 'Payment confirmation email sent to ' . $summit_registration->email);
+        $reg = $summit_registration;
+        $paymentLink = config('services.dashticket.payment_link', '');
+        $name = trim($reg->first_name . ' ' . $reg->last_name);
+        $subject = 'Payment Reminder – Global Conscious Food Systems Summit';
+
+        $html = <<<HTML
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+    <h2 style="color: #2d5f3f; margin-bottom: 8px;">Payment Reminder</h2>
+    <p style="margin: 0 0 16px 0;">Dear {$name},</p>
+    <p style="margin: 0 0 16px 0;">
+        This is a friendly reminder that your application to the <strong>Global Conscious Food Systems Summit</strong>
+        has been approved. To secure your place, please complete your payment at the link below.
+    </p>
+    <div style="text-align: center; margin: 24px 0;">
+        <a href="{$paymentLink}" style="background-color: #2d5f3f; color: #ffffff; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
+            Complete Payment
+        </a>
+    </div>
+    <p style="margin: 16px 0 0 0; font-size: 13px; color: #555;">
+        If you have any questions, please contact us at <strong>cofsa@undp.org</strong>.
+    </p>
+    <p style="margin: 12px 0 0 0;">With warm regards,</p>
+    <p style="margin: 4px 0 0 0; font-weight: 700;">The Organizing Team of the Global Conscious Food Systems Summit</p>
+</div>
+HTML;
+
+        try {
+            Mail::html($html, function ($mail) use ($reg, $subject) {
+                $mail->to($reg->email)->subject($subject);
+            });
+            EmailLog::create([
+                'type' => 'reminder',
+                'recipient_email' => $reg->email,
+                'summit_registration_id' => $reg->id,
+            ]);
+            return redirect()->route('admin.payments.index')
+                ->with('success', 'Payment reminder email sent to ' . $reg->email);
+        } catch (\Throwable $e) {
+            Log::warning('Resend payment email failed', [
+                'email' => $reg->email,
+                'message' => $e->getMessage(),
+            ]);
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'Failed to send reminder email to ' . $reg->email);
+        }
     }
 
     public function syncFromDashTicket()

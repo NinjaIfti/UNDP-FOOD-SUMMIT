@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactSubmission;
+use App\Models\EmailLog;
 use App\Models\SummitRegistration;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
@@ -128,7 +129,7 @@ class ContactController extends Controller
         }
 
         try {
-            SummitRegistration::create($data);
+            $registration = SummitRegistration::create($data);
 
             $subject = 'Thank You for Your Registration - Global Conscious Food Systems Summit Bhutan 2026';
             // Escape user input before injecting into email HTML.
@@ -228,6 +229,11 @@ HTML;
                     $mail->to($data['email'])
                         ->subject($subject);
                 });
+                EmailLog::create([
+                    'type' => 'registration',
+                    'recipient_email' => $data['email'],
+                    'summit_registration_id' => $registration->id,
+                ]);
             } catch (\Throwable $mailException) {
                 Log::warning('Registration confirmation email failed', [
                     'email' => $data['email'] ?? null,
