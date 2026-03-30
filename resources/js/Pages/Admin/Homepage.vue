@@ -149,6 +149,33 @@ function moveSpeakerDown(index) {
     form.speakers = [...speakers];
 }
 
+// Move a speaker up/down among only the homepage-visible speakers
+function moveHomepageSpeakerUp(homepageSlot) {
+    const indices = form.speakers
+        .map((s, i) => ({ s, i }))
+        .filter(({ s }) => s.show_on_homepage !== false)
+        .map(({ i }) => i);
+    if (homepageSlot === 0) return;
+    const a = indices[homepageSlot - 1];
+    const b = indices[homepageSlot];
+    const speakers = [...form.speakers];
+    [speakers[a], speakers[b]] = [speakers[b], speakers[a]];
+    form.speakers = speakers;
+}
+
+function moveHomepageSpeakerDown(homepageSlot) {
+    const indices = form.speakers
+        .map((s, i) => ({ s, i }))
+        .filter(({ s }) => s.show_on_homepage !== false)
+        .map(({ i }) => i);
+    if (homepageSlot === indices.length - 1) return;
+    const a = indices[homepageSlot];
+    const b = indices[homepageSlot + 1];
+    const speakers = [...form.speakers];
+    [speakers[a], speakers[b]] = [speakers[b], speakers[a]];
+    form.speakers = speakers;
+}
+
 function addSlide() {
     form.hero_slides.push('/brand/img55.jpg');
     form.hero_slide_files[form.hero_slides.length - 1] = null;
@@ -703,6 +730,81 @@ const submit = () => {
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Featured Speakers</h3>
                     
                     <div class="space-y-6">
+
+                        <!-- Homepage display order panel -->
+                        <div class="rounded-xl border-2 border-accent-1/30 bg-accent-1/5 p-4">
+                            <div class="mb-3 flex items-center gap-2">
+                                <svg class="h-5 w-5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                <h4 class="font-title text-sm font-bold text-primary-1">Homepage Display Order</h4>
+                                <span class="font-body text-xs text-copy">— drag order shown on homepage &amp; speakers page</span>
+                            </div>
+
+                            <div
+                                v-if="form.speakers.filter(s => s.show_on_homepage !== false).length === 0"
+                                class="rounded-lg bg-white/60 py-4 text-center font-body text-sm text-copy"
+                            >
+                                No speakers are set to show on homepage. Enable "Show on homepage" on any speaker below.
+                            </div>
+
+                            <div v-else class="space-y-2">
+                                <div
+                                    v-for="(speaker, hIdx) in form.speakers.map((s, i) => ({ ...s, _i: i })).filter(s => s.show_on_homepage !== false)"
+                                    :key="speaker._i"
+                                    class="flex items-center gap-3 rounded-lg border border-white bg-white px-3 py-2 shadow-sm"
+                                >
+                                    <!-- position badge -->
+                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-1 font-title text-xs font-bold text-white">
+                                        {{ hIdx + 1 }}
+                                    </span>
+
+                                    <!-- avatar -->
+                                    <img
+                                        v-if="speaker.image"
+                                        :src="speaker.image"
+                                        class="h-8 w-8 shrink-0 rounded-full object-cover"
+                                    />
+                                    <div v-else class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 font-title text-xs font-bold text-gray-500">
+                                        {{ (speaker.name || '?')[0] }}
+                                    </div>
+
+                                    <!-- name + role -->
+                                    <div class="min-w-0 flex-1">
+                                        <p class="truncate font-title text-sm font-semibold text-primary-1">{{ speaker.name || '(unnamed)' }}</p>
+                                        <p class="truncate font-body text-xs text-copy">{{ speaker.role }}</p>
+                                    </div>
+
+                                    <!-- move buttons -->
+                                    <div class="flex shrink-0 items-center gap-0.5">
+                                        <button
+                                            type="button"
+                                            @click="moveHomepageSpeakerUp(hIdx)"
+                                            :disabled="hIdx === 0"
+                                            class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                            title="Move up"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="moveHomepageSpeakerDown(hIdx)"
+                                            :disabled="hIdx === form.speakers.filter(s => s.show_on_homepage !== false).length - 1"
+                                            class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                            title="Move down"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 font-body text-xs text-copy">Position #1 = first card on the homepage and speakers page. Save the page to apply changes.</p>
+                        </div>
+
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Section Title</label>
                             <input v-model="form.speakers_section_title" type="text" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" />
