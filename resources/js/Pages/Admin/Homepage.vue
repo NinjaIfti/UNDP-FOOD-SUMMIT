@@ -151,18 +151,6 @@ function moveSpeakerDown(index) {
 }
 
 // Move a speaker up/down among only the homepage-visible speakers
-function setHomepageSpeakerPosition(fromSlot, toSlot) {
-    if (fromSlot === toSlot) return;
-    const indices = form.speakers
-        .map((s, i) => ({ s, i }))
-        .filter(({ s }) => s.show_on_homepage !== false)
-        .map(({ i }) => i);
-    const a = indices[fromSlot];
-    const b = indices[toSlot];
-    const speakers = [...form.speakers];
-    [speakers[a], speakers[b]] = [speakers[b], speakers[a]];
-    form.speakers = speakers;
-}
 
 function addSlide() {
     form.hero_slides.push('/brand/img55.jpg');
@@ -718,64 +706,6 @@ const submit = () => {
                     <h3 class="mb-4 font-title text-lg font-bold text-primary-1">Featured Speakers</h3>
                     
                     <div class="space-y-6">
-
-                        <!-- Homepage display order panel -->
-                        <div class="rounded-xl border-2 border-accent-1/30 bg-accent-1/5 p-4">
-                            <div class="mb-3 flex items-center gap-2">
-                                <svg class="h-5 w-5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                                <h4 class="font-title text-sm font-bold text-primary-1">Homepage Display Order</h4>
-                            </div>
-
-                            <div
-                                v-if="form.speakers.filter(s => s.show_on_homepage !== false).length === 0"
-                                class="rounded-lg bg-white/60 py-4 text-center font-body text-sm text-copy"
-                            >
-                                No speakers are set to show on homepage. Enable "Show on homepage" on any speaker below.
-                            </div>
-
-                            <div v-else class="space-y-2">
-                                <div
-                                    v-for="(speaker, hIdx) in form.speakers.map((s, i) => ({ ...s, _i: i })).filter(s => s.show_on_homepage !== false)"
-                                    :key="speaker._uid"
-                                    class="flex items-center gap-3 rounded-lg border border-white bg-white px-3 py-2 shadow-sm"
-                                >
-                                    <!-- avatar -->
-                                    <img
-                                        v-if="speaker.image"
-                                        :src="speaker.image"
-                                        class="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-primary-1/20"
-                                    />
-                                    <div v-else class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 font-title text-xs font-bold text-gray-500">
-                                        {{ (speaker.name || '?')[0] }}
-                                    </div>
-
-                                    <!-- name + role -->
-                                    <div class="min-w-0 flex-1">
-                                        <p class="truncate font-title text-sm font-semibold text-primary-1">{{ speaker.name || '(unnamed)' }}</p>
-                                        <p class="truncate font-body text-xs text-copy">{{ speaker.role }}</p>
-                                    </div>
-
-                                    <!-- position dropdown -->
-                                    <select
-                                        :value="hIdx + 1"
-                                        @change="setHomepageSpeakerPosition(hIdx, Number($event.target.value) - 1)"
-                                        class="shrink-0 rounded-lg border border-gray-300 bg-white px-2 py-1.5 font-title text-sm font-bold text-primary-1 focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
-                                        title="Choose position"
-                                    >
-                                        <option
-                                            v-for="(s, n) in form.speakers.map((sp, i) => ({ ...sp, _i: i })).filter(sp => sp.show_on_homepage !== false)"
-                                            :key="n"
-                                            :value="n + 1"
-                                            :disabled="n === hIdx"
-                                        >
-                                            #{{ n + 1 }}{{ n === hIdx ? ' (current)' : ' — ' + (s.name || 'Unnamed') }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
 
                         <div>
                             <label class="block font-body text-sm font-medium text-ink">Section Title</label>
