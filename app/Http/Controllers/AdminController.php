@@ -302,6 +302,7 @@ class AdminController extends Controller
             'speakers.*.bio' => 'nullable|string',
             'speakers.*.details' => 'nullable|string',
             'speakers.*.show_on_homepage' => 'nullable|boolean',
+            'speakers.*.image' => 'nullable|string',
             'conscious_food_title' => 'nullable|string',
             'conscious_food_description' => 'nullable|string',
             'conscious_food_cofsa_text' => 'nullable|string',

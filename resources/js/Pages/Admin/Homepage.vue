@@ -136,18 +136,11 @@ const tabs = [
     // Events tab moved to Programme/Experience admin
 ];
 
-function moveSpeakerUp(index) {
-    if (index === 0) return;
-    const speakers = form.speakers;
-    [speakers[index - 1], speakers[index]] = [speakers[index], speakers[index - 1]];
-    form.speakers = [...speakers];
-}
-
-function moveSpeakerDown(index) {
-    if (index === form.speakers.length - 1) return;
-    const speakers = form.speakers;
-    [speakers[index + 1], speakers[index]] = [speakers[index], speakers[index + 1]];
-    form.speakers = [...speakers];
+function moveSpeakerUp(fromIndex, toIndex) {
+    if (fromIndex === toIndex) return;
+    const speakers = [...form.speakers];
+    [speakers[fromIndex], speakers[toIndex]] = [speakers[toIndex], speakers[fromIndex]];
+    form.speakers = speakers;
 }
 
 // Move a speaker up/down among only the homepage-visible speakers
@@ -724,29 +717,22 @@ const submit = () => {
                                     </span>
                                     <h4 class="font-title text-sm font-bold text-primary-1">{{ speaker.name || 'New Speaker' }}</h4>
                                 </div>
-                                <div class="flex items-center gap-1">
-                                    <button
-                                        type="button"
-                                        @click="moveSpeakerUp(index)"
-                                        :disabled="index === 0"
-                                        class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
-                                        title="Move up"
+                                <div class="flex items-center gap-2">
+                                    <select
+                                        :value="index + 1"
+                                        @change="moveSpeakerUp(index, Number($event.target.value) - 1)"
+                                        class="rounded-lg border border-gray-300 bg-white px-2 py-1.5 font-title text-sm font-bold text-primary-1 focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        title="Set position"
                                     >
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                        </svg>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        @click="moveSpeakerDown(index)"
-                                        :disabled="index === form.speakers.length - 1"
-                                        class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
-                                        title="Move down"
-                                    >
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
+                                        <option
+                                            v-for="n in form.speakers.length"
+                                            :key="n"
+                                            :value="n"
+                                            :disabled="n === index + 1"
+                                        >
+                                            #{{ n }}{{ n === index + 1 ? ' (current)' : ' — ' + (form.speakers[n - 1]?.name || 'Unnamed') }}
+                                        </option>
+                                    </select>
                                     <button
                                         type="button"
                                         @click="form.speakers.splice(index, 1)"
