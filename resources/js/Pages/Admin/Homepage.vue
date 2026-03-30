@@ -151,27 +151,14 @@ function moveSpeakerDown(index) {
 }
 
 // Move a speaker up/down among only the homepage-visible speakers
-function moveHomepageSpeakerUp(homepageSlot) {
+function setHomepageSpeakerPosition(fromSlot, toSlot) {
+    if (fromSlot === toSlot) return;
     const indices = form.speakers
         .map((s, i) => ({ s, i }))
         .filter(({ s }) => s.show_on_homepage !== false)
         .map(({ i }) => i);
-    if (homepageSlot === 0) return;
-    const a = indices[homepageSlot - 1];
-    const b = indices[homepageSlot];
-    const speakers = [...form.speakers];
-    [speakers[a], speakers[b]] = [speakers[b], speakers[a]];
-    form.speakers = speakers;
-}
-
-function moveHomepageSpeakerDown(homepageSlot) {
-    const indices = form.speakers
-        .map((s, i) => ({ s, i }))
-        .filter(({ s }) => s.show_on_homepage !== false)
-        .map(({ i }) => i);
-    if (homepageSlot === indices.length - 1) return;
-    const a = indices[homepageSlot];
-    const b = indices[homepageSlot + 1];
+    const a = indices[fromSlot];
+    const b = indices[toSlot];
     const speakers = [...form.speakers];
     [speakers[a], speakers[b]] = [speakers[b], speakers[a]];
     form.speakers = speakers;
@@ -739,7 +726,6 @@ const submit = () => {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                                 <h4 class="font-title text-sm font-bold text-primary-1">Homepage Display Order</h4>
-                                <span class="font-body text-xs text-copy">— drag order shown on homepage &amp; speakers page</span>
                             </div>
 
                             <div
@@ -755,18 +741,13 @@ const submit = () => {
                                     :key="speaker._uid"
                                     class="flex items-center gap-3 rounded-lg border border-white bg-white px-3 py-2 shadow-sm"
                                 >
-                                    <!-- position badge -->
-                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-1 font-title text-xs font-bold text-white">
-                                        {{ hIdx + 1 }}
-                                    </span>
-
                                     <!-- avatar -->
                                     <img
                                         v-if="speaker.image"
                                         :src="speaker.image"
-                                        class="h-8 w-8 shrink-0 rounded-full object-cover"
+                                        class="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-primary-1/20"
                                     />
-                                    <div v-else class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 font-title text-xs font-bold text-gray-500">
+                                    <div v-else class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 font-title text-xs font-bold text-gray-500">
                                         {{ (speaker.name || '?')[0] }}
                                     </div>
 
@@ -776,34 +757,24 @@ const submit = () => {
                                         <p class="truncate font-body text-xs text-copy">{{ speaker.role }}</p>
                                     </div>
 
-                                    <!-- move buttons -->
-                                    <div class="flex shrink-0 items-center gap-0.5">
-                                        <button
-                                            type="button"
-                                            @click="moveHomepageSpeakerUp(hIdx)"
-                                            :disabled="hIdx === 0"
-                                            class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
-                                            title="Move up"
+                                    <!-- position dropdown -->
+                                    <select
+                                        :value="hIdx + 1"
+                                        @change="setHomepageSpeakerPosition(hIdx, Number($event.target.value) - 1)"
+                                        class="shrink-0 rounded-lg border border-gray-300 bg-white px-2 py-1.5 font-title text-sm font-bold text-primary-1 focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                                        title="Choose position"
+                                    >
+                                        <option
+                                            v-for="(s, n) in form.speakers.map((sp, i) => ({ ...sp, _i: i })).filter(sp => sp.show_on_homepage !== false)"
+                                            :key="n"
+                                            :value="n + 1"
+                                            :disabled="n === hIdx"
                                         >
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                            </svg>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            @click="moveHomepageSpeakerDown(hIdx)"
-                                            :disabled="hIdx === form.speakers.filter(s => s.show_on_homepage !== false).length - 1"
-                                            class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
-                                            title="Move down"
-                                        >
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                            #{{ n + 1 }}{{ n === hIdx ? ' (current)' : ' — ' + (s.name || 'Unnamed') }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
-                            <p class="mt-3 font-body text-xs text-copy">Position #1 = first card on the homepage and speakers page. Save the page to apply changes.</p>
                         </div>
 
                         <div>
