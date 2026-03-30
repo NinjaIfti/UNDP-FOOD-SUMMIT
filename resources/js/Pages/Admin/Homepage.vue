@@ -135,6 +135,20 @@ const tabs = [
     // Events tab moved to Programme/Experience admin
 ];
 
+function moveSpeakerUp(index) {
+    if (index === 0) return;
+    const speakers = form.speakers;
+    [speakers[index - 1], speakers[index]] = [speakers[index], speakers[index - 1]];
+    form.speakers = [...speakers];
+}
+
+function moveSpeakerDown(index) {
+    if (index === form.speakers.length - 1) return;
+    const speakers = form.speakers;
+    [speakers[index + 1], speakers[index]] = [speakers[index], speakers[index + 1]];
+    form.speakers = [...speakers];
+}
+
 function addSlide() {
     form.hero_slides.push('/brand/img55.jpg');
     form.hero_slide_files[form.hero_slides.length - 1] = null;
@@ -700,14 +714,43 @@ const submit = () => {
 
                         <div v-for="(speaker, index) in form.speakers" :key="index" class="rounded-lg border border-gray-200 p-4">
                             <div class="mb-3 flex items-center justify-between">
-                                <h4 class="font-title text-sm font-bold text-primary-1">Speaker {{ index + 1 }}</h4>
-                                <button
-                                    type="button"
-                                    @click="form.speakers.splice(index, 1)"
-                                    class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
-                                >
-                                    Delete Speaker
-                                </button>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary-1 font-title text-xs font-bold text-white">
+                                        {{ index + 1 }}
+                                    </span>
+                                    <h4 class="font-title text-sm font-bold text-primary-1">{{ speaker.name || 'New Speaker' }}</h4>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        @click="moveSpeakerUp(index)"
+                                        :disabled="index === 0"
+                                        class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                        title="Move up"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="moveSpeakerDown(index)"
+                                        :disabled="index === form.speakers.length - 1"
+                                        class="rounded p-1 text-ink transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                        title="Move down"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="form.speakers.splice(index, 1)"
+                                        class="rounded-md bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                             <div class="space-y-3">
                                 <div class="grid grid-cols-2 gap-3">
