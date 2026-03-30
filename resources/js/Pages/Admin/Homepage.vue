@@ -96,8 +96,9 @@ const form = useForm({
         { name: 'Speaker Four', role: 'Youth & Movement Building', bio: 'Youth leader driving food systems transformation across communities.', image: '/brand/img31.jpg' },
         { name: 'Speaker Five', role: 'Food Systems', bio: 'Researcher focused on conscious and regenerative food systems.', image: '/brand/img32.jpg' },
         { name: 'Speaker Six', role: 'Sustainability', bio: 'Environmental strategist working on sustainable food supply chains.', image: '/brand/img33.jpg' },
-    ]).map(speaker => ({
+    ]).map((speaker, i) => ({
         ...speaker,
+        _uid: speaker._uid ?? `spk-${i}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
         details: speaker.details ?? '',
         show_on_homepage: speaker.show_on_homepage ?? true,
         imageFile: null,
@@ -751,7 +752,7 @@ const submit = () => {
                             <div v-else class="space-y-2">
                                 <div
                                     v-for="(speaker, hIdx) in form.speakers.map((s, i) => ({ ...s, _i: i })).filter(s => s.show_on_homepage !== false)"
-                                    :key="speaker._i"
+                                    :key="speaker._uid"
                                     class="flex items-center gap-3 rounded-lg border border-white bg-white px-3 py-2 shadow-sm"
                                 >
                                     <!-- position badge -->
@@ -814,7 +815,7 @@ const submit = () => {
                             <textarea v-model="form.speakers_section_subtitle" rows="3" class="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-2 font-body focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20" placeholder="Short description below the title on the speakers section"></textarea>
                         </div>
 
-                        <div v-for="(speaker, index) in form.speakers" :key="index" class="rounded-lg border border-gray-200 p-4">
+                        <div v-for="(speaker, index) in form.speakers" :key="speaker._uid" class="rounded-lg border border-gray-200 p-4">
                             <div class="mb-3 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary-1 font-title text-xs font-bold text-white">
@@ -943,7 +944,7 @@ const submit = () => {
 
                         <button
                             type="button"
-                            @click="form.speakers.push({ name: '', role: '', bio: '', details: '', image: '', imageFile: null, deleteImage: false })"
+                            @click="form.speakers.push({ _uid: `spk-new-${Date.now()}-${Math.random().toString(36).slice(2)}`, name: '', role: '', bio: '', details: '', image: '', show_on_homepage: true, imageFile: null, deleteImage: false })"
                             class="w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 font-title text-sm font-semibold text-gray-600 transition hover:border-accent-1 hover:bg-accent-1/5 hover:text-accent-1"
                         >
                             + Add New Speaker
