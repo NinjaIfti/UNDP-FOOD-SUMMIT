@@ -10,6 +10,7 @@ import OutcomesSection from '@/Components/Home/OutcomesSection.vue';
 import FeaturedSpeakersSection from '@/Components/Home/FeaturedSpeakersSection.vue';
 import WhyBhutanSection from '@/Components/Home/WhyBhutanSection.vue';
 import CallToActionsSection from '@/Components/Home/CallToActionsSection.vue';
+import WhyJoinSummit from '@/Components/Home/WhyJoinSummit.vue';
 
 defineProps({
     settings: Object,
@@ -21,6 +22,7 @@ defineProps({
     <EventLayout>
         <HeroSection :settings="settings" />
         <SummitIntroSection :settings="settings" />
+	<!--	<WhyJoinSummit :settings="settings" /> -->
         <CallToActionsSection :settings="settings" class="-mt-24 sm:-mt-26" />
         <VideosSection :settings="settings" />
         <FeaturedSpeakersSection :settings="settings" />

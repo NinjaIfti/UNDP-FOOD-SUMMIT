@@ -1,0 +1,136 @@
+<script setup>
+import { computed } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import SectionReveal from './SectionReveal.vue';
+
+const props = defineProps({
+    settings: Object,
+});
+
+const actions = computed(() => props.settings?.cta_actions || [
+    {
+        title: 'Register Here!',
+        desc: 'Secure your spot at the first-ever Global Conscious Food Systems Summit in Bhutan.',
+        href: '/register-summit',
+        cta: 'Register Now',
+        icon: 'ticket',
+        external: false,
+    }
+
+<template>
+  <section class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-16 sm:pt-10 sm:pb-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- main card: white background, rounded, shadow -->
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="flex flex-col md:flex-row">
+          
+          <!-- LEFT: photo side -->
+          <div class="md:w-2/5 flex flex-col bg-stone-100">
+            <div class="relative overflow-hidden group h-64 md:h-auto md:min-h-[380px] flex-1">
+              <img 
+                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                alt="Listening to the Land Day 2026 - Oxford Real Farming Conference"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              >
+            </div>
+            <!-- photo credit -->
+            <div class="bg-black/70 backdrop-blur-sm text-amber-50/90 py-1.5 px-4 text-center text-[0.7rem] font-medium border-t border-white/15">
+              <i class="fas fa-camera mr-1 text-amber-300/80 text-[0.65rem]"></i>
+              Photo Credit: <span class="text-amber-200 font-semibold">High Warwick</span>, at Listening to the Land Day 2026 by <span class="font-semibold text-white/90">Oxford Real Farming Conference (ORFC)</span>
+            </div>
+          </div>
+          
+          <!-- RIGHT: text side -->
+          <div class="md:w-3/5 p-5 sm:p-6 bg-white flex flex-col justify-center">
+            
+            <!-- badge -->
+            <div class="inline-flex items-center gap-1.5 bg-amber-50 text-green-800 text-[0.7rem] font-semibold px-3 py-1 rounded-full border border-green-200/60 w-fit mb-3">
+              <i class="fas fa-leaf text-green-700 text-[0.65rem]"></i>
+              <span>ORFC · GLOBAL SUMMIT 2026</span>
+            </div>
+            
+            <!-- main title -->
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-green-800 to-emerald-600 bg-clip-text text-transparent mb-1.5">
+              Why join the Summit?
+            </h1>
+            
+            <!-- subtitle -->
+            <div class="border-l-3 border-green-500 pl-3 text-gray-800 text-base sm:text-lg font-medium leading-snug mb-4">
+              Become a conscious food systems leader,<br> able to integrate this agenda into your work
+            </div>
+            
+            <!-- bullet points -->
+            <ul class="space-y-3 mt-0 mb-4">
+              <li class="flex gap-2.5 items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center mt-0.5">
+                  <i class="fas fa-seedling text-xs"></i>
+                </div>
+                <span class="text-gray-800 text-sm sm:text-[0.9rem] leading-relaxed">
+                  <strong class="font-semibold">Nurture your inspiration and confidence</strong> to step up as a conscious food systems leader
+                </span>
+              </li>
+              <li class="flex gap-2.5 items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center mt-0.5">
+                  <i class="fas fa-chalkboard-user text-xs"></i>
+                </div>
+                <span class="text-gray-800 text-sm sm:text-[0.9rem] leading-relaxed">
+                  <strong class="font-semibold">Learn from existing examples</strong> how to integrate this agenda into your work
+                </span>
+              </li>
+              <li class="flex gap-2.5 items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center mt-0.5">
+                  <i class="fas fa-globe text-xs"></i>
+                </div>
+                <span class="text-gray-800 text-sm sm:text-[0.9rem] leading-relaxed">
+                  <strong class="font-semibold">Connect with a global network</strong> and build collaborations
+                </span>
+              </li>
+              <li class="flex gap-2.5 items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center mt-0.5">
+                  <i class="fas fa-mountain-sun text-xs"></i>
+                </div>
+                <span class="text-gray-800 text-sm sm:text-[0.9rem] leading-relaxed">
+                  <strong class="font-semibold">Be part of this historical gathering</strong> in a unique setting
+                </span>
+              </li>
+            </ul>
+            
+            <!-- highlight block -->
+            <div class="bg-amber-50/60 border-l-3 border-amber-500 rounded-md p-3 mb-4 flex items-start gap-2">
+              <i class="fas fa-calendar-alt text-amber-600 mt-0.5 text-sm"></i>
+              <div class="text-xs sm:text-sm text-stone-800 leading-tight">
+                <span class="font-semibold">Roots run deep.</span> Join changemakers, farmers, and pioneers at the intersection of land, food & leadership — <strong class="text-green-800">Oxford Real Farming Conference 2026</strong>
+              </div>
+            </div>
+            
+            <!-- CTA button -->
+            <a href="#" class="inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold text-sm py-2 px-5 rounded-full shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 w-fit group">
+              <span>Reserve your place</span>
+              <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+            </a>
+            
+            <!-- footer -->
+            <div class="mt-5 pt-3 border-t border-gray-200 flex flex-wrap gap-x-5 gap-y-1 text-[0.65rem] text-gray-500">
+              <span><i class="far fa-calendar-alt mr-1 text-gray-400 text-[0.6rem]"></i> 4–6 Nov 2026 · Oxford & online</span>
+              <span><i class="fas fa-map-marker-alt mr-1 text-gray-400 text-[0.6rem]"></i> Unique farm & cultural setting</span>
+              <span><i class="fas fa-users mr-1 text-gray-400 text-[0.6rem]"></i> #ConsciousFoodLeader</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  name: 'SummitSection'
+}
+</script>
+
+<style scoped>
+/* optional: border-left width utility if not in Tailwind config */
+.border-l-3 {
+  border-left-width: 3px;
+}
+</style>
