@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SummitRegistration;
+use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -142,6 +143,53 @@ class PaymentsController extends Controller
     {
         return redirect()->route('admin.payments.index')
             ->with('success', 'Payment confirmation email sent to ' . $summit_registration->email);
+    }
+
+    public function syncFromDashTicket()
+    {
+        $dashTicket = app(DashTicketService::class);
+
+        if (! $dashTicket->isConfigured()) {
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'DashTicket API key is not configured.');
+        }
+
+        $approved = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->get();
+        $paymentData = $this->getAllPaymentData();
+
+        $updatedCount = 0;
+
+        foreach ($approved as $registration) {
+            $current = $paymentData[$registration->id] ?? ['status' => 'pending'];
+
+            // Only check DashTicket for participants not already marked paid/refunded
+            if (in_array($current['status'] ?? 'pending', ['paid', 'refunded'], true)) {
+                continue;
+            }
+
+            $status = $dashTicket->getTicketStatus($registration->email);
+
+            if ($status === null) {
+                continue;
+            }
+
+            if ($status['ticket_purchased'] === true) {
+                $paymentData[$registration->id] = array_merge($current, [
+                    'status' => 'paid',
+                    'synced_from_dashticket' => true,
+                    'synced_at' => now()->toISOString(),
+                ]);
+                $updatedCount++;
+            }
+        }
+
+        Storage::put('admin/payments.json', json_encode($paymentData, JSON_PRETTY_PRINT));
+
+        $message = $updatedCount > 0
+            ? "Sync complete. {$updatedCount} participant(s) marked as paid from DashTicket."
+            : 'Sync complete. No new paid tickets found.';
+
+        return redirect()->route('admin.payments.index')->with('success', $message);
     }
 
     public function export(Request $request)

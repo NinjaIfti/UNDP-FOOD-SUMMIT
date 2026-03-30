@@ -23,6 +23,7 @@ const paymentFilter = ref('all');
 const viewModalOpen = ref(false);
 const addModalOpen = ref(false);
 const selectedParticipant = ref(null);
+const syncing = ref(false);
 
 const paymentStatusColors = {
     paid: 'bg-primary-2 text-white',
@@ -91,6 +92,23 @@ const handleAddParticipant = () => {
     });
 };
 
+const syncDashTicket = () => {
+    syncing.value = true;
+    router.post(route('admin.payments.sync-dashticket'), {}, {
+        preserveScroll: true,
+        onFinish: () => {
+            syncing.value = false;
+        },
+    });
+};
+
+const updateStatus = (participant, status) => {
+    router.put(route('admin.payments.update-status', participant.id), {
+        payment_status: status,
+        payment_amount: participant.payment_amount ?? null,
+    }, { preserveScroll: true });
+};
+
 const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -112,6 +130,22 @@ const formatDate = (dateString) => {
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-2">
+                    <button
+                        type="button"
+                        @click="syncDashTicket"
+                        :disabled="syncing"
+                        class="inline-flex items-center gap-2 rounded-lg border border-primary-2 px-4 py-2 font-body text-sm font-medium text-primary-2 transition-colors hover:bg-primary-2/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <svg class="h-4 w-4" :class="{ 'animate-spin': syncing }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                            />
+                        </svg>
+                        {{ syncing ? 'Syncing...' : 'Sync from DashTicket' }}
+                    </button>
                     <button
                         type="button"
                         @click="exportParticipants"
@@ -292,6 +326,28 @@ const formatDate = (dateString) => {
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3">
                                     <div class="flex items-center gap-1">
+                                        <button
+                                            v-if="participant.payment_status !== 'paid'"
+                                            type="button"
+                                            @click="updateStatus(participant, 'paid')"
+                                            class="rounded p-1.5 text-primary-2 transition-colors hover:bg-primary-2/10"
+                                            title="Mark as Paid"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            v-if="participant.payment_status === 'paid'"
+                                            type="button"
+                                            @click="updateStatus(participant, 'pending')"
+                                            class="rounded p-1.5 text-accent-2 transition-colors hover:bg-accent-2/10"
+                                            title="Mark as Pending"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
                                         <button
                                             type="button"
                                             @click="resendApprovalEmail(participant)"
