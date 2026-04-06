@@ -33,8 +33,16 @@ class PaymentsController extends Controller
         $participants = $query->paginate(20)->withQueryString();
         $paymentData = $this->getAllPaymentData();
 
-        $participants->getCollection()->transform(function ($registration) use ($paymentData) {
+        $tierMap = collect(PackageService::getTiers())
+            ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
+
+        $participants->getCollection()->transform(function ($registration) use ($paymentData, $tierMap) {
             $data = $paymentData[$registration->id] ?? ['status' => 'pending', 'amount' => null];
+            $rawTier = (string) ($registration->price_tier_raw ?? $registration->price_tier ?? '');
+            $tier = $tierMap->get($rawTier);
+            $tierName = $registration->price_tier_name
+                ?? ($tier['name'] ?? null)
+                ?? $registration->price_tier;
             return [
                 'id' => $registration->id,
                 'first_name' => $registration->first_name,
@@ -42,7 +50,7 @@ class PaymentsController extends Controller
                 'email' => $registration->email,
                 'organization' => $registration->organization,
                 'country' => $registration->country,
-                'price_tier' => $registration->price_tier,
+                'price_tier' => $tierName,
                 'field_visit' => $registration->field_visit,
                 'payment_status' => $data['status'] ?? 'pending',
                 'payment_amount' => $data['amount'] ?? null,

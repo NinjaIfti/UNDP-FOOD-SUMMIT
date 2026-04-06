@@ -318,7 +318,7 @@ const formatDate = (dateString) => {
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 font-body text-sm text-primary-1">
                                     <div>
-                                        {{ participant.price_tier?.replace('tier', 'Tier ') }}
+                                        {{ participant.price_tier }}
                                     </div>
                                     <div v-if="participant.field_visit" class="font-body text-xs text-ink">
                                         + Field Visit
@@ -471,7 +471,7 @@ const formatDate = (dateString) => {
                         <div class="flex items-center gap-4">
                             <div class="font-body font-medium text-primary-1">Package:</div>
                             <div class="font-body text-primary-1">
-                                {{ selectedParticipant.price_tier?.replace('tier', 'Tier ') }}
+                                {{ selectedParticipant.price_tier }}
                                 <div v-if="selectedParticipant.field_visit" class="font-body text-xs text-ink">
                                     + Field Visit
                                 </div>
