@@ -106,22 +106,41 @@ class ApplicationsController extends Controller
 
             fputcsv($handle, [
                 'ID',
-                'First name',
-                'Last name',
+                'First Name',
+                'Last Name',
                 'Email',
                 'Phone',
                 'Nationality',
-                'Country of residence',
+                'Country of Residence',
                 'Organization',
-                'Job title',
-                'Price tier',
-                'Optional immersive experience (add-on)',
+                'Organization Type',
+                'Organization Type (Other)',
+                'Organization Size',
+                'Job Title',
+                'Website',
+                'Price Tier',
+                'Flexible Support Amount',
+                'Subsidized Price Justification',
+                'Immersive Experience (Add-on)',
+                'Participation Budget Support',
+                'Passport Number',
+                'Passport Expiry',
+                'Arrival Date',
+                'Departure Date',
+                'Dietary Requirements',
+                'Dietary (Other)',
+                'Accessibility Needed',
+                'Accessibility Details',
+                'Heard From',
+                'Heard From (Other)',
+                'CoFSA Member',
+                'CoFSA Newsletter',
+                'Emergency Contact Name',
+                'Emergency Contact Phone',
+                'Emergency Contact Email',
+                'Emergency Contact Relation',
                 'Status',
-                'Arrival date',
-                'Departure date',
-                'Heard from',
-                'Heard from other',
-                'Created at',
+                'Submitted At',
             ]);
 
             $query->chunk(200, function ($rows) use ($handle) {
@@ -135,14 +154,33 @@ class ApplicationsController extends Controller
                         $app->country,
                         $app->country_of_residence,
                         $app->organization,
+                        $app->organization_type,
+                        $app->organization_type_other,
+                        $app->organization_size,
                         $app->job_title,
+                        $app->website,
                         $app->price_tier,
+                        $app->flexible_support_amount,
+                        $app->subsidized_price_justification,
                         $app->field_visit ? 'Yes' : 'No',
-                        $app->status,
+                        $app->participation_budget_support,
+                        $app->passport_number,
+                        optional($app->passport_expiry)->format('Y-m-d'),
                         optional($app->arrival_date)->format('Y-m-d'),
                         optional($app->departure_date)->format('Y-m-d'),
-                        is_array($app->heard_from) ? implode('; ', $app->heard_from) : '',
+                        $app->dietary,
+                        $app->dietary_other,
+                        $app->accessibility_needed ? 'Yes' : 'No',
+                        $app->accessibility_details,
+                        is_array($app->heard_from) ? implode('; ', $app->heard_from) : ($app->heard_from ?? ''),
                         $app->heard_from_other,
+                        $app->cofsa_member ? 'Yes' : 'No',
+                        $app->cofsa_newsletter ? 'Yes' : 'No',
+                        $app->emergency_name,
+                        $app->emergency_phone,
+                        $app->emergency_email,
+                        $app->emergency_relation,
+                        $app->status,
                         $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
                     ]);
                 }
@@ -165,16 +203,42 @@ class ApplicationsController extends Controller
             $priceTierDisplay = $this->resolvePriceTierDisplay((string) ($app->price_tier_name ?? ''), $raw, $tierMap);
 
             return [
-                'first_name' => $app->first_name,
-                'last_name' => $app->last_name,
-                'email' => $app->email,
-                'country' => $app->country,
-                'country_of_residence' => $app->country_of_residence,
-                'organization' => $app->organization,
-                'price_tier' => $priceTierDisplay,
-                'field_visit' => (bool) $app->field_visit,
-                'status' => $app->status,
-                'created_at' => $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
+                'id'                             => $app->id,
+                'first_name'                     => $app->first_name,
+                'last_name'                      => $app->last_name,
+                'email'                          => $app->email,
+                'phone'                          => $app->phone,
+                'country'                        => $app->country,
+                'country_of_residence'           => $app->country_of_residence,
+                'organization'                   => $app->organization,
+                'organization_type'              => $app->organization_type,
+                'organization_type_other'        => $app->organization_type_other,
+                'organization_size'              => $app->organization_size,
+                'job_title'                      => $app->job_title,
+                'website'                        => $app->website,
+                'price_tier'                     => $priceTierDisplay,
+                'flexible_support_amount'        => $app->flexible_support_amount,
+                'subsidized_price_justification' => $app->subsidized_price_justification,
+                'field_visit'                    => (bool) $app->field_visit,
+                'participation_budget_support'   => $app->participation_budget_support,
+                'passport_number'                => $app->passport_number,
+                'passport_expiry'                => $app->passport_expiry ? $app->passport_expiry->format('Y-m-d') : '',
+                'arrival_date'                   => $app->arrival_date ? $app->arrival_date->format('Y-m-d') : '',
+                'departure_date'                 => $app->departure_date ? $app->departure_date->format('Y-m-d') : '',
+                'dietary'                        => $app->dietary,
+                'dietary_other'                  => $app->dietary_other,
+                'accessibility_needed'           => (bool) $app->accessibility_needed,
+                'accessibility_details'          => $app->accessibility_details,
+                'heard_from'                     => is_array($app->heard_from) ? implode('; ', $app->heard_from) : ($app->heard_from ?? ''),
+                'heard_from_other'               => $app->heard_from_other,
+                'cofsa_member'                   => (bool) $app->cofsa_member,
+                'cofsa_newsletter'               => (bool) $app->cofsa_newsletter,
+                'emergency_name'                 => $app->emergency_name,
+                'emergency_phone'                => $app->emergency_phone,
+                'emergency_email'                => $app->emergency_email,
+                'emergency_relation'             => $app->emergency_relation,
+                'status'                         => $app->status,
+                'created_at'                     => $app->created_at ? $app->created_at->format('Y-m-d H:i:s') : '',
             ];
         })->values();
 
@@ -200,7 +264,35 @@ class ApplicationsController extends Controller
 
         return Inertia::render('Admin/Applications/Show', [
             'application' => $application,
+            'packages' => PackageService::getActiveTiers(),
         ]);
+    }
+
+    public function updatePrice(Request $request, SummitRegistration $summit_registration)
+    {
+        if ($summit_registration->status === SummitRegistration::STATUS_APPROVED) {
+            return back()->with('error', 'Cannot change price of an already approved application.');
+        }
+
+        $validated = $request->validate([
+            'price_tier_raw'       => 'nullable|string|max:100',
+            'admin_override_price' => 'nullable|numeric|min:0',
+        ]);
+
+        $tierMap = collect(PackageService::getTiers())
+            ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
+
+        $tierRaw = $validated['price_tier_raw'] ?? $summit_registration->price_tier_raw ?? $summit_registration->price_tier;
+        $tier = $tierMap->get((string) $tierRaw);
+
+        $summit_registration->update([
+            'price_tier_raw'       => $tierRaw,
+            'price_tier'           => $tierRaw,
+            'price_tier_name'      => $tier['name'] ?? $summit_registration->price_tier_name,
+            'admin_override_price' => $validated['admin_override_price'] ?? null,
+        ]);
+
+        return back()->with('success', 'Price updated successfully.');
     }
 
     public function approve(SummitRegistration $summit_registration)
@@ -234,9 +326,13 @@ class ApplicationsController extends Controller
 
         $dashTicket = app(DashTicketService::class);
         if ($dashTicket->isConfigured()) {
-            $dashPayload = $application->toArray();
+            $dashPayload = $application->fresh()->toArray();
             $dashPayload['price_tier'] = (string) ($application->price_tier_raw ?? $application->price_tier ?? '');
             $dashPayload['dashticket_password'] = $plainPassword;
+            // Admin-set price override takes precedence over tier-based price
+            if (!empty($application->admin_override_price)) {
+                $dashPayload['admin_override_price'] = (float) $application->admin_override_price;
+            }
             $dashTicket->registerUser($dashPayload);
         } else {
             Log::warning('DashTicket: Not configured; skipping DashTicket registration on approval', [

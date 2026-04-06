@@ -1,13 +1,38 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
-defineProps({
+const props = defineProps({
     application: Object,
+    packages: { type: Array, default: () => [] },
 });
 
+const priceForm = useForm({
+    price_tier_raw: props.application?.price_tier_raw ?? props.application?.price_tier ?? '',
+    admin_override_price: props.application?.admin_override_price ?? '',
+});
+
+const selectedTierPrice = computed(() => {
+    const pkg = props.packages.find(p => String(p.id) === String(priceForm.price_tier_raw));
+    return pkg ? Number(pkg.price) : null;
+});
+
+const effectivePrice = computed(() => {
+    if (priceForm.admin_override_price !== '' && priceForm.admin_override_price !== null) {
+        return Number(priceForm.admin_override_price);
+    }
+    return selectedTierPrice.value;
+});
+
+function savePrice() {
+    priceForm.patch(route('admin.applications.update-price', props.application.id), {
+        preserveScroll: true,
+    });
+}
+
 function approve(id) {
-    if (confirm('Approve this application? A user account will be created and a password reset link will be sent to the applicant.')) {
+    if (confirm('Approve this application? A user account will be created and an approval email with payment link will be sent to the applicant.')) {
         router.post(route('admin.applications.approve', id));
     }
 }
@@ -122,11 +147,84 @@ const statusBadgeClass = (status) => {
                     </dl>
                 </div>
 
+                <!-- Admin price edit — only for pending / waitlisted -->
+                <div
+                    v-if="application.status === 'pending' || application.status === 'waitlisted'"
+                    class="rounded-xl border-2 border-primary-2/30 bg-primary-2/5 p-6 shadow-sm"
+                >
+                    <div class="mb-4 flex items-center gap-2">
+                        <svg class="h-5 w-5 text-primary-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <h2 class="font-title text-lg font-semibold text-primary-1">Admin Price Override</h2>
+                    </div>
+
+                    <div v-if="$page.props.flash?.success" class="mb-3 rounded-lg bg-green-50 p-3">
+                        <p class="font-body text-sm text-green-800">{{ $page.props.flash.success }}</p>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">Package Tier</label>
+                            <select
+                                v-model="priceForm.price_tier_raw"
+                                class="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-body text-sm focus:border-primary-2 focus:outline-none focus:ring-2 focus:ring-primary-2/20"
+                            >
+                                <option value="">— Keep current —</option>
+                                <option v-for="pkg in packages" :key="pkg.id" :value="String(pkg.id)">
+                                    {{ pkg.name }} — USD {{ Number(pkg.price).toLocaleString() }}
+                                </option>
+                            </select>
+                            <p v-if="selectedTierPrice !== null" class="mt-1 font-body text-xs text-copy">
+                                Tier base price: USD {{ Number(selectedTierPrice).toLocaleString() }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block font-body text-sm font-medium text-ink">
+                                Custom Price Override (USD)
+                            </label>
+                            <input
+                                v-model="priceForm.admin_override_price"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="Leave blank to use tier price"
+                                class="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-body text-sm focus:border-primary-2 focus:outline-none focus:ring-2 focus:ring-primary-2/20"
+                            />
+                            <p class="mt-1 font-body text-xs text-copy">Overrides the tier price when set. Used when creating the user in DashTicket on approval.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-between">
+                        <div v-if="effectivePrice !== null" class="font-body text-sm font-semibold text-primary-1">
+                            Price sent to DashTicket on approval:
+                            <span class="text-primary-2">USD {{ Number(effectivePrice).toLocaleString() }}</span>
+                        </div>
+                        <div v-else class="font-body text-sm text-copy">
+                            No price set — DashTicket will use the default tier price.
+                        </div>
+                        <button
+                            type="button"
+                            :disabled="priceForm.processing"
+                            @click="savePrice"
+                            class="inline-flex items-center gap-2 rounded-lg bg-primary-2 px-4 py-2 font-body text-sm font-semibold text-white transition hover:bg-primary-2/90 disabled:opacity-50"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Save Price
+                        </button>
+                    </div>
+                    <p v-if="priceForm.errors.admin_override_price" class="mt-2 font-body text-xs text-red-600">{{ priceForm.errors.admin_override_price }}</p>
+                </div>
+
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h2 class="font-title text-lg font-semibold text-primary-1">Participation</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
                         <div><dt class="font-body text-xs text-gray-500">Price Tier</dt><dd class="font-body text-ink">{{ application.price_tier_display || application.price_tier_name || application.price_tier }}<span v-if="application.price_tier_amount !== null"> — USD {{ Number(application.price_tier_amount).toLocaleString() }}</span></dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Selected Ticket ID</dt><dd class="font-body text-ink">{{ application.price_tier_raw || application.price_tier || '-' }}</dd></div>
+                        <div v-if="application.admin_override_price"><dt class="font-body text-xs text-gray-500">Admin Price Override</dt><dd class="font-body font-semibold text-primary-2">USD {{ Number(application.admin_override_price).toLocaleString() }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Ticket Confirmation</dt><dd class="font-body text-ink">{{ application.confirm_tier ? 'Agreed' : 'Not agreed' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Flexible Amount (USD)</dt><dd class="font-body text-ink">{{ application.flexible_support_amount || '-' }}</dd></div>
                         <div class="sm:col-span-2"><dt class="font-body text-xs text-gray-500">Subsidised Justification</dt><dd class="font-body text-ink whitespace-pre-line">{{ application.subsidized_price_justification || '-' }}</dd></div>

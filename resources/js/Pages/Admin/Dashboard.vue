@@ -73,32 +73,49 @@ function formatDate(dateStr) {
     return dateStr;
 }
 
-function downloadCSV() {
-    const headers = [
-        'Participant',
-        'Email',
-        'Organization',
-        'Country',
-        'Package',
-        'Field Visit',
-        'Amount',
-        'Payment Status',
-        'Payment Date',
+const allHeaders = [
+    'First Name', 'Last Name', 'Email', 'Phone',
+    'Nationality', 'Country of Residence',
+    'Organization', 'Organization Type', 'Organization Type (Other)', 'Organization Size',
+    'Job Title', 'Website',
+    'Package', 'Flexible Support Amount', 'Immersive Experience (Add-on)',
+    'Participation Budget Support',
+    'Passport Number', 'Passport Expiry',
+    'Arrival Date', 'Departure Date',
+    'Dietary Requirements', 'Dietary (Other)',
+    'Accessibility Needed', 'Accessibility Details',
+    'Heard From', 'Heard From (Other)',
+    'CoFSA Member', 'CoFSA Newsletter',
+    'Emergency Name', 'Emergency Phone', 'Emergency Email', 'Emergency Relation',
+    'Payment Status', 'Payment Amount', 'Payment Date',
+    'Application Date',
+];
+
+function buildRow(p) {
+    return [
+        p.first_name, p.last_name, p.email, p.phone || '',
+        p.country || '', p.country_of_residence || '',
+        p.organization || '', p.organization_type || '', p.organization_type_other || '', p.organization_size || '',
+        p.job_title || '', p.website || '',
+        (p.price_tier || '').replace('tier', 'Tier '), p.flexible_support_amount || '', p.field_visit ? 'Yes' : 'No',
+        p.participation_budget_support || '',
+        p.passport_number || '', p.passport_expiry || '',
+        p.arrival_date || '', p.departure_date || '',
+        p.dietary || '', p.dietary_other || '',
+        p.accessibility_needed ? 'Yes' : 'No', p.accessibility_details || '',
+        p.heard_from || '', p.heard_from_other || '',
+        p.cofsa_member ? 'Yes' : 'No', p.cofsa_newsletter ? 'Yes' : 'No',
+        p.emergency_name || '', p.emergency_phone || '', p.emergency_email || '', p.emergency_relation || '',
+        p.payment_status || 'Paid', p.payment_amount ? `$${p.payment_amount}` : '', p.payment_date || '',
+        p.created_at || '',
     ];
-    const rows = filteredParticipants.value.map((p) => [
-        `${p.first_name} ${p.last_name}`,
-        p.email,
-        p.organization,
-        p.country,
-        (p.price_tier || '').replace('tier', 'Tier '),
-        p.field_visit ? 'Yes' : 'No',
-        p.payment_amount ? `$${p.payment_amount}` : '',
-        'Paid',
-        p.payment_date || '',
-    ]);
+}
+
+function downloadCSV() {
+    const rows = filteredParticipants.value.map(buildRow);
     const csvContent = [
-        headers.join(','),
-        ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
+        allHeaders.join(','),
+        ...rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')),
     ].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -114,21 +131,11 @@ function downloadPDF() {
     doc.text('GCFSS 2026 - Paid Ticket Purchases', 14, 15);
     doc.setFontSize(10);
     doc.text(`Generated on: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 14, 22);
-    const tableData = filteredParticipants.value.map((p) => [
-        `${p.first_name} ${p.last_name}`,
-        p.email,
-        p.organization,
-        p.country,
-        (p.price_tier || '').replace('tier', 'Tier '),
-        p.field_visit ? 'Yes' : 'No',
-        p.payment_amount ? `$${p.payment_amount}` : '',
-        p.payment_date || '',
-    ]);
     autoTable(doc, {
-        head: [['Participant', 'Email', 'Organization', 'Country', 'Package', 'Field Visit', 'Amount', 'Payment Date']],
-        body: tableData,
+        head: [allHeaders],
+        body: filteredParticipants.value.map(buildRow),
         startY: 28,
-        styles: { fontSize: 8 },
+        styles: { fontSize: 6 },
         headStyles: { fillColor: [45, 95, 63], textColor: 255 },
         alternateRowStyles: { fillColor: [245, 245, 245] },
     });
@@ -136,25 +143,11 @@ function downloadPDF() {
 }
 
 function downloadExcel() {
-    const rows = filteredParticipants.value.map((p) => [
-        `${p.first_name} ${p.last_name}`,
-        p.email,
-        p.organization,
-        p.country,
-        (p.price_tier || '').replace('tier', 'Tier '),
-        p.field_visit ? 'Yes' : 'No',
-        p.payment_amount || '',
-        'Paid',
-        p.payment_date || '',
-    ]);
-    const worksheetData = [
-        ['Participant', 'Email', 'Organization', 'Country', 'Package', 'Field Visit', 'Amount', 'Payment Status', 'Payment Date'],
-        ...rows,
-    ];
+    const worksheetData = [allHeaders, ...filteredParticipants.value.map(buildRow)];
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    worksheet['!cols'] = allHeaders.map(() => ({ wch: 18 }));
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Paid Tickets');
-    worksheet['!cols'] = [{ wch: 20 }, { wch: 30 }, { wch: 30 }, { wch: 20 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 15 }];
     XLSX.writeFile(workbook, `GCFSS_Paid_Tickets_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 

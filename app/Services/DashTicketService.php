@@ -37,6 +37,46 @@ class DashTicketService
             return false;
         }
 
+        // Admin-set override price takes full precedence
+        if (!empty($registration['admin_override_price']) && (float) $registration['admin_override_price'] > 0) {
+            $price = (float) $registration['admin_override_price'];
+
+            $payload = [
+                'email'       => strtolower(trim($registration['email'] ?? '')),
+                'name'        => trim(($registration['first_name'] ?? '') . ' ' . ($registration['last_name'] ?? '')),
+                'password'    => (string) ($registration['dashticket_password'] ?? $this->generateSecurePassword()),
+                'tag'         => $this->tag,
+                'price'       => $price,
+                'add_on'      => (bool) filter_var($registration['field_visit'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                'phone'       => trim($registration['phone'] ?? '') ?: null,
+                'nationality' => $this->countryToIso($registration['country'] ?? null),
+            ];
+
+            $payload = array_filter($payload, fn ($v) => $v !== null && $v !== '');
+            $url = $this->baseUrl . '/api/v1/integrations/register-user';
+
+            try {
+                $response = Http::timeout(15)->asJson()->withHeaders([
+                    'X-API-Key'     => $this->apiKey,
+                    'Authorization' => 'Bearer ' . $this->apiKey,
+                    'Accept'        => 'application/json',
+                ])->post($url, $payload);
+
+                if ($response->successful()) {
+                    Log::info('DashTicket: User registered (admin price override)', ['email' => $payload['email'] ?? null]);
+                    return true;
+                }
+
+                Log::warning('DashTicket: Registration failed (admin price override)', [
+                    'email' => $payload['email'] ?? null, 'status' => $response->status(), 'body' => $response->json(),
+                ]);
+                return false;
+            } catch (\Throwable $e) {
+                Log::error('DashTicket: Registration exception (admin price override)', ['email' => $payload['email'] ?? null, 'message' => $e->getMessage()]);
+                return false;
+            }
+        }
+
         $price = PackageService::getPriceForTier($registration['price_tier'] ?? null);
         $customFlexibleAmount = $registration['flexible_support_amount'] ?? null;
         $flexibleTierIds = ['flexible', 'flexible_any', 'flexible_hardcoded'];

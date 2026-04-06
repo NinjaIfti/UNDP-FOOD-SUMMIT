@@ -122,88 +122,68 @@ const formatSubmittedDate = (dateString) => {
     };
 };
 
+const appExportHeaders = [
+    'First Name', 'Last Name', 'Email', 'Phone',
+    'Nationality', 'Country of Residence',
+    'Organization', 'Organization Type', 'Organization Type (Other)', 'Organization Size',
+    'Job Title', 'Website',
+    'Price Tier', 'Flexible Support Amount', 'Subsidized Price Justification',
+    'Immersive Experience (Add-on)', 'Participation Budget Support',
+    'Passport Number', 'Passport Expiry',
+    'Arrival Date', 'Departure Date',
+    'Dietary Requirements', 'Dietary (Other)',
+    'Accessibility Needed', 'Accessibility Details',
+    'Heard From', 'Heard From (Other)',
+    'CoFSA Member', 'CoFSA Newsletter',
+    'Emergency Name', 'Emergency Phone', 'Emergency Email', 'Emergency Relation',
+    'Status', 'Submitted',
+];
+
+function buildAppRow(app) {
+    return [
+        app.first_name, app.last_name, app.email, app.phone || '',
+        app.country || '', app.country_of_residence || '',
+        app.organization || '', app.organization_type || '', app.organization_type_other || '', app.organization_size || '',
+        app.job_title || '', app.website || '',
+        app.price_tier || '', app.flexible_support_amount || '', app.subsidized_price_justification || '',
+        app.field_visit ? 'Yes' : 'No', app.participation_budget_support || '',
+        app.passport_number || '', app.passport_expiry || '',
+        app.arrival_date || '', app.departure_date || '',
+        app.dietary || '', app.dietary_other || '',
+        app.accessibility_needed ? 'Yes' : 'No', app.accessibility_details || '',
+        app.heard_from || '', app.heard_from_other || '',
+        app.cofsa_member ? 'Yes' : 'No', app.cofsa_newsletter ? 'Yes' : 'No',
+        app.emergency_name || '', app.emergency_phone || '', app.emergency_email || '', app.emergency_relation || '',
+        app.status || '', app.created_at || '',
+    ];
+}
+
 async function exportApplicationsPdf() {
     const data = await fetchAllApplicationsForExport();
-    const rows = data.map((app) => [
-        `${app.first_name} ${app.last_name}`,
-        app.email,
-        app.country,
-        app.country_of_residence || '',
-        app.organization,
-        app.price_tier,
-        app.field_visit ? 'Yes' : 'No',
-        app.status,
-        app.created_at,
-    ]);
-
     const doc = new jsPDF('landscape');
-
     doc.setFontSize(16);
     doc.text('Applications', 14, 15);
-
     doc.setFontSize(10);
     doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
-
     autoTable(doc, {
-        head: [[
-            'Name',
-            'Email',
-            'Nationality',
-            'Country of residence',
-            'Organization',
-            'Price tier',
-            'Add-on',
-            'Status',
-            'Submitted',
-        ]],
-        body: rows,
+        head: [appExportHeaders],
+        body: data.map(buildAppRow),
         startY: 28,
-        styles: { fontSize: 8 },
+        styles: { fontSize: 6 },
         headStyles: { fillColor: [45, 95, 63], textColor: 255 },
         alternateRowStyles: { fillColor: [245, 245, 245] },
     });
-
-    const date = new Date().toISOString().slice(0, 10);
-    doc.save(`applications_${date}.pdf`);
+    doc.save(`applications_${new Date().toISOString().slice(0, 10)}.pdf`);
 }
 
 async function exportApplicationsExcel() {
     const data = await fetchAllApplicationsForExport();
-
-    const worksheetData = [
-        ['First name', 'Last name', 'Email', 'Nationality', 'Country of residence', 'Organization', 'Price tier', 'Add-on', 'Status', 'Submitted'],
-        ...data.map((app) => [
-            app.first_name,
-            app.last_name,
-            app.email,
-            app.country,
-            app.country_of_residence || '',
-            app.organization,
-            app.price_tier,
-            app.field_visit ? 'Yes' : 'No',
-            app.status,
-            app.created_at,
-        ]),
-    ];
-
+    const worksheetData = [appExportHeaders, ...data.map(buildAppRow)];
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    worksheet['!cols'] = appExportHeaders.map(() => ({ wch: 18 }));
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Applications');
-
-    worksheet['!cols'] = [
-        { wch: 16 },
-        { wch: 16 },
-        { wch: 28 },
-        { wch: 18 },
-        { wch: 26 },
-        { wch: 12 },
-        { wch: 10 },
-        { wch: 12 },
-        { wch: 20 },
-    ];
-
-    const date = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(workbook, `applications_${date}.xlsx`);
+    XLSX.writeFile(workbook, `applications_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 </script>
 

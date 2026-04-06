@@ -117,6 +117,7 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
         Route::get('/applications/export', [ApplicationsController::class, 'export'])->name('applications.export');
         Route::get('/applications/export-data', [ApplicationsController::class, 'exportData'])->name('applications.export-data');
         Route::get('/applications/{summit_registration}', [ApplicationsController::class, 'show'])->name('applications.show');
+        Route::patch('/applications/{summit_registration}/update-price', [ApplicationsController::class, 'updatePrice'])->name('applications.update-price');
         Route::post('/applications/{summit_registration}/approve', [ApplicationsController::class, 'approve'])->name('applications.approve');
         Route::post('/applications/{summit_registration}/reject', [ApplicationsController::class, 'reject'])->name('applications.reject');
         Route::post('/applications/{summit_registration}/waitlist', [ApplicationsController::class, 'waitlist'])->name('applications.waitlist');
