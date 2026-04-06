@@ -2,6 +2,10 @@
 .DS_Store
 .env
 .env.backup
+*.save
+*.save.*
+*-backup.vue
+public/brand/
 .env.production
 .phpactor.json
 .phpunit.result.cache

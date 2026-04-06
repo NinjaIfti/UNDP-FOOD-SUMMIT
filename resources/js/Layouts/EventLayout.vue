@@ -14,9 +14,9 @@ const isHomePage = computed(() => page.url === '/' || page.url === '');
 const logos = computed(() => {
     const raw = [
         siteSettings.logo_secondary || '/brand/govt.png',
-        siteSettings.logo || '/brand/logo2.png',
-        siteSettings.logo_third || '',
-        siteSettings.logo_fourth || '',
+        //siteSettings.logo || '/brand/logo2.png',
+        //siteSettings.logo_third || '',
+        //siteSettings.logo_fourth || '',
     ];
     return raw.filter((v, index) => v && index < 4);
 });
@@ -57,7 +57,7 @@ onUnmounted(() => {
                         />
                     </Link>
                 </div>
-                <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
+                <div class="ml-10 flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
                         <Link href="/" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
                         <Link href="/programme" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
@@ -68,7 +68,7 @@ onUnmounted(() => {
                         <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
                         <Link
                             href="/register-summit"
-                        class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
+                        class="ml-10 font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
                         >
                             Register
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
