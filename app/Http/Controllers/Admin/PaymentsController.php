@@ -228,10 +228,15 @@ HTML;
             }
 
             if ($status['ticket_purchased'] === true) {
+                $resolvedAmount = $registration->admin_override_price
+                    ?? PackageService::getPriceForTier($registration->price_tier ?? null);
+                $now = now()->toISOString();
                 $paymentData[$registration->id] = array_merge($current, [
-                    'status' => 'paid',
+                    'status'                => 'paid',
+                    'amount'                => $resolvedAmount,
+                    'updated_at'            => $now,
                     'synced_from_dashticket' => true,
-                    'synced_at' => now()->toISOString(),
+                    'synced_at'             => $now,
                 ]);
                 $updatedCount++;
             }

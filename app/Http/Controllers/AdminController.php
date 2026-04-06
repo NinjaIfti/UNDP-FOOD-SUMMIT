@@ -6,6 +6,7 @@ use App\Models\EmailLog;
 use App\Models\SummitRegistration;
 use App\Models\User;
 use App\Notifications\AdminResetPasswordNotification;
+use App\Services\PackageService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -197,13 +198,21 @@ class AdminController extends Controller
             'total_sent'         => (int) $emailCounts->sum(),
         ];
 
+        $tierMap = collect(PackageService::getTiers())
+            ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
+
         $paidParticipants = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)
             ->get()
             ->filter(function ($reg) use ($paymentData) {
                 return ($paymentData[$reg->id]['status'] ?? '') === 'paid';
             })
-            ->map(function ($reg) use ($paymentData) {
+            ->map(function ($reg) use ($paymentData, $tierMap) {
                 $data = $paymentData[$reg->id] ?? [];
+                $rawTier = (string) ($reg->price_tier_raw ?? $reg->price_tier ?? '');
+                $tier = $tierMap->get($rawTier);
+                $tierName = $reg->price_tier_name
+                    ?? ($tier['name'] ?? null)
+                    ?? $reg->price_tier;
                 return [
                     'id'                             => $reg->id,
                     'first_name'                     => $reg->first_name,
@@ -218,7 +227,7 @@ class AdminController extends Controller
                     'organization_size'              => $reg->organization_size,
                     'job_title'                      => $reg->job_title,
                     'website'                        => $reg->website,
-                    'price_tier'                     => $reg->price_tier,
+                    'price_tier'                     => $tierName,
                     'flexible_support_amount'        => $reg->flexible_support_amount,
                     'subsidized_price_justification' => $reg->subsidized_price_justification,
                     'field_visit'                    => (bool) $reg->field_visit,
@@ -241,7 +250,7 @@ class AdminController extends Controller
                     'emergency_relation'             => $reg->emergency_relation,
                     'payment_status'                 => $data['status'] ?? 'pending',
                     'payment_amount'                 => $data['amount'] ?? null,
-                    'payment_date'                   => isset($data['updated_at']) ? date('M j, Y', strtotime($data['updated_at'])) : null,
+                    'payment_date'                   => isset($data['updated_at']) ? date('M j, Y', strtotime($data['updated_at'])) : (isset($data['synced_at']) ? date('M j, Y', strtotime($data['synced_at'])) : null),
                     'created_at'                     => $reg->created_at?->format('Y-m-d'),
                 ];
             })

@@ -388,7 +388,7 @@ const iconMap = {
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ p.email }}</td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ p.organization }}</td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                    <div class="text-gray-900">{{ (p.price_tier || '').replace('tier', 'Tier ') }}</div>
+                                    <div class="text-gray-900">{{ p.price_tier || '—' }}</div>
                                     <div v-if="p.field_visit" class="text-xs text-[#8b7355]">+ Field Visit</div>
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
