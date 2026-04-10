@@ -2,6 +2,8 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import EventLayout from '@/Layouts/EventLayout.vue';
+import OnlineSpeakersSection from '@/Components/Home/OnlineSpeakersSection.vue';
+import HostSection from '@/Components/Home/HostSection.vue';
 
 const props = defineProps({
     settings: {
@@ -48,7 +50,8 @@ onUnmounted(() => {
 <template>
     <Head title="Speakers" />
     <EventLayout>
-        <section class="bg-[#F4F1EA] py-16 sm:py-24 lg:py-28">
+	<OnlineSpeakersSection :settings="settings" />
+        <section class="bg-[#F4F1EA] py-16 sm:py-24 lg:py-1 mb-10">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
@@ -149,6 +152,7 @@ onUnmounted(() => {
                 </Teleport>
             </div>
         </section>
+	        <HostSection :settings="settings" />
     </EventLayout>
 </template>
 

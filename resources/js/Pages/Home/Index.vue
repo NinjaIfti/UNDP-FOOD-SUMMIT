@@ -28,8 +28,8 @@ defineProps({
         <CallToActionsSection :settings="settings" class="-mt-10 sm:-mt-26" />
         <VideosSection :settings="settings" />
         <FeaturedSpeakersSection :settings="settings" />
-        <OnlineSpeakersSection :settings="settings" />
-        <HostSection :settings="settings" /> 
+       <!-- <OnlineSpeakersSection :settings="settings" /> -->
+       <!-- <HostSection :settings="settings" /> -->
         <ConsciousFoodSection :settings="settings" />
         <!-- <OutcomesSection :settings="settings" /> -->
         <WhyBhutanSection :settings="settings" />
