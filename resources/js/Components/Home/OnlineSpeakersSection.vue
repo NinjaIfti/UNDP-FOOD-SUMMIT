@@ -60,7 +60,7 @@ if (typeof window !== 'undefined') {
 </script>
 
 <template>
-  <section id="speakers" class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-16 sm:pt-10 sm:pb-24">
+  <section id="speakers" class="scroll-mt-24 bg-[#F4F1EA] pt-8 pb-16 sm:pt-10 sm:pb-24 lg:mt-10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <!-- Title -->
       <div class="mb-12 text-center">

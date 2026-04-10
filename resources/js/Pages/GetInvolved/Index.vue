@@ -127,7 +127,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <SectionReveal>
                     <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
                         <!-- Call for submissions card -->
-                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                       <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
                             {{ callSubmissionsTitle }}
                             </h2>
@@ -163,28 +163,8 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                     </svg>
                                 </a>
                             </div>
-                        </div>
-
-                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
-                                {{ engagementTitle }}
-                            </h2>
-                            <div
-                                class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-bold"
-                                v-html="engagementBody || ctaParagraph2"
-                            />
-                        </div>
-
-                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
-                                {{ visioningTitle }}
-                            </h2>
-                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
-                                {{ visioningBody || ctaParagraph3 }}
-                            </p>
-                        </div>
-
-                        <!-- Communication toolkit card -->
+                        </div> -->
+			<!-- Communication toolkit card -->
                         <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
                                 {{ spreadTitle }}
@@ -217,6 +197,59 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                 </a>
 				
                             </div>
+			</div>
+                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
+                                {{ engagementTitle }}
+                            </h2>
+                            <div
+                                class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-bold"
+                                v-html="engagementBody || ctaParagraph2"
+                            />
+                        </div>
+
+                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
+                                {{ visioningTitle }}
+                            </h2>
+                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
+                                {{ visioningBody || ctaParagraph3 }}
+                            </p>
+                        </div>
+
+                        <!-- Communication toolkit card -->
+                        <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
+                                {{ spreadTitle }}
+                            </h2>
+                            <div class="mt-3 space-y-3">
+                                <p
+                                    v-for="(para, index) in spreadBodyParagraphs"
+                                    :key="index"
+                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
+                                >
+                                    {{ para }}
+                                </p>
+                            </div>
+                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
+                                {{ spreadPending }}
+                            </p>
+			    <div class="mt-5 flex flex-wrap gap-3">
+                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Toolkit
+                                </a>
+                                <a
+                                    v-if="spreadTrelloUrl"
+                                    :href="spreadTrelloUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Promo video
+                                </a>
+				
+                            </div> -->
                            <!-- <div v-if="spreadPdfUrl || spreadTrelloUrl" class="mt-5 flex flex-wrap gap-3">
                                 <a
                                     v-if="spreadPdfUrl"
@@ -239,7 +272,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
 				
                             </div> -->
 
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </SectionReveal>
             </div>

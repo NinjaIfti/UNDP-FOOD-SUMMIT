@@ -461,7 +461,9 @@ onUnmounted(() => {
                     <h2 class="font-title text-3xl font-bold text-gray-900">
                         {{ settings.visa_title || 'Visa & Entry Process' }}
                     </h2>
-
+			<div>
+                        <p><strong>Participants are expected to arrive in the country between 28 and 30 August, depending on flight availability. Please note that arrivals prior to 28 August will not be accommodated.</strong></p>
+                    </div>
                     <!-- Summit Visa Support -->
                     <div
                         v-if="settings.visa_support_points && settings.visa_support_points.length > 0"
@@ -810,11 +812,19 @@ onUnmounted(() => {
                                         </svg>
                                         <span>{{ hotel.distance }}</span>
                                     </div>
+					<div v-if="hotelIndex === 0" class="mt-4 rounded-none border border-accent-2/40 bg-accent-2/10 p-3">
+                                         <p class="font-body text-sm text-ink"><strong>Email:</strong> pema.tshogyal@bhutanmindfulness.com</p>
+                                         <p class="font-body text-sm text-ink"><strong>This is the main venue Hotel</strong></p>
+
+                                    </div>
+                                    <div v-else class="mt-4 rounded-none border border-accent-2/40 bg-accent-2/10 p-3">
+                                        <p class="font-body text-sm text-ink"><strong>Email:</strong> neema.tamang@bhutanmindfulness.com</p>
+                                    </div>
                                 </div>
 
-                                <div v-if="hotelIndex === 0 && accommodationMainHotelNote" class="mt-4 rounded-none border border-accent-2/40 bg-accent-2/10 p-3">
+                               <!-- <div v-if="hotelIndex === 0 && accommodationMainHotelNote" class="mt-4 rounded-none border border-accent-2/40 bg-accent-2/10 p-3">
                                     <p class="font-body text-sm text-ink">{{ accommodationMainHotelNote }}</p>
-                                </div>
+                                </div> -->
 
                                 <div class="mt-4 pt-4 border-t border-gray-100">
                                     <span :class="{
