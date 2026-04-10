@@ -67,8 +67,8 @@ class ContactController extends Controller
             'participation_budget_support' => 'nullable|string|in:Yes,No,Partially',
             'job_title' => 'required|string|max:255',
             'website' => 'nullable|max:500',
-            'passport_number' => 'nullable|string|max:50',
-            'passport_expiry' => 'nullable|date',
+            'passport_number' => 'required|string|max:50',
+            'passport_expiry' => 'required|date',
             'arrival_date' => 'required|date',
             'departure_date' => 'required|date|after_or_equal:arrival_date',
             'price_tier' => 'required|string|max:100',
@@ -110,10 +110,6 @@ class ContactController extends Controller
         $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
         if (!isset($data['organization']) || $data['organization'] === null) {
             $data['organization'] = 'Independent';
-        }
-        // Keep compatibility with current DB schema where passport_number is still NOT NULL.
-        if (!isset($data['passport_number']) || $data['passport_number'] === null) {
-            $data['passport_number'] = '';
         }
         // DB column length is 20; keep admin-created IDs safe for insert.
         if (isset($data['price_tier'])) {

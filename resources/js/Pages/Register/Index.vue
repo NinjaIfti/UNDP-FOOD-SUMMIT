@@ -805,7 +805,30 @@ const steps = [
                             </p>
                         </div>
                         <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                            <!-- Passport Number and Passport Expiration Date are hidden for now -->
+                            <div>
+                                <label for="passport_number" class="mb-1 block text-base font-medium text-primary-1">Passport Number *</label>
+                                <input
+                                    id="passport_number"
+                                    v-model="form.passport_number"
+                                    type="text"
+                                    required
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                    placeholder="e.g. AB1234567"
+                                />
+                                <p v-if="form.errors.passport_number" class="mt-1 text-base text-red-400">{{ form.errors.passport_number }}</p>
+                            </div>
+                            <div>
+                                <label for="passport_expiry" class="mb-1 block text-base font-medium text-primary-1">Passport Expiration Date *</label>
+                                <input
+                                    id="passport_expiry"
+                                    v-model="form.passport_expiry"
+                                    type="date"
+                                    required
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                />
+                                <p class="mt-1 text-base text-copy">Must be valid for at least 6 months from travel date</p>
+                                <p v-if="form.errors.passport_expiry" class="mt-1 text-base text-red-400">{{ form.errors.passport_expiry }}</p>
+                            </div>
                             <div>
                                 <label for="arrival_date" class="mb-1 block text-base font-medium text-primary-1">Preferred Arrival Date *</label>
                                 <input
