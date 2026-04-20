@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 
@@ -24,6 +24,9 @@ const viewModalOpen = ref(false);
 const addModalOpen = ref(false);
 const selectedParticipant = ref(null);
 const syncing = ref(false);
+const autoSyncIntervalSeconds = 30 * 60;
+const remainingAutoSyncSeconds = ref(autoSyncIntervalSeconds);
+let countdownTimerId = null;
 
 const paymentStatusColors = {
     paid: 'bg-primary-2 text-white',
@@ -96,11 +99,38 @@ const syncDashTicket = () => {
     syncing.value = true;
     router.post(route('admin.payments.sync-dashticket'), {}, {
         preserveScroll: true,
+        onSuccess: () => {
+            remainingAutoSyncSeconds.value = autoSyncIntervalSeconds;
+        },
         onFinish: () => {
             syncing.value = false;
         },
     });
 };
+
+const formatCountdown = (totalSeconds) => {
+    const safeSeconds = Math.max(0, totalSeconds);
+    const minutes = Math.floor(safeSeconds / 60);
+    const seconds = safeSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+onMounted(() => {
+    countdownTimerId = window.setInterval(() => {
+        if (remainingAutoSyncSeconds.value <= 0) {
+            remainingAutoSyncSeconds.value = autoSyncIntervalSeconds;
+            return;
+        }
+
+        remainingAutoSyncSeconds.value -= 1;
+    }, 1000);
+});
+
+onUnmounted(() => {
+    if (countdownTimerId !== null) {
+        window.clearInterval(countdownTimerId);
+    }
+});
 
 const updateStatus = (participant, status) => {
     router.put(route('admin.payments.update-status', participant.id), {
@@ -130,22 +160,27 @@ const formatDate = (dateString) => {
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        @click="syncDashTicket"
-                        :disabled="syncing"
-                        class="inline-flex items-center gap-2 rounded-lg border border-primary-2 px-4 py-2 font-body text-sm font-medium text-primary-2 transition-colors hover:bg-primary-2/10 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        <svg class="h-4 w-4" :class="{ 'animate-spin': syncing }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            />
-                        </svg>
-                        {{ syncing ? 'Syncing...' : 'Sync from DashTicket' }}
-                    </button>
+                    <div class="inline-flex items-center gap-3 rounded-lg border border-primary-2 px-3 py-2">
+                        <button
+                            type="button"
+                            @click="syncDashTicket"
+                            :disabled="syncing"
+                            class="inline-flex items-center gap-2 font-body text-sm font-medium text-primary-2 transition-colors hover:text-primary-2/80 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            <svg class="h-4 w-4" :class="{ 'animate-spin': syncing }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                />
+                            </svg>
+                            {{ syncing ? 'Syncing...' : 'Sync from DashTicket' }}
+                        </button>
+                        <span class="font-body text-xs text-copy">
+                            Auto sync: {{ formatCountdown(remainingAutoSyncSeconds) }}
+                        </span>
+                    </div>
                     <button
                         type="button"
                         @click="exportParticipants"
