@@ -65,7 +65,7 @@ if (typeof window !== 'undefined') {
       <!-- Title -->
       <div class="mb-12 text-center">
         <h2 class="mx-auto max-w-2xl font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
-          ONLINE SPEAKERS
+          Featured Virtual Speakers
         </h2>
       </div>
 

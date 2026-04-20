@@ -50,8 +50,7 @@ onUnmounted(() => {
 <template>
     <Head title="Speakers" />
     <EventLayout>
-	<OnlineSpeakersSection :settings="settings" />
-        <section class="bg-[#F4F1EA] py-16 sm:py-24 lg:py-1 mb-10">
+        <section class="bg-[#F4F1EA] py-16 sm:py-24 lg:py-1 mb-10 mt-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl lg:text-5xl">
@@ -152,6 +151,7 @@ onUnmounted(() => {
                 </Teleport>
             </div>
         </section>
+		<OnlineSpeakersSection :settings="settings" />
 	        <HostSection :settings="settings" />
     </EventLayout>
 </template>

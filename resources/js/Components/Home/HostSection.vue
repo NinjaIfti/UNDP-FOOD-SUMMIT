@@ -84,7 +84,7 @@ if (typeof window !== 'undefined') {
                 <img
                   :src="host.image"
                   :alt="host.name"
-                  class="h-full w-full rounded-full object-cover"
+                  class="h-full w-full rounded-full object-contain"
                   loading="lazy"
                 />
               </div>

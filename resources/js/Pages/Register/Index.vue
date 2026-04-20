@@ -387,6 +387,8 @@ const steps = [
                     <p class="mt-3 font-body text-base text-copy">
                         Thank you for registering with the GCFSS, our team will get back to you soon!
                     </p>
+                    <strong>PLEASE CHECK YOUR SPAM FOLDER FOR THE CONFIRMATION EMAIL</strong>
+
                     <button
                         type="button"
                         @click="closeSuccessModal"

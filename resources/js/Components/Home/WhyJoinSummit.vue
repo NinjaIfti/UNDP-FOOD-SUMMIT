@@ -30,7 +30,7 @@ const props = defineProps({
             <!-- photo credit - exact text -->
             <div class="bg-black/70 backdrop-blur-sm text-amber-50/90 py-1.5 px-4 text-center text-md font-medium border-t border-white/20">
               <i class="fas fa-camera mr-1 text-amber-300/80 text-xs"></i>
-               <span class="credit-photo">Photo Credit:</span> Warwick, at Listening to the Land Day 2026 by Oxford Real Farming Conference (ORFC)
+               <span class="credit-photo">Photo Credit:</span> Listening to the Land Day 2026, a programme of the Real Farming Trust. Photo Credit: Hugh Warwick
             </div>
           </div>
           
@@ -48,30 +48,37 @@ const props = defineProps({
             </div>
             
             <!-- BULLET POINTS - exact text only -->
-            <ul class="space-y-4 font-body">
+            <ul class="space-y-4 font-body text-left">
               <li class="flex gap-3 items-start">
                 <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Nurture your inspiration and confidence to step up as a conscious food systems leader</span>
+                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Join a global network of leaders across policy, investment, and food system innovation</span>
               </li>
               <li class="flex gap-3 items-start">
                 <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Learn from existing examples how to integrate this agenda into your work</span>
+                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Help shape a shared vision and global framework for the future of food systems</span>
               </li>
               <li class="flex gap-3 items-start">
                 <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Connect with a global network and build collaborations</span>
+                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Learn from real-world models and case studies</span>
               </li>
               <li class="flex gap-3 items-start">
                 <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Be part of this historical gathering in a unique setting</span>
+                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Experience Bhutan as a living laboratory for sustainable, values-driven development
+</span>
+              </li>
+<li class="flex gap-3 items-start">
+                <svg class="w-8 h-8 text-accent-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-gray-800 text-sm sm:text-base leading-relaxed">Engage in an immersive, participatory format designed for meaningful exchange</span>
               </li>
             </ul>
             

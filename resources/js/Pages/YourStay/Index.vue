@@ -919,7 +919,7 @@ onUnmounted(() => {
                         </p>
                     </div>
 
-                    <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-none border-2 border-blue-300 p-6">
+                  <!--  <div v-if="settings.companions_intro" class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-none border-2 border-blue-300 p-6">
                         <div class="flex gap-4">
                             <svg class="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -956,7 +956,51 @@ onUnmounted(() => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
+<!--New -->
+<div v-if="settings.companions_requirements && settings.companions_requirements.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
+    <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
+        {{ settings.companions_requirements_title || 'Key Requirements for Companions' }}
+    </h3>
+    <div class="space-y-4">
+        <div
+            v-for="(req, index) in settings.companions_requirements"
+            :key="index"
+            class="flex items-start gap-4"
+            :class="index < settings.companions_requirements.length - 1 ? 'pb-4 border-b border-gray-100' : ''"
+        >
+            <div class="p-2 bg-accent-1/20 rounded-none flex-shrink-0">
+                <svg class="w-5 h-5 text-accent-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-title font-semibold text-gray-900 mb-2">
+                    {{ req.title }}
+                </h4>
+                <p class="font-body text-gray-700">
+                    {{ req.description }}
+                </p>
+
+                <!-- Extra content only for "Licensed Guide Required" -->
+                <div v-if="req.title === 'Licensed Guide Required'" class="mt-3">
+                    <p class="font-body text-gray-700">
+                        Please find the list of licensed tourist guides provided by the Department of Tourism here:
+                    </p>
+                    <a
+                        href="https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 font-semibold hover:underline"
+                    >
+                        https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                     <div v-if="settings.companions_costs && settings.companions_costs.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
@@ -987,7 +1031,7 @@ onUnmounted(() => {
                         </ul>
                     </div>
 
-                    <div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
+                   <!-- <div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
                             {{ settings.companions_tips_title || 'Planning Tips' }}
                         </h3>
@@ -997,7 +1041,37 @@ onUnmounted(() => {
                                 <p v-html="tip"></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+<!-- new -->
+<div v-if="settings.companions_tips && settings.companions_tips.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
+    <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">
+        {{ settings.companions_tips_title || 'Planning Tips' }}
+    </h3>
+    <div class="space-y-3 font-body text-gray-700">
+        <div v-for="(tip, index) in settings.companions_tips" :key="index" class="flex items-start gap-3">
+            <span class="text-primary-1 font-bold">{{ index + 1 }}</span>
+            <div>
+                <p v-html="tip"></p>
+
+                <!-- Extra content only for the first tip (index 0) -->
+                <div v-if="index === 0" class="mt-2">
+                    <p class="text-gray-700">
+                        Please find the list of licensed tourist guides provided by the Department of Tourism here:
+                    </p>
+                    <a
+                        href="https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-blue-600 font-semibold hover:underline"
+                    >
+                        https://a.storyblok.com/f/171618/x/b982d907d5/01-dot-certified-tour-guide-as-of-january-2025.pdf
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end new -->
 
                     <div v-if="settings.companions_resources && settings.companions_resources.length > 0" class="bg-white rounded-none border border-gray-200 p-6 shadow-sm">
                         <h3 class="font-title text-xl font-semibold text-gray-900 mb-4">

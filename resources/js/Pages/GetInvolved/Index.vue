@@ -125,6 +125,51 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                     </p>
                 </div>
                 <SectionReveal>
+			<!-- new -->
+                    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-1 mb-10">
+			<!-- Communication toolkit card -->
+                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
+                                {{ spreadTitle }}
+                            </h2>
+                            <div class="mt-3 space-y-3">
+                                <p
+                                    v-for="(para, index) in spreadBodyParagraphs"
+                                    :key="index"
+                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
+                                >
+                                    {{ para }}
+                                </p>
+                            </div>
+                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
+                                {{ spreadPending }}
+                            </p>
+			    <div class="mt-5 flex flex-wrap gap-3">
+                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Toolkit
+                                </a>
+                                <a
+                                    v-if="spreadTrelloUrl"
+                                    :href="spreadTrelloUrl"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
+                                >
+                                    Promo video
+                                </a>
+				
+                            </div>
+			<!-- New "Missed the kickoff?" section below the buttons -->
+        <div class="mt-5 font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
+          <h3 class="font-title text-xl font-bold tracking-wide text-primary-1 sm:text-2xl"> Missed the kickoff?</h3> 
+            
+                <p>Step into the conversation 
+                <a href="https://www.youtube.com/watch?v=Fm7S3uSczyU" class="font-semibold text-accent-1 underline transition hover:text-accent-1/80">here
+            </a> </p>
+        </div>
+			</div>
+		   </div>
                     <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
                         <!-- Call for submissions card -->
                        <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
@@ -165,7 +210,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                             </div>
                         </div> -->
 			<!-- Communication toolkit card -->
-                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
+                        <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
                                 {{ spreadTitle }}
                             </h2>
@@ -197,7 +242,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                                 </a>
 				
                             </div>
-			</div>
+			</div> -->
                         <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
                             <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
                                 {{ engagementTitle }}
@@ -347,299 +392,19 @@ const financialBody = computed(() => props.settings?.financial_body || '');
       
       <!-- Soil Sponsors Logo Marquee -->
       <div class="mt-8 overflow-hidden">
-        <div class="marquee-container">
-          <div class="marquee-track-smalll">
-            <div class="marquee-content-static">
-              <div class="logo-item">
-                <img src="/brand/soil-logo-1.png" alt="Soil Sponsor 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <!-- <img src="/brand/soil-logo-1.png" alt="Soil Sponsor 1" class="logo-image"> -->
-              </div>
-            </div>
-          </div>
+  <div class="marquee-container flex justify-center items-center">
+    <div class="marquee-track-smalll flex justify-center items-center w-full">
+      <div class="marquee-content-static flex justify-center items-center">
+        <div class="logo-item flex justify-center items-center">
+          <img src="/brand/soil-logo-1.png" alt="Soil Sponsor 1" class="logo-image">
         </div>
       </div>
     </div>
-    <!-- Global Advisory Partners Section - Same font and size as Our Funding Partners -->
-    <div class="mt-16">
-      <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-    Our Global Engagement Partners
+  </div>
+</div>
+</div>
 
-      </h2>
-      
-      <!-- Global Advisory Partners Logo Marquee -->
-      <div class="mt-8 overflow-hidden">
-        <div class="marquee-container">
-          <div class="marquee-track">
-            <div class="marquee-content">
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-1.jfif" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-4.jpg" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-10.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-14.svg" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-18.jpeg" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-24.svg" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-27.webp" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-28.jpg" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-32.jpeg" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-34.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-37.webp" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-38.jfif" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-            </div>
-            <div class="marquee-content">
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-1.jfif" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-4.jpg" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-10.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-14.svg" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-18.jpeg" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-24.svg" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-27.webp" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-28.jpg" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-32.jpeg" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-34.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-37.webp" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-38.jfif" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Global Engagement Partners Section - Same font and size as Our Funding Partners -->
+	<!-- Global Engagement Partners Section - Same font and size as Our Funding Partners -->
     <div class="mt-16">
       <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
         Our Global Advisory Partners
@@ -654,16 +419,16 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/global-engagement-logo-1.png" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-2.jfif" alt="Global Engagement Partner 2" class="logo-image">
+                <img src="/brand/global-engagement-logo-2.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-3.avif" alt="Global Engagement Partner 3" class="logo-image">
+                <img src="/brand/global-engagement-logo-3.png" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-4.jpg" alt="Global Engagement Partner 4" class="logo-image">
+                <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5" class="logo-image">
+                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
@@ -690,19 +455,16 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-14.svg" alt="Global Engagement Partner 2" class="logo-image">
+                <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-15.jpeg" alt="Global Engagement Partner 3" class="logo-image">
+                <img src="/brand/global-engagement-logo-15.webp" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-16.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-17.jpg" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-18.svg" alt="Global Engagement Partner 6" class="logo-image">
+                <img src="/brand/global-engagement-logo-17.png" alt="Global Engagement Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-19.png" alt="Global Engagement Partner 1" class="logo-image">
@@ -714,16 +476,13 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/global-engagement-logo-21.png" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-22.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
                 <img src="/brand/global-engagement-logo-23.png" alt="Global Engagement Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-24.png" alt="Global Engagement Partner 6" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-25.svg" alt="Global Engagement Partner 1" class="logo-image">
+                <img src="/brand/global-engagement-logo-25.png" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-26.png" alt="Global Engagement Partner 2" class="logo-image">
@@ -742,20 +501,20 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               </div>
             </div>
             <div class="marquee-content">
-              <div class="logo-item">
+	    <div class="logo-item">
                 <img src="/brand/global-engagement-logo-1.png" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-2.jfif" alt="Global Engagement Partner 2" class="logo-image">
+                <img src="/brand/global-engagement-logo-2.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-3.avif" alt="Global Engagement Partner 3" class="logo-image">
+                <img src="/brand/global-engagement-logo-3.png" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-4.jpg" alt="Global Engagement Partner 4" class="logo-image">
+                <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5" class="logo-image">
+                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
@@ -782,19 +541,16 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-14.svg" alt="Global Engagement Partner 2" class="logo-image">
+                <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-15.jpeg" alt="Global Engagement Partner 3" class="logo-image">
+                <img src="/brand/global-engagement-logo-15.webp" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-16.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-17.jpg" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-18.svg" alt="Global Engagement Partner 6" class="logo-image">
+                <img src="/brand/global-engagement-logo-17.png" alt="Global Engagement Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-19.png" alt="Global Engagement Partner 1" class="logo-image">
@@ -806,16 +562,13 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/global-engagement-logo-21.png" alt="Global Engagement Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-22.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
                 <img src="/brand/global-engagement-logo-23.png" alt="Global Engagement Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-24.png" alt="Global Engagement Partner 6" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-25.svg" alt="Global Engagement Partner 1" class="logo-image">
+                <img src="/brand/global-engagement-logo-25.png" alt="Global Engagement Partner 1" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-26.png" alt="Global Engagement Partner 2" class="logo-image">
@@ -838,6 +591,287 @@ const financialBody = computed(() => props.settings?.financial_body || '');
       </div>
     </div>
   </div>
+
+    <!-- Global Advisory Partners Section - Same font and size as Our Funding Partners -->
+    <div class="mt-16">
+      <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+    Our Global Engagement Partners
+
+      </h2>
+      
+      <!-- Global Advisory Partners Logo Marquee -->
+      <div class="mt-8 overflow-hidden">
+        <div class="marquee-container">
+          <div class="marquee-track">
+            <div class="marquee-content">
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-1.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-4.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-14.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-18.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-24.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-27.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-28.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-32.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>	      
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-46.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-47.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-48.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+            </div>
+            <div class="marquee-content">
+             <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-1.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-4.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-14.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-18.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-24.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-27.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-28.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-32.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>	      
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-46.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-47.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+              <div class="logo-item">
+                <img src="/brand/golbal-advisory-logo-48.png" alt="Global Advisory Partner 6" class="logo-image">
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
 </section>
 
  <!-- end -->	

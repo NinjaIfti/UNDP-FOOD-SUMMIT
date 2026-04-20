@@ -14,14 +14,31 @@ const isHomePage = computed(() => page.url === '/' || page.url === '');
 const logos = computed(() => {
     const raw = [
         siteSettings.logo_secondary || '/brand/govt.png',
-        //siteSettings.logo || '/brand/logo2.png',
-        //siteSettings.logo_third || '',
-        //siteSettings.logo_fourth || '',
     ];
     return raw.filter((v, index) => v && index < 4);
 });
 const mobileMenuOpen = ref(false);
 const isAtTop = ref(true);
+
+// Normalize current path: remove trailing slash, default to '/' for empty
+const currentPath = computed(() => {
+    let path = page.url;
+    if (path === '') return '/';
+    // Remove trailing slash if present and not just '/'
+    if (path !== '/' && path.endsWith('/')) {
+        path = path.slice(0, -1);
+    }
+    return path;
+});
+
+// Check if a given link path is active
+const isActive = (path) => {
+    let normalizedPath = path;
+    if (normalizedPath !== '/' && normalizedPath.endsWith('/')) {
+        normalizedPath = normalizedPath.slice(0, -1);
+    }
+    return currentPath.value === normalizedPath;
+};
 
 function onScroll() {
     isAtTop.value = window.scrollY < 20;
@@ -57,18 +74,97 @@ onUnmounted(() => {
                         />
                     </Link>
                 </div>
-                <div class="ml-10 flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
+                <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
-                        <Link href="/" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Home</Link>
-                        <Link href="/programme" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Experience</Link>
-                        <Link href="/speakers" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Speakers</Link>
-                        <Link href="/your-stay-in-bhutan" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Your Bhutan Stay</Link>
-                        <Link v-if="blogEnabled" href="/blog" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Blog</Link>
-                        <Link href="/get-involved" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">Get Involved</Link>
-                        <Link href="/faq" class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10 hover:text-white' : 'text-primary-1 hover:bg-black/5 hover:text-black'">FAQs</Link>
+                        <Link
+                            href="/"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Home
+                        </Link>
+                        <Link
+                            href="/programme"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/programme') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Experience
+                        </Link>
+                        <Link
+                            href="/speakers"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/speakers') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Speakers
+                        </Link>
+                        <Link
+                            href="/your-stay-in-bhutan"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/your-stay-in-bhutan') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Your Bhutan Stay
+                        </Link>
+                        <Link
+                            v-if="blogEnabled"
+                            href="/blog"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/blog') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Blog
+                        </Link>
+                        <Link
+                            href="/get-involved"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/get-involved') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            Get Involved
+                        </Link>
+                        <Link
+                            href="/faq"
+                            class="font-body flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg"
+                            :class="[
+                                isAtTop && isHomePage
+                                    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                                    : 'text-primary-1 hover:bg-black/5 hover:text-black',
+                                isActive('/faq') ? '!text-[#F59C0E] font-semibold' : '',
+                            ]"
+                        >
+                            FAQs
+                        </Link>
                         <Link
                             href="/register-summit"
-                        class="ml-10 font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
+                            class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
+                            :class="{ 'ring-2 ring-white ring-offset-2 ring-offset-accent-2': isActive('/register-summit') }"
                         >
                             Register
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +175,7 @@ onUnmounted(() => {
                     <button
                         type="button"
                         class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
-                        :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
+                        :class="isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
                         aria-label="Toggle menu"
                         @click="mobileMenuOpen = !mobileMenuOpen"
                     >
@@ -95,19 +191,91 @@ onUnmounted(() => {
             <div
                 v-show="mobileMenuOpen"
                 class="px-4 py-4 sm:hidden"
-                :class="(isAtTop && isHomePage) ? 'bg-primary-1' : 'bg-white'"
+                :class="isAtTop && isHomePage ? 'bg-primary-1' : 'bg-white'"
             >
                 <nav class="flex flex-col gap-1">
-                    <Link href="/" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Home</Link>
-                    <Link href="/programme" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Experience</Link>
-                    <Link href="/speakers" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Speakers</Link>
-                    <Link href="/your-stay-in-bhutan" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Your Bhutan Stay</Link>
-                    <Link v-if="blogEnabled" href="/blog" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Blog</Link>
-                    <Link href="/get-involved" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">Get Involved</Link>
-                    <Link href="/faq" class="font-body rounded-md px-4 py-3 text-lg font-medium transition" :class="(isAtTop && isHomePage) ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'" @click="mobileMenuOpen = false">FAQs</Link>
+                    <Link
+                        href="/"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        href="/programme"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/programme') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Experience
+                    </Link>
+                    <Link
+                        href="/speakers"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/speakers') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Speakers
+                    </Link>
+                    <Link
+                        href="/your-stay-in-bhutan"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/your-stay-in-bhutan') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Your Bhutan Stay
+                    </Link>
+                    <Link
+                        v-if="blogEnabled"
+                        href="/blog"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/blog') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Blog
+                    </Link>
+                    <Link
+                        href="/get-involved"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/get-involved') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Get Involved
+                    </Link>
+                    <Link
+                        href="/faq"
+                        class="font-body rounded-md px-4 py-3 text-lg font-medium transition"
+                        :class="[
+                            isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5',
+                            isActive('/faq') ? '!text-[#F59C0E] font-semibold' : '',
+                        ]"
+                        @click="mobileMenuOpen = false"
+                    >
+                        FAQs
+                    </Link>
                     <Link
                         href="/register-summit"
                         class="font-body rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
+                        :class="{ 'ring-2 ring-white ring-offset-2 ring-offset-accent-2': isActive('/register-summit') }"
                         @click="mobileMenuOpen = false"
                     >
                         Register
@@ -118,7 +286,6 @@ onUnmounted(() => {
                 </nav>
             </div>
         </header>
-        <!-- Same page bg as SummitIntroSection / home sections (#F4F1EA) -->
         <main class="flex-1 bg-[#F4F1EA] pt-20 sm:pt-24 lg:pt-28">
             <slot />
         </main>
