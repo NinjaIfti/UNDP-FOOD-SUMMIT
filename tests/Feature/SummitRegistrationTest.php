@@ -24,6 +24,7 @@ class SummitRegistrationTest extends TestCase
         return [
             'first_name' => 'John',
             'last_name' => 'Doe',
+            'gender' => 'male',
             'email' => 'john.doe@example.com',
             'phone' => '+97517123456',
             'country' => 'Bhutan',

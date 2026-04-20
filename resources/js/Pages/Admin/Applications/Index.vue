@@ -123,7 +123,7 @@ const formatSubmittedDate = (dateString) => {
 };
 
 const appExportHeaders = [
-    'First Name', 'Last Name', 'Email', 'Phone',
+    'First Name', 'Last Name', 'Gender', 'Email', 'Phone',
     'Nationality', 'Country of Residence',
     'Organization', 'Organization Type', 'Organization Type (Other)', 'Organization Size',
     'Job Title', 'Website',
@@ -141,7 +141,7 @@ const appExportHeaders = [
 
 function buildAppRow(app) {
     return [
-        app.first_name, app.last_name, app.email, app.phone || '',
+        app.first_name, app.last_name, app.gender || '', app.email, app.phone || '',
         app.country || '', app.country_of_residence || '',
         app.organization || '', app.organization_type || '', app.organization_type_other || '', app.organization_size || '',
         app.job_title || '', app.website || '',
@@ -391,6 +391,9 @@ async function exportApplicationsExcel() {
                                     Email
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
+                                    Gender
+                                </th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
                                     Nationality
                                 </th>
                                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-copy">
@@ -429,6 +432,9 @@ async function exportApplicationsExcel() {
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
                                     {{ app.email }}
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
+                                    {{ app.gender || '—' }}
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">
                                     {{ app.country }}
@@ -518,7 +524,7 @@ async function exportApplicationsExcel() {
                                 </td>
                             </tr>
                             <tr v-if="!applications?.data?.length">
-                                <td colspan="10" class="px-4 py-8 text-center">
+                                <td colspan="11" class="px-4 py-8 text-center">
                                     <p class="font-body text-copy">No applications yet.</p>
                                 </td>
                             </tr>

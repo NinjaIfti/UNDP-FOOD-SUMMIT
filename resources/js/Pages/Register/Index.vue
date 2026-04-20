@@ -6,6 +6,7 @@ import EventLayout from '@/Layouts/EventLayout.vue';
 const form = useForm({
     first_name: '',
     last_name: '',
+    gender: '',
     email: '',
     phone: '',
     country: '',
@@ -299,6 +300,7 @@ function submit() {
             const labels = {
                 first_name: 'First Name',
                 last_name: 'Last Name',
+                gender: 'Gender',
                 email: 'Email Address',
                 phone: 'Phone Number',
                 country: 'Nationality',
@@ -648,6 +650,22 @@ const steps = [
                                     placeholder="you@example.com"
                                 />
                                 <p v-if="form.errors.email" class="mt-1 text-base text-red-400">{{ form.errors.email }}</p>
+                            </div>
+                            <div>
+                                <label for="gender" class="mb-1 block text-base font-medium text-primary-1">Gender *</label>
+                                <select
+                                    id="gender"
+                                    v-model="form.gender"
+                                    required
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                >
+                                    <option value="" class="text-gray-800">Select gender</option>
+                                    <option value="female" class="text-gray-800">Female</option>
+                                    <option value="male" class="text-gray-800">Male</option>
+                                    <option value="non_binary" class="text-gray-800">Non-binary</option>
+                                    <option value="prefer_not_to_say" class="text-gray-800">Prefer not to say</option>
+                                </select>
+                                <p v-if="form.errors.gender" class="mt-1 text-base text-red-400">{{ form.errors.gender }}</p>
                             </div>
                             <div>
                                 <label class="mb-1 block text-base font-medium text-primary-1">Phone Number *</label>

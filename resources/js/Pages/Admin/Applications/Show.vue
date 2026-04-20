@@ -123,6 +123,7 @@ const statusBadgeClass = (status) => {
                     <h2 class="font-title text-lg font-semibold text-primary-1">Personal Information</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
                         <div><dt class="font-body text-xs text-gray-500">Name</dt><dd class="font-body text-ink">{{ application.first_name }} {{ application.last_name }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Gender</dt><dd class="font-body text-ink">{{ application.gender || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Email</dt><dd class="font-body text-ink">{{ application.email }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Phone</dt><dd class="font-body text-ink">{{ application.phone }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Nationality</dt><dd class="font-body text-ink">{{ application.country || '-' }}</dd></div>

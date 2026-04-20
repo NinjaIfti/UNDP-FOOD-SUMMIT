@@ -55,6 +55,7 @@ class ContactController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'gender' => 'required|string|in:female,male,non_binary,prefer_not_to_say',
             'email' => 'required|email',
             // Phone is saved as: "<country code> <local number>", so allow '+' and spaces.
             'phone' => ['required', 'regex:/^\\+?[0-9 ]+$/', 'max:50'],

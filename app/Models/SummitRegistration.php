@@ -10,7 +10,7 @@ class SummitRegistration extends Model
     protected $table = 'summit_registrations';
 
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'phone', 'country', 'country_of_residence', 'organization', 'organization_type', 'organization_type_other',
+        'first_name', 'last_name', 'gender', 'email', 'phone', 'country', 'country_of_residence', 'organization', 'organization_type', 'organization_type_other',
         'organization_size', 'participation_budget_support', 'job_title',
         'website', 'passport_number', 'passport_expiry', 'arrival_date', 'departure_date',
         'price_tier', 'price_tier_raw', 'price_tier_name', 'confirm_tier', 'flexible_support_amount', 'admin_override_price', 'subsidized_price_justification',
