@@ -53,15 +53,15 @@ class ContactController extends Controller
         }
 
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
             'gender' => 'required|string|in:female,male,non_binary,prefer_not_to_say',
             'email' => 'required|email',
             // Phone is saved as: "<country code> <local number>", so allow '+' and spaces.
             'phone' => ['required', 'regex:/^\\+?[0-9 ]+$/', 'max:50'],
             'country' => 'required|string|max:255',
             'country_of_residence' => 'required|string|max:255',
-            'organization' => 'nullable|string|max:255',
+            'organization' => ['nullable', 'string', 'max:255', 'regex:/^[\\pL\\s&\'\\.,\\(\\)\\-\\/]+$/u'],
             'organization_type' => 'nullable|string|max:255',
             'organization_type_other' => 'nullable|string|max:255',
             'organization_size' => 'nullable|string|max:255',
@@ -86,7 +86,7 @@ class ContactController extends Controller
             'heard_from_other' => 'nullable|string|max:255',
             'cofsa_member' => 'required|string|in:yes,no',
             'cofsa_newsletter' => 'required|string|in:yes,no',
-            'emergency_name' => 'required|string|max:255',
+            'emergency_name' => ['required', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
             'emergency_phone' => ['required', 'regex:/^\\+?[0-9 ]+$/', 'max:50'],
             'emergency_email' => 'required|email',
             'emergency_relation' => 'required|string|max:255',
@@ -94,6 +94,10 @@ class ContactController extends Controller
         ], [
             'flexible_support_amount.gte' => 'Amount must be at least USD 970',
             'flexible_support_amount.gt' => 'Amount must be greater than USD 970',
+            'first_name.regex' => 'First name can only contain letters.',
+            'last_name.regex' => 'Last name can only contain letters.',
+            'organization.regex' => 'Organization can only contain letters and punctuation (no numbers).',
+            'emergency_name.regex' => 'Emergency contact name can only contain letters.',
         ]);
 
         if (!empty($validated['subsidized_price_justification']) && str_word_count(strip_tags((string) $validated['subsidized_price_justification'])) > 120) {

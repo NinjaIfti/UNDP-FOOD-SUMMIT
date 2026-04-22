@@ -204,6 +204,10 @@ function buildFullPhone() {
     if (!code) return local;
     return `${code} ${local}`.trim();
 }
+
+function stripDigits(value) {
+    return String(value || '').replace(/\d+/g, '');
+}
 const page = usePage();
 const showSuccessModal = ref(!!page.props.flash?.success);
 const registerHeroImage = computed(() => page.props?.site_settings?.register_hero_image || '');
@@ -622,6 +626,7 @@ const steps = [
                                     v-model="form.first_name"
                                     type="text"
                                     required
+                                    @input="form.first_name = stripDigits($event.target.value)"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="First name as in passport"
                                 />
@@ -634,6 +639,7 @@ const steps = [
                                     v-model="form.last_name"
                                     type="text"
                                     required
+                                    @input="form.last_name = stripDigits($event.target.value)"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="Last name as in passport"
                                 />
@@ -728,6 +734,7 @@ const steps = [
                                     id="organization"
                                     v-model="form.organization"
                                     type="text"
+                                    @input="form.organization = stripDigits($event.target.value)"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder='e.g. Independent'
                                 />
@@ -1312,6 +1319,7 @@ const steps = [
                                     v-model="form.emergency_name"
                                     type="text"
                                     required
+                                    @input="form.emergency_name = stripDigits($event.target.value)"
                                     class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
                                     placeholder="Contact person's full name"
                                 />
