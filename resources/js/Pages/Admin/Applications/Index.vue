@@ -123,7 +123,7 @@ const formatSubmittedDate = (dateString) => {
 };
 
 const appExportHeaders = [
-    'First Name', 'Last Name', 'Gender', 'Email', 'Phone',
+    'First Name', 'Middle Name', 'Last Name', 'Gender', 'Email', 'Phone',
     'Nationality', 'Country of Residence',
     'Organization', 'Organization Type', 'Organization Type (Other)', 'Organization Size',
     'Job Title', 'Website',
@@ -141,7 +141,7 @@ const appExportHeaders = [
 
 function buildAppRow(app) {
     return [
-        app.first_name, app.last_name, app.gender || '', app.email, app.phone || '',
+        app.first_name, app.middle_name || '', app.last_name, app.gender || '', app.email, app.phone || '',
         app.country || '', app.country_of_residence || '',
         app.organization || '', app.organization_type || '', app.organization_type_other || '', app.organization_size || '',
         app.job_title || '', app.website || '',
@@ -427,7 +427,7 @@ async function exportApplicationsExcel() {
                             >
                                 <td class="whitespace-nowrap px-4 py-3">
                                     <div class="font-title text-sm font-semibold text-primary-1">
-                                        {{ app.first_name }} {{ app.last_name }}
+                                        {{ [app.first_name, app.middle_name, app.last_name].filter(Boolean).join(' ') }}
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-sm font-body text-copy">

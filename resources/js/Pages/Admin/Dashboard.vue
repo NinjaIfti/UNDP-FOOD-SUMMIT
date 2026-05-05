@@ -19,7 +19,7 @@ const filteredParticipants = computed(() => {
     const q = searchQuery.value.toLowerCase().trim();
     if (!q) return props.paidParticipants;
     return props.paidParticipants.filter((p) => {
-        const name = `${p.first_name} ${p.last_name}`.toLowerCase();
+        const name = `${p.first_name || ''} ${p.middle_name || ''} ${p.last_name || ''}`.toLowerCase();
         const email = (p.email || '').toLowerCase();
         const org = (p.organization || '').toLowerCase();
         const country = (p.country || '').toLowerCase();
@@ -74,7 +74,7 @@ function formatDate(dateStr) {
 }
 
 const allHeaders = [
-    'First Name', 'Last Name', 'Email', 'Phone',
+    'First Name', 'Middle Name', 'Last Name', 'Email', 'Phone',
     'Nationality', 'Country of Residence',
     'Organization', 'Organization Type', 'Organization Type (Other)', 'Organization Size',
     'Job Title', 'Website',
@@ -93,7 +93,7 @@ const allHeaders = [
 
 function buildRow(p) {
     return [
-        p.first_name, p.last_name, p.email, p.phone || '',
+        p.first_name, p.middle_name || '', p.last_name, p.email, p.phone || '',
         p.country || '', p.country_of_residence || '',
         p.organization || '', p.organization_type || '', p.organization_type_other || '', p.organization_size || '',
         p.job_title || '', p.website || '',
@@ -382,7 +382,7 @@ const iconMap = {
                                 class="hover:bg-gray-50 transition-colors"
                             >
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    <div class="font-medium text-gray-900">{{ p.first_name }} {{ p.last_name }}</div>
+                                    <div class="font-medium text-gray-900">{{ [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ') }}</div>
                                     <div class="text-xs text-gray-500">{{ p.country }}</div>
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{{ p.email }}</td>

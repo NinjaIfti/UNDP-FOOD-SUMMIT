@@ -43,7 +43,11 @@ class DashTicketService
 
             $payload = [
                 'email'       => strtolower(trim($registration['email'] ?? '')),
-                'name'        => trim(($registration['first_name'] ?? '') . ' ' . ($registration['last_name'] ?? '')),
+                'name'        => trim(implode(' ', array_filter([
+                    $registration['first_name'] ?? '',
+                    $registration['middle_name'] ?? '',
+                    $registration['last_name'] ?? '',
+                ]))),
                 'password'    => (string) ($registration['dashticket_password'] ?? $this->generateSecurePassword()),
                 'tag'         => $this->tag,
                 'price'       => $price,
@@ -107,7 +111,11 @@ class DashTicketService
 
         $payload = [
             'email' => strtolower(trim($registration['email'] ?? '')),
-            'name' => trim(($registration['first_name'] ?? '') . ' ' . ($registration['last_name'] ?? '')),
+            'name' => trim(implode(' ', array_filter([
+                $registration['first_name'] ?? '',
+                $registration['middle_name'] ?? '',
+                $registration['last_name'] ?? '',
+            ]))),
             'password' => (string) ($registration['dashticket_password'] ?? $this->generateSecurePassword()),
             'tag' => $this->tag,
             'price' => (float) $price,

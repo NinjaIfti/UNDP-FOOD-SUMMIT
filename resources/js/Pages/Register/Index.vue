@@ -5,6 +5,7 @@ import EventLayout from '@/Layouts/EventLayout.vue';
 
 const form = useForm({
     first_name: '',
+    middle_name: '',
     last_name: '',
     gender: '',
     email: '',
@@ -304,6 +305,7 @@ function submit() {
         onError: (errors) => {
             const labels = {
                 first_name: 'First Name',
+                middle_name: 'Middle Name',
                 last_name: 'Last Name',
                 gender: 'Gender',
                 email: 'Email Address',
@@ -645,6 +647,18 @@ const steps = [
                                     placeholder="Last name as in passport"
                                 />
                                 <p v-if="form.errors.last_name" class="mt-1 text-base text-red-400">{{ form.errors.last_name }}</p>
+                            </div>
+                            <div>
+                                <label for="middle_name" class="mb-1 block text-base font-medium text-primary-1">Middle Name (as in Passport/ID)</label>
+                                <input
+                                    id="middle_name"
+                                    v-model="form.middle_name"
+                                    type="text"
+                                    @input="form.middle_name = stripDigits($event.target.value)"
+                                    class="w-full rounded-lg border border-primary-2/20 bg-white px-4 py-3 text-ink focus:border-accent-2 focus:outline-none focus:ring-1 focus:ring-accent-2"
+                                    placeholder="Middle name as in passport (optional)"
+                                />
+                                <p v-if="form.errors.middle_name" class="mt-1 text-base text-red-400">{{ form.errors.middle_name }}</p>
                             </div>
                             <div>
                                 <label for="reg-email" class="mb-1 block text-base font-medium text-primary-1">Email Address *</label>

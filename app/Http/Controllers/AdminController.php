@@ -216,6 +216,7 @@ class AdminController extends Controller
                 return [
                     'id'                             => $reg->id,
                     'first_name'                     => $reg->first_name,
+                    'middle_name'                    => $reg->middle_name,
                     'last_name'                      => $reg->last_name,
                     'email'                          => $reg->email,
                     'phone'                          => $reg->phone,

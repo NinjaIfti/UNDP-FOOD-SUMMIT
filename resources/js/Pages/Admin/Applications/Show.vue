@@ -81,7 +81,7 @@ const statusBadgeClass = (status) => {
             <div v-if="application" class="space-y-6">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <h1 class="font-title text-2xl font-bold text-primary-1">{{ application.first_name }} {{ application.last_name }}</h1>
+                        <h1 class="font-title text-2xl font-bold text-primary-1">{{ [application.first_name, application.middle_name, application.last_name].filter(Boolean).join(' ') }}</h1>
                         <p class="font-body text-copy">{{ application.email }}</p>
                         <span class="mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium" :class="statusBadgeClass(application.status)">
                             {{ application.status }}
@@ -122,7 +122,7 @@ const statusBadgeClass = (status) => {
                 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <h2 class="font-title text-lg font-semibold text-primary-1">Personal Information</h2>
                     <dl class="mt-4 grid gap-3 sm:grid-cols-2">
-                        <div><dt class="font-body text-xs text-gray-500">Name</dt><dd class="font-body text-ink">{{ application.first_name }} {{ application.last_name }}</dd></div>
+                        <div><dt class="font-body text-xs text-gray-500">Name</dt><dd class="font-body text-ink">{{ [application.first_name, application.middle_name, application.last_name].filter(Boolean).join(' ') }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Gender</dt><dd class="font-body text-ink">{{ application.gender || '-' }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Email</dt><dd class="font-body text-ink">{{ application.email }}</dd></div>
                         <div><dt class="font-body text-xs text-gray-500">Phone</dt><dd class="font-body text-ink">{{ application.phone }}</dd></div>
