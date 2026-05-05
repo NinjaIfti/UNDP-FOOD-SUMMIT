@@ -427,9 +427,9 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
-              <div class="logo-item">
+              <!-- <div class="logo-item">
                 <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
-              </div>
+              </div> -->
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
               </div>
@@ -451,9 +451,9 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-12.jpg" alt="Global Engagement Partner 6" class="logo-image">
               </div>
-              <div class="logo-item">
+              <!-- <div class="logo-item">
                 <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
+              </div> -->
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
@@ -513,9 +513,9 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
               </div>
-              <div class="logo-item">
+              <!-- <div class="logo-item">
                 <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
-              </div>
+              </div> -->
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
               </div>
@@ -537,9 +537,9 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-12.jpg" alt="Global Engagement Partner 6" class="logo-image">
               </div>
-              <div class="logo-item">
+              <!-- <div class="logo-item">
                 <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
+              </div> -->
               <div class="logo-item">
                 <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
               </div>
@@ -689,7 +689,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
+                <img src="/brand/golbal-advisory-logo-300.png" alt="Global Advisory Partner 6" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
@@ -701,10 +701,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
+                <img src="/brand/golbal-advisory-logo-355.png" alt="Global Advisory Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
@@ -820,7 +817,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-30.png" alt="Global Advisory Partner 6" class="logo-image">
+                <img src="/brand/golbal-advisory-logo-300.png" alt="Global Advisory Partner 6" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
@@ -832,10 +829,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
               </div>
               <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-35.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-36.png" alt="Global Advisory Partner 6" class="logo-image">
+                <img src="/brand/golbal-advisory-logo-355.png" alt="Global Advisory Partner 5" class="logo-image">
               </div>
               <div class="logo-item">
                 <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
