@@ -58,6 +58,7 @@ class ApplicationsController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('middle_name', 'like', "%{$search}%")
                     ->orWhere('last_name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('organization', 'like', "%{$search}%");
@@ -107,6 +108,7 @@ class ApplicationsController extends Controller
             fputcsv($handle, [
                 'ID',
                 'First Name',
+                'Middle Name',
                 'Last Name',
                 'Gender',
                 'Email',
@@ -149,6 +151,7 @@ class ApplicationsController extends Controller
                     fputcsv($handle, [
                         $app->id,
                         $app->first_name,
+                        $app->middle_name,
                         $app->last_name,
                         $app->gender,
                         $app->email,
@@ -207,6 +210,7 @@ class ApplicationsController extends Controller
             return [
                 'id'                             => $app->id,
                 'first_name'                     => $app->first_name,
+                'middle_name'                    => $app->middle_name,
                 'last_name'                      => $app->last_name,
                 'gender'                         => $app->gender,
                 'email'                          => $app->email,
@@ -316,7 +320,11 @@ class ApplicationsController extends Controller
         $user = null;
         DB::transaction(function () use ($application, $plainPassword, &$user) {
             $user = User::create([
-                'name' => trim($application->first_name . ' ' . $application->last_name),
+                'name' => trim(implode(' ', array_filter([
+                    $application->first_name,
+                    $application->middle_name,
+                    $application->last_name,
+                ]))),
                 'email' => $application->email,
                 'password' => Hash::make($plainPassword),
             ]);
@@ -343,7 +351,11 @@ class ApplicationsController extends Controller
             ]);
         }
 
-        $safeName = htmlspecialchars(trim($application->first_name . ' ' . $application->last_name), ENT_QUOTES, 'UTF-8');
+        $safeName = htmlspecialchars(trim(implode(' ', array_filter([
+            $application->first_name,
+            $application->middle_name,
+            $application->last_name,
+        ]))), ENT_QUOTES, 'UTF-8');
         if ($safeName === '') {
             $safeName = 'Participant';
         }

@@ -54,6 +54,7 @@ class ContactController extends Controller
 
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
+            'middle_name' => ['nullable', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
             'last_name' => ['required', 'string', 'max:255', 'regex:/^[\\pL\\s\'\\.-]+$/u'],
             'gender' => 'required|string|in:female,male,non_binary,prefer_not_to_say',
             'email' => 'required|email',
@@ -95,6 +96,7 @@ class ContactController extends Controller
             'flexible_support_amount.gte' => 'Amount must be at least USD 970',
             'flexible_support_amount.gt' => 'Amount must be greater than USD 970',
             'first_name.regex' => 'First name can only contain letters.',
+            'middle_name.regex' => 'Middle name can only contain letters.',
             'last_name.regex' => 'Last name can only contain letters.',
             'organization.regex' => 'Organization can only contain letters and punctuation (no numbers).',
             'emergency_name.regex' => 'Emergency contact name can only contain letters.',

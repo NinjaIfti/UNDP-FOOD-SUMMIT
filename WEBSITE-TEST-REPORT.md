@@ -14,7 +14,7 @@
 The website is structurally sound with pages loading correctly.
 
 **Score: 9.5 / 10**
-
+`
 ---
 
 ## Pages Tested
