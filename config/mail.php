@@ -39,10 +39,11 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME', 'tls'),
+            // Let Laravel/Symfony handle encryption normally; use MAIL_ENCRYPTION in .env
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', 'mail.privateemail.com'),
             'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
