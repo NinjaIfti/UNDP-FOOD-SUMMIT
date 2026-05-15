@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EmailLog;
 use App\Models\SummitRegistration;
+use App\Services\AdminPaymentService;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
 use App\Models\User;
@@ -345,6 +346,7 @@ class ApplicationsController extends Controller
                 $dashPayload['admin_override_price'] = (float) $application->admin_override_price;
             }
             $dashTicket->registerUser($dashPayload);
+            app(AdminPaymentService::class)->storeDashTicketPassword($application->id, $plainPassword);
         } else {
             Log::warning('DashTicket: Not configured; skipping DashTicket registration on approval', [
                 'email' => $application->email ?? null,

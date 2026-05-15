@@ -213,6 +213,10 @@ class AdminController extends Controller
                 $tierName = $reg->price_tier_name
                     ?? ($tier['name'] ?? null)
                     ?? $reg->price_tier;
+                $upgradeStatus = null;
+                if (array_key_exists('upgrade_paid', $data)) {
+                    $upgradeStatus = ($data['upgrade_paid'] ?? false) ? 'confirmed' : 'pending';
+                }
                 return [
                     'id'                             => $reg->id,
                     'first_name'                     => $reg->first_name,
@@ -253,6 +257,9 @@ class AdminController extends Controller
                     'payment_amount'                 => $data['amount'] ?? null,
                     'payment_date'                   => isset($data['updated_at']) ? date('M j, Y', strtotime($data['updated_at'])) : (isset($data['synced_at']) ? date('M j, Y', strtotime($data['synced_at'])) : null),
                     'created_at'                     => $reg->created_at?->format('Y-m-d'),
+                    'price_tier_raw'                 => $rawTier,
+                    'admin_override_price'           => $reg->admin_override_price,
+                    'upgrade_status'                 => $upgradeStatus,
                 ];
             })
             ->values()
@@ -263,6 +270,7 @@ class AdminController extends Controller
             'registrationData' => $registrationData,
             'emailActivity' => $emailActivity,
             'paidParticipants' => $paidParticipants,
+            'packages' => PackageService::getActiveTiers(),
         ]);
     }
 

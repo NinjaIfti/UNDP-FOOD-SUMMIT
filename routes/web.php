@@ -81,6 +81,8 @@ Route::post('/admin-portal-access/reset-password', [AdminController::class, 'res
 
 Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::post('/participants/{summit_registration}/upgrade', [\App\Http\Controllers\Admin\ParticipantUpgradeController::class, 'store'])
+        ->name('participants.upgrade');
 
     Route::middleware('admin.permission:homepage')->group(function () {
         Route::get('/homepage', [AdminController::class, 'homepage'])->name('homepage');

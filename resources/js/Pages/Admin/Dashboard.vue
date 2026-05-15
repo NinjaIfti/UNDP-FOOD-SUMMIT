@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -11,9 +11,52 @@ const props = defineProps({
     registrationData: { type: Array, default: () => [] },
     emailActivity: { type: Object, default: () => ({}) },
     paidParticipants: { type: Array, default: () => [] },
+    packages: { type: Array, default: () => [] },
 });
 
 const searchQuery = ref('');
+const upgradeModalOpen = ref(false);
+const upgradeTarget = ref(null);
+
+const upgradeForm = useForm({
+    price_tier_raw: '',
+    admin_override_price: '',
+    field_visit: false,
+});
+
+const openUpgradeModal = (participant) => {
+    upgradeTarget.value = participant;
+    upgradeForm.price_tier_raw = participant.price_tier_raw ?? '';
+    upgradeForm.admin_override_price = participant.admin_override_price ?? '';
+    upgradeForm.field_visit = !!participant.field_visit;
+    upgradeModalOpen.value = true;
+};
+
+const closeUpgradeModal = () => {
+    upgradeModalOpen.value = false;
+    upgradeTarget.value = null;
+    upgradeForm.reset();
+};
+
+const submitUpgrade = () => {
+    if (!upgradeTarget.value) return;
+    upgradeForm.post(route('admin.participants.upgrade', upgradeTarget.value.id), {
+        preserveScroll: true,
+        onSuccess: () => closeUpgradeModal(),
+    });
+};
+
+const upgradeStatusLabel = (status) => {
+    if (status === 'pending') return 'Upgrade pending';
+    if (status === 'confirmed') return 'Upgrade confirmed';
+    return null;
+};
+
+const upgradeStatusClass = (status) => {
+    if (status === 'pending') return 'bg-amber-100 text-amber-800';
+    if (status === 'confirmed') return 'bg-blue-100 text-blue-800';
+    return '';
+};
 
 const filteredParticipants = computed(() => {
     const q = searchQuery.value.toLowerCase().trim();
@@ -168,6 +211,13 @@ const iconMap = {
     <Head title="Dashboard Overview" />
     <AdminLayout>
         <div class="space-y-6">
+            <div v-if="$page.props.flash?.success" class="rounded-lg bg-green-50 p-3 border border-green-200">
+                <p class="text-sm text-green-800">{{ $page.props.flash.success }}</p>
+            </div>
+            <div v-if="$page.props.flash?.error" class="rounded-lg bg-red-50 p-3 border border-red-200">
+                <p class="text-sm text-red-800">{{ $page.props.flash.error }}</p>
+            </div>
+
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
                 <p class="text-gray-600">
@@ -369,12 +419,14 @@ const iconMap = {
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Package</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Upgrade</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr v-if="filteredParticipants.length === 0">
-                                <td colspan="7" class="px-4 py-8 text-center text-gray-500">No paid tickets found</td>
+                                <td colspan="9" class="px-4 py-8 text-center text-gray-500">No paid tickets found</td>
                             </tr>
                             <tr
                                 v-for="p in filteredParticipants"
@@ -397,10 +449,105 @@ const iconMap = {
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#2d5f3f] text-white">Paid</span>
                                 </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span
+                                        v-if="upgradeStatusLabel(p.upgrade_status)"
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                                        :class="upgradeStatusClass(p.upgrade_status)"
+                                    >
+                                        {{ upgradeStatusLabel(p.upgrade_status) }}
+                                    </span>
+                                    <span v-else class="text-xs text-gray-400">—</span>
+                                </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ formatDate(p.payment_date) }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <button
+                                        type="button"
+                                        @click="openUpgradeModal(p)"
+                                        class="inline-flex items-center gap-1 rounded-lg bg-[#d4af37] px-3 py-1.5 text-xs font-medium text-[#1a2e1a] transition-colors hover:bg-[#b8962f]"
+                                        title="Sync higher tier or add-on to DashTicket"
+                                    >
+                                        Upgrade
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div
+                v-if="upgradeModalOpen && upgradeTarget"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            >
+                <div class="w-full max-w-lg rounded-lg border border-gray-200 bg-white p-6 shadow-lg max-h-[90vh] overflow-y-auto">
+                    <div class="mb-4 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">DashTicket Upgrade</h2>
+                            <p class="text-sm text-gray-500">
+                                {{ [upgradeTarget.first_name, upgradeTarget.last_name].filter(Boolean).join(' ') }} — {{ upgradeTarget.email }}
+                            </p>
+                        </div>
+                        <button type="button" @click="closeUpgradeModal" class="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mb-4 text-sm text-gray-600">
+                        Updates entitlements in DashTicket. If the participant already paid, they will be charged only the price difference on their next visit.
+                    </p>
+                    <form @submit.prevent="submitUpgrade" class="space-y-4">
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-gray-700">Package tier</label>
+                            <select
+                                v-model="upgradeForm.price_tier_raw"
+                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#2d5f3f] focus:outline-none focus:ring-2 focus:ring-[#2d5f3f]/20"
+                            >
+                                <option v-for="pkg in packages" :key="pkg.id" :value="pkg.id">
+                                    {{ pkg.name }} — USD {{ Number(pkg.price).toLocaleString() }}
+                                </option>
+                            </select>
+                            <p v-if="upgradeForm.errors.price_tier_raw" class="mt-1 text-xs text-red-600">{{ upgradeForm.errors.price_tier_raw }}</p>
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-gray-700">Admin price override (optional)</label>
+                            <input
+                                v-model="upgradeForm.admin_override_price"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                placeholder="Leave empty to use tier price"
+                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#2d5f3f] focus:outline-none focus:ring-2 focus:ring-[#2d5f3f]/20"
+                            />
+                            <p v-if="upgradeForm.errors.admin_override_price" class="mt-1 text-xs text-red-600">{{ upgradeForm.errors.admin_override_price }}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input
+                                id="upgrade-field-visit"
+                                v-model="upgradeForm.field_visit"
+                                type="checkbox"
+                                class="h-4 w-4 rounded border-gray-300 text-[#2d5f3f] focus:ring-[#2d5f3f]"
+                            />
+                            <label for="upgrade-field-visit" class="text-sm text-gray-700">Immersive experience (field visit add-on)</label>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button
+                                type="button"
+                                @click="closeUpgradeModal"
+                                class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                :disabled="upgradeForm.processing"
+                                class="rounded-lg bg-[#2d5f3f] px-4 py-2 text-sm font-medium text-white hover:bg-[#234a32] disabled:opacity-50"
+                            >
+                                {{ upgradeForm.processing ? 'Syncing...' : 'Apply upgrade' }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

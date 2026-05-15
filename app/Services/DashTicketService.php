@@ -24,6 +24,11 @@ class DashTicketService
         return ! empty($this->apiKey);
     }
 
+    public function generatePasswordForStorage(): string
+    {
+        return $this->generateSecurePassword();
+    }
+
     /**
      * Register a user with DashTicket after summit registration.
      *
@@ -205,12 +210,17 @@ class DashTicketService
 
             if ($response->status() === 200) {
                 $data = $response->json() ?? [];
-
-                return [
+                $result = [
                     'email' => (string) ($data['email'] ?? $normalizedEmail),
                     'ticket_purchased' => (bool) ($data['ticket_purchased'] ?? false),
                     'found' => true,
                 ];
+
+                if (array_key_exists('upgrade_paid', $data)) {
+                    $result['upgrade_paid'] = (bool) $data['upgrade_paid'];
+                }
+
+                return $result;
             }
 
             if ($response->status() === 404) {

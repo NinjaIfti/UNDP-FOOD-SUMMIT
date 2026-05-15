@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Storage;
 
 class PaymentSyncService
 {
+    public function __construct(
+        protected AdminPaymentService $payments,
+    ) {}
+
     public function syncFromDashTicket(): array
     {
         $dashTicket = app(DashTicketService::class);
@@ -20,13 +24,14 @@ class PaymentSyncService
         }
 
         $approved = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->get();
-        $paymentData = $this->getAllPaymentData();
+        $paymentData = $this->payments->getAll();
         $updatedCount = 0;
 
         foreach ($approved as $registration) {
             $current = $paymentData[$registration->id] ?? ['status' => 'pending'];
+            $wasPaid = ($current['status'] ?? 'pending') === 'paid';
 
-            if (in_array($current['status'] ?? 'pending', ['paid', 'refunded'], true)) {
+            if (in_array($current['status'] ?? 'pending', ['refunded'], true)) {
                 continue;
             }
 
@@ -36,12 +41,14 @@ class PaymentSyncService
                 continue;
             }
 
-            if (($status['ticket_purchased'] ?? false) === true) {
+            $now = now()->toISOString();
+            $patch = [];
+
+            if (($status['ticket_purchased'] ?? false) === true && ! $wasPaid) {
                 $resolvedAmount = $registration->admin_override_price
                     ?? PackageService::getPriceForTier($registration->price_tier ?? null);
-                $now = now()->toISOString();
 
-                $paymentData[$registration->id] = array_merge($current, [
+                $patch = array_merge($patch, [
                     'status' => 'paid',
                     'amount' => $resolvedAmount,
                     'updated_at' => $now,
@@ -49,6 +56,21 @@ class PaymentSyncService
                     'synced_at' => $now,
                 ]);
                 $updatedCount++;
+            }
+
+            if (array_key_exists('upgrade_paid', $status)) {
+                $storedUpgrade = $current['upgrade_paid'] ?? null;
+                if ($storedUpgrade !== $status['upgrade_paid']) {
+                    $patch['upgrade_paid'] = (bool) $status['upgrade_paid'];
+                    $patch['upgrade_synced_at'] = $now;
+                    if ($wasPaid) {
+                        $updatedCount++;
+                    }
+                }
+            }
+
+            if ($patch !== []) {
+                $paymentData[$registration->id] = array_merge($current, $patch);
             }
         }
 
@@ -65,12 +87,4 @@ class PaymentSyncService
         ];
     }
 
-    protected function getAllPaymentData(): array
-    {
-        if (Storage::exists('admin/payments.json')) {
-            return json_decode(Storage::get('admin/payments.json'), true) ?? [];
-        }
-
-        return [];
-    }
 }

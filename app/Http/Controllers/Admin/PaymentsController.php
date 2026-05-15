@@ -43,6 +43,11 @@ class PaymentsController extends Controller
             $tierName = $registration->price_tier_name
                 ?? ($tier['name'] ?? null)
                 ?? $registration->price_tier;
+            $upgradeStatus = null;
+            if (array_key_exists('upgrade_paid', $data)) {
+                $upgradeStatus = ($data['upgrade_paid'] ?? false) ? 'confirmed' : 'pending';
+            }
+
             return [
                 'id' => $registration->id,
                 'first_name' => $registration->first_name,
@@ -51,9 +56,12 @@ class PaymentsController extends Controller
                 'organization' => $registration->organization,
                 'country' => $registration->country,
                 'price_tier' => $tierName,
+                'price_tier_raw' => $rawTier,
+                'admin_override_price' => $registration->admin_override_price,
                 'field_visit' => $registration->field_visit,
                 'payment_status' => $data['status'] ?? 'pending',
                 'payment_amount' => $data['amount'] ?? null,
+                'upgrade_status' => $upgradeStatus,
                 'created_at' => $registration->created_at?->format('M d, Y'),
             ];
         });
