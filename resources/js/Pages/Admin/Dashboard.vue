@@ -462,6 +462,7 @@ const iconMap = {
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ formatDate(p.payment_date) }}</td>
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <button
+                                        v-if="p.price_tier_raw !== 'sponsored' && !(p.price_tier || '').toLowerCase().includes('sponsored participant')"
                                         type="button"
                                         @click="openUpgradeModal(p)"
                                         class="inline-flex items-center gap-1 rounded-lg bg-[#d4af37] px-3 py-1.5 text-xs font-medium text-[#1a2e1a] transition-colors hover:bg-[#b8962f]"
@@ -469,6 +470,7 @@ const iconMap = {
                                     >
                                         Upgrade
                                     </button>
+                                    <span v-else class="text-xs text-gray-400">N/A</span>
                                 </td>
                             </tr>
                         </tbody>

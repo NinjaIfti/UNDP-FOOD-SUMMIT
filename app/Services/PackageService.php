@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\Storage;
 
 class PackageService
 {
+    public const SPONSORED_TIER_ID = 'sponsored';
+
+    public static function isSponsoredTier(?string $tierId): bool
+    {
+        return $tierId !== null
+            && $tierId !== ''
+            && (string) $tierId === self::SPONSORED_TIER_ID;
+    }
+
     private static function isRemovedLegacyTier(array $tier): bool
     {
         $name = strtolower(trim((string) ($tier['name'] ?? '')));
@@ -22,13 +31,15 @@ class PackageService
     {
         if (Storage::exists('admin/packages.json')) {
             $tiers = json_decode(Storage::get('admin/packages.json'), true) ?? [];
-            return array_values(array_filter(
+            $tiers = array_values(array_filter(
                 is_array($tiers) ? $tiers : [],
                 static fn ($tier) => is_array($tier) && ! self::isRemovedLegacyTier($tier)
             ));
+
+            return self::ensureSponsoredTierPresent($tiers);
         }
 
-        return [
+        return self::ensureSponsoredTierPresent([
             [
                 'id' => 'standard',
                 'name' => 'Standard Price',
@@ -71,7 +82,32 @@ class PackageService
                 'price' => 970,
                 'active' => true,
             ],
+            self::defaultSponsoredTier(),
+        ]);
+    }
+
+    protected static function defaultSponsoredTier(): array
+    {
+        return [
+            'id' => self::SPONSORED_TIER_ID,
+            'name' => 'Sponsored Participant (by approval only)',
+            'description' => 'For participants whose registration is fully sponsored by UNDP. Selection requires organizer approval. No ticket payment or DashTicket account is created — your record is kept in our system only.',
+            'price' => 0,
+            'active' => true,
         ];
+    }
+
+    protected static function ensureSponsoredTierPresent(array $tiers): array
+    {
+        $hasSponsored = collect($tiers)->contains(
+            fn ($tier) => is_array($tier) && (string) ($tier['id'] ?? '') === self::SPONSORED_TIER_ID
+        );
+
+        if (! $hasSponsored) {
+            $tiers[] = self::defaultSponsoredTier();
+        }
+
+        return $tiers;
     }
 
     public static function getActiveTiers(): array

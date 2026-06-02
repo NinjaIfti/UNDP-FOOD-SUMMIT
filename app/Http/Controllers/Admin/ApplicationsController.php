@@ -8,6 +8,7 @@ use App\Models\SummitRegistration;
 use App\Services\AdminPaymentService;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
+use App\Services\SponsoredApprovalEmailBuilder;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -311,6 +312,10 @@ class ApplicationsController extends Controller
             return back()->with('error', 'Application is already approved.');
         }
 
+        if ($this->isSponsoredApplication($application)) {
+            return $this->approveSponsoredApplication($application);
+        }
+
         if (User::where('email', $application->email)->exists()) {
             return back()->with('error', 'A user with this email already exists.');
         }
@@ -477,6 +482,60 @@ HTML;
         }
 
         return back()->with('success', 'Application approved. User account created and approval email sent to ' . $application->email);
+    }
+
+    protected function isSponsoredApplication(SummitRegistration $application): bool
+    {
+        return PackageService::isSponsoredTier(
+            (string) ($application->price_tier_raw ?? $application->price_tier ?? '')
+        );
+    }
+
+    protected function approveSponsoredApplication(SummitRegistration $application)
+    {
+        $application->update([
+            'status' => SummitRegistration::STATUS_APPROVED,
+            'user_id' => null,
+        ]);
+
+        app(AdminPaymentService::class)->save($application->id, [
+            'status' => 'sponsored',
+            'amount' => 0,
+            'updated_at' => now()->toISOString(),
+        ]);
+
+        $safeName = htmlspecialchars(trim(implode(' ', array_filter([
+            $application->first_name,
+            $application->middle_name,
+            $application->last_name,
+        ]))), ENT_QUOTES, 'UTF-8');
+        if ($safeName === '') {
+            $safeName = 'Participant';
+        }
+
+        $subject = SponsoredApprovalEmailBuilder::subject();
+        $html = SponsoredApprovalEmailBuilder::html($safeName);
+
+        try {
+            Mail::html($html, function ($mail) use ($application, $subject) {
+                $mail->to($application->email)->subject($subject);
+            });
+            EmailLog::create([
+                'type' => 'approval',
+                'recipient_email' => $application->email,
+                'summit_registration_id' => $application->id,
+            ]);
+        } catch (\Throwable $mailException) {
+            Log::warning('Sponsored application approval email failed', [
+                'email' => $application->email ?? null,
+                'message' => $mailException->getMessage(),
+            ]);
+        }
+
+        return back()->with(
+            'success',
+            'Sponsored application approved. Record saved — no DashTicket account or payment login was created. Confirmation email sent to ' . $application->email
+        );
     }
 
     public function reject(SummitRegistration $summit_registration)

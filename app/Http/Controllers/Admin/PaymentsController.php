@@ -107,7 +107,7 @@ class PaymentsController extends Controller
     public function updatePaymentStatus(Request $request, SummitRegistration $summit_registration)
     {
         $validated = $request->validate([
-            'payment_status' => 'required|in:paid,pending,partial,refunded',
+            'payment_status' => 'required|in:paid,pending,partial,refunded,sponsored',
             'payment_amount' => 'nullable|numeric|min:0',
         ]);
 
@@ -133,7 +133,7 @@ class PaymentsController extends Controller
             'country' => 'required|string|max:255',
             'price_tier' => ['required', 'string', 'in:' . implode(',', $activePackageIds)],
             'field_visit' => 'boolean',
-            'payment_status' => 'required|in:paid,pending,partial,refunded',
+            'payment_status' => 'required|in:paid,pending,partial,refunded,sponsored',
             'payment_amount' => 'nullable|numeric|min:0',
         ]);
 

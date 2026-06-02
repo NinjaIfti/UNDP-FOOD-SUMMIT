@@ -33,6 +33,7 @@ const paymentStatusColors = {
     pending: 'bg-accent-2 text-primary-1',
     partial: 'bg-ink text-white',
     refunded: 'bg-gray-600 text-white',
+    sponsored: 'bg-[#4a7c59] text-white',
 };
 
 const addForm = useForm({
@@ -283,6 +284,7 @@ const formatDate = (dateString) => {
                             <option value="pending">Pending</option>
                             <option value="partial">Partial</option>
                             <option value="refunded">Refunded</option>
+                            <option value="sponsored">Sponsored</option>
                         </select>
                     </div>
                 </div>
@@ -343,8 +345,10 @@ const formatDate = (dateString) => {
                                         {{
                                             participant.payment_status === 'paid'
                                                 ? 'Paid'
-                                                : participant.payment_status.charAt(0).toUpperCase() +
-                                                  participant.payment_status.slice(1)
+                                                : participant.payment_status === 'sponsored'
+                                                  ? 'Sponsored'
+                                                  : participant.payment_status.charAt(0).toUpperCase() +
+                                                    participant.payment_status.slice(1)
                                         }}
                                     </span>
                                     <div v-if="participant.payment_amount" class="mt-1 font-body text-xs text-copy">

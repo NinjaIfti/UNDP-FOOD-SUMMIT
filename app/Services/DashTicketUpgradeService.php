@@ -23,6 +23,10 @@ class DashTicketUpgradeService
             return ['ok' => false, 'message' => 'Only approved participants can be upgraded.'];
         }
 
+        if (PackageService::isSponsoredTier($registration->price_tier_raw ?? $registration->price_tier)) {
+            return ['ok' => false, 'message' => 'Sponsored participants are not registered in DashTicket and cannot be upgraded through this flow.'];
+        }
+
         if (! $this->dashTicket->isConfigured()) {
             return ['ok' => false, 'message' => 'DashTicket API key is not configured.'];
         }

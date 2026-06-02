@@ -36,6 +36,14 @@ class DashTicketService
      */
     public function registerUser(array $registration): bool
     {
+        if (PackageService::isSponsoredTier($registration['price_tier_raw'] ?? $registration['price_tier'] ?? null)) {
+            Log::info('DashTicket: Skipping registration for sponsored tier', [
+                'email' => $registration['email'] ?? null,
+            ]);
+
+            return true;
+        }
+
         if (! $this->isConfigured()) {
             Log::warning('DashTicket: API key not configured, skipping user registration');
 

@@ -28,6 +28,10 @@ class PaymentSyncService
         $updatedCount = 0;
 
         foreach ($approved as $registration) {
+            if (PackageService::isSponsoredTier($registration->price_tier_raw ?? $registration->price_tier)) {
+                continue;
+            }
+
             $current = $paymentData[$registration->id] ?? ['status' => 'pending'];
             $wasPaid = ($current['status'] ?? 'pending') === 'paid';
 

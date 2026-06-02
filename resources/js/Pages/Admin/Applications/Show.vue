@@ -31,8 +31,18 @@ function savePrice() {
     });
 }
 
+function isSponsoredApplication() {
+    const raw = String(props.application?.price_tier_raw ?? props.application?.price_tier ?? '');
+    if (raw === 'sponsored') return true;
+    const name = String(props.application?.price_tier_name ?? props.application?.price_tier_display ?? '').toLowerCase();
+    return name.includes('sponsored participant');
+}
+
 function approve(id) {
-    if (confirm('Approve this application? A user account will be created and an approval email with payment link will be sent to the applicant.')) {
+    const message = isSponsoredApplication()
+        ? 'Approve this sponsored application? No DashTicket account or payment login will be created — only a confirmation email will be sent.'
+        : 'Approve this application? A user account will be created and an approval email with payment link will be sent to the applicant.';
+    if (confirm(message)) {
         router.post(route('admin.applications.approve', id));
     }
 }

@@ -64,6 +64,24 @@ const isSubsidizedSelected = () => {
     return name.includes('subsid');
 };
 
+const isSponsoredTier = (tierId) => {
+    const id = String(tierId ?? '');
+    if (id === 'sponsored') return true;
+    const pkg = packageById(id);
+    const name = (pkg?.name || '').toString().toLowerCase();
+    return name.includes('sponsored participant');
+};
+
+const isSponsoredSelected = () => isSponsoredTier(form.price_tier);
+
+const formatPackagePrice = (pkg) => {
+    const price = Number(pkg?.price ?? 0);
+    if (price === 0) {
+        return '0.00';
+    }
+    return price.toLocaleString();
+};
+
 const showFlexibleAmountInput = ref(false);
 
 const hardcodedFlexibleId = 'flexible_hardcoded';
@@ -977,6 +995,13 @@ const steps = [
                             Participants are invited to select the tier that best reflects their organization's resources and available budgets. Participants whose organizations have the means are warmly encouraged
                             to select the Supporter Price to help widen participation.
                         </p>
+                        <p
+                            v-if="isSponsoredSelected()"
+                            class="mt-3 rounded-xl border border-primary-2/20 bg-primary-2/5 px-5 py-4 font-body text-base text-copy"
+                        >
+                            You selected <strong>Sponsored Participant</strong>. This option is for UNDP-sponsored registrations only and requires organizer approval.
+                            If approved, you will not receive payment login details — your participation is recorded in our system only.
+                        </p>
                         <div class="space-y-4">
                             <p v-if="!packages.length" class="rounded-xl border border-primary-2/20 bg-white px-5 py-4 text-base text-copy">No packages are currently available. Please contact the organizers at cofsa@undp.org.</p>
                             <template v-for="pkg in packages" :key="pkg.id">
@@ -1014,7 +1039,7 @@ const steps = [
                                                     v-if="!isFlexibleTier(pkg.id)"
                                                     class="font-body text-base font-semibold text-accent-2"
                                                 >
-                                                    USD {{ Number(pkg.price).toLocaleString() }}
+                                                    USD {{ formatPackagePrice(pkg) }}
                                                 </p>
 
                                                 <button
