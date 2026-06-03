@@ -49,8 +49,7 @@ class PaymentSyncService
             $patch = [];
 
             if (($status['ticket_purchased'] ?? false) === true && ! $wasPaid) {
-                $resolvedAmount = $registration->admin_override_price
-                    ?? PackageService::getPriceForTier($registration->price_tier ?? null);
+                $resolvedAmount = PackageService::resolvePaymentAmountForRegistration($registration);
 
                 $patch = array_merge($patch, [
                     'status' => 'paid',
@@ -69,6 +68,16 @@ class PaymentSyncService
                     $patch['upgrade_synced_at'] = $now;
                     if ($wasPaid) {
                         $updatedCount++;
+                    }
+                }
+            }
+
+            if ($wasPaid && ($current['status'] ?? '') === 'paid') {
+                $storedAmount = $current['amount'] ?? null;
+                if ($storedAmount === null || $storedAmount === '' || (float) $storedAmount <= 0) {
+                    $resolved = PackageService::resolvePaymentAmountForRegistration($registration);
+                    if ($resolved !== null && $resolved > 0) {
+                        $patch['amount'] = $resolved;
                     }
                 }
             }

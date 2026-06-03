@@ -114,7 +114,9 @@ class ContactController extends Controller
             fn ($t) => (string) ($t['id'] ?? '') === $submittedPriceTier
         );
         $submittedTierName = (string) ($matchedTier['name'] ?? $submittedPriceTier);
-        $data['field_visit'] = (bool) ($data['field_visit'] ?? false);
+        $data['field_visit'] = PackageService::isSponsoredTier($submittedPriceTier)
+            ? false
+            : (bool) ($data['field_visit'] ?? false);
         if (!isset($data['organization']) || $data['organization'] === null) {
             $data['organization'] = 'Independent';
         }

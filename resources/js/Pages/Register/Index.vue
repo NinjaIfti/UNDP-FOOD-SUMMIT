@@ -105,6 +105,9 @@ watch(() => form.price_tier, (newVal) => {
     if (!isFlexibleTier(newVal)) {
         showFlexibleAmountInput.value = false;
     }
+    if (isSponsoredTier(newVal)) {
+        form.field_visit = false;
+    }
 });
 
 const phoneCountryCodes = [
@@ -1198,8 +1201,8 @@ const steps = [
 
                         <!-- (Moved into the selected Subsidised tier card above) -->
 
-                        <!-- Optional Immersive Experience Add-on -->
-                        <div class="mt-6">
+                        <!-- Optional Immersive Experience Add-on (not available for sponsored participants) -->
+                        <div v-if="!isSponsoredSelected()" class="mt-6">
                             <label class="flex cursor-pointer gap-4 rounded-xl border px-5 py-4 transition" :class="form.field_visit ? 'border-primary-2 bg-primary-2/10' : 'border-primary-2/20 bg-white hover:border-primary-2/40'">
                                 <input
                                     type="checkbox"

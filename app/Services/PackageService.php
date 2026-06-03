@@ -130,6 +130,88 @@ class PackageService
                 return $price !== null ? (float) $price : null;
             }
         }
+
         return null;
+    }
+
+    /** Immersive experience add-on (USD), shown on registration form. */
+    public const IMMERSIVE_EXPERIENCE_ADDON = 95.0;
+
+    /**
+     * Expected payment amount from registration tier, override, flexible amount, and add-on.
+     *
+     * @param  \App\Models\SummitRegistration|array<string, mixed>  $registration
+     */
+    public static function resolvePaymentAmountForRegistration($registration): ?float
+    {
+        $tierId = (string) (
+            (is_array($registration) ? ($registration['price_tier_raw'] ?? $registration['price_tier'] ?? '') : null)
+            ?? $registration->price_tier_raw
+            ?? $registration->price_tier
+            ?? ''
+        );
+
+        if (self::isSponsoredTier($tierId)) {
+            return 0.0;
+        }
+
+        $adminOverride = is_array($registration)
+            ? ($registration['admin_override_price'] ?? null)
+            : $registration->admin_override_price;
+
+        if ($adminOverride !== null && $adminOverride !== '' && (float) $adminOverride > 0) {
+            return (float) $adminOverride;
+        }
+
+        $flexibleAmount = is_array($registration)
+            ? ($registration['flexible_support_amount'] ?? null)
+            : $registration->flexible_support_amount;
+
+        $price = self::getPriceForTier($tierId);
+
+        $flexibleTierIds = ['flexible', 'flexible_any', 'flexible_hardcoded'];
+        foreach (self::getActiveTiers() as $tier) {
+            $id = (string) ($tier['id'] ?? '');
+            $name = strtolower((string) ($tier['name'] ?? ''));
+            if ($id !== '' && str_contains($name, 'flexible')) {
+                $flexibleTierIds[] = $id;
+            }
+        }
+        $flexibleTierIds = array_values(array_unique($flexibleTierIds));
+
+        if (in_array($tierId, $flexibleTierIds, true) && $flexibleAmount !== null && $flexibleAmount !== '') {
+            $custom = (float) $flexibleAmount;
+            if ($custom >= 970) {
+                $price = $custom;
+            }
+        }
+
+        if ($price === null) {
+            return null;
+        }
+
+        $fieldVisit = is_array($registration)
+            ? filter_var($registration['field_visit'] ?? false, FILTER_VALIDATE_BOOLEAN)
+            : (bool) $registration->field_visit;
+
+        if ($fieldVisit) {
+            $price += self::IMMERSIVE_EXPERIENCE_ADDON;
+        }
+
+        return $price;
+    }
+
+    /**
+     * Use stored payment JSON amount when valid; otherwise derive from registration.
+     */
+    public static function displayPaymentAmount($registration, ?float $storedAmount): ?float
+    {
+        $resolved = self::resolvePaymentAmountForRegistration($registration);
+
+        if ($storedAmount !== null && $storedAmount !== '' && (float) $storedAmount > 0) {
+            return (float) $storedAmount;
+        }
+
+        return $resolved;
     }
 }

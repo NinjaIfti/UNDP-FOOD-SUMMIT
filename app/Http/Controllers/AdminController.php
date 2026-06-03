@@ -254,7 +254,10 @@ class AdminController extends Controller
                     'emergency_email'                => $reg->emergency_email,
                     'emergency_relation'             => $reg->emergency_relation,
                     'payment_status'                 => $data['status'] ?? 'pending',
-                    'payment_amount'                 => $data['amount'] ?? null,
+                    'payment_amount'                 => PackageService::displayPaymentAmount(
+                        $reg,
+                        isset($data['amount']) ? (float) $data['amount'] : null
+                    ),
                     'payment_date'                   => isset($data['updated_at']) ? date('M j, Y', strtotime($data['updated_at'])) : (isset($data['synced_at']) ? date('M j, Y', strtotime($data['synced_at'])) : null),
                     'created_at'                     => $reg->created_at?->format('Y-m-d'),
                     'price_tier_raw'                 => $rawTier,

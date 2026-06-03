@@ -135,17 +135,97 @@ class SponsoredApprovalTest extends TestCase
             'recipient_email' => 'sam.sponsor@example.com',
             'summit_registration_id' => $registration->id,
         ]);
+
+        $this->assertFalse($registration->field_visit);
+    }
+
+    public function test_sponsored_registration_ignores_field_visit_addon(): void
+    {
+        Mail::fake();
+
+        $data = [
+            'first_name' => 'Sam',
+            'last_name' => 'Sponsor',
+            'gender' => 'male',
+            'email' => 'addon.sponsor@example.com',
+            'phone' => '+97517123456',
+            'country' => 'Bhutan',
+            'country_of_residence' => 'Bhutan',
+            'organization' => 'UNDP',
+            'job_title' => 'Officer',
+            'website' => '',
+            'passport_number' => 'AB1234567',
+            'passport_expiry' => '2030-12-31',
+            'arrival_date' => '2026-03-15',
+            'departure_date' => '2026-03-18',
+            'price_tier' => PackageService::SPONSORED_TIER_ID,
+            'field_visit' => true,
+            'accessibility_needed' => 'no',
+            'accessibility_details' => '',
+            'dietary' => 'none',
+            'dietary_other' => '',
+            'heard_from' => [],
+            'heard_from_other' => '',
+            'cofsa_member' => 'no',
+            'cofsa_newsletter' => 'no',
+            'emergency_name' => 'Jane Doe',
+            'emergency_phone' => '+97517123457',
+            'emergency_email' => 'jane@example.com',
+            'emergency_relation' => 'Spouse',
+            'confirm_tier' => false,
+            'subsidized_price_justification' => '',
+            'flexible_support_amount' => '',
+        ];
+
+        $this->post(route('registration.store'), $data)->assertRedirect();
+
+        $registration = SummitRegistration::where('email', 'addon.sponsor@example.com')->first();
+        $this->assertNotNull($registration);
+        $this->assertFalse($registration->field_visit);
     }
 
     public function test_sponsored_approval_email_matches_organizer_template(): void
     {
         $html = SponsoredApprovalEmailBuilder::html('Jane Doe');
 
+        $this->assertStringContainsString('href="https://www.consciousfoodsummit.com/"', $html);
+        $this->assertStringContainsString('href="mailto:neema.tamang@bhutanmindfulness.com"', $html);
+        $this->assertStringContainsString('href="mailto:pema.tshogyal@bhutanmindfulness.com"', $html);
+        $this->assertStringContainsString(
+            'href="https://www.doi.gov.bt/wp-content/uploads/2025/07/visa-application-form.pdf"',
+            $html
+        );
+        $this->assertStringContainsString(
+            'href="https://docs.google.com/forms/d/e/1FAIpQLSdC4lIGKesYCaJG9BMh43y0stsxpEx_e7QXZpL6VK8Jlqi6GA/viewform?usp=header"',
+            $html
+        );
         $this->assertStringContainsString('Form VISA2025', $html);
-        $this->assertStringContainsString('neema.tamang@bhutanmindfulness.com', $html);
-        $this->assertStringContainsString('pema.tshogyal@bhutanmindfulness.com', $html);
+        $this->assertStringContainsString('Applicant Visa Details Submission', $html);
         $this->assertStringContainsString('28 August to 6 September', $html);
         $this->assertStringContainsString('General conditions for entry into Bhutan', $html);
+    }
+
+    public function test_resolve_payment_amount_includes_field_visit_addon(): void
+    {
+        $registration = SummitRegistration::make([
+            'price_tier_raw' => 'standard',
+            'price_tier' => 'standard',
+            'field_visit' => true,
+        ]);
+
+        $this->assertSame(1065.0, PackageService::resolvePaymentAmountForRegistration($registration));
+    }
+
+    public function test_display_payment_amount_falls_back_when_stored_is_zero(): void
+    {
+        $registration = SummitRegistration::make([
+            'price_tier_raw' => 'standard',
+            'price_tier' => 'standard',
+            'field_visit' => false,
+        ]);
+
+        $this->assertSame(970.0, PackageService::displayPaymentAmount($registration, 0.0));
+        $this->assertSame(970.0, PackageService::displayPaymentAmount($registration, null));
     }
 
     public function test_sponsored_tier_is_available_in_packages(): void

@@ -60,7 +60,10 @@ class PaymentsController extends Controller
                 'admin_override_price' => $registration->admin_override_price,
                 'field_visit' => $registration->field_visit,
                 'payment_status' => $data['status'] ?? 'pending',
-                'payment_amount' => $data['amount'] ?? null,
+                'payment_amount' => PackageService::displayPaymentAmount(
+                    $registration,
+                    isset($data['amount']) ? (float) $data['amount'] : null
+                ),
                 'upgrade_status' => $upgradeStatus,
                 'created_at' => $registration->created_at?->format('M d, Y'),
             ];
