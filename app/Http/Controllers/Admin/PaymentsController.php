@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EmailLog;
 use App\Models\SummitRegistration;
+use App\Services\DashTicketService;
 use App\Services\PackageService;
-use App\Services\PaymentSyncService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -212,13 +213,19 @@ HTML;
 
     public function syncFromDashTicket()
     {
-        $result = app(PaymentSyncService::class)->syncFromDashTicket();
-
-        if (! $result['ok']) {
-            return redirect()->route('admin.payments.index')->with('error', $result['message']);
+        if (! app(DashTicketService::class)->isConfigured()) {
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'DashTicket API key is not configured.');
         }
 
-        return redirect()->route('admin.payments.index')->with('success', $result['message']);
+        $phpBinary = env('PHP_CLI_PATH', '/usr/bin/php');
+
+        Process::path(base_path())
+            ->timeout(600)
+            ->start([$phpBinary, 'artisan', 'payments:sync-dashticket']);
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', 'DashTicket sync started in the background. Refresh in a minute to see updates.');
     }
 
     public function export(Request $request)

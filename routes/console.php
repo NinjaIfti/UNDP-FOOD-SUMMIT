@@ -17,4 +17,7 @@ Artisan::command('mail:test {to=ifti3061@gmail.com}', function (string $to) {
     $this->info("Test email sent to {$to}");
 })->purpose('Send a test email using current SMTP configuration');
 
-Schedule::command('payments:sync-dashticket')->everyThirtyMinutes();
+Schedule::command('payments:sync-dashticket')
+    ->everyFiveMinutes()
+    ->withoutOverlapping(10)
+    ->runInBackground();

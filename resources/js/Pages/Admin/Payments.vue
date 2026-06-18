@@ -24,7 +24,7 @@ const viewModalOpen = ref(false);
 const addModalOpen = ref(false);
 const selectedParticipant = ref(null);
 const syncing = ref(false);
-const autoSyncIntervalSeconds = 30 * 60;
+const autoSyncIntervalSeconds = 5 * 60;
 const remainingAutoSyncSeconds = ref(autoSyncIntervalSeconds);
 let countdownTimerId = null;
 
