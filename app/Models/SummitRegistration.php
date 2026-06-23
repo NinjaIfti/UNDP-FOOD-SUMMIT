@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\AdminPaymentService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -45,5 +46,21 @@ class SummitRegistration extends Model
     public function scopeStatus($query, string $status)
     {
         return $query->where('status', $status);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        // Guard at the ORM level so a paid registration can never be deleted from any
+        // code path (controller, tinker, future jobs) without first clearing the payment.
+        static::deleting(function (self $registration) {
+            $status = app(AdminPaymentService::class)->get($registration->id)['status'] ?? 'pending';
+            if ($status === 'paid') {
+                throw new \RuntimeException(
+                    "Cannot delete registration #{$registration->id}: it is marked as paid. Update the payment status before deleting."
+                );
+            }
+        });
     }
 }
