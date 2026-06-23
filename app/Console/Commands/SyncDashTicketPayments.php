@@ -24,9 +24,7 @@ class SyncDashTicketPayments extends Command
             return self::SUCCESS;
         }
 
-        Log::info('Scheduled DashTicket payment sync finished', [
-            'updated_count' => $result['updated_count'],
-        ]);
+        Log::info('Scheduled DashTicket payment sync finished', $result);
         $this->info($result['message']);
 
         return self::SUCCESS;
