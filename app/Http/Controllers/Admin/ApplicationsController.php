@@ -570,6 +570,11 @@ HTML;
     {
         $application = $summit_registration;
 
+        $paymentStatus = app(AdminPaymentService::class)->get($application->id)['status'] ?? 'pending';
+        if ($paymentStatus === 'paid') {
+            return back()->with('error', 'Cannot delete an application that is marked as paid. Update the payment status first.');
+        }
+
         DB::transaction(function () use ($application) {
             if ($application->user_id) {
                 User::where('id', $application->user_id)->delete();
