@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 
@@ -16,10 +16,14 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    filters: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
-const searchQuery = ref('');
-const paymentFilter = ref('all');
+const searchQuery = ref(props.filters?.search || '');
+const paymentFilter = ref(props.filters?.payment_status || 'all');
 const viewModalOpen = ref(false);
 const addModalOpen = ref(false);
 const selectedParticipant = ref(null);
@@ -48,22 +52,12 @@ const addForm = useForm({
     payment_amount: '',
 });
 
-const filteredParticipants = computed(() => {
-    if (!props.participants?.data) return [];
-
-    const query = searchQuery.value.toLowerCase().trim();
-    const statusFilter = paymentFilter.value;
-
-    return props.participants.data.filter((participant) => {
-        const matchesSearch =
-            (participant.first_name || '').toLowerCase().includes(query) ||
-            (participant.last_name || '').toLowerCase().includes(query) ||
-            (participant.email || '').toLowerCase().includes(query) ||
-            (participant.organization || '').toLowerCase().includes(query);
-        const matchesPayment = statusFilter === 'all' || participant.payment_status === statusFilter;
-        return matchesSearch && matchesPayment;
-    });
-});
+const applyFilters = () => {
+    router.get(route('admin.payments.index'), {
+        search: searchQuery.value || undefined,
+        payment_status: paymentFilter.value !== 'all' ? paymentFilter.value : undefined,
+    }, { preserveState: true });
+};
 
 const exportParticipants = () => {
     router.get(route('admin.payments.export', {
@@ -251,6 +245,7 @@ const formatDate = (dateString) => {
                             type="text"
                             placeholder="Search participants..."
                             class="block w-full rounded-full border border-gray-300 bg-white py-2 pl-10 pr-4 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                            @keyup.enter="applyFilters"
                         />
                         <svg
                             class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
@@ -278,6 +273,7 @@ const formatDate = (dateString) => {
                         <select
                             v-model="paymentFilter"
                             class="rounded-full border border-gray-300 bg-white px-4 py-2 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                            @change="applyFilters"
                         >
                             <option value="all">All Payment Status</option>
                             <option value="paid">Paid</option>
@@ -286,6 +282,13 @@ const formatDate = (dateString) => {
                             <option value="refunded">Refunded</option>
                             <option value="sponsored">Sponsored</option>
                         </select>
+                        <button
+                            type="button"
+                            @click="applyFilters"
+                            class="rounded-full bg-primary-2 px-4 py-2 font-body text-sm font-medium text-white transition-colors hover:bg-primary-2/90"
+                        >
+                            Search
+                        </button>
                     </div>
                 </div>
             </div>
@@ -317,7 +320,7 @@ const formatDate = (dateString) => {
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr
-                                v-for="participant in filteredParticipants"
+                                v-for="participant in props.participants.data"
                                 :key="participant.id"
                                 class="transition-colors hover:bg-gray-50"
                             >
@@ -430,7 +433,7 @@ const formatDate = (dateString) => {
                     </table>
                 </div>
 
-                <div v-if="!filteredParticipants.length" class="py-12 text-center">
+                <div v-if="!props.participants.data.length" class="py-12 text-center">
                     <p class="font-body text-copy">No participants found</p>
                 </div>
             </div>

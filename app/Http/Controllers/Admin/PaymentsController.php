@@ -115,6 +115,7 @@ class PaymentsController extends Controller
             'participants' => $participants,
             'stats' => $stats,
             'packages' => PackageService::getActiveTiers(),
+            'filters' => $request->only(['search', 'payment_status']),
         ]);
     }
 
