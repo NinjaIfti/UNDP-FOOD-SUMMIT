@@ -18,6 +18,8 @@ class PaymentsController extends Controller
 {
     public function index(Request $request)
     {
+        $paymentData = $this->getAllPaymentData();
+
         $query = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)
             ->orderByDesc('created_at');
 
@@ -31,8 +33,25 @@ class PaymentsController extends Controller
             });
         }
 
+        if ($request->filled('payment_status') && $request->payment_status !== 'all') {
+            $status = $request->payment_status;
+            $matchingIds = collect($paymentData)
+                ->filter(fn ($data) => ($data['status'] ?? 'pending') === $status)
+                ->keys()
+                ->all();
+
+            if ($status === 'pending') {
+                // Registrations with no payment record yet default to 'pending' on display.
+                $recordedIds = array_keys($paymentData);
+                $query->where(function ($q) use ($matchingIds, $recordedIds) {
+                    $q->whereIn('id', $matchingIds)->orWhereNotIn('id', $recordedIds);
+                });
+            } else {
+                $query->whereIn('id', $matchingIds);
+            }
+        }
+
         $participants = $query->paginate(20)->withQueryString();
-        $paymentData = $this->getAllPaymentData();
 
         $tierMap = collect(PackageService::getTiers())
             ->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
@@ -70,17 +89,8 @@ class PaymentsController extends Controller
             ];
         });
 
-        // Filter by payment status if specified
-        if ($request->filled('payment_status') && $request->payment_status !== 'all') {
-            $participants->setCollection(
-                $participants->getCollection()->filter(function ($participant) use ($request) {
-                    return $participant['payment_status'] === $request->payment_status;
-                })
-            );
-        }
-
         $allApproved = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->get();
-        $allPaymentData = $this->getAllPaymentData();
+        $allPaymentData = $paymentData;
 
         $paidCount = 0;
         $pendingCount = 0;
