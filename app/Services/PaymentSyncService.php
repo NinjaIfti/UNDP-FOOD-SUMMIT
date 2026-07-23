@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\SummitRegistration;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class PaymentSyncService
 {
@@ -25,7 +24,6 @@ class PaymentSyncService
         }
 
         $approved = SummitRegistration::where('status', SummitRegistration::STATUS_APPROVED)->get();
-        $paymentData = $this->payments->getAll();
 
         $updatedCount = 0;
         $sponsoredSkipped = 0;
@@ -39,10 +37,6 @@ class PaymentSyncService
                 $sponsoredSkipped++;
                 continue;
             }
-
-            $current = $paymentData[$registration->id] ?? ['status' => 'pending'];
-            $wasPaid = ($current['status'] ?? 'pending') === 'paid';
-            $isRefunded = ($current['status'] ?? 'pending') === 'refunded';
 
             $checked++;
             $status = $dashTicket->getTicketStatus($registration->email);
@@ -58,6 +52,13 @@ class PaymentSyncService
             if ($status['found'] === false) {
                 $notFoundCount++;
             }
+
+            // Read the current record right before deciding/writing (not from a snapshot taken
+            // at the start of this run) so a concurrent admin edit made mid-sync isn't lost when
+            // this registration's patch is saved below.
+            $current = $this->payments->get($registration->id);
+            $wasPaid = ($current['status'] ?? 'pending') === 'paid';
+            $isRefunded = ($current['status'] ?? 'pending') === 'refunded';
 
             $ticketPurchased = ($status['ticket_purchased'] ?? false) === true;
 
@@ -113,11 +114,9 @@ class PaymentSyncService
             }
 
             if ($patch !== []) {
-                $paymentData[$registration->id] = array_merge($current, $patch);
+                $this->payments->save($registration->id, $patch);
             }
         }
-
-        Storage::put('admin/payments.json', json_encode($paymentData, JSON_PRETTY_PRINT));
 
         Log::info('DashTicket payment sync summary', [
             'checked' => $checked,
