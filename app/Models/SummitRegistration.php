@@ -38,6 +38,12 @@ class SummitRegistration extends Model
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_WAITLISTED = 'waitlisted';
 
+    /**
+     * Runtime-only flag (never persisted) that an admin action must explicitly set,
+     * after user confirmation, to delete a registration that is marked paid.
+     */
+    public bool $forceDeletePaid = false;
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -53,10 +59,10 @@ class SummitRegistration extends Model
         parent::boot();
 
         // Guard at the ORM level so a paid registration can never be deleted from any
-        // code path (controller, tinker, future jobs) without first clearing the payment.
+        // code path (controller, tinker, future jobs) without an explicit, confirmed override.
         static::deleting(function (self $registration) {
             $status = app(AdminPaymentService::class)->get($registration->id)['status'] ?? 'pending';
-            if ($status === 'paid') {
+            if ($status === 'paid' && ! $registration->forceDeletePaid) {
                 throw new \RuntimeException(
                     "Cannot delete registration #{$registration->id}: it is marked as paid. Update the payment status before deleting."
                 );

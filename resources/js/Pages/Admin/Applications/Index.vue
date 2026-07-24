@@ -42,10 +42,25 @@ function revert(id) {
     router.post(route('admin.applications.revert', id));
 }
 
-function destroyApplication(id) {
-    if (confirm('Delete this application permanently? This will also permanently delete the linked user account from the database. This action cannot be undone.')) {
-        router.delete(route('admin.applications.destroy', id));
+function destroyApplication(id, force = false) {
+    const message = force
+        ? 'This user has a paid registration. Are you sure you want to delete a paid user? This cannot be undone.'
+        : 'Delete this application permanently? This will also permanently delete the linked user account from the database. This action cannot be undone.';
+
+    if (!confirm(message)) {
+        return;
     }
+
+    router.delete(route('admin.applications.destroy', id), {
+        data: force ? { force: true } : {},
+        preserveScroll: true,
+        onSuccess: (page) => {
+            const errorMessage = page.props.flash?.error;
+            if (!force && errorMessage && errorMessage.includes('marked as paid')) {
+                destroyApplication(id, true);
+            }
+        },
+    });
 }
 
 async function fetchAllApplicationsForExport() {

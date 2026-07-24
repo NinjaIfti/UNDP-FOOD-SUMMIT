@@ -566,12 +566,31 @@ HTML;
         return back()->with('success', 'Application reverted to pending.');
     }
 
-    public function destroy(SummitRegistration $summit_registration)
+    public function destroy(Request $request, SummitRegistration $summit_registration)
     {
         $application = $summit_registration;
+        $force = $request->boolean('force');
 
         try {
-            DB::transaction(function () use ($application) {
+            DB::transaction(function () use ($application, $force) {
+                if ($force) {
+                    $payments = app(AdminPaymentService::class);
+                    $current = $payments->get($application->id);
+                    if (($current['status'] ?? 'pending') === 'paid') {
+                        // Record the refund instead of leaving a stale "paid" entry that would
+                        // otherwise become an orphaned payment record once the registration is gone.
+                        $payments->save($application->id, [
+                            'status' => 'refunded',
+                            'updated_at' => now()->toISOString(),
+                        ]);
+                        Log::warning('Admin force-deleted a paid registration after explicit confirmation', [
+                            'registration_id' => $application->id,
+                            'email' => $application->email,
+                        ]);
+                    }
+                    $application->forceDeletePaid = true;
+                }
+
                 if ($application->user_id) {
                     User::where('id', $application->user_id)->delete();
                 }
