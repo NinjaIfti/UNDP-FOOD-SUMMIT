@@ -26,7 +26,9 @@ const searchQuery = ref(props.filters?.search || '');
 const paymentFilter = ref(props.filters?.payment_status || 'all');
 const viewModalOpen = ref(false);
 const addModalOpen = ref(false);
+const tierModalOpen = ref(false);
 const selectedParticipant = ref(null);
+const tierParticipant = ref(null);
 const syncing = ref(false);
 const autoSyncIntervalSeconds = 5 * 60;
 const remainingAutoSyncSeconds = ref(autoSyncIntervalSeconds);
@@ -51,6 +53,26 @@ const addForm = useForm({
     payment_status: 'pending',
     payment_amount: '',
 });
+
+const tierForm = useForm({
+    price_tier_raw: '',
+});
+
+const openTierModal = (participant) => {
+    tierParticipant.value = participant;
+    tierForm.clearErrors();
+    tierForm.price_tier_raw = participant.price_tier_raw || '';
+    tierModalOpen.value = true;
+};
+
+const submitTierChange = () => {
+    tierForm.put(route('admin.payments.update-price-tier', tierParticipant.value.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            tierModalOpen.value = false;
+        },
+    });
+};
 
 const applyFilters = () => {
     router.get(route('admin.payments.index'), {
@@ -392,6 +414,21 @@ const formatDate = (dateString) => {
                                         </button>
                                         <button
                                             type="button"
+                                            @click="openTierModal(participant)"
+                                            class="rounded p-1.5 text-primary-1 transition-colors hover:bg-primary-1/10"
+                                            title="Change Price Tier"
+                                        >
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M7 7h.01M7 3h5.586a1 1 0 01.707.293l7.414 7.414a1 1 0 010 1.414l-7.586 7.586a1 1 0 01-1.414 0L4.293 12.293A1 1 0 014 11.586V6a3 3 0 013-3z"
+                                                />
+                                            </svg>
+                                        </button>
+                                        <button
+                                            type="button"
                                             @click="resendApprovalEmail(participant)"
                                             class="rounded p-1.5 text-accent-2 transition-colors hover:bg-accent-2/10"
                                             title="Resend Email"
@@ -526,6 +563,68 @@ const formatDate = (dateString) => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Change Tier Modal -->
+            <div
+                v-if="tierModalOpen && tierParticipant"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            >
+                <div class="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-lg">
+                    <div class="mb-4 flex items-center justify-between">
+                        <h2 class="font-title text-xl font-bold text-primary-1">Change Price Tier</h2>
+                        <button
+                            type="button"
+                            @click="tierModalOpen = false"
+                            class="rounded p-1.5 text-accent-2 transition-colors hover:bg-accent-2/10"
+                        >
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mb-4 font-body text-sm text-copy">
+                        {{ tierParticipant.first_name }} {{ tierParticipant.last_name }}
+                        <span class="text-xs text-gray-500">({{ tierParticipant.email }})</span>
+                        — currently <strong>{{ tierParticipant.price_tier }}</strong>
+                    </p>
+                    <form @submit.prevent="submitTierChange" class="space-y-4">
+                        <div>
+                            <label class="mb-1 block font-body text-sm font-medium text-primary-1">New tier:</label>
+                            <select
+                                v-model="tierForm.price_tier_raw"
+                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 font-body text-sm focus:border-accent-1 focus:outline-none focus:ring-2 focus:ring-accent-1/20"
+                            >
+                                <option v-for="pkg in packages" :key="pkg.id" :value="String(pkg.id)">
+                                    {{ pkg.name }} — USD {{ Number(pkg.price).toLocaleString() }}
+                                </option>
+                            </select>
+                            <div v-if="tierForm.errors.price_tier_raw" class="mt-1 text-xs text-red-600">
+                                {{ tierForm.errors.price_tier_raw }}
+                            </div>
+                        </div>
+                        <p class="font-body text-xs text-copy">
+                            Switching to or from a sponsored tier updates the payment status and DashTicket account
+                            automatically.
+                        </p>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button
+                                type="button"
+                                @click="tierModalOpen = false"
+                                class="rounded-lg border border-gray-300 px-4 py-2 font-body text-sm font-medium text-copy transition-colors hover:bg-gray-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                :disabled="tierForm.processing"
+                                class="inline-flex items-center gap-2 rounded-lg bg-primary-2 px-4 py-2 font-body text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 hover:bg-primary-2/90"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 

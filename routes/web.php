@@ -154,6 +154,7 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
         Route::get('/payments/export', [PaymentsController::class, 'export'])->name('payments.export');
         Route::post('/payments/{summit_registration}/resend-email', [PaymentsController::class, 'resendEmail'])->name('payments.resend-email');
         Route::put('/payments/{summit_registration}/status', [PaymentsController::class, 'updatePaymentStatus'])->name('payments.update-status');
+        Route::put('/payments/{summit_registration}/price-tier', [PaymentsController::class, 'updatePriceTier'])->name('payments.update-price-tier');
         Route::post('/payments/sync-dashticket', [PaymentsController::class, 'syncFromDashTicket'])->name('payments.sync-dashticket');
     });
 

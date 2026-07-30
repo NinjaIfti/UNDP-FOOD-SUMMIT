@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EmailLog;
 use App\Models\SummitRegistration;
+use App\Models\User;
+use App\Services\AdminPaymentService;
 use App\Services\DashTicketService;
 use App\Services\PackageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Process;
@@ -134,6 +138,96 @@ class PaymentsController extends Controller
 
         return redirect()->route('admin.payments.index')
             ->with('success', 'Payment status updated successfully.');
+    }
+
+    public function updatePriceTier(Request $request, SummitRegistration $summit_registration)
+    {
+        $activeTierIds = array_map(fn ($p) => (string) $p['id'], PackageService::getActiveTiers());
+
+        $validated = $request->validate([
+            'price_tier_raw' => ['required', 'string', 'in:' . implode(',', $activeTierIds)],
+        ]);
+
+        $registration = $summit_registration;
+        $newTierId = $validated['price_tier_raw'];
+        $oldTierId = (string) ($registration->price_tier_raw ?? $registration->price_tier ?? '');
+
+        if ($newTierId === $oldTierId) {
+            return back()->with('success', 'Price tier is already set to that value.');
+        }
+
+        $tierMap = collect(PackageService::getTiers())->keyBy(fn ($t) => (string) ($t['id'] ?? ''));
+        $newTierName = $tierMap->get($newTierId)['name'] ?? $newTierId;
+
+        $wasSponsored = PackageService::isSponsoredTier($oldTierId);
+        $willBeSponsored = PackageService::isSponsoredTier($newTierId);
+
+        $registration->update([
+            'price_tier_raw' => $newTierId,
+            'price_tier' => $newTierId,
+            'price_tier_name' => $newTierName,
+        ]);
+
+        $payments = app(AdminPaymentService::class);
+
+        if ($willBeSponsored) {
+            // Moving to sponsored — no ticket payment or DashTicket account is expected.
+            $payments->save($registration->id, [
+                'status' => 'sponsored',
+                'amount' => 0,
+                'updated_at' => now()->toISOString(),
+            ]);
+
+            return back()->with('success', "Price tier updated to \"{$newTierName}\" (sponsored — no payment required).");
+        }
+
+        $dashTicket = app(DashTicketService::class);
+
+        if (! $dashTicket->isConfigured()) {
+            return back()->with('success', "Price tier updated to \"{$newTierName}\". DashTicket is not configured, so no ticketing account was created.");
+        }
+
+        // Reuse the existing login/DashTicket password if one is already on record so
+        // previously-sent credentials keep working; only generate a new one if none exists.
+        $plainPassword = $payments->getDashTicketPassword($registration->id) ?? $dashTicket->generatePasswordForStorage();
+
+        DB::transaction(function () use ($registration, $plainPassword) {
+            if (! User::where('email', $registration->email)->exists()) {
+                $user = User::create([
+                    'name' => trim(implode(' ', array_filter([
+                        $registration->first_name, $registration->middle_name, $registration->last_name,
+                    ]))),
+                    'email' => $registration->email,
+                    'password' => Hash::make($plainPassword),
+                ]);
+                $registration->update(['user_id' => $user->id]);
+            }
+        });
+
+        $dashPayload = $registration->fresh()->toArray();
+        $dashPayload['price_tier'] = $newTierId;
+        $dashPayload['dashticket_password'] = $plainPassword;
+        if (!empty($registration->admin_override_price)) {
+            $dashPayload['admin_override_price'] = (float) $registration->admin_override_price;
+        }
+
+        if (! $dashTicket->registerUser($dashPayload)) {
+            return back()->with('error', "Price tier updated to \"{$newTierName}\", but the DashTicket account could not be created or updated automatically. Check the logs and retry.");
+        }
+
+        $payments->storeDashTicketPassword($registration->id, $plainPassword);
+
+        // Only reset payment status when coming off sponsored (no prior payment flow existed);
+        // leave an existing paid/pending/partial status untouched for a same-tier-family correction.
+        if ($wasSponsored) {
+            $payments->save($registration->id, [
+                'status' => 'pending',
+                'amount' => null,
+                'updated_at' => now()->toISOString(),
+            ]);
+        }
+
+        return back()->with('success', "Price tier updated to \"{$newTierName}\" and DashTicket account synced.");
     }
 
     public function store(Request $request)
