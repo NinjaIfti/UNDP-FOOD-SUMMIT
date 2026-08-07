@@ -2,9 +2,6 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const page = usePage();
-const registrationOpen = computed(() => (page.props.site_settings ?? {}).registration_open !== false);
-
 const props = defineProps({
     settings: {
         type: Object,
@@ -17,6 +14,9 @@ const props = defineProps({
         }),
     },
 });
+
+const page = usePage();
+const registrationOpen = computed(() => (page.props.site_settings ?? {}).registration_open !== false);
 
 const eventDate = new Date(props.settings.countdown_date);
 const now = ref(new Date());
@@ -111,7 +111,7 @@ onUnmounted(() => {
                 </h1>
 
                 <p class="mt-4 w-full text-center">
-                    <span class="inline-block font-body text-2xl font-semibold text-accent-2 sm:text-3xl">
+                    <span class="inline-block font-body text-2xl font-semibold text-white sm:text-3xl">
                         {{ settings.hero_tagline || 'Activating the heart' }}
                     </span>
                 </p>
@@ -126,6 +126,18 @@ onUnmounted(() => {
                 >
                     {{ settings.hero_description }}
                 </p>
+		<div v-if="registrationOpen">
+                    <p class="mt-4 w-full text-center">
+                    <span class="inline-block font-body text-2xl font-semibold text-white sm:text-3xl">
+                       LAST SLOTS AVAILABLE!
+                    </span>
+                    <p class="mt-3 w-full font-body text-xl font-semibold text-white/90 sm:text-2xl text-center">
+                    Registrations closing by 7 August 2026
+                </p>
+
+                </p>
+
+                </div>
 
                 <!-- Countdown -->
                 <div class="mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">

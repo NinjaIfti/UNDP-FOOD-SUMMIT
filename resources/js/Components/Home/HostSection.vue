@@ -11,14 +11,14 @@ const hosts = ref([
     id: 1,
     name: "JO CONFINO",
     role: "Leadership coach, Spiritual mentor, Podcaster, Author & Journalist",
-    image: "/brand/Host-2.jpeg",
-    bio: "He works at the intersection of personal transformation and systems change; working with several organisations including Leaders' Quest and Gobal Optimism. His coaching and spiritual mentoring practice focuses on supporting leaders within the fields of climate, biodiversity and social justice. He works across sectors, including NGOs, foundations and business and coaches individuals as well as leadership teams within organisations.\n\nJo has worked closely for the past 18 years with Zen Master Thich Nhat Hanh and his buddhist monastic community in Plum Village.\n\nHe is co-founder and co-presenter of the acclaimed podcast series 'The Way Out Is In' and is the co-author, with the Plum Village abbot, of two Zen books 'Being With Busyness' and 'Calm in the Storm.' In 2026 he also published a photograhy and travelogue book 'Between Earth and Sky: 100 Days of Deep Looking in the Place of the Dead.'\n\nBesides facilitating events and conferences all over the world for the past 25 years, he also runs smaller workshops and roundtables.\n\nAs a journalist for more than 40 years, he was executive editor, Impact & Innovation and Editorial Director of What's Working at the HuffPost in New York. During his five years there, he developed long-term editorial projects based on social, environmental and economic justice and was also a member of the senior leadership team of Verizon Media.\n\nHe is a fellow of the Royal Society for the encouragement of Arts, Manufactures and Commerce and completed an MSc in Responsibility and Business Practice at the University of Bath."
+    image: "/brand/Host-boy.jpg",
+    bio: "Jo Confino works at the intersection of personal transformation and systems change, collaborating with organizations like Leaders' Quest and Global Optimism to provide spiritual mentoring for leadership teams across the climate, biodiversity, and social justice sectors. With a deep foundation in mindfulness, he has worked closely with Zen Master Thich Nhat Hanh and the Plum Village community for 18 years, co-hosting the acclaimed podcast The Way Out Is In and co-authoring several Zen-inspired books. Alongside his global facilitation work, Confino brings over 40 years of journalistic expertise, previously serving as an executive editor at the HuffPost in New York and on the senior leadership team at Verizon Media. He is a Fellow of the Royal Society of Arts and holds an MSc in Responsibility and Business Practice from the University of Bath."
   },
   {
     id: 2,
     name: "PEMA CHODEN TENZIN",
     role: "Chief Editor, Yeewong Magazine Bhutan & Creator, ZHIMMEY: Bhutan's Ultimate Food Guide",
-    image: "/brand/Host-1.png",
+    image: "/brand/Host-girl.jpg",
     bio: "Pema Choden Tenzin is Bhutanese travel vlogger and Creator of Bhutan's only Women & Lifestyle Magazine which started in 2009. Online version: www.yeewongmagazine.com - now covering major fashion, entertainment and lifestyle features in Bhutan on print, online and video.\n\nAlso created www.zhimmey.com Bhutan's ultimate restaurant listing and food guide."
   }
 ]);

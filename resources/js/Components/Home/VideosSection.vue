@@ -41,7 +41,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-body text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p>
+                       <!-- <p class="bg-primary-1 p-4 font-body text-sm font-semibold text-white sm:text-base">{{ settings.video1_title }}</p> -->
                     </div>
                     <div class="overflow-hidden rounded-none border border-primary-1/15 bg-primary-1/10 shadow-md transition hover:shadow-xl">
                         <div class="aspect-video bg-primary-1/15">
@@ -55,7 +55,7 @@ const video2Embed = computed(() => toEmbedUrl(props.settings?.video2_url));
                             />
                             <div v-else class="flex h-full items-center justify-center text-copy">Video coming soon</div>
                         </div>
-                        <p class="bg-primary-1 p-4 font-body text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p>
+                       <!-- <p class="bg-primary-1 p-4 font-body text-sm font-semibold text-white sm:text-base">{{ settings.video2_title }}</p> -->
                     </div>
                 </div>
             </SectionReveal>

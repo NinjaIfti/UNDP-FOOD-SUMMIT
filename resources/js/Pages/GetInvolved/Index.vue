@@ -83,7 +83,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
     <Head title="Get Involved" />
     <EventLayout>
         <!-- 1) Call for Submissions -->
-        <section class="relative bg-[#F4F1EA] py-0">
+        <section class="mb-10 relative bg-[#F4F1EA] py-0">
             <div class="w-full">
                 <div class="overflow-hidden rounded-none">
                     <div class="relative w-full min-h-[28vh] sm:min-h-[32vh] lg:min-h-[36vh]">
@@ -115,213 +115,200 @@ const financialBody = computed(() => props.settings?.financial_body || '');
                 </div>
             </div>
         </section>
+	<!-- ③ Building a Global Movement -->
+    <section id="global-movement" class="mt-15 scroll-mt-24 bg-[#F4F1EA] pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-18">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionReveal>
+          
 
-        <!-- Four cards section -->
-        <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-12">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mx-auto mb-6 max-w-5xl text-left sm:mb-8">
-                    <p class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
-                        {{ ctaParagraph1 }}
-                    </p>
-                </div>
-                <SectionReveal>
-			<!-- new -->
-                    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-1 mb-10">
-			<!-- Communication toolkit card -->
-                        <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                                {{ spreadTitle }}
-                            </h2>
-                            <div class="mt-3 space-y-3">
-                                <p
-                                    v-for="(para, index) in spreadBodyParagraphs"
-                                    :key="index"
-                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
-                                >
-                                    {{ para }}
-                                </p>
-                            </div>
-                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
-                                {{ spreadPending }}
-                            </p>
-			    <div class="mt-5 flex flex-wrap gap-3">
-                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Toolkit
-                                </a>
-                                <a
-                                    v-if="spreadTrelloUrl"
-                                    :href="spreadTrelloUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Promo video
-                                </a>
-				
-                            </div>
-			<!-- New "Missed the kickoff?" section below the buttons -->
-        <div class="mt-5 font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
-          <h3 class="font-title text-xl font-bold tracking-wide text-primary-1 sm:text-2xl"> Missed the kickoff?</h3> 
-            
-                <p>Step into the conversation 
-                <a href="https://www.youtube.com/watch?v=Fm7S3uSczyU" class="font-semibold text-accent-1 underline transition hover:text-accent-1/80">here
-            </a> </p>
-        </div>
-			</div>
-		   </div>
-                    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
-                        <!-- Call for submissions card -->
-                       <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                            {{ callSubmissionsTitle }}
-                            </h2>
-                            <p class="mt-3 font-body text-base font-medium leading-relaxed text-copy sm:text-lg">
-                                {{ heroIntro }}
-                            </p>
+          <!-- Two-column: text left, photo right -->
+          <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+		
+            <!-- Text -->
 
-                            <div class="mt-6 flex flex-col gap-3 border-t border-primary-1/10 pt-6">
-                                <a
-                                    v-for="(card, index) in ctaCards"
-                                    :key="index"
-                                    :href="card.href"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="group flex items-center justify-between rounded-none px-5 py-4 shadow-sm transition sm:px-6"
-                                    :class="card.style === 'primary'
-                                        ? 'bg-accent-1 text-white hover:bg-accent-1/90 hover:shadow-md'
-                                        : 'border-2 border-primary-1 bg-white text-primary-1 hover:bg-primary-1/5 hover:shadow-md'"
-                                >
-                                    <div class="text-left">
-                                        <p class="font-body text-base font-bold sm:text-lg">
-                                            {{ card.title }}
-                                        </p>
-                                        <p
-                                            class="mt-1 font-body text-base"
-                                            :class="card.style === 'primary' ? 'text-white/90' : 'text-copy'"
-                                        >
-                                            {{ card.subtitle }}
-                                        </p>
-                                    </div>
-                                    <svg class="h-5 w-5 shrink-0 transition group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div> -->
-			<!-- Communication toolkit card -->
-                        <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                                {{ spreadTitle }}
-                            </h2>
-                            <div class="mt-3 space-y-3">
-                                <p
-                                    v-for="(para, index) in spreadBodyParagraphs"
-                                    :key="index"
-                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
-                                >
-                                    {{ para }}
-                                </p>
-                            </div>
-                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
-                                {{ spreadPending }}
-                            </p>
-			    <div class="mt-5 flex flex-wrap gap-3">
-                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Toolkit
-                                </a>
-                                <a
-                                    v-if="spreadTrelloUrl"
-                                    :href="spreadTrelloUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Promo video
-                                </a>
-				
-                            </div>
-			</div> -->
-                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
-                                {{ engagementTitle }}
-                            </h2>
-                            <div
-                                class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_strong]:font-bold"
-                                v-html="engagementBody || ctaParagraph2"
-                            />
-                        </div>
+            <div>
+<h2 class="mb-5 font-title text-3xl font-bold uppercase tracking-wide text-primary-1 sm:text-4xl">
+                SUMMIT LIVESTREAMS & REGIONAL ONLINE GATHERINGS
+            </h2>
+              <p class="font-body text-base leading-relaxed text-ink sm:text-lg">
+                Follow the Summit livestreams and recordings on our <span style="color:#F69C0E;">CoFSA YouTube channel.</span> Additionally, in partnership with Alef Trust, we will host daily online gatherings across 5 regions: Asia, Africa, Europe, North America, and Latin America, for people around the world to connect, reflect, and engage meaningfully with the conversations taking place in Bhutan.
 
-                        <div class="rounded-none border border-[#D7B241] bg-[#E5A000] p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-white sm:text-2xl">
-                                {{ visioningTitle }}
-                            </h2>
-                            <p class="mt-3 font-body text-base font-semibold leading-relaxed text-white sm:text-lg whitespace-pre-line">
-                                {{ visioningBody || ctaParagraph3 }}
-                            </p>
-                        </div>
 
-                        <!-- Communication toolkit card -->
-                        <!-- <div class="rounded-none border border-primary-1/10 bg-white p-6 shadow-sm sm:p-8">
-                            <h2 class="font-title text-xl font-bold uppercase tracking-wide text-primary-1 sm:text-2xl">
-                                {{ spreadTitle }}
-                            </h2>
-                            <div class="mt-3 space-y-3">
-                                <p
-                                    v-for="(para, index) in spreadBodyParagraphs"
-                                    :key="index"
-                                    class="font-body text-base font-medium leading-relaxed text-copy sm:text-lg"
-                                >
-                                    {{ para }}
-                                </p>
-                            </div>
-                            <p v-if="spreadPending" class="mt-3 font-body text-base font-semibold text-primary-1">
-                                {{ spreadPending }}
-                            </p>
-			    <div class="mt-5 flex flex-wrap gap-3">
-                                <a href="https://drive.google.com/drive/folders/1syAhB86CwS8pq5Nt02HZj0Icc2YJhIUv" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Toolkit
-                                </a>
-                                <a
-                                    v-if="spreadTrelloUrl"
-                                    :href="spreadTrelloUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Promo video
-                                </a>
-				
-                            </div> -->
-                           <!-- <div v-if="spreadPdfUrl || spreadTrelloUrl" class="mt-5 flex flex-wrap gap-3">
-                                <a
-                                    v-if="spreadPdfUrl"
-                                    :href="spreadPdfUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Toolkit
-                                </a>
-                                <a
-                                    v-if="spreadTrelloUrl"
-                                    :href="spreadTrelloUrl"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex min-w-32 items-center justify-center rounded-none bg-accent-1 px-6 py-2.5 font-body text-sm font-semibold tracking-wide text-white transition hover:bg-accent-1/90"
-                                >
-                                    Video
-                                </a>
-				
-                            </div> -->
 
-                        <!-- </div> -->
-                    </div>
-                </SectionReveal>
+              </p>
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <a href="https://consciousfoodsummit.com/register-summit"
+                  class="mt-3 font-body rounded-full shadow-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2">
+                  Register Now
+                </a>
+                <!-- <a href="https://youtu.be/rW2II8jEOnk?si=6aVCDEEbwvfWwAxi"
+                  class="mt-3 inline-block bg-transparent text-[#1f4a3b] font-semibold px-4 py-3 rounded-full border-2 border-[#F59C0E] hover:bg-[#1f4a3b] hover:text-white transition duration-200 ease-in-out text-sm">
+                  Promo video
+                </a> -->
+              </div>
+
             </div>
-        </section>
+
+            <!-- Photo -->
+            <div>
+              <img
+                src="https://th.bing.com/th/id/R.6c8964b7fd95ce2da2eea9133ad1730b?rik=Nidj742rqlWN2g&riu=http%3a%2f%2frunawayjuno.com%2fwp-content%2fuploads%2f2013%2f08%2fBhutan-Paro-Tigers-Nest-Monastery.jpg&ehk=NcgAwRjdOo%2b%2bI%2bQ83jAuIVGrviYFiQ1wjnKfs6%2fEWeA%3d&risl=&pid=ImgRaw&r=0"
+                alt="Landscape photography of a river and mountains"
+                class="w-100 object-cover rounded-lg shadow-sm mb-4">
+            </div>
+          </div>
+        </SectionReveal>
+      </div>
+    </section>
+        <!-- new section below the banner-->
+    <section class="bg-[#F4F1EA] pt-8 pb-10 sm:pt-10 sm:pb-12">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        <SectionReveal>
+          <!-- new -->
+
+
+          <!-- The four Box-->
+          <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-1">
+
+
+            <div class="rounded-none border bg-white/60 p-6 shadow-sm sm:p-8">
+              <h1 class="text-2xl md:text-3xl font-bold text-[#1f4a3b] mb-2">
+                Activating the Heart for Food Systems Transformation
+              </h1>
+
+              <p class="text-[#2d3e35] text-base md:text-lg leading-relaxed mb-4">
+                What are our hearts longing for when it comes to food systems? Begin with our guided meditation, then
+                reflect on questions of gratitude, heartbreak, aspiration, and commitment. Share your offering—through
+                stories, reflections, poems, artworks, music, videos, or other creative expressions—on our Padlet
+                platform. Selected contributions will be showcased through our official channels and woven into a
+                collective artistic expression that will accompany the Summit.
+              </p>
+
+              <!-- ACTION BUTTONS -->
+              <div class="flex flex-wrap items-center gap-4 border-t border-[#c49a30] pt-5 mt-2">
+                <a href="https://www.youtube.com/watch?v=SRu5qIdtkWY"
+                  class="mt-3 font-body rounded-full shadow-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2">
+                  → Listen to the guided meditation
+                </a>
+                <a href="https://consciousfoodsystems.org/wp-content/uploads/2026/06/CoFSA_Activating_the_Heart_v2_3_CLICKABLE.pdf"
+                  class="mt-3 font-body rounded-full shadow-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2">
+                  → Read the infographic and contribute your offering
+                </a>
+              </div>
+
+              <!-- YOUTUBE DESCRIPTION SECTION -->
+              <div class="mt-6 bg-white/60 backdrop-blur-sm p-5 md:p-6 rounded-xl border border-white/40">
+                <span
+                  class="inline-block bg-[#cc0000] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                  🎬 YouTube
+                </span>
+                <h2 class="text-xl font-semibold text-[#1f4a3b] mb-1">
+                  Meditation Video Description
+                </h2>
+                <p class="text-[#2d3e35] leading-relaxed mb-3">
+
+                  Created as part of the <strong>Activating the Heart for Food Systems Transformation</strong> journey
+                  accompanying the Global Conscious Food Systems Summit in Bhutan, this meditation invites you to pause,
+                  reconnect, and listen deeply to what your heart is calling you to cultivate within yourself and within
+                  the food systems shaping our world.
+                </p>
+                <p class="text-[#2d3e35] leading-relaxed mb-3">
+                  Through grounding, reflection, and imagination, you are invited to explore questions of gratitude,
+                  grief, responsibility, regeneration, and collective care. <em>What do you cherish? What breaks your
+                    heart? What future are you being called to help create?</em>
+                </p>
+                <p class="text-[#2d3e35] leading-relaxed mb-4">
+                  We invite you to carry the harvest of your reflections beyond this practice by sharing your stories,
+                  poems, artworks, music, reflections, or other creative expressions as part of this global journey.
+                  Selected contributions will accompany the Summit as part of a collective artistic expression.
+                </p>
+
+                <!-- YOUTUBE BUTTONS -->
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                  <a href="#"
+                    class="mt-3 font-body rounded-full shadow-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2">
+                    📄 Read the infographic
+                  </a>
+                  <a href="#"
+                    class="inline-block bg-transparent text-[#1f4a3b] font-semibold px-5 py-2.5 rounded-full border-2 border-[#F59C0E] hover:bg-[#1f4a3b] hover:text-white transition duration-200 ease-in-out text-sm">
+                    📌 Contribute on Padlet
+                  </a>
+                </div>
+
+                <div class="border-t pt-4 mt-2 text-[#3d4f46] italic leading-relaxed">
+                  May this practice nourish your spirit and strengthen the seeds of transformation already growing
+                  within you.<br>
+                  With gratitude,<br>
+                  <strong class="not-italic text-[#1f4a3b]">Conscious Food Systems Alliance (CoFSA)</strong>
+                </div>
+
+                <div class="text-sm text-[#4d5f55] mt-3">
+                  <em>Find out below how you can share the harvest of your reflections and contribute to the Summit
+                    journey.</em>
+                  <a href="#" class="text-[#1f4a3b] font-medium underline underline-offset-2 hover:text-[#2d6b4f]"><a
+                      href="https://consciousfoodsystems.org/wp-content/uploads/2026/06/CoFSA_Activating_the_Heart_v2_3_CLICKABLE.pdf">infographic</a></a>
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+            <div
+              class="gap-4 mx-auto max-w-6xl gap-6 lg:grid-cols-1 mt-10 rounded-none border bg-white/60 p-6 shadow-sm sm:p-8">
+              <h2 class="text-2xl md:text-3xl font-bold text-[#1f4a3b] mb-2">
+                <!-- {{ engagementTitle }} -->
+                Join Online to the Global Conscious Food Systems Summit​
+              </h2>
+              <p class="text-[#2d3e35] text-base md:text-lg leading-relaxed mb-4">
+                <!-- {{ visioningBody || ctaParagraph3 }} -->
+                “Livestreams and recordings will be available for everyone to follow the summit on our <a
+                  style="color: blue;"
+                  href="https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.youtube.com%2F%40consciousfoodsystemsallian3322&data=05%7C02%7Creynir.ragnarsson%40undp.org%7C3d5772ab8d8b430844fe08dee3c843f6%7Cb3e5db5e2944483799f57488ace54319%7C0%7C0%7C639198646451158131%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=muYgcx2jPAhlh9VQKgD4KDihKX5fhNFjSBrUWVg%2BXvE%3D&reserved=0">Official
+                  CoFSA YouTube Channel.</a> To broaden participation, everyday we will host online gatherings in five
+                regions to connect and reflect on the Summit’s daily themes, and contribute to the Summit’s
+                conversations. <a style="color: blue;"
+                  href="https://consciousfoodsystems.org/online-participation/">Check the Online Summit Agenda here"</a>
+
+
+              </p>
+            </div>
+            <div
+              class="gap-4 mx-auto max-w-6xl gap-6 lg:grid-cols-1 mt-10 rounded-none border bg-white/60 p-6 shadow-sm sm:p-8">
+              <h2 class="text-2xl md:text-3xl font-bold text-[#1f4a3b] mb-2">
+                <!-- {{ engagementTitle }} -->
+                Organize your own event on conscious food
+              </h2>
+              <p class="text-[#2d3e35] text-base md:text-lg leading-relaxed mb-4">
+                <!-- {{ visioningBody || ctaParagraph3 }} -->
+                “We warmly invite you to host an online gathering exploring the cultural, relational, and inner
+                dimensions of food systems transformation. If you are organising an event, you can submit it through a
+                <a style="color: blue;"
+                  href="https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fconsciousfoodsystems.org%2Fadd-event%2F&data=05%7C02%7Creynir.ragnarsson%40undp.org%7C3d5772ab8d8b430844fe08dee3c843f6%7Cb3e5db5e2944483799f57488ace54319%7C0%7C0%7C639198646451202516%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=a0RkBSsFusiuuiVUfzvYuqHn8Wx0bdWhDHWH9w%2BhOUk%3D&reserved=0">form</a>,
+                in order to be featured on the <a style="color: blue;"
+                  href="https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fconsciousfoodsystems.org%2Fevent%2F&data=05%7C02%7Creynir.ragnarsson%40undp.org%7C3d5772ab8d8b430844fe08dee3c843f6%7Cb3e5db5e2944483799f57488ace54319%7C0%7C0%7C639198646451227353%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=Peuq02AKOu%2FgQFcJMBvSut0QSwDOyZ91zpe4%2FE1M63A%3D&reserved=0">official
+                  CoFSA Website </a> , where it will be visible to the wider CoFSA community and beyond.<br>
+                <a style="color: blue;"
+                  href="https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fconsciousfoodsystems.org%2Fevent%2F&data=05%7C02%7Creynir.ragnarsson%40undp.org%7C3d5772ab8d8b430844fe08dee3c843f6%7Cb3e5db5e2944483799f57488ace54319%7C0%7C0%7C639198646451250715%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=N9zzsDKxfL18uuIr4ethlpuqSBG4SlQ%2F48Hqdjb86pQ%3D&reserved=0">Events
+                  from April 22, 2022 – May 21, 2024 – CoFSA”</a>
+
+
+
+              </p>
+            </div>
+
+          </div>
+
+
+
+
+
+        </SectionReveal>
+
+      </div>
+    </section>
 
         <!-- 3) Together with our partners -->
       <!--  <section class="bg-[#F4F1EA] py-8 sm:py-10">
@@ -378,6 +365,9 @@ const financialBody = computed(() => props.settings?.financial_body || '');
               <div class="logo-item-plant2">
                 <img src="/brand/plant-logo-2.png" alt="Plant Sponsor 2" class="logo-image">
               </div>
+		<div class="logo-item">
+                    <img src="/brand/macarthur.png" alt="Plant Sponsor 2" class="logo-image">
+                  </div>
             </div>
           </div>
         </div>
@@ -398,473 +388,350 @@ const financialBody = computed(() => props.settings?.financial_body || '');
         <div class="logo-item flex justify-center items-center">
           <img src="/brand/soil-logo-1.png" alt="Soil Sponsor 1" class="logo-image">
         </div>
+	<div class="logo-item">
+                    <img src="/brand/pawanka-fund-logo.png" alt="Soil Sponsor 1" class="logo-image">
+                  </div>
+	<div class="logo-item">
+                    <img src="/brand/BESS-family.png" alt="Soil Sponsor 1" class="logo-image">
+                  </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+        <!-- Global Advisory Partners Section - Same font and size as Our Funding Partners -->
+        <div class="mt-16">
+          <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+            Our Global Engagement Partners
 
-	<!-- Global Engagement Partners Section - Same font and size as Our Funding Partners -->
-    <div class="mt-16">
-      <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-        Our Global Advisory Partners
-      </h2>
-      
-      <!-- Global Engagement Partners Logo Marquee -->
-      <div class="mt-8 overflow-hidden">
-        <div class="marquee-container">
-          <div class="marquee-track">
-            <div class="marquee-content">
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-1.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-2.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-3.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <!-- <div class="logo-item">
-                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
-              </div> -->
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-7.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-8.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-9.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-10.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-11.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-12.jpg" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <!-- <div class="logo-item">
-                <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
-              </div> -->
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-15.webp" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-16.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-17.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-19.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-20.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-21.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-23.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-24.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-25.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-26.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-27.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-29.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-30.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-31.webp" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-            </div>
-            <div class="marquee-content">
-	    <div class="logo-item">
-                <img src="/brand/global-engagement-logo-1.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-2.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-3.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-4.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <!-- <div class="logo-item">
-                <img src="/brand/global-engagement-logo-5.png" alt="Global Engagement Partner 5 test" class="logo-image">
-              </div> -->
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-6.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-7.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-8.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-9.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-10.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-11.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-12.jpg" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <!-- <div class="logo-item">
-                <img src="/brand/global-engagement-logo-13.jfif" alt="Global Engagement Partner 1" class="logo-image">
-              </div> -->
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-14.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-15.webp" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-16.png" alt="Global Engagement Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-17.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-19.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-20.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-21.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-23.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-24.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-25.png" alt="Global Engagement Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-26.png" alt="Global Engagement Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-27.png" alt="Global Engagement Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-29.png" alt="Global Engagement Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/global-engagement-logo-30.png" alt="Global Engagement Partner 6" class="logo-image">
-              </div>
-               <div class="logo-item">
-                <img src="/brand/global-engagement-logo-31.webp" alt="Global Engagement Partner 6" class="logo-image">
+          </h2>
+
+          <!-- Global Advisory Partners Logo Marquee -->
+          <div class="mt-8 overflow-hidden">
+            <div class="marquee-container">
+              <div class="marquee-track">
+                <div class="marquee-content">
+                  <div class="logo-item">
+                    <img src="/brand/1.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/2.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/3.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/4.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/5.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/6.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/7.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/8.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/9.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/10.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/11.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/12.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/13.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/14.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/15.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/16.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/17.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/18.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/19.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/20.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/21.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/22.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/23.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/24.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/25.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/26.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/27.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/28.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/29.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  
+                </div>
+                <div class="marquee-content">
+                  <div class="logo-item">
+                    <img src="/brand/1.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/2.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/3.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/4.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/5.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/6.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/7.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/8.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/9.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/10.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/11.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/12.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/13.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/14.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/15.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/16.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/17.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/18.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/19.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/20.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/21.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/22.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/23.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/24.png" alt="Global Advisory Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/25.png" alt="Global Advisory Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/26.png" alt="Global Advisory Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/27.png" alt="Global Advisory Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/28.png" alt="Global Advisory Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/29.png" alt="Global Advisory Partner 5" class="logo-image">
+                  </div>
+                  
+
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+</div>
 
     <!-- Global Advisory Partners Section - Same font and size as Our Funding Partners -->
-    <div class="mt-16">
-      <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
-    Our Global Engagement Partners
+        <div class="mt-16">
+          <h2 class="font-title text-center text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">
+            Our Global Advisory Partners
+          </h2>
 
-      </h2>
-      
-      <!-- Global Advisory Partners Logo Marquee -->
-      <div class="mt-8 overflow-hidden">
-        <div class="marquee-container">
-          <div class="marquee-track">
-            <div class="marquee-content">
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-1.png" alt="Global Advisory Partner 1" class="logo-image">
+          <!-- Global Engagement Partners Logo Marquee -->
+          <div class="mt-8 overflow-hidden">
+            <div class="marquee-container">
+              <div class="marquee-track">
+                <div class="marquee-content">
+                  <div class="logo-item">
+                    <img src="/brand/g1.png" alt="Global Engagement Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g2.png" alt="Global Engagement Partner 2"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g3.png" alt="Global Engagement Partner 3"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g4.png" alt="Global Engagement Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g5.png" alt="Global Engagement Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g6.png" alt="Global Engagement Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g7.png" alt="Global Engagement Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g8.png" alt="Global Engagement Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g9.png" alt="Global Engagement Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g10.png" alt="Global Engagement Partner 4"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g11.png" alt="Global Engagement Partner 5"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g12.png" alt="Global Engagement Partner 6"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g13.png" alt="Global Engagement Partner 1"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g14.png" alt="Global Engagement Partner 2"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g15.png" alt="Global Engagement Partner 3"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g16.png" alt="Global Engagement Partner 4"
+                      class="logo-image">
+                  </div>
+                  
+                </div>
+                <div class="marquee-content">
+                  <div class="logo-item">
+                    <img src="/brand/g1.png" alt="Global Engagement Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g2.png" alt="Global Engagement Partner 2"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g3.png" alt="Global Engagement Partner 3"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g4.png" alt="Global Engagement Partner 4" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g5.png" alt="Global Engagement Partner 5" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g6.png" alt="Global Engagement Partner 6" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g7.png" alt="Global Engagement Partner 1" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g8.png" alt="Global Engagement Partner 2" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g9.png" alt="Global Engagement Partner 3" class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g10.png" alt="Global Engagement Partner 4"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g11.png" alt="Global Engagement Partner 5"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g12.png" alt="Global Engagement Partner 6"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g13.png" alt="Global Engagement Partner 1"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g14.png" alt="Global Engagement Partner 2"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g15.png" alt="Global Engagement Partner 3"
+                      class="logo-image">
+                  </div>
+                  <div class="logo-item">
+                    <img src="/brand/g16.png" alt="Global Engagement Partner 4"
+                      class="logo-image">
+                  </div>
+                  
+                </div>
               </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-4.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-14.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-18.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-24.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-27.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-28.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-300.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-32.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-355.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>	      
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-46.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-47.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-48.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-            </div>
-            <div class="marquee-content">
-             <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-1.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-2.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-3.svg" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-4.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-5.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-6.webp" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-7.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-8.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-9.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-11.jpg" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-12.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-13.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-14.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-15.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-16.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-17.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-18.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-19.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-20.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-21.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-22.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-23.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-24.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-25.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-26.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-27.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-28.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-29.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-300.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-31.png" alt="Global Advisory Partner 1" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-32.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-33.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-355.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-38.png" alt="Global Advisory Partner 2" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-39.png" alt="Global Advisory Partner 3" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-40.png" alt="Global Advisory Partner 4" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-41.webp" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-44.png" alt="Global Advisory Partner 5" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-45.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>	      
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-46.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-47.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-              <div class="logo-item">
-                <img src="/brand/golbal-advisory-logo-48.png" alt="Global Advisory Partner 6" class="logo-image">
-              </div>
-  
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
+      
     
 </section>
 
@@ -900,6 +767,14 @@ const financialBody = computed(() => props.settings?.financial_body || '');
 
 
 
+/* .text-primary-1 {
+  color: #2c5f2d;
+}
+
+.text-primary-2 {
+  color: #5a8f4c;
+} */
+
 /* Marquee Animation - Right to Left */
 .marquee-container {
   width: 100%;
@@ -919,21 +794,23 @@ const financialBody = computed(() => props.settings?.financial_body || '');
   animation: scrollRightToLeft 45s linear infinite;
   width: fit-content;
 }
+
 .marquee-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
+ 
   flex-shrink: 0;
-  padding: 0 1rem;
+  padding: 0 0;
 }
+
 .marquee-content-static {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4rem;
+ 
   flex-shrink: 0;
-  padding: 0 1rem;
+  padding: 0 0;
 }
 
 .logo-item {
@@ -941,20 +818,11 @@ const financialBody = computed(() => props.settings?.financial_body || '');
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 100px;
+  width: 280px;
+  height: 140px;
   margin: 0;
 }
-.logo-item-plant2 {
-	flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 100px;
-  margin: 0;
-	
-}
+
 .logo-image {
   max-width: 100%;
   max-height: 100%;
@@ -974,6 +842,7 @@ const financialBody = computed(() => props.settings?.financial_body || '');
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -987,10 +856,10 @@ const financialBody = computed(() => props.settings?.financial_body || '');
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .logo-item {
-    width: 180px;
-    height: 90px;
+    width: 210px;
+    height: 105px;
   }
-  
+
   .marquee-content {
     gap: 3rem;
   }
@@ -998,10 +867,10 @@ const financialBody = computed(() => props.settings?.financial_body || '');
 
 @media (max-width: 768px) {
   .logo-item {
-    width: 150px;
-    height: 75px;
+    width: 170px;
+    height: 85px;
   }
-  
+
   .marquee-content {
     gap: 2.5rem;
   }
@@ -1009,10 +878,10 @@ const financialBody = computed(() => props.settings?.financial_body || '');
 
 @media (max-width: 640px) {
   .logo-item {
-    width: 130px;
-    height: 65px;
+    width: 150px;
+    height: 75px;
   }
-  
+
   .marquee-content {
     gap: 2rem;
   }

@@ -59,7 +59,7 @@ onUnmounted(() => {
             class="fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300 sm:h-24 lg:h-28"
             :class="isAtTop && isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-md'"
         >
-            <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto flex h-full max-w-7xl items-center justify-center gap-4 px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-shrink-0 items-center gap-2 sm:gap-3">
                     <Link href="/" class="flex items-center gap-2 sm:gap-3">
                         <img
@@ -70,12 +70,12 @@ onUnmounted(() => {
                             :class="[
                                 index === 0
                                     ? 'h-14 w-auto object-contain sm:h-16 md:h-20 lg:h-20'
-                                    : 'h-24 w-auto max-w-[380px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]',
+                                    : 'h-16 w-auto max-w-[240px] object-contain sm:h-28 sm:max-w-[500px] md:h-32 md:max-w-[600px] lg:h-40 lg:max-w-[720px]',
                             ]"
                         />
                     </Link>
                 </div>
-                <div class="flex flex-shrink-0 items-center gap-1 sm:gap-2 lg:gap-2">
+                <div class="font-body uppercase tracking-wide flex-shrink-0 whitespace-nowrap rounded-md px-2 py-2 text-base font-medium transition lg:px-3 lg:text-lg">
                     <nav class="hidden items-center gap-1 sm:flex lg:gap-2">
                         <Link
                             href="/"
@@ -162,8 +162,8 @@ onUnmounted(() => {
                         >
                             FAQs
                         </Link>
+			<div v-if="registrationOpen" class="ml-5">
                         <Link
-                            v-if="registrationOpen"
                             href="/register-summit"
                             class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
                             :class="{ 'ring-2 ring-white ring-offset-2 ring-offset-accent-2': isActive('/register-summit') }"
@@ -173,10 +173,11 @@ onUnmounted(() => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </Link>
+			</div>
                     </nav>
                     <button
                         type="button"
-                        class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
+                        class="flex h-10 w-10 items-center justify-center rounded-lg transition sm:hidden"
                         :class="isAtTop && isHomePage ? 'text-white/90 hover:bg-white/10' : 'text-primary-1 hover:bg-black/5'"
                         aria-label="Toggle menu"
                         @click="mobileMenuOpen = !mobileMenuOpen"

@@ -124,6 +124,7 @@ const phoneCountryCodes = [
     { code: '+32', label: 'Belgium (+32)' },
     { code: '+975', label: 'Bhutan (+975)' },
     { code: '+55', label: 'Brazil (+55)' },
+    { code: '+591', label: 'Bolivia (+591)'},
     { code: '+1', label: 'Canada (+1)' },
     { code: '+56', label: 'Chile (+56)' },
     { code: '+86', label: 'China (+86)' },

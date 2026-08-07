@@ -153,7 +153,8 @@ function formatProgrammeHighlightDate(value) {
     }
 
     return {
-        line1: day ? `${day},` : '',
+       // line1: day ? `${day},` : '',
+	line1: day ? day.replace(/,\s*$/, '') : '',   // after
         line2: cleanDateLine(formattedRest).replace(/,/g, '').replace(/\s+/g, ' ').trim(),
     };
 }
@@ -205,6 +206,17 @@ function nextThemes() {
 }
 const autoSlidePaused = ref(false);
 let autoSlideInterval;
+// 👇 NEW CODE: add these two lines here
+const openItems = ref([]);
+
+function toggleItem(index) {
+  if (openItems.value.includes(index)) {
+    openItems.value = openItems.value.filter(i => i !== index);
+  } else {
+    openItems.value = [index]; // close others, keep only this one open
+  }
+}
+// 👆 NEW CODE ends here
 
 function onResize() {
     windowWidth.value = window.innerWidth;
@@ -390,9 +402,9 @@ const defaultThemes = [
                                     <h1 class="font-title text-3xl font-bold uppercase tracking-wide text-white sm:text-4xl lg:text-5xl">
                                         {{ sectionTitle }}
                                     </h1>
-                                    <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white text-center sm:text-xl">
+                                   <!-- <p class="mt-4 font-body text-lg font-semibold leading-relaxed text-white text-center sm:text-xl">
                                         {{ settings.transform_p1 || 'The Summit is a call to imagine beyond what is—towards redesigning food systems through creativity, courage, and a shared higher vision. This Summit also creates a space to pause, reflect, and reconnect with what truly matters.' }}
-                                    </p>
+                                    </p> -->
                                 </div>
                             </div>
                         </div>
@@ -416,7 +428,7 @@ const defaultThemes = [
 				<h2 class="mb-8 mt-5 font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl">TAKING PLACE ACROSS TWO VENUES	</h2>
 			</div>
                         <div class="grid gap-6 md:grid-cols-2">
-                            <div class="rounded-none border border-accent-2/40 bg-white p-4 shadow-sm">
+                            <div class="rounded-none border-accent-2/40 bg-white p-4 shadow-sm">
 				
 				
                                 <div class="mb-4 flex items-center gap-3">
@@ -429,7 +441,7 @@ const defaultThemes = [
                                 </div>
                                 <div class="overflow-hidden">
                                     <img
-                                        :src="`/brand/OIP.webp`"
+                                        :src="`/brand/dungkar-dzong.jpg`"
                                         alt="Dungkar Dzong in Paro, Bhutan"
                                         class="h-64 w-full object-cover sm:h-72"
                                         loading="lazy"
@@ -437,7 +449,7 @@ const defaultThemes = [
                                 </div>
                             </div>
 
-                            <div class="rounded-none border border-accent-2/40 bg-white p-4 shadow-sm">
+                            <div class="rounded-none border-accent-2/40 bg-white p-4 shadow-sm">
                                 <div class="mb-4 flex items-center gap-3">
                                     <span class="inline-flex items-center justify-center rounded-full bg-accent-2 px-4 py-2 font-body text-sm font-bold text-white">
                                         Days 2 to 4
@@ -470,157 +482,87 @@ const defaultThemes = [
                             >
                                 {{ highlightsDescription }}
                             </p>
+<!-- Button with link -->
+    <div class="mt-6 text-center">
+        <a
+            href="https://drive.google.com/drive/folders/1UWv8r637pS69agIwNiv12HfyLpZHqBg3" target="_blank"
+        rel="noopener noreferrer"
+            class="inline-block rounded-full bg-[#F59C0E] px-6 py-3 font-body text-base font-semibold text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-1 focus:ring-offset-2 focus:ring-offset-[#F4F1EA] sm:px-8 sm:py-3.5 sm:text-lg"
+        >
+            View Full Programme
+        </a>
+    </div>
                         </div>
 
-                        <div class="mx-auto mt-8 max-w-6xl space-y-6 sm:mt-10">
-                            <div
-                                v-for="(item, index) in programmeHighlights"
-                                :key="index"
-                                class="grid gap-4 sm:grid-cols-[220px,1fr] sm:items-stretch"
-                            >
-                                <!-- Left date box -->
-                                <div class="flex items-center justify-center rounded-none border border-accent-2/50 bg-primary-1/5 p-6">
-                                    <div class="flex w-full flex-col items-center justify-center text-center">
-                                        <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-accent-2">
-                                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
-                                            </svg>
-                                        </div>
-                                        <p class="font-title w-full text-base font-bold text-accent-2 text-center sm:text-lg leading-tight">
-                                            {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line1 }}
-                                        </p>
-                                        <p class="mt-1 font-title w-full text-base font-bold text-accent-2 text-center sm:text-lg leading-tight">
-                                            {{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line2 }}
-                                        </p>
-                                    </div>
-                                </div>
+                       <!-- new details prg -->
+                                <!-- Detail Programme -->
+<div class="mx-auto mt-8 max-w-6xl space-y-4 sm:mt-10">
+  <div
+    v-for="(item, index) in programmeHighlights"
+    :key="index"
+    class="overflow-hidden rounded-none border border-accent-2/50 bg-[#fafafa] shadow-sm transition hover:shadow-md"
+  >
+    <!-- Toggleable Header -->
+    <div
+      class="flex cursor-pointer items-center justify-between p-5 transition hover:bg-primary-1/5 sm:p-6"
+      @click="toggleItem(index)"
+    >
+      <div class="flex flex-1 items-start gap-3 sm:gap-5">
+        <!-- Date Icon -->
+        <div class="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent-2">
+          <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 7v14h18V7M7 3v4m10-4v4" />
+          </svg>
+        </div>
 
-                                <!-- Right content box -->
-                                <div class="rounded-none border border-accent-2/50 bg-[#fafafa] p-6 shadow-sm transition hover:shadow-md">
-                                    <h3 class="font-title text-base font-bold text-primary-1 sm:text-lg">
-                                        {{ splitHighlightTitle(item.title).subtitle || '' }}
-                                    </h3>
-                                    <p class="mt-3 whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
-                                        {{ item.body }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Date & Title (stacked) -->
+        <div class="flex flex-col">
+          <div class="font-title text-base font-bold text-accent-2 sm:text-lg">
+            <span>{{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line1 }}</span>
+            <span>{{ formatProgrammeHighlightDate(splitHighlightTitle(item.title).date).line2 }}</span>
+          </div>
+          <h3 class="font-title text-base font-bold text-primary-1 sm:text-lg">
+            {{ splitHighlightTitle(item.title).subtitle || '' }}
+          </h3>
+        </div>
+      </div>
+
+      <!-- Chevron Toggle -->
+      <div class="ml-4 flex-shrink-0 p-1">
+        <svg
+          class="h-5 w-5 text-accent-2 transition-transform duration-300"
+          :class="{ 'rotate-180': openItems.includes(index) }"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Expandable Body -->
+    <div
+      v-show="openItems.includes(index)"
+      class="border-t border-accent-2/50 p-5 sm:p-6"
+    >
+      <p class="whitespace-pre-line font-body text-base leading-relaxed text-copy sm:text-lg">
+        {{ item.body }}
+      </p>
+    </div>
+  </div>
                     </div>
+</div>
 
-                    <!-- Global movement feature cards (same content as admin Section 3 cards) -->
-                    <div class="mx-auto mt-12 grid max-w-7xl gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-6 lg:px-8">
-                        <div
-                            v-for="(card, index) in globalCards"
-                            :key="index"
-                            class="flex flex-col items-center rounded-none bg-white p-8 text-center shadow-md transition sm:col-span-1"
-                            :class="[
-                                index === 2 ? 'sm:col-span-2 lg:col-span-1' : '',
-                                index < 3
-                                    ? 'cursor-pointer hover:shadow-xl hover:ring-2 hover:ring-accent-1/40 focus:outline-none focus:ring-2 focus:ring-accent-1'
-                                    : 'hover:shadow-xl',
-                            ]"
-                            :role="index < 3 ? 'button' : undefined"
-                            :tabindex="index < 3 ? 0 : undefined"
-                            @click="index < 3 && scrollToCardSection(index)"
-                            @keydown.enter.prevent="index < 3 && scrollToCardSection(index)"
-                            @keydown.space.prevent="index < 3 && scrollToCardSection(index)"
-                        >
-                            <div class="flex h-12 w-full items-center justify-center">
-                                <svg
-                                    v-if="index === 0"
-                                    class="h-8 w-8 text-primary-1"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <svg
-                                    v-else-if="index === 1"
-                                    class="h-8 w-8 text-primary-1"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 1 2 2v2.945M8 3.935V5.5A2.5 2.5 0 0 0 10.5 8h.5a2 2 0 0 1 2 2 2 2 0 1 0 4 0 2 2 0 0 1 2-2h1.064M15 20.488V18a2 2 0 0 1 2-2h3.064M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                                </svg>
-                                <svg
-                                    v-else
-                                    class="h-8 w-8 text-primary-1"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-4 w-full font-title text-xl font-bold text-primary-1">
-                                {{ card.title }}
-                            </h3>
-                            <p class="mt-3 font-body text-base leading-relaxed text-copy">
-                                {{ card.body }}
-                            </p>
-                        </div>
-                    </div>
+                    
                 </SectionReveal>
             </div>
         </section>
 
-        <!-- ①a Call for Submissions -->
-        <section id="call-for-submissions" class="scroll-mt-24 bg-[#F4F1EA] py-10 sm:py-14 lg:py-16">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <SectionReveal>
-                    <!-- Title -->
-                    <div class="mb-12 text-center">
-                        <h2 class="font-title text-2xl font-bold uppercase tracking-wide text-primary-1 sm:text-3xl lg:text-4xl">
-                            {{ settings.cfs_title || 'Call for Submissions' }}
-                        </h2>
-                    </div>
-
-                    <!-- Two-column: photo left, text right -->
-                    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-
-                        <!-- Photo -->
-                        <div class="overflow-hidden rounded-none shadow-xl">
-                            <img
-                                :src="settings.cfs_image || '/brand/img30.jpg'"
-                                alt="Call for Submissions"
-                                @error="($event) => { $event.target.src = '/brand/img30.jpg' }"
-                                class="h-72 w-full object-cover sm:h-96"
-                                loading="lazy"
-                            />
-                        </div>
-
-                        <!-- Text -->
-                        <div>
-                            <p class="font-body text-lg leading-relaxed text-ink sm:text-xl">
-                                {{ settings.cfs_body || 'The organizers welcome submissions from individuals, organizations and governments wishing to actively contribute to the Bhutan Summit 2026 programme by sharing experiences, ideas, practices, and approaches that demonstrate or explore conscious food systems in practice.' }}
-                            </p>
-                            <p class="mt-4 font-body text-lg font-bold leading-relaxed text-primary-1 sm:text-xl">
-                                {{ settings.cfs_apply || 'Apply by 31st of March!' }}
-                            </p>
-                            <div class="mt-6">
-                                <a
-                                    href="https://consciousfoodsystems.org/wp-content/uploads/2026/02/CoFSA_Bhutan_Call-for-Submissions.pdf"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-2 rounded-full bg-primary-1 px-6 py-3 font-body text-base font-semibold text-white shadow-md transition hover:bg-primary-1/90 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-1 focus:ring-offset-2 focus:ring-offset-[#F4F1EA] sm:px-8 sm:py-3.5 sm:text-lg"
-                                >
-                                    <span>Help shape the Summit</span>
-                                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </SectionReveal>
-            </div>
-        </section>
+        
 
         <!-- ② Core Themes -->
-        <section id="core-themes" class="scroll-mt-24 bg-[#F4F1EA] pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-18">
+        <section id="core-themes" class="mt-10 scroll-mt-24 bg-[#F4F1EA] pt-4 pb-10 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-18">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionReveal>
                     <div class="mx-auto max-w-4xl text-center">

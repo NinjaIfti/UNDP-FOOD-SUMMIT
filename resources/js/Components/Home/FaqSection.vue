@@ -64,6 +64,13 @@ function toggle(index) {
                 </div>
             </SectionReveal>
         </div>
+<div class="mt-8 text-center">
+            <a href="https://drive.google.com/file/d/1rgUIYRsDaNj-FerA44OsCF52LxCwZwUd/view?usp=sharing" class="inline-flex items-center justify-center rounded-xl bg-accent-2 px-8 py-2.5 font-body text-base font-bold text-primary-1 transition hover:bg-accent-2/90 disabled:opacity-50"
+  >
+               View All FAQs 
+            </a>
+            
+        </div>
     </section>
 </template>
 
