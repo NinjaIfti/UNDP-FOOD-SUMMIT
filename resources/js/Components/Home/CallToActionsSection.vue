@@ -1,11 +1,15 @@
 <script setup>
 import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import SectionReveal from './SectionReveal.vue';
 
 const props = defineProps({
     settings: Object,
 });
+
+const page = usePage();
+const registrationOpen = computed(() => (page.props.site_settings ?? {}).registration_open !== false);
+const isClosedRegisterAction = (action) => action.href === '/register-summit' && !registrationOpen.value;
 
 const actions = computed(() => props.settings?.cta_actions || [
     {
@@ -57,11 +61,12 @@ const actions = computed(() => props.settings?.cta_actions || [
                 <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     <template v-for="action in actions" :key="action.title">
                         <component
-                            :is="action.external ? 'a' : Link"
-                            :href="action.href"
+                            :is="isClosedRegisterAction(action) ? 'div' : (action.external ? 'a' : Link)"
+                            :href="isClosedRegisterAction(action) ? undefined : action.href"
                             :target="action.external ? '_blank' : undefined"
                             :rel="action.external ? 'noopener noreferrer' : undefined"
                             class="group flex flex-col items-center rounded-none border border-primary-1/20 bg-primary-1/5 p-6 text-center shadow-md transition hover:-translate-y-1 hover:shadow-xl"
+                            :class="isClosedRegisterAction(action) ? 'opacity-50 hover:translate-y-0 hover:shadow-md cursor-not-allowed' : ''"
                         >
                             <!-- Icon only, no bg — centered -->
                             <div class="flex justify-center">
@@ -86,7 +91,7 @@ const actions = computed(() => props.settings?.cta_actions || [
                             <p class="mt-2 flex-1 font-body text-base leading-relaxed text-copy">{{ action.desc }}</p>
 
                             <span class="mt-4 inline-flex items-center justify-center gap-1.5 font-body text-base font-semibold text-accent-1 transition group-hover:gap-2.5">
-                                {{ action.cta }}
+                                {{ isClosedRegisterAction(action) ? 'Registration Closed' : action.cta }}
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>

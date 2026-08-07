@@ -40,6 +40,17 @@ const registerHeroForm = useForm({
     delete_register_hero_image: false,
 });
 
+const registrationForm = useForm({
+    registration_open: props.settings.registration_open !== undefined ? !!props.settings.registration_open : true,
+});
+
+const toggleRegistrationStatus = () => {
+    registrationForm.registration_open = !registrationForm.registration_open;
+    registrationForm.post(route('admin.settings.update-general'), {
+        preserveScroll: true,
+    });
+};
+
 const footerForm = useForm({
     newsletter_text: props.settings.newsletter_text || '',
     contact_email: props.settings.contact_email || '',
@@ -318,6 +329,47 @@ const saveFooter = (fields) => {
             </div>
             <div v-if="logoFourthForm.errors.logo_fourth" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
                 Logo 4 error: {{ logoFourthForm.errors.logo_fourth }}
+            </div>
+
+            <!-- Registration Status -->
+            <div
+                class="rounded-lg border p-6 shadow-sm"
+                :class="registrationForm.registration_open ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'"
+            >
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="flex h-10 w-10 items-center justify-center rounded-lg flex-shrink-0"
+                            :class="registrationForm.registration_open ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-foreground">Registration Status</h2>
+                            <p class="text-sm" :class="registrationForm.registration_open ? 'text-green-700' : 'text-red-700'">
+                                Registration is currently
+                                <strong>{{ registrationForm.registration_open ? 'OPEN' : 'CLOSED' }}</strong>.
+                                {{ registrationForm.registration_open
+                                    ? 'The Register link and form are visible to visitors.'
+                                    : 'The Register link is hidden site-wide and the registration form shows a closed message.' }}
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        @click="toggleRegistrationStatus"
+                        :disabled="registrationForm.processing"
+                        :class="registrationForm.registration_open ? 'bg-[#2d5f3f]' : 'bg-gray-300'"
+                        class="relative inline-flex h-7 w-14 flex-shrink-0 items-center rounded-full transition-colors disabled:opacity-50"
+                    >
+                        <span
+                            :class="registrationForm.registration_open ? 'translate-x-8' : 'translate-x-1'"
+                            class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform"
+                        />
+                    </button>
+                </div>
             </div>
 
             <!-- General Settings -->

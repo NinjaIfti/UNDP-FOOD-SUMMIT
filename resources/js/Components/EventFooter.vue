@@ -18,6 +18,7 @@ const showContactPhone = computed(() => {
     return String(raw).toLowerCase() !== 'false' && String(raw) !== '0';
 });
 const contactLocation = computed(() => siteSettings.value.contact_location || "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan");
+const registrationOpen = computed(() => siteSettings.value.registration_open !== false);
 
 const footerSupportDefault = '24/7 support provided by the Global Conscious Food Systems Summit event team.';
 const showFooterSupport = computed(() => {
@@ -220,7 +221,7 @@ function submit() {
                 <Link href="/" class="text-sm text-white/80 transition hover:text-white">Home</Link>
                 <Link href="/programme" class="text-sm text-white/80 transition hover:text-white">Agenda</Link>
                 <Link href="/#speakers" class="text-sm text-white/80 transition hover:text-white">Speakers</Link>
-                <Link href="/register-summit" class="text-sm text-white/80 transition hover:text-white">Register</Link>
+                <Link v-if="registrationOpen" href="/register-summit" class="text-sm text-white/80 transition hover:text-white">Register</Link>
             </div>
             <p class="mt-6 text-center text-sm text-white/60">Global Conscious Food Systems Summit – 31 Aug – 4 Sep 2026</p>
         </div>

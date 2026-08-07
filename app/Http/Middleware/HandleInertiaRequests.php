@@ -88,6 +88,7 @@ class HandleInertiaRequests extends Middleware
                 'contact_phone' => $s['contact_phone'] ?? '+975 1234 5678',
                 'show_contact_phone' => $s['show_contact_phone'] ?? true,
                 'show_footer_support' => $s['show_footer_support'] ?? true,
+                'registration_open' => $s['registration_open'] ?? true,
                 'contact_location' => $s['contact_location'] ?? "Royal Institute for Governance and Strategic Studies\nThimphu, Bhutan",
                 'social_facebook' => $s['social_facebook'] ?? '',
                 'social_twitter' => $s['social_twitter'] ?? '',

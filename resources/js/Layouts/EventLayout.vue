@@ -11,6 +11,7 @@ const page = usePage();
 const blogEnabled = page.props.blog_enabled ?? false;
 const siteSettings = page.props.site_settings ?? {};
 const isHomePage = computed(() => page.url === '/' || page.url === '');
+const registrationOpen = computed(() => (page.props.site_settings ?? {}).registration_open !== false);
 const logos = computed(() => {
     const raw = [
         siteSettings.logo_secondary || '/brand/govt.png',
@@ -162,6 +163,7 @@ onUnmounted(() => {
                             FAQs
                         </Link>
                         <Link
+                            v-if="registrationOpen"
                             href="/register-summit"
                             class="font-body flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-accent-2 px-3 py-2 text-base font-semibold text-white transition hover:bg-accent-2/90 lg:px-4 lg:text-base"
                             :class="{ 'ring-2 ring-white ring-offset-2 ring-offset-accent-2': isActive('/register-summit') }"
@@ -273,6 +275,7 @@ onUnmounted(() => {
                         FAQs
                     </Link>
                     <Link
+                        v-if="registrationOpen"
                         href="/register-summit"
                         class="font-body rounded-md bg-accent-2 px-4 py-3 text-center text-base font-semibold text-white transition hover:bg-accent-2/90 inline-flex items-center justify-center gap-2"
                         :class="{ 'ring-2 ring-white ring-offset-2 ring-offset-accent-2': isActive('/register-summit') }"

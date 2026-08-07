@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage();
+const registrationOpen = computed(() => (page.props.site_settings ?? {}).registration_open !== false);
 
 const props = defineProps({
     settings: {
@@ -146,6 +149,7 @@ onUnmounted(() => {
 
                 <!-- Register button -->
                 <Link
+                    v-if="registrationOpen"
                     href="/register-summit"
                     class="mt-8 inline-flex items-center gap-2 rounded-full bg-accent-2 px-8 py-4 font-body text-base font-semibold text-white shadow-lg transition hover:bg-accent-2/90 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:text-lg mx-auto"
                 >
@@ -154,6 +158,12 @@ onUnmounted(() => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                 </Link>
+                <div
+                    v-else
+                    class="mt-8 inline-flex items-center gap-2 rounded-full bg-white/10 px-8 py-4 font-body text-base font-semibold text-white/70 mx-auto"
+                >
+                    Registration Closed
+                </div>
             </div>
         </div>
     </section>

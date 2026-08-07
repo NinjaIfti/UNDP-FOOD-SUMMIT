@@ -10,6 +10,10 @@ class RegisterController extends Controller
 {
     public function index()
     {
+        if (! $this->isRegistrationOpen()) {
+            return Inertia::render('Register/Closed');
+        }
+
         $packages = PackageService::getActiveTiers();
         $yourStaySettings = [];
 
@@ -28,5 +32,16 @@ class RegisterController extends Controller
             'packages' => $packages,
             'yourStaySettings' => $yourStaySettings,
         ]);
+    }
+
+    protected function isRegistrationOpen(): bool
+    {
+        if (! Storage::exists('admin/settings.json')) {
+            return true;
+        }
+
+        $settings = json_decode(Storage::get('admin/settings.json'), true);
+
+        return ($settings['registration_open'] ?? true) !== false;
     }
 }

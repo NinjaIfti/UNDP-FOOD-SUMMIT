@@ -37,6 +37,10 @@ class ContactController extends Controller
 
     public function registration(Request $request)
     {
+        if (! $this->isRegistrationOpen()) {
+            return back()->with('error', 'Registration is now closed.');
+        }
+
         $activeTiers = PackageService::getActiveTiers();
         $flexibleTierIds = [];
         foreach ($activeTiers as $tier) {
@@ -257,5 +261,16 @@ HTML;
         }
 
         return back()->with('success', 'Thank you for registering with the GCFSS, our team will get back to you soon!');
+    }
+
+    protected function isRegistrationOpen(): bool
+    {
+        if (! Storage::exists('admin/settings.json')) {
+            return true;
+        }
+
+        $settings = json_decode(Storage::get('admin/settings.json'), true);
+
+        return ($settings['registration_open'] ?? true) !== false;
     }
 }
